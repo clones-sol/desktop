@@ -3,8 +3,31 @@
   import { getPlatform } from '$lib/utils';
   import { invoke } from '@tauri-apps/api/core';
   import { onMount } from 'svelte';
+  import { info, warn, debug, trace, error, attachConsole } from '@tauri-apps/plugin-log';
+
+  function serializeArg(arg: any) {
+    if (typeof arg === 'object' && arg !== null) {
+      try {
+        return JSON.stringify(arg, null, 2); // Pretty-print objects/arrays
+      } catch {
+        return String(arg);
+      }
+    }
+    return String(arg);
+  }
+
+  function serializeArgs(args: any) {
+    return args.map(serializeArg).join(' ');
+  }
+
+  console.log = (...args) => info(serializeArgs(args));
+  console.warn = (...args) => warn(serializeArgs(args));
+  console.error = (...args) => error(serializeArgs(args));
+  console.debug = (...args) => debug(serializeArgs(args));
+  console.trace = (...args) => trace(serializeArgs(args));
 
   onMount(async () => {
+    attachConsole();
     try {
       if ((await getPlatform()) === 'macos') {
         // Check if accessibility permissions are already granted
