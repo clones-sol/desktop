@@ -73,6 +73,15 @@ pub fn init_pipeline() -> Result<(), String> {
     let latest_metadata =
         crate::utils::github_release::fetch_latest_release_metadata(repo_owner, repo_name)?;
 
+    // Use the github_release module to get the latest release
+    let pipeline_path = github_release::get_latest_release(
+        repo_owner,
+        repo_name,
+        &get_pipeline_url(),
+        &temp_dir,
+        true, // Make executable on Linux/macOS
+    )?;
+
     let needs_download = match &local_metadata {
         Some(meta) => {
             if meta.version != latest_metadata.version {

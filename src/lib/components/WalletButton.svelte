@@ -34,7 +34,7 @@
   }
 
   function getSolscanUrl(txHash: string): string {
-    return `https://solscan.io/tx/${txHash}`;
+    return `${import.meta.env.VITE_SOLSCAN_BASE_URL}/tx/${txHash}`;
   }
 
   async function loadSubmissions() {

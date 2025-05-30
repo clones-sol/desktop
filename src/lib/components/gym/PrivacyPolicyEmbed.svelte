@@ -7,7 +7,7 @@
 
 {#if privacyAccepted()}
   <a
-    href="https://github.com/viralmind-ai/desktop/blob/main/PRIVACY.md"
+    href={import.meta.env.VITE_PRIVACY_POLICY_URL}
     class="text-secondary-300 hover:underline"
     target="_blank">
     View Privacy Policy

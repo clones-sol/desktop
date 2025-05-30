@@ -20,7 +20,7 @@
       <h2 class="text-xl font-semibold mb-4">Confirm Upload</h2>
       <p class="text-gray-700 mb-6">
         Before uploading your recording, make sure you've read the <a
-          href="https://github.com/viralmind-ai/desktop/blob/main/PRIVACY.md"
+          href={import.meta.env.VITE_PRIVACY_POLICY_URL}
           target="_blank"
           class="hover:underline text-secondary-300">
           Privacy Policy.
