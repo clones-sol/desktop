@@ -9,6 +9,8 @@
 
   let activeTab = 'nodejs';
 
+  const S3_BASE_URL = import.meta.env.VITE_S3_BASE_URL;
+
   // Generate Node.js download script
   function generateNodejsScript() {
     const submissionLinks = submissions
@@ -17,7 +19,7 @@
         return sub.files.map((file) => {
           const s3Key = file.s3Key || '';
           return {
-            url: `https://training-gym.s3.us-east-2.amazonaws.com/${s3Key}`,
+            url: `${S3_BASE_URL}/${s3Key}`,
             id: sub._id,
             filename: s3Key.split('-').pop() || 'file'
           };
@@ -80,7 +82,7 @@ files.forEach(file => {
         return sub.files.map((file) => {
           const s3Key = file.s3Key || '';
           return {
-            url: `https://training-gym.s3.us-east-2.amazonaws.com/${s3Key}`,
+            url: `${S3_BASE_URL}/${s3Key}`,
             id: sub._id,
             filename: s3Key.split('-').pop() || 'file'
           };
@@ -134,7 +136,7 @@ for file in files:
         return sub.files.map((file) => {
           const s3Key = file.s3Key || '';
           return {
-            url: `https://training-gym.s3.us-east-2.amazonaws.com/${s3Key}`,
+            url: `${S3_BASE_URL}/${s3Key}`,
             id: sub._id,
             filename: s3Key.split('-').pop() || 'file'
           };
@@ -287,6 +289,17 @@ done
 
       <div class="bg-gray-100 p-4 rounded-lg mb-4">
         <pre class="text-sm text-gray-800 overflow-auto max-h-80">{getActiveScript()}</pre>
+      </div>
+
+      <div class="mb-4 text-xs text-gray-500">
+        By downloading or using these scripts, you agree to our
+        <a
+          href={import.meta.env.VITE_PRIVACY_POLICY_URL}
+          target="_blank"
+          class="text-secondary-300 hover:underline">
+          Privacy Policy
+        </a>
+        .
       </div>
 
       <div class="flex justify-end gap-3">

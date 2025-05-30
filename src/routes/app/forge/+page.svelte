@@ -34,8 +34,8 @@
 
   // Token contract addresses
   const TOKEN_DATA = {
-    contractAddress: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS, // VIRAL token
-    solAddress: 'So11111111111111111111111111111111111111112' // SOL token
+    solAddress: import.meta.env.VITE_SOL_TOKEN_ADDRESS,
+    contractAddress: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS
   };
 
   onMount(() => {
@@ -45,8 +45,9 @@
   async function fetchPrices() {
     try {
       loadingPrices = true;
+      const JUPITER_API_URL = import.meta.env.VITE_JUPITER_API_URL;
       const response = await fetch(
-        `https://api.jup.ag/price/v2?ids=${TOKEN_DATA.contractAddress},${TOKEN_DATA.solAddress}`
+        `${JUPITER_API_URL}/price/v2?ids=${TOKEN_DATA.contractAddress},${TOKEN_DATA.solAddress}`
       );
       const json = await response.json();
 

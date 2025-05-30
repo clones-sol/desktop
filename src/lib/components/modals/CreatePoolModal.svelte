@@ -18,7 +18,7 @@
   let customTokenAddress = $state('');
 
   const DEFAULT_ADDRESSES = {
-    SOL: 'So11111111111111111111111111111111111111112',
+    SOL: import.meta.env.VITE_SOL_TOKEN_ADDRESS,
     VIRAL: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS
   };
 

@@ -806,3 +806,16 @@ fn get_ffmpeg_url_macos() -> String {
 fn get_ffprobe_url_macos() -> String {
     std::env::var("FFPROBE_URL_MACOS").expect("FFPROBE_URL_MACOS must be set in environment")
 }
+
+fn get_ffmpeg_url_windows() -> String {
+    std::env::var("FFMPEG_URL_WIN").unwrap_or_else(|_| "https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-windows.zip".to_string())
+}
+fn get_ffmpeg_url_linux() -> String {
+    std::env::var("FFMPEG_URL_LINUX").unwrap_or_else(|_| "https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-linux.tar.xz".to_string())
+}
+fn get_ffmpeg_url_macos() -> String {
+    std::env::var("FFMPEG_URL_MACOS").unwrap_or_else(|_| "https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-macos.zip".to_string())
+}
+fn get_ffprobe_url_macos() -> String {
+    std::env::var("FFPROBE_URL_MACOS").unwrap_or_else(|_| "https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffprobe-macos.zip".to_string())
+}
