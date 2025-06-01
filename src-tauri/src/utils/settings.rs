@@ -1,3 +1,8 @@
+//! Utilities for loading and saving user settings to a JSON file in the app data directory.
+//!
+//! This module provides a `Settings` struct and methods to persist and recover user preferences, such as onboarding and upload confirmation state.
+
+use crate::tools::sanitize_and_check_path;
 use log::{error, info};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -7,6 +12,9 @@ use std::{
 };
 use tauri::{AppHandle, Manager};
 
+/// User settings stored in a JSON file.
+///
+/// Fields include onboarding and upload confirmation state.
 #[derive(Debug, Serialize, Deserialize, Default)]
 pub struct Settings {
     pub upload_confirmed: bool,
@@ -14,6 +22,13 @@ pub struct Settings {
 }
 
 impl Settings {
+    /// Loads settings from the app's data directory, or returns defaults if not found or on error.
+    ///
+    /// # Arguments
+    /// * `app` - The Tauri `AppHandle` used to locate the settings file.
+    ///
+    /// # Returns
+    /// * `Settings` loaded from file, or default values if not found or on error.
     pub fn load(app: &AppHandle) -> Self {
         let path = get_settings_path(app);
 
@@ -82,8 +97,21 @@ impl Settings {
         }
     }
 
+    /// Saves the current settings to the app's data directory as JSON.
+    ///
+    /// # Arguments
+    /// * `app` - The Tauri `AppHandle` used to locate the settings file.
+    ///
+    /// # Returns
+    /// * `Ok(())` if the settings were saved successfully.
+    /// * `Err` if writing failed.
     pub fn save(&self, app: &AppHandle) -> Result<(), String> {
-        let path = get_settings_path(app);
+        let base = app
+            .path()
+            .app_local_data_dir()
+            .map_err(|_| "Failed to get app data directory")?;
+        let path =
+            crate::tools::sanitize_and_check_path(&base, std::path::Path::new("settings.json"))?;
 
         // Ensure parent directory exists
         if let Some(parent) = path.parent() {
@@ -93,6 +121,12 @@ impl Settings {
 
         let file =
             File::create(&path).map_err(|e| format!("Failed to create settings file: {}", e))?;
+        let metadata = file
+            .metadata()
+            .map_err(|e| format!("Failed to get file metadata: {}", e))?;
+        if metadata.permissions().readonly() {
+            return Err("Settings file is not writable".to_string());
+        }
 
         let mut writer = BufWriter::new(file);
         serde_json::to_writer_pretty(&mut writer, &self)
@@ -102,7 +136,7 @@ impl Settings {
             .flush()
             .map_err(|e| format!("Failed to flush settings file: {}", e))?;
 
-        info!("[Settings] Saved settings to {}", path.display());
+        info!("[Settings] Saved settings to settings.json");
         Ok(())
     }
 }

@@ -1,3 +1,8 @@
+//! AxTree tool integration for running and polling the dump-tree binary.
+//!
+//! This module manages the download, initialization, and polling of the dump-tree binary for accessibility tree extraction.
+
+use crate::tools::helpers::lock_with_timeout;
 use crate::utils::github_release;
 use log::info;
 use serde_json::{json, Value};
@@ -8,17 +13,25 @@ use std::sync::{Arc, Mutex, OnceLock};
 use std::thread;
 use std::time::Duration;
 
-static DUMP_TREE_PATH: OnceLock<PathBuf> = OnceLock::new();
+pub static DUMP_TREE_PATH: OnceLock<PathBuf> = OnceLock::new();
 static POLLING_ACTIVE: OnceLock<Arc<Mutex<bool>>> = OnceLock::new();
 
+const POLLING_SLEEP_SECS: u64 = 2;
+
 #[cfg(target_os = "windows")]
-const DUMP_TREE_URL: &str = "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-windows-x64.exe";
+fn get_dump_tree_url() -> String {
+    std::env::var("DUMP_TREE_URL_WIN").unwrap_or_else(|_| "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-windows.exe".to_string())
+}
 
 #[cfg(target_os = "linux")]
-const DUMP_TREE_URL: &str = "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-linux-x64-arm64.js";
+fn get_dump_tree_url() -> String {
+    std::env::var("DUMP_TREE_URL_LINUX").unwrap_or_else(|_| "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-linux-x86_64".to_string())
+}
 
 #[cfg(target_os = "macos")]
-const DUMP_TREE_URL: &str = "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64";
+fn get_dump_tree_url() -> String {
+    std::env::var("DUMP_TREE_URL_MACOS").unwrap_or_else(|_| "https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64".to_string())
+}
 
 const GITHUB_API_URL: &str =
     "https://api.github.com/repos/viralmind-ai/ax-tree-parsers/releases/latest";
@@ -29,6 +42,11 @@ fn get_temp_dir() -> PathBuf {
     temp
 }
 
+/// Initializes the dump-tree binary by downloading the latest release if needed.
+///
+/// # Returns
+/// * `Ok(())` if initialization succeeded.
+/// * `Err` if the binary could not be downloaded or set up.
 pub fn init_dump_tree() -> Result<(), String> {
     if DUMP_TREE_PATH.get().is_some() {
         log::info!("[AxTree] Already initialized");
@@ -44,25 +62,68 @@ pub fn init_dump_tree() -> Result<(), String> {
     let url_parts: Vec<&str> = GITHUB_API_URL.split('/').collect();
     let repo_owner = url_parts[4];
     let repo_name = url_parts[5];
-
-    // Get the temp directory
     let temp_dir = get_temp_dir();
+    let asset_url = get_dump_tree_url();
+    let asset_split: Vec<&str> = asset_url.split('/').collect();
+    let asset_filename = asset_split[asset_url.split('/').count() - 1];
+    let asset_path = temp_dir.join(asset_filename);
+    let metadata_path = temp_dir.join(format!("{}.metadata.json", asset_filename));
 
-    // Use the github_release module to get the latest release
-    let dump_tree_path = github_release::get_latest_release(
-        repo_owner,
-        repo_name,
-        DUMP_TREE_URL,
-        &temp_dir,
-        true, // Make executable on Linux/macOS
-    )?;
+    // Try to load local metadata
+    let local_metadata = crate::utils::github_release::load_metadata(&metadata_path)?;
+    // Fetch latest metadata from GitHub
+    let latest_metadata =
+        crate::utils::github_release::fetch_latest_release_metadata(repo_owner, repo_name)?;
 
-    log::info!("[AxTree] Using dump-tree at {}", dump_tree_path.display());
-    DUMP_TREE_PATH.set(dump_tree_path).unwrap();
+    let needs_download = match &local_metadata {
+        Some(meta) => {
+            if meta.version != latest_metadata.version {
+                log::info!(
+                    "[AxTree] Local version {} is outdated (latest: {}), will update",
+                    meta.version,
+                    latest_metadata.version
+                );
+                true
+            } else {
+                log::info!("[AxTree] Local version {} is up to date", meta.version);
+                false
+            }
+        }
+        None => {
+            log::info!("[AxTree] No local dump-tree binary or metadata, will download");
+            true
+        }
+    };
 
+    if needs_download || !asset_path.exists() {
+        // Use the github_release module to get the latest release
+        let dump_tree_path = crate::utils::github_release::get_latest_release(
+            repo_owner, repo_name, &asset_url, &temp_dir,
+            true, // Make executable on Linux/macOS
+        )?;
+        log::info!(
+            "[AxTree] Downloaded and using dump-tree at {}",
+            dump_tree_path.display()
+        );
+        DUMP_TREE_PATH.set(dump_tree_path).unwrap();
+    } else {
+        log::info!(
+            "[AxTree] Using cached dump-tree at {}",
+            asset_path.display()
+        );
+        DUMP_TREE_PATH.set(asset_path).unwrap();
+    }
     Ok(())
 }
 
+/// Starts polling the dump-tree binary in a background thread, capturing and logging its output.
+///
+/// # Arguments
+/// * `_` - The Tauri `AppHandle` (unused, but required for handler signature).
+///
+/// # Returns
+/// * `Ok(())` if polling started successfully.
+/// * `Err` if the binary is not initialized or polling could not start.
 pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
     let dump_tree = DUMP_TREE_PATH
         .get()
@@ -72,13 +133,26 @@ pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
     let polling_active = POLLING_ACTIVE
         .get()
         .ok_or_else(|| "Polling state not initialized".to_string())?;
-    *polling_active.lock().unwrap() = true;
+    let lock = lock_with_timeout(polling_active, std::time::Duration::from_secs(2));
+    if let Some(mut active) = lock {
+        *active = true;
+    } else {
+        log::error!("[AxTree] Could not acquire polling_active lock");
+    }
 
     info!("[AxTree] Starting dump-tree polling");
 
     thread::spawn(move || {
         info!("[AxTree] Polling thread started");
-        while *POLLING_ACTIVE.get().unwrap().lock().unwrap() {
+        let mut thread_exit_clean = false;
+        while let Some(active) = lock_with_timeout(
+            POLLING_ACTIVE.get().unwrap(),
+            std::time::Duration::from_secs(2),
+        ) {
+            if !*active {
+                thread_exit_clean = true;
+                break;
+            }
             info!("[AxTree] Starting new dump-tree process");
 
             // Run dump-tree and capture output
@@ -160,9 +234,19 @@ pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
 
             // Only sleep if we're still supposed to be polling
             if *POLLING_ACTIVE.get().unwrap().lock().unwrap() {
-                info!("[AxTree] Sleeping for 2 seconds before next poll");
-                thread::sleep(Duration::from_secs(2));
+                info!(
+                    "[AxTree] Sleeping for {} seconds before next poll",
+                    POLLING_SLEEP_SECS
+                );
+                thread::sleep(Duration::from_secs(POLLING_SLEEP_SECS));
             }
+        }
+        if !thread_exit_clean {
+            log::warn!(
+                "[AxTree] Polling thread did not exit cleanly (active flag not set to false)"
+            );
+        } else {
+            info!("[AxTree] Polling thread exited cleanly");
         }
         info!("[AxTree] Stopped dump-tree polling");
     });
@@ -170,11 +254,21 @@ pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+/// Stops the dump-tree polling thread.
+///
+/// # Returns
+/// * `Ok(())` if polling was stopped.
+/// * `Err` if polling state was not initialized.
 pub fn stop_dump_tree_polling() -> Result<(), String> {
     info!("[AxTree] Stopping dump-tree polling");
 
     if let Some(polling_active) = POLLING_ACTIVE.get() {
-        *polling_active.lock().unwrap() = false;
+        let lock = lock_with_timeout(polling_active, std::time::Duration::from_secs(2));
+        if let Some(mut active) = lock {
+            *active = false;
+        } else {
+            log::error!("[AxTree] Could not acquire polling_active lock to stop polling");
+        }
     }
     Ok(())
 }

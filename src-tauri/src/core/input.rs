@@ -1,4 +1,7 @@
+//! Input event listening and logging utilities for capturing keyboard, mouse, and joystick events across platforms.
+
 use crate::core::record;
+use crate::tools::helpers::lock_with_timeout;
 use log::{error, info};
 use rdev::{listen, Event as RdevEvent, EventType as RdevEventType};
 use serde::Serialize;
@@ -12,12 +15,14 @@ use std::{
 use tauri::Emitter;
 use tauri::Runtime;
 
+/// A listener for input events (keyboard, mouse, joystick) that can be started and stopped.
 pub struct InputListener {
     running: Arc<AtomicBool>,
     threads: Vec<JoinHandle<()>>,
 }
 
 impl InputListener {
+    /// Creates a new `InputListener` instance.
     pub fn new() -> Self {
         Self {
             running: Arc::new(AtomicBool::new(true)),
@@ -25,6 +30,7 @@ impl InputListener {
         }
     }
 
+    /// Stops the input listener and clears all threads.
     pub fn stop(&mut self) {
         self.running.store(false, Ordering::SeqCst);
         // Don't wait for threads since they might be blocked in rdev listen()
@@ -33,6 +39,7 @@ impl InputListener {
 }
 
 impl Drop for InputListener {
+    /// Ensures the input listener is stopped when dropped.
     fn drop(&mut self) {
         self.stop();
     }
@@ -43,6 +50,7 @@ lazy_static::lazy_static! {
     static ref INPUT_LISTENER_STATE: Arc<Mutex<Option<InputListener>>> = Arc::new(Mutex::new(None));
 }
 
+/// Represents a generic input event (keyboard, mouse, joystick) with event type and data.
 #[derive(Debug, Clone, Serialize)]
 pub struct InputEvent {
     pub event: String,
@@ -50,6 +58,11 @@ pub struct InputEvent {
 }
 
 impl InputEvent {
+    /// Creates a new `InputEvent` with the given event name and data.
+    ///
+    /// # Arguments
+    /// * `event` - The event type as a string (e.g., "keydown", "mousemove").
+    /// * `data` - The event data as a JSON value.
     pub fn new(event: &str, data: serde_json::Value) -> Self {
         Self {
             event: event.to_string(),
@@ -57,6 +70,7 @@ impl InputEvent {
         }
     }
 
+    /// Converts the input event to a log entry with a timestamp.
     pub fn to_log_entry(&self) -> serde_json::Value {
         serde_json::json!({
             "event": self.event,
@@ -66,13 +80,22 @@ impl InputEvent {
     }
 }
 
+/// Starts the global input listener, capturing and emitting input events to the frontend and logging them.
+///
+/// # Arguments
+/// * `app_handle` - The Tauri application handle for emitting events.
+///
+/// # Returns
+/// * `Ok(())` if the listener was started successfully.
+/// * `Err` if an error occurred.
 pub fn start_input_listener<R: Runtime>(app_handle: tauri::AppHandle<R>) -> Result<(), String> {
     info!("[Input] Starting input listener");
     // Check if already listening
-    let mut state = INPUT_LISTENER_STATE.lock().map_err(|e| e.to_string())?;
-    if state.is_some() {
-        return Ok(()); // Already listening
-    }
+    let lock = lock_with_timeout(&INPUT_LISTENER_STATE, std::time::Duration::from_secs(2));
+    let mut state = match lock {
+        Some(state) => state,
+        None => return Ok(()), // Already listening
+    };
 
     let mut input_listener = InputListener::new();
     let running = input_listener.running.clone();
@@ -271,9 +294,18 @@ pub fn start_input_listener<R: Runtime>(app_handle: tauri::AppHandle<R>) -> Resu
     Ok(())
 }
 
+/// Stops the global input listener and cleans up resources.
+///
+/// # Returns
+/// * `Ok(())` if the listener was stopped successfully.
+/// * `Err` if an error occurred.
 pub fn stop_input_listener() -> Result<(), String> {
     info!("[Input] Stopping input listener");
-    let mut state = INPUT_LISTENER_STATE.lock().map_err(|e| e.to_string())?;
+    let lock = lock_with_timeout(&INPUT_LISTENER_STATE, std::time::Duration::from_secs(2));
+    let mut state = match lock {
+        Some(state) => state,
+        None => return Ok(()), // Already stopped
+    };
     if let Some(mut listener) = state.take() {
         listener.stop();
     }

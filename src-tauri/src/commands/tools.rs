@@ -1,10 +1,23 @@
+//! Tauri commands for initializing and checking external tool binaries (FFmpeg, dump-tree, pipeline).
+//!
+//! This module provides commands to initialize required binaries in parallel and check their status.
+
+use crate::tools::helpers::lock_with_timeout;
 use crate::tools::{axtree, ffmpeg, pipeline};
 use log::error;
 use serde_json;
 use std::sync::{Arc, Mutex};
 use std::thread;
+use std::time::{Duration, Instant};
 use tauri::Emitter;
 
+/// Initializes all required tool binaries (FFmpeg, dump-tree, pipeline) in parallel threads.
+///
+/// # Arguments
+/// * `app` - The Tauri `AppHandle` for emitting errors to the frontend.
+///
+/// # Returns
+/// * `Ok(())` if all tools were initialized (errors are emitted as events).
 #[tauri::command]
 pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
     // Create a vector to store thread handles
@@ -18,8 +31,12 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
         let errors = Arc::clone(&errors);
         let handle = thread::spawn(move || {
             if let Err(e) = ffmpeg::init_ffmpeg_and_ffprobe() {
-                let mut errors = errors.lock().unwrap();
-                errors.push(format!("Failed to initialize FFmpeg/FFprobe: {}", e));
+                let lock = lock_with_timeout(&errors, std::time::Duration::from_secs(2));
+                if let Some(mut errors) = lock {
+                    errors.push(format!("Failed to initialize FFmpeg/FFprobe: {}", e));
+                } else {
+                    log::error!("[Init Tools] Could not acquire error lock for FFmpeg/FFprobe");
+                }
             }
         });
         handles.push(handle);
@@ -30,8 +47,12 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
         let errors = Arc::clone(&errors);
         let handle = thread::spawn(move || {
             if let Err(e) = axtree::init_dump_tree() {
-                let mut errors = errors.lock().unwrap();
-                errors.push(format!("Failed to initialize dump-tree: {}", e));
+                let lock = lock_with_timeout(&errors, std::time::Duration::from_secs(2));
+                if let Some(mut errors) = lock {
+                    errors.push(format!("Failed to initialize dump-tree: {}", e));
+                } else {
+                    log::error!("[Init Tools] Could not acquire error lock for dump-tree");
+                }
             }
         });
         handles.push(handle);
@@ -42,8 +63,12 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
         let errors = Arc::clone(&errors);
         let handle = thread::spawn(move || {
             if let Err(e) = pipeline::init_pipeline() {
-                let mut errors = errors.lock().unwrap();
-                errors.push(format!("Failed to initialize pipeline: {}", e));
+                let lock = lock_with_timeout(&errors, std::time::Duration::from_secs(2));
+                if let Some(mut errors) = lock {
+                    errors.push(format!("Failed to initialize pipeline: {}", e));
+                } else {
+                    log::error!("[Init Tools] Could not acquire error lock for pipeline");
+                }
             }
         });
         handles.push(handle);
@@ -57,7 +82,13 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
     }
 
     // Check if there were any errors
-    let errors = errors.lock().unwrap();
+    let errors = match lock_with_timeout(&errors, std::time::Duration::from_secs(2)) {
+        Some(errors) => errors,
+        None => {
+            log::error!("[Init Tools] Could not acquire error lock for final check");
+            return Ok(());
+        }
+    };
     if !errors.is_empty() {
         for err in errors.iter() {
             error!("{}", err);
@@ -73,51 +104,17 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+/// Checks the initialization status of all required tool binaries.
+///
+/// # Returns
+/// * `Ok(serde_json::Value)` with a map of tool names to their status (true/false).
 #[tauri::command]
 pub async fn check_tools() -> Result<serde_json::Value, String> {
-    let temp_dir = std::env::temp_dir().join("viralmind-desktop");
-
-    // Check for ffmpeg
-    let ffmpeg_path = temp_dir.join(if cfg!(windows) {
-        "ffmpeg.exe"
-    } else {
-        "ffmpeg"
-    });
-    let ffmpeg_exists = ffmpeg_path.exists();
-
-    // Check for ffprobe
-    let ffprobe_path = temp_dir.join(if cfg!(windows) {
-        "ffprobe.exe"
-    } else {
-        "ffprobe"
-    });
-    let ffprobe_exists = ffprobe_path.exists();
-
-    // Check for dump-tree
-    let dump_tree_path = temp_dir.join(if cfg!(windows) {
-        "dump-tree-windows-x64.exe"
-    } else if cfg!(target_os = "macos") {
-        "dump-tree-macos-arm64"
-    } else {
-        "dump-tree-linux-x64-arm64.js"
-    });
-    let dump_tree_exists = dump_tree_path.exists();
-
-    // Check for pipeline
-    let pipeline_path = temp_dir.join(if cfg!(windows) {
-        "pipeline-win-x64.exe"
-    } else if cfg!(target_os = "macos") {
-        "pipeline-macos-arm64"
-    } else {
-        "pipeline-linux-x64"
-    });
-    let pipeline_exists = pipeline_path.exists();
-
     // Return the status of each tool
     Ok(serde_json::json!({
-        "ffmpeg": ffmpeg_exists,
-        "ffprobe": ffprobe_exists,
-        "dump_tree": dump_tree_exists,
-        "pipeline": pipeline_exists
+        "ffmpeg": ffmpeg::FFMPEG_PATH.get().is_some(),
+        "ffprobe": ffmpeg::FFPROBE_PATH.get().is_some(),
+        "dump_tree": axtree::DUMP_TREE_PATH.get().is_some(),
+        "pipeline": pipeline::PIPELINE_PATH.get().is_some()
     }))
 }

@@ -1,5 +1,9 @@
-use crate::utils::downloader::download_file;
+//! FFmpeg and FFprobe integration for video recording and processing.
+//!
+//! This module manages the download, initialization, and use of FFmpeg and FFprobe binaries, and provides a recorder struct for capturing video.
+
 use crate::core::archive;
+use crate::utils::downloader::download_file;
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
@@ -8,18 +12,10 @@ use std::sync::OnceLock;
 // #[cfg(not(target_os = "macos"))]
 use {std::io::Write, std::process::Stdio, std::thread, std::time::Duration};
 
+/// Path to the FFmpeg binary, initialized once per session.
 pub static FFMPEG_PATH: OnceLock<PathBuf> = OnceLock::new();
+/// Path to the FFprobe binary, initialized once per session.
 pub static FFPROBE_PATH: OnceLock<PathBuf> = OnceLock::new();
-
-const FFMPEG_URLS: &[(&str, &str)] = &[
-    ("windows", "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"),
-    ("linux", "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl-shared.tar.xz"),
-    ("macos", "https://www.osxexperts.net/ffmpeg71intel.zip")
-
-];
-
-#[cfg(target_os = "macos")]
-const FFPROBE_MACOS: &str = "https://www.osxexperts.net/ffprobe71intel.zip";
 
 fn get_temp_dir() -> PathBuf {
     let mut temp = std::env::temp_dir();
@@ -28,7 +24,9 @@ fn get_temp_dir() -> PathBuf {
 }
 
 /// Checks for ffmpeg in the PATH and in the temp directory
-/// Returns a PathBuf containing the full file path if found, or an empty PathBuf if not found
+///
+/// # Returns
+/// * `PathBuf` containing the full file path if found, or an empty `PathBuf` if not found.
 pub fn get_ffmpeg_dir() -> PathBuf {
     // First check if ffmpeg is in PATH
     let mut command = Command::new("ffmpeg");
@@ -66,7 +64,9 @@ pub fn get_ffmpeg_dir() -> PathBuf {
 }
 
 /// Checks for ffprobe in the PATH and in the temp directory
-/// Returns a PathBuf containing the full file path if found, or an empty PathBuf if not found
+///
+/// # Returns
+/// * `PathBuf` containing the full file path if found, or an empty `PathBuf` if not found.
 pub fn get_ffprobe_dir() -> PathBuf {
     // First check if ffprobe is in PATH
     let mut command = Command::new("ffprobe");
@@ -114,17 +114,13 @@ fn extract_binary(
     if os_type.starts_with("windows") {
         // For Windows, look for bin/ffmpeg.exe or bin/ffprobe.exe
         archive::extract_from_zip(
-            archive_path, 
-            binary_path, 
-            &format!("/bin/{}.exe", binary_name)
+            archive_path,
+            binary_path,
+            &format!("/bin/{}.exe", binary_name),
         )
     } else if os_type.starts_with("macos") {
         // For macOS, just look for the binary name
-        archive::extract_from_zip(
-            archive_path, 
-            binary_path, 
-            binary_name
-        )
+        archive::extract_from_zip(archive_path, binary_path, binary_name)
     } else if os_type.starts_with("linux") {
         // For Linux, we need to handle ffmpeg vs ffprobe differently
         let exclude_pattern = if binary_name == "ffmpeg" {
@@ -132,13 +128,8 @@ fn extract_binary(
         } else {
             None
         };
-        
-        archive::extract_from_tar_xz(
-            archive_path, 
-            binary_path, 
-            binary_name,
-            exclude_pattern
-        )
+
+        archive::extract_from_tar_xz(archive_path, binary_path, binary_name, exclude_pattern)
     } else {
         Err(format!("Unsupported OS type: {}", os_type))
     }
@@ -201,7 +192,7 @@ fn download_and_extract_binary(
     // Extraction process with retry logic
     loop {
         log::info!("[FFmpeg] Extracting {} from archive", binary_name);
-        
+
         match extract_binary(archive_path, binary_path, binary_name, os_type) {
             Ok(true) => {
                 // Binary was found and extracted successfully
@@ -217,7 +208,7 @@ fn download_and_extract_binary(
                 // Need to retry - download again
                 log::info!("[FFmpeg] Retrying download after archive corruption");
                 retry_attempted = true;
-                
+
                 // Delete corrupted archive
                 if let Err(del_err) = fs::remove_file(archive_path) {
                     log::info!(
@@ -225,14 +216,14 @@ fn download_and_extract_binary(
                         del_err
                     );
                 }
-                
+
                 // Re-download if URL was provided
                 if !url.is_empty() {
                     download_file(url, archive_path)?;
                 } else {
                     return Err("Archive is corrupted and no URL provided for retry".to_string());
                 }
-                
+
                 continue;
             }
             Err(e) => {
@@ -245,7 +236,7 @@ fn download_and_extract_binary(
     // Make executable on Unix
     #[cfg(unix)]
     archive::make_file_executable(binary_path)?;
-    
+
     // Clean up archive file if not keeping it
     if !keep_archive {
         archive::cleanup_archive(archive_path)?;
@@ -254,7 +245,11 @@ fn download_and_extract_binary(
     Ok(())
 }
 
-/// Initialize both FFmpeg and FFprobe
+/// Initialize both FFmpeg and FFprobe binaries.
+///
+/// # Returns
+/// * `Ok(())` if both binaries were initialized successfully.
+/// * `Err` if initialization failed.
 pub fn init_ffmpeg_and_ffprobe() -> Result<(), String> {
     // Initialize FFmpeg first
     init_ffmpeg()?;
@@ -265,6 +260,11 @@ pub fn init_ffmpeg_and_ffprobe() -> Result<(), String> {
     Ok(())
 }
 
+/// Initialize the FFmpeg binary.
+///
+/// # Returns
+/// * `Ok(())` if FFmpeg was initialized successfully.
+/// * `Err` if initialization failed.
 pub fn init_ffmpeg() -> Result<(), String> {
     if FFMPEG_PATH.get().is_some() {
         log::info!("[FFmpeg] FFmpeg already initialized");
@@ -310,18 +310,13 @@ pub fn init_ffmpeg() -> Result<(), String> {
     }
 
     // Download and extract FFmpeg
-    let (os, url) = FFMPEG_URLS
-        .iter()
-        .find(|(os, _)| match *os {
-            "windows" => cfg!(windows),
-            "linux" => cfg!(unix) && !cfg!(target_os = "macos"),
-            "macos" => cfg!(target_os = "macos"),
-            _ => false,
-        })
-        .ok_or_else(|| {
-            log::info!("[FFmpeg] Error: Unsupported platform");
-            "Unsupported platform".to_string()
-        })?;
+    let (url, os) = if cfg!(windows) {
+        (get_ffmpeg_url_windows(), "windows")
+    } else if cfg!(target_os = "macos") {
+        (get_ffmpeg_url_macos(), "macos")
+    } else {
+        (get_ffmpeg_url_linux(), "linux")
+    };
 
     let archive_path = temp_dir.join("ffmpeg.archive");
 
@@ -331,7 +326,14 @@ pub fn init_ffmpeg() -> Result<(), String> {
     #[cfg(target_os = "macos")]
     let keep_archive = false;
 
-    download_and_extract_binary(url, &archive_path, &ffmpeg_path, "ffmpeg", os, keep_archive)?;
+    download_and_extract_binary(
+        &url,
+        &archive_path,
+        &ffmpeg_path,
+        "ffmpeg",
+        os,
+        keep_archive,
+    )?;
 
     // Set the path
     log::info!(
@@ -342,6 +344,11 @@ pub fn init_ffmpeg() -> Result<(), String> {
     Ok(())
 }
 
+/// Initialize the FFprobe binary.
+///
+/// # Returns
+/// * `Ok(())` if FFprobe was initialized successfully.
+/// * `Err` if initialization failed.
 pub fn init_ffprobe() -> Result<(), String> {
     if FFPROBE_PATH.get().is_some() {
         log::info!("[FFmpeg] FFprobe already initialized");
@@ -390,8 +397,9 @@ pub fn init_ffprobe() -> Result<(), String> {
     #[cfg(target_os = "macos")]
     {
         let archive_path = temp_dir.join("ffprobe.archive");
+        let url = get_ffprobe_url_macos();
         download_and_extract_binary(
-            FFPROBE_MACOS,
+            &url,
             &archive_path,
             &ffprobe_path,
             "ffprobe",
@@ -404,29 +412,16 @@ pub fn init_ffprobe() -> Result<(), String> {
     #[cfg(not(target_os = "macos"))]
     {
         // We need to use the FFmpeg archive which contains FFprobe
-        let (os, url) = FFMPEG_URLS
-            .iter()
-            .find(|(os, _)| match *os {
-                "windows" => cfg!(windows),
-                "linux" => cfg!(unix) && !cfg!(target_os = "macos"),
-                _ => false,
-            })
-            .ok_or_else(|| {
-                log::info!("[FFmpeg] Error: Unsupported platform");
-                "Unsupported platform".to_string()
-            })?;
+        let (url, os) = if cfg!(windows) {
+            (get_ffmpeg_url_windows(), "windows")
+        } else if cfg!(target_os = "macos") {
+            (get_ffmpeg_url_macos(), "macos")
+        } else {
+            (get_ffmpeg_url_linux(), "linux")
+        };
 
         let archive_path = temp_dir.join("ffmpeg.archive");
-
-        // Check if the archive already exists from the ffmpeg download
-        if !archive_path.exists() {
-            log::info!("[FFmpeg] Archive not found, downloading for ffprobe extraction");
-            download_and_extract_binary(url, &archive_path, &ffprobe_path, "ffprobe", os, false)?;
-        } else {
-            log::info!("[FFmpeg] Using existing archive for ffprobe extraction");
-            // Extract ffprobe from the existing archive
-            download_and_extract_binary("", &archive_path, &ffprobe_path, "ffprobe", os, false)?;
-        }
+        download_and_extract_binary(&url, &archive_path, &ffprobe_path, "ffprobe", os, true)?;
     }
 
     // Set the path
@@ -451,6 +446,18 @@ pub struct FFmpegRecorder {
 
 // #[cfg(not(target_os = "macos"))]
 impl FFmpegRecorder {
+    /// Creates a new `FFmpegRecorder` with the specified input format and device.
+    ///
+    /// # Arguments
+    /// * `width` - Video width in pixels.
+    /// * `height` - Video height in pixels.
+    /// * `fps` - Frames per second.
+    /// * `output_path` - Path to the output video file.
+    /// * `input_format` - Input format string (e.g., "gdigrab", "avfoundation").
+    /// * `input_device` - Input device string.
+    ///
+    /// # Returns
+    /// * `FFmpegRecorder` instance.
     pub fn new_with_input(
         width: u32,
         height: u32,
@@ -479,6 +486,11 @@ impl FFmpegRecorder {
         }
     }
 
+    /// Starts the recording process using FFmpeg.
+    ///
+    /// # Returns
+    /// * `Ok(())` if recording started successfully.
+    /// * `Err` if FFmpeg could not be started or failed immediately.
     pub fn start(&mut self) -> Result<(), String> {
         log::info!(
             "[FFmpeg] Starting recording: {}x{} @ {} fps",
@@ -682,6 +694,11 @@ impl FFmpegRecorder {
         }
     }
 
+    /// Stops the recording process gracefully.
+    ///
+    /// # Returns
+    /// * `Ok(())` if recording stopped successfully.
+    /// * `Err` if the process could not be stopped.
     pub fn stop(&mut self) -> Result<(), String> {
         log::info!("[FFmpeg] Stopping recording");
         if let Some(mut process) = self.process.take() {
@@ -771,4 +788,17 @@ impl FFmpegRecorder {
         }
         Ok(())
     }
+}
+
+fn get_ffmpeg_url_windows() -> String {
+    std::env::var("FFMPEG_URL_WIN").expect("FFMPEG_URL_WIN must be set in environment")
+}
+fn get_ffmpeg_url_linux() -> String {
+    std::env::var("FFMPEG_URL_LINUX").expect("FFMPEG_URL_LINUX must be set in environment")
+}
+fn get_ffmpeg_url_macos() -> String {
+    std::env::var("FFMPEG_URL_MACOS").expect("FFMPEG_URL_MACOS must be set in environment")
+}
+fn get_ffprobe_url_macos() -> String {
+    std::env::var("FFPROBE_URL_MACOS").expect("FFPROBE_URL_MACOS must be set in environment")
 }
