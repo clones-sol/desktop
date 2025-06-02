@@ -77,7 +77,7 @@
   async function fetchPrices() {
     try {
       const TOKEN_DATA = {
-        contractAddress: 'HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump', // VIRAL token
+        contractAddress: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS, // VIRAL token
         solAddress: 'So11111111111111111111111111111111111111112' // SOL token
       };
 

@@ -34,7 +34,7 @@
 
   // Token contract addresses
   const TOKEN_DATA = {
-    contractAddress: 'HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump', // VIRAL token
+    contractAddress: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS, // VIRAL token
     solAddress: 'So11111111111111111111111111111111111111112' // SOL token
   };
 
@@ -368,7 +368,7 @@
           token: {
             type: 'VIRAL',
             symbol: 'VIRAL',
-            address: 'HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump'
+            address: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS
           },
           apps,
           ownerAddress: $walletAddress
