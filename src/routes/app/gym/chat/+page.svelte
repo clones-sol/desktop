@@ -179,7 +179,7 @@
 
     isWaitingForResponse = true;
     try {
-      const response = await fetch(`${API_URL}/api/forge/chat`, {
+      const response = await fetch(`${API_URL}/api/v1/forge/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -756,13 +756,14 @@
 
   async function handleAssistantResponse(response: Record<string, any>) {
     try {
-      const toolCall = response?.tool_calls?.[0];
+      const message = response?.data;
+      const toolCall = message.tool_calls?.[0];
       if (toolCall) {
         await handleToolCall(toolCall);
-      } else if (response?.role === 'assistant' && typeof response?.content === 'string') {
+      } else if (message?.role === 'assistant' && typeof message?.content === 'string') {
         await addMessage({
-          role: response.role,
-          content: response.content
+          role: message.role,
+          content: message.content
         });
       }
     } catch (error) {
@@ -778,7 +779,7 @@
   async function getInitialMessage() {
     isWaitingForResponse = true;
     try {
-      const response = await fetch(`${API_URL}/api/forge/chat`, {
+      const response = await fetch(`${API_URL}/api/v1/forge/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
