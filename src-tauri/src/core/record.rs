@@ -6,6 +6,8 @@ use crate::core::input;
 use crate::tools::axtree;
 use crate::tools::ffmpeg::{init_ffmpeg, FFmpegRecorder, FFMPEG_PATH, FFPROBE_PATH};
 use crate::tools::pipeline;
+#[cfg(target_os = "linux")]
+use crate::tools::wl_screenrec::WlScreenrecRecorder;
 use crate::utils::logger::Logger;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 use chrono::Local;
@@ -72,6 +74,8 @@ pub struct MonitorInfo {
 enum Recorder {
     // #[cfg(not(target_os = "macos"))]
     FFmpeg(FFmpegRecorder),
+    #[cfg(target_os = "linux")]
+    WlScreenrec(WlScreenrecRecorder),
     // #[cfg(target_os = "macos")]
     // MacOS(MacOSScreenRecorder),
 }
@@ -83,7 +87,6 @@ impl Recorder {
             Recorder::FFmpeg(recorder) => {
                 #[cfg(target_os = "linux")]
                 {
-                    // On veut détecter l'échec pipewire/ffmpeg et logger un avertissement
                     let input_format = recorder.input_format().map(|s| s.as_str()).unwrap_or("");
                     if input_format == "pipewire" {
                         let result = recorder.start();
@@ -99,8 +102,11 @@ impl Recorder {
                     }
                 }
                 recorder.start()
-            } // #[cfg(target_os = "macos")]
-              // Recorder::MacOS(recorder) => recorder.start(),
+            }
+            #[cfg(target_os = "linux")]
+            Recorder::WlScreenrec(recorder) => recorder.start(),
+            // #[cfg(target_os = "macos")]
+            // Recorder::MacOS(recorder) => recorder.start(),
         }
     }
 
@@ -108,6 +114,8 @@ impl Recorder {
         match self {
             // #[cfg(not(target_os = "macos"))]
             Recorder::FFmpeg(recorder) => recorder.stop(),
+            #[cfg(target_os = "linux")]
+            Recorder::WlScreenrec(recorder) => recorder.stop(),
             // #[cfg(target_os = "macos")]
             // Recorder::MacOS(recorder) => recorder.stop(),
         }
@@ -125,112 +133,122 @@ impl Recorder {
 
         // #[cfg(not(target_os = "macos"))]
         {
-            let (input_format, input_device) = {
-                #[cfg(target_os = "windows")]
-                {
-                    ("gdigrab", "desktop".to_string())
+            #[cfg(target_os = "linux")]
+            {
+                let session_type =
+                    std::env::var("XDG_SESSION_TYPE").unwrap_or_else(|_| "x11".to_string());
+                if session_type == "wayland" {
+                    log::info!(
+                        "[record] Wayland session detected, using wl-screenrec for screen capture"
+                    );
+                    return Ok(Recorder::WlScreenrec(WlScreenrecRecorder::new(
+                        primary.width,
+                        primary.height,
+                        video_path.to_path_buf(),
+                    )));
+                } else {
+                    log::info!("[record] X11 session detected, using x11grab for screen capture");
+                    let input_format = "x11grab";
+                    let input_device = ":0.0".to_string();
+                    return Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
+                        primary.width,
+                        primary.height,
+                        30,
+                        video_path.to_path_buf(),
+                        input_format.to_string(),
+                        input_device,
+                    )));
                 }
-                #[cfg(target_os = "linux")]
-                {
-                    // Dynamic detection of X11/Wayland
-                    let session_type =
-                        std::env::var("XDG_SESSION_TYPE").unwrap_or_else(|_| "x11".to_string());
-                    if session_type == "wayland" {
-                        log::info!(
-                            "[record] Wayland session detected, using pipewire for screen capture"
-                        );
-                        // pipewire requires ffmpeg compiled with --enable-libpipewire
-                        // and pipewire running on the user side
-                        ("pipewire", "default".to_string())
-                    } else {
-                        log::info!(
-                            "[record] X11 session detected, using x11grab for screen capture"
-                        );
-                        ("x11grab", ":0.0".to_string())
-                    }
-                }
-                #[cfg(target_os = "macos")]
-                {
-                    // Run ffmpeg to list availabkle devices
-                    let ffmpeg = FFMPEG_PATH.get().ok_or_else(|| {
-                        log::info!("[FFmpeg] Error: FFmpeg not initialized");
-                        PathBuf::from("ffmpeg")
-                    });
-                    let output =
-                        Command::new(ffmpeg.unwrap_or(&PathBuf::from("ffmpeg")).as_os_str())
-                            .args(["-f", "avfoundation", "-list_devices", "true", "-i", ""])
-                            .output()
-                            .map_err(|e| {
-                                format!("Failed to execute ffmpeg to list devices: {}", e)
-                            })?;
+            }
+            #[cfg(target_os = "windows")]
+            {
+                let input_format = "gdigrab";
+                let input_device = "desktop".to_string();
+                return Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
+                    primary.width,
+                    primary.height,
+                    30,
+                    video_path.to_path_buf(),
+                    input_format.to_string(),
+                    input_device,
+                )));
+            }
+            #[cfg(target_os = "macos")]
+            {
+                // Run ffmpeg to list available devices
+                let ffmpeg = FFMPEG_PATH.get().ok_or_else(|| {
+                    log::info!("[FFmpeg] Error: FFmpeg not initialized");
+                    PathBuf::from("ffmpeg")
+                });
+                let output = Command::new(ffmpeg.unwrap_or(&PathBuf::from("ffmpeg")).as_os_str())
+                    .args(["-f", "avfoundation", "-list_devices", "true", "-i", ""])
+                    .output()
+                    .map_err(|e| format!("Failed to execute ffmpeg to list devices: {}", e))?;
 
-                    let output_str = String::from_utf8_lossy(&output.stderr);
+                let output_str = String::from_utf8_lossy(&output.stderr);
 
-                    log::info!("[record] FFmpeg screen devices output:\n{}", output_str);
+                log::info!("[record] FFmpeg screen devices output:\n{}", output_str);
 
-                    // Find the screen capture device
-                    let mut screen_device_index = None;
+                // Find the screen capture device
+                let mut screen_device_index = None;
 
-                    // Parse the output to find the screen capture device
-                    for line in output_str.lines() {
-                        if line.contains("Capture screen") {
-                            // This is a screen capture device
-                            log::info!("[record] Found screen capture line: {}", line);
+                // Parse the output to find the screen capture device
+                for line in output_str.lines() {
+                    if line.contains("Capture screen") {
+                        // This is a screen capture device
+                        log::info!("[record] Found screen capture line: {}", line);
 
-                            // Find the opening bracket
-                            if let Some(first_bracket) = line.find('[') {
-                                // Find the second opening bracket
-                                if let Some(start_idx) = line[first_bracket + 1..].find('[') {
-                                    // Adjust index to be relative to the original string
-                                    let start_idx = first_bracket + 1 + start_idx;
+                        // Find the opening bracket
+                        if let Some(first_bracket) = line.find('[') {
+                            // Find the second opening bracket
+                            if let Some(start_idx) = line[first_bracket + 1..].find('[') {
+                                // Adjust index to be relative to the original string
+                                let start_idx = first_bracket + 1 + start_idx;
 
-                                    // Find the closing bracket after the second opening bracket
-                                    if let Some(end_idx) = line[start_idx + 1..].find(']') {
-                                        // Extract the content between brackets
-                                        let number_str =
-                                            &line[start_idx + 1..start_idx + 1 + end_idx];
+                                // Find the closing bracket after the second opening bracket
+                                if let Some(end_idx) = line[start_idx + 1..].find(']') {
+                                    // Extract the content between brackets
+                                    let number_str = &line[start_idx + 1..start_idx + 1 + end_idx];
 
-                                        // Parse as integer
-                                        if let Ok(index) = number_str.parse::<i32>() {
-                                            screen_device_index = Some(index);
-                                            log::info!(
-                                                "[record] Found screen capture device at index: {}",
-                                                index
-                                            );
-                                            break;
-                                        }
+                                    // Parse as integer
+                                    if let Ok(index) = number_str.parse::<i32>() {
+                                        screen_device_index = Some(index);
+                                        log::info!(
+                                            "[record] Found screen capture device at index: {}",
+                                            index
+                                        );
+                                        break;
                                     }
                                 }
                             }
                         }
                     }
-
-                    // Format the input device string - just the video device index with a colon
-                    let input_device = if let Some(index) = screen_device_index {
-                        format!("{}:", index)
-                    } else {
-                        log::info!("[record] No screen capture device found.");
-                        log::info!("[record] Defualting to device [1].");
-                        // Fallback to a default if no screen capture device found
-                        "1".to_string() // Common default for screen capture
-                    };
-
-                    ("avfoundation", input_device)
                 }
-                #[cfg(not(any(target_os = "windows", target_os = "linux", target_os = "macos")))]
-                {
-                    return Err("Unsupported platform".to_string());
-                }
-            };
 
-            Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
-                primary.width,
-                primary.height,
-                30,
-                video_path.to_path_buf(),
-                input_format.to_string(),
-                input_device,
-            )))
+                // Format the input device string - just the video device index with a colon
+                let input_device = if let Some(index) = screen_device_index {
+                    format!("{}:", index)
+                } else {
+                    log::info!("[record] No screen capture device found.");
+                    log::info!("[record] Defualting to device [1].");
+                    // Fallback to a default if no screen capture device found
+                    "1".to_string() // Common default for screen capture
+                };
+
+                let input_format = "avfoundation";
+                return Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
+                    primary.width,
+                    primary.height,
+                    30,
+                    video_path.to_path_buf(),
+                    input_format.to_string(),
+                    input_device,
+                )));
+            }
+            #[cfg(not(any(target_os = "windows", target_os = "linux", target_os = "macos")))]
+            {
+                return Err("Unsupported platform".to_string());
+            }
         }
     }
 }

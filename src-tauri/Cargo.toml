@@ -53,7 +53,7 @@ tar = "0.4"
 xz2 = { version = "0.1", features = ["static"] }
 lazy_static = "1.4.0"
 display-info = "0.4.3"
-xcap = "0.2.2"
+xcap = "0.6.0"
 base64 = "0.21.7"
 image = "0.24.7"
 tauri-plugin-shell = "2"
@@ -68,6 +68,7 @@ dotenvy = "0.15"
 walkdir = "2"
 wait-timeout = "0.2"
 rlimit = "0.10"
+wl-screenrec = "0.1.7"
 
 [dev-dependencies]
 tempfile = "3.10.1"
