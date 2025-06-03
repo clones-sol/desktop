@@ -193,3 +193,166 @@ pub fn cleanup_archive(archive_path: &Path) -> Result<(), String> {
         format!("Failed to cleanup archive: {}", e)
     })
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*; // Import functions from the parent module (archive.rs)
+    use std::io::Cursor;
+
+    #[test]
+    fn test_copy_file_data_success() {
+        let input_data = b"Hello, world! This is a test string.";
+        let mut source = Cursor::new(input_data);
+        let mut destination_vec = Vec::new(); // Use a Vec<u8> as a Writeable destination
+
+        let result = copy_file_data(&mut source, &mut destination_vec);
+
+        assert!(result.is_ok(), "copy_file_data should succeed");
+        assert_eq!(
+            destination_vec, input_data,
+            "Destination data should match source data"
+        );
+    }
+
+    #[test]
+    fn test_copy_file_data_empty_source() {
+        let input_data = b""; // Empty source
+        let mut source = Cursor::new(input_data);
+        let mut destination_vec = Vec::new();
+
+        let result = copy_file_data(&mut source, &mut destination_vec);
+
+        assert!(
+            result.is_ok(),
+            "copy_file_data should succeed for empty source"
+        );
+        assert_eq!(
+            destination_vec, input_data,
+            "Destination data should be empty for empty source"
+        );
+        assert!(destination_vec.is_empty(), "Destination should be empty");
+    }
+
+    // Helper struct to simulate read errors
+    struct ErrorReader;
+
+    impl io::Read for ErrorReader {
+        fn read(&mut self, _buf: &mut [u8]) -> io::Result<usize> {
+            Err(io::Error::new(io::ErrorKind::Other, "Simulated read error"))
+        }
+    }
+
+    #[test]
+    fn test_copy_file_data_read_error() {
+        let mut source = ErrorReader;
+        let mut destination_vec = Vec::new();
+
+        let result = copy_file_data(&mut source, &mut destination_vec);
+
+        assert!(result.is_err(), "copy_file_data should fail on read error");
+        if let Err(e) = result {
+            assert!(
+                e.contains("Failed to extract file"),
+                "Error message should indicate extraction failure"
+            );
+            assert!(
+                e.contains("Simulated read error"),
+                "Error message should contain the original error"
+            );
+        }
+        assert!(
+            destination_vec.is_empty(),
+            "Destination should be empty after a read error"
+        );
+    }
+
+    // Note: Testing write errors is more complex as io::copy might write partially before failing.
+    // A simple Vec<u8> doesn't easily simulate write errors in the middle of a copy.
+    // For a more thorough test, a custom mock writer would be needed.
+
+    #[cfg(unix)] // Tests specific to Unix-like systems for file permissions
+    mod unix_tests {
+        use super::super::*; // Access parent (archive.rs) functions
+        use std::fs as std_fs;
+        use std::os::unix::fs::PermissionsExt;
+        use tempfile::NamedTempFile;
+
+        #[test]
+        fn test_make_file_executable_success() {
+            let temp_file = NamedTempFile::new().expect("Failed to create temp file");
+            let file_path = temp_file.path();
+
+            // Ensure it's not executable initially (though default might vary)
+            let initial_perms = std_fs::metadata(file_path).unwrap().permissions();
+            let mut mutable_perms = initial_perms.clone();
+            mutable_perms.set_mode(0o644); // Set to non-executable r--r--r--
+            std_fs::set_permissions(file_path, mutable_perms).unwrap();
+
+            let result = make_file_executable(file_path);
+            assert!(
+                result.is_ok(),
+                "make_file_executable should succeed: {:?}",
+                result.err()
+            );
+
+            let perms = std_fs::metadata(file_path).unwrap().permissions();
+            assert_eq!(
+                perms.mode() & 0o777,
+                0o755,
+                "File permissions should be rwxr-xr-x (0755)"
+            );
+        }
+    }
+
+    #[cfg(test)] // General tests, not unix-specific for cleanup
+    mod cleanup_tests {
+        use super::super::*; // Access parent (archive.rs) functions
+        use std::path::PathBuf;
+        use tempfile::{tempdir, NamedTempFile};
+
+        #[test]
+        fn test_cleanup_archive_success() {
+            use std::fs::File;
+            use std::io::Write;
+
+            let dir = tempdir().expect("Failed to create temp dir");
+            let file_path = dir.path().join("to_delete.txt");
+            {
+                let mut f = File::create(&file_path).expect("Failed to create file");
+                writeln!(f, "test").unwrap();
+            }
+            assert!(file_path.exists(), "Temp file should exist before cleanup");
+
+            let result = cleanup_archive(&file_path);
+            assert!(
+                result.is_ok(),
+                "cleanup_archive should succeed: {:?}",
+                result.err()
+            );
+            assert!(!file_path.exists(), "File should not exist after cleanup");
+        }
+
+        #[test]
+        fn test_cleanup_archive_non_existent_file() {
+            let dir = tempdir().expect("Failed to create temp dir");
+            let non_existent_path: PathBuf = dir.path().join("definitely_not_there.zip");
+
+            assert!(
+                !non_existent_path.exists(),
+                "File should not exist initially"
+            );
+
+            let result = cleanup_archive(&non_existent_path);
+            assert!(
+                result.is_err(),
+                "cleanup_archive should fail for non-existent file"
+            );
+            if let Err(e) = result {
+                assert!(
+                    e.contains("Failed to cleanup archive"),
+                    "Error message mismatch"
+                );
+            }
+        }
+    }
+}

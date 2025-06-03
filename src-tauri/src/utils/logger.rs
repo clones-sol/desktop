@@ -20,6 +20,15 @@ impl Logger {
     /// * `Ok(Logger)` if the file was created successfully.
     /// * `Err` if the file could not be created.
     pub fn new(session_dir: PathBuf) -> Result<Self, String> {
+        // Ensure the session directory exists
+        std::fs::create_dir_all(&session_dir).map_err(|e| {
+            format!(
+                "Failed to create session directory: {}: {}",
+                session_dir.display(),
+                e
+            )
+        })?;
+
         let log_path = session_dir.join("input_log.jsonl");
 
         let file = OpenOptions::new()
@@ -72,5 +81,97 @@ impl Logger {
         });
 
         self.log_event(event)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+    use std::fs;
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_log_event_creates_file_and_writes_event() {
+        let dir = tempdir().unwrap();
+        let session_dir = dir.path().to_path_buf();
+
+        let mut logger = Logger::new(session_dir.clone()).unwrap();
+
+        let event_data = json!({
+            "type": "test_event",
+            "value": 42
+        });
+        logger.log_event(event_data.clone()).unwrap();
+
+        let log_file_path = session_dir.join("input_log.jsonl");
+        assert!(log_file_path.exists(), "Log file should be created");
+
+        let content = fs::read_to_string(log_file_path).unwrap();
+        let expected_content = format!("{}\n", serde_json::to_string(&event_data).unwrap());
+        assert_eq!(content, expected_content, "Log file content mismatch");
+
+        // The tempdir will be automatically cleaned up when `dir` goes out of scope.
+    }
+
+    #[test]
+    fn test_log_ffmpeg_writes_correct_event_format() {
+        let dir = tempdir().unwrap();
+        let session_dir = dir.path().to_path_buf();
+        let mut logger = Logger::new(session_dir.clone()).unwrap();
+
+        let ffmpeg_output =
+            "frame= 1 fps=0.0 q=0.0 size=       0kB time=00:00:00.00 bitrate=N/A speed=N/A";
+        logger.log_ffmpeg(ffmpeg_output, false).unwrap(); // false for stdout
+
+        let log_file_path = session_dir.join("input_log.jsonl");
+        let content = fs::read_to_string(log_file_path).unwrap();
+
+        // We need to parse the JSON to check its structure, as timestamp will vary.
+        let logged_event: serde_json::Value =
+            serde_json::from_str(content.lines().next().unwrap()).unwrap();
+
+        assert_eq!(logged_event["event"], "ffmpeg_stdout");
+        assert_eq!(logged_event["data"]["output"], ffmpeg_output);
+        assert!(logged_event["time"].is_number());
+
+        // Test for stderr
+        let ffmpeg_error_output = "Error: Something went wrong";
+        logger.log_ffmpeg(ffmpeg_error_output, true).unwrap(); // true for stderr
+
+        let content_after_second_log =
+            fs::read_to_string(session_dir.join("input_log.jsonl")).unwrap();
+        let lines: Vec<&str> = content_after_second_log.trim().split('\n').collect();
+        assert_eq!(lines.len(), 2, "Should have two log entries");
+
+        let logged_error_event: serde_json::Value = serde_json::from_str(lines[1]).unwrap();
+        assert_eq!(logged_error_event["event"], "ffmpeg_stderr");
+        assert_eq!(logged_error_event["data"]["output"], ffmpeg_error_output);
+        assert!(logged_error_event["time"].is_number());
+    }
+
+    #[test]
+    fn test_logger_new_creates_directory_if_not_exists() {
+        let base_dir = tempdir().unwrap();
+        let non_existent_session_dir = base_dir.path().join("new_session_dir");
+
+        assert!(
+            !non_existent_session_dir.exists(),
+            "Test precondition: session dir should not exist"
+        );
+
+        let logger_result = Logger::new(non_existent_session_dir.clone());
+        assert!(
+            logger_result.is_ok(),
+            "Logger::new should succeed even if directory does not exist initially."
+        );
+
+        let log_file_path = non_existent_session_dir.join("input_log.jsonl");
+        assert!(
+            log_file_path.exists(),
+            "Log file should be created in the new directory"
+        );
+
+        // Cleanup: tempdir will clean up base_dir, and non_existent_session_dir with it.
     }
 }
