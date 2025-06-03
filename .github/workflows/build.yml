@@ -6,6 +6,9 @@ on:
     branches:
       - main
       - staging
+
+  push:
+    branches:
       - linux-recording
 
 jobs:
