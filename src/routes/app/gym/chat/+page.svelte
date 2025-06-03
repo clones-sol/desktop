@@ -309,13 +309,13 @@
     }
   }
 
-  async function startRecordingHandler() {
+  async function startRecordingHandler(fps: number) {
     try {
       recordingLoading = true;
       if ($recordingState === RecordingState.off) {
-        await startRecording(activeQuest!).catch(console.error);
+        await startRecording(activeQuest!, fps).catch(console.error);
         await emit('quest-overlay', { quest: activeQuest! });
-        $recordingState = RecordingState.recording;
+        recordingState.set(RecordingState.recording);
       }
       recordingLoading = false;
     } catch (error) {

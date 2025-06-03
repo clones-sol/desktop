@@ -4,12 +4,13 @@ import { invoke } from '@tauri-apps/api/core';
 /**
  * Start recording a quest
  * @param quest Optional quest to record
+ * @param fps Frames per second (default: 30)
  * @returns Promise that resolves when recording starts
  */
-export async function startRecording(quest?: Quest): Promise<void> {
+export async function startRecording(quest?: Quest, fps: number = 30): Promise<void> {
   try {
     // If quest has reward info, include poolId and generatedTime in meta
-    await invoke('start_recording', { quest });
+    await invoke('start_recording', { quest, fps });
   } catch (error) {
     console.error('Failed to start recording:', error);
     throw error;
