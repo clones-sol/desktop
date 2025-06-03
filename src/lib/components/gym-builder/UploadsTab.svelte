@@ -232,7 +232,6 @@
                   disabled={submissions.length === 0} />
               </div>
             </th>
-            <th class="w-16 px-2 py-3"></th>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Platform
