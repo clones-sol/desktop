@@ -1,8 +1,8 @@
 <script lang="ts">
   import { invoke } from '@tauri-apps/api/core';
   import Button from '$lib/components/form/Button.svelte';
-  import { Video, Check, X } from 'lucide-svelte';
-  import { fade } from 'svelte/transition';
+  import { Video, Check, X, Settings } from 'lucide-svelte';
+  import { fade, scale } from 'svelte/transition';
   import { tweened } from 'svelte/motion';
   import { cubicOut } from 'svelte/easing';
   import AppText from './AppText.svelte';
@@ -12,14 +12,14 @@
   export let title: string;
   export let objectives: string[];
   export let reward: Quest['reward'];
-  export let onStartRecording: () => void;
+  export let onStartRecording: (fps: number) => void;
   export let onComplete: () => void;
   export let onGiveUp: () => void;
 
   let recordingLoading = false;
 
   let screenshot = '';
-  const scale = tweened(1, {
+  const scaleAnim = tweened(1, {
     duration: 60000,
     easing: cubicOut
   });
@@ -32,14 +32,22 @@
     }
   });
 
+  let fps = 30;
+  const fpsOptions = [24, 30, 60, 120];
+  let showSettings = false;
+
+  function toggleSettings() {
+    showSettings = !showSettings;
+  }
+
   async function handleStartRecording() {
-    onStartRecording();
+    onStartRecording?.(fps);
   }
 
   async function init() {
     try {
       screenshot = await invoke('take_screenshot');
-      scale.set(1.5); // Start scale animation after screenshot is loaded
+      scaleAnim.set(1.5); // Start scale animation after screenshot is loaded
     } catch (error) {
       console.error('Failed to take screenshot:', error);
     }
@@ -52,7 +60,7 @@
   {#if screenshot}
     <div
       class="absolute inset-0 bg-cover bg-center"
-      style="background-image: url({screenshot}); filter: blur(2px) brightness(0.25); transform: scale({$scale});"
+      style="background-image: url({screenshot}); filter: blur(2px) brightness(0.25); transform: scale({$scaleAnim});"
       in:fade={{ duration: 1000 }}>
     </div>
   {/if}
@@ -82,6 +90,29 @@
         {/each}
       </ul>
     </div>
+    {#if $recordingState !== RecordingState.recording}
+      <div class="flex items-center justify-between mb-4">
+        <div></div>
+        <div class="relative">
+          <button class="settings-trigger" aria-label="Settings" on:click={toggleSettings}>
+            <Settings size={20} color="#fff" />
+          </button>
+          {#if showSettings}
+            <div class="settings-popover" transition:scale={{ duration: 120 }}>
+              <button class="close-btn" aria-label="Close" on:click={toggleSettings}>
+                &times;
+              </button>
+              <label for="fps-select">Frame Rate (FPS)</label>
+              <select id="fps-select" bind:value={fps} on:change={() => (showSettings = false)}>
+                {#each fpsOptions as option}
+                  <option value={option}>{option} FPS</option>
+                {/each}
+              </select>
+            </div>
+          {/if}
+        </div>
+      </div>
+    {/if}
     {#if $recordingState === RecordingState.recording}
       <div class="flex gap-4">
         <Button variant="green" class="flex-1" onclick={onComplete}>
@@ -100,7 +131,7 @@
     {:else}
       <Button
         onclick={handleStartRecording}
-        class="w-full flex! group items-center justify-center gap-2">
+        class="w-full flex! group items-center justify-center gap-2 mt-2">
         {#if recordingLoading}
           <div
             class="w-6 h-6 rounded-full border-2 border-white group-hover:border-secondary-300 border-t-transparent! animate-spin">

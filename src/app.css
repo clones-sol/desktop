@@ -6,7 +6,11 @@
 
 /* Font styles */
 @layer base {
-  h1, h2, h3, h4 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
   }
@@ -48,4 +52,84 @@
 
 button {
   cursor: pointer;
+}
+
+
+.settings-popover {
+  position: absolute;
+  top: 2.5rem;
+  right: 0.5rem;
+  z-index: 20;
+  background: rgba(20, 20, 30, 0.98);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.18);
+  padding: 1rem 1.25rem 1rem 1.25rem;
+  min-width: 180px;
+  border: 1px solid rgba(80, 80, 120, 0.18);
+  animation: fadeIn 0.18s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-popover label {
+  color: #fff;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.settings-popover select {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.5rem;
+  background: #19172a;
+  color: #fff;
+  border: 1px solid #292441;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.settings-popover .close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.7rem;
+  background: none;
+  border: none;
+  color: #bbb;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.settings-trigger {
+  background: rgba(30, 30, 40, 0.7);
+  border-radius: 50%;
+  padding: 0.4rem;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
+  cursor: pointer;
+  border: 1.5px solid #292441;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.18);
+}
+
+.settings-trigger:hover {
+  background: #bb4eff;
+  border-color: #bb4eff;
+}
+
+.settings-trigger:active {
+  background: #8c4fff;
 }

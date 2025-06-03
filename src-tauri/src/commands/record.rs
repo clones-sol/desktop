@@ -20,8 +20,9 @@ pub async fn start_recording(
     app: AppHandle,
     quest_state: State<'_, QuestState>,
     quest: Option<Quest>,
+    fps: u32,
 ) -> Result<(), String> {
-    record::start_recording(app, quest_state, quest).await
+    record::start_recording(app, quest_state, quest, fps).await
 }
 
 /// Stops the current recording session.
