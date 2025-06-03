@@ -84,7 +84,7 @@ impl Recorder {
                 #[cfg(target_os = "linux")]
                 {
                     // On veut détecter l'échec pipewire/ffmpeg et logger un avertissement
-                    let input_format = recorder.input_format.as_deref().unwrap_or("");
+                    let input_format = recorder.input_format().map(|s| s.as_str()).unwrap_or("");
                     if input_format == "pipewire" {
                         let result = recorder.start();
                         if let Err(ref err) = result {

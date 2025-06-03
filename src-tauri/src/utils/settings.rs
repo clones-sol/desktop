@@ -136,7 +136,7 @@ impl Settings {
             .flush()
             .map_err(|e| format!("Failed to flush settings file: {}", e))?;
 
-        info!("[Settings] Saved settings to settings.json");
+        info!("[Settings] Saved settings to {}", path.display());
         Ok(())
     }
 }
