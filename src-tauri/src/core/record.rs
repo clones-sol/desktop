@@ -113,7 +113,7 @@ impl Recorder {
         }
     }
 
-    fn new(video_path: &PathBuf, primary: &DisplayInfo) -> Result<Self, String> {
+    fn new(video_path: &PathBuf, primary: &DisplayInfo, fps: u32) -> Result<Self, String> {
         log::info!("[record] Starting new recorder");
         // #[cfg(target_os = "macos")]
         // {
@@ -226,7 +226,7 @@ impl Recorder {
             Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
                 primary.width,
                 primary.height,
-                30,
+                fps,
                 video_path.to_path_buf(),
                 input_format.to_string(),
                 input_device,
@@ -365,6 +365,7 @@ pub async fn get_recording_state() -> Result<String, String> {
 /// * `app` - The Tauri application handle.
 /// * `quest_state` - The shared quest state.
 /// * `quest` - Optional quest metadata.
+/// * `fps` - The frame rate for the recording.
 ///
 /// # Returns
 /// * `Ok(())` if successful.
@@ -373,6 +374,7 @@ pub async fn start_recording(
     app: tauri::AppHandle,
     quest_state: State<'_, QuestState>,
     quest: Option<Quest>,
+    fps: u32,
 ) -> Result<(), String> {
     // Start screen recording
     let mut recorder_state = RECORDER_STATE.lock().map_err(|e| e.to_string())?;
@@ -452,7 +454,7 @@ pub async fn start_recording(
 
     set_rec_state(&app, "recording".to_string(), None)?;
 
-    let mut recorder = Recorder::new(&video_path, &primary)?;
+    let mut recorder = Recorder::new(&video_path, &primary, fps)?;
     recorder.start()?;
     *recorder_state = Some(recorder);
 
