@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - staging
+      - linux-recording
 
 jobs:
   build-tauri:
