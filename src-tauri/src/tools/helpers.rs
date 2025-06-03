@@ -95,3 +95,109 @@ pub fn lock_with_timeout<'a, T>(
         std::thread::sleep(Duration::from_millis(10));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs::{self, File};
+    use std::io::Write;
+    use std::path::PathBuf;
+    use std::sync::{Arc, Mutex};
+    use std::thread;
+    use std::time::Duration;
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_sanitize_and_check_path_valid() {
+        let dir = tempdir().unwrap();
+        let base = dir.path();
+        let file_path = base.join("file.txt");
+        File::create(&file_path).unwrap();
+        let result = sanitize_and_check_path(base, Path::new("file.txt"));
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), file_path.canonicalize().unwrap());
+    }
+
+    #[test]
+    fn test_sanitize_and_check_path_outside_base() {
+        let dir = tempdir().unwrap();
+        let base = dir.path();
+        let result = sanitize_and_check_path(base, Path::new("../evil.txt"));
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Path is not allowed");
+    }
+
+    #[test]
+    fn test_sanitize_and_check_path_nonexistent_but_parent_valid() {
+        let dir = tempdir().unwrap();
+        let base = dir.path();
+        let file_path = base.join("newfile.txt");
+        // File does not exist, but parent is valid
+        let result = sanitize_and_check_path(base, Path::new("newfile.txt"));
+        assert!(result.is_ok());
+        // Compare les chemins après canonicalisation pour éviter les soucis de /private sur macOS
+        let expected = file_path.canonicalize().unwrap_or(file_path.clone());
+        let path = result.unwrap();
+        let actual = path.canonicalize().unwrap_or(path.clone());
+        if actual != expected {
+            // Tolère la différence /private/var vs /var sur macOS
+            let actual_str = actual.to_string_lossy();
+            let expected_str = expected.to_string_lossy();
+            let actual_str = actual_str.strip_prefix("/private").unwrap_or(&actual_str);
+            let expected_str = expected_str
+                .strip_prefix("/private")
+                .unwrap_or(&expected_str);
+            assert_eq!(
+                actual_str, expected_str,
+                "Paths differ even after normalisation: {} vs {}",
+                actual_str, expected_str
+            );
+        }
+    }
+
+    #[test]
+    fn test_sanitize_and_check_path_no_parent() {
+        let dir = tempdir().unwrap();
+        let base = dir.path();
+        // Path with no parent (root)
+        let result = sanitize_and_check_path(base, Path::new("/"));
+        assert!(result.is_err());
+        let err = result.unwrap_err();
+        // Accepte les deux messages possibles selon le code
+        assert!(
+            err == "Invalid or unsafe file path (no parent)" || err == "Path is not allowed",
+            "Unexpected error message: {}",
+            err
+        );
+    }
+
+    #[test]
+    fn test_sanitize_and_check_path_invalid_base() {
+        // Use a base that doesn't exist
+        let base = PathBuf::from("/definitely/does/not/exist");
+        let result = sanitize_and_check_path(&base, Path::new("file.txt"));
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Failed to canonicalize base directory");
+    }
+
+    #[test]
+    fn test_lock_with_timeout_success() {
+        let m = Mutex::new(42);
+        let guard = lock_with_timeout(&m, Duration::from_millis(100));
+        assert!(guard.is_some());
+        assert_eq!(*guard.unwrap(), 42);
+    }
+
+    #[test]
+    fn test_lock_with_timeout_timeout() {
+        let m = Arc::new(Mutex::new(42));
+        let m2 = m.clone();
+        let _guard = m.lock().unwrap();
+        // Lock is held, so lock_with_timeout should time out
+        let handle = thread::spawn(move || {
+            let result = lock_with_timeout(&m2, Duration::from_millis(100));
+            assert!(result.is_none());
+        });
+        handle.join().unwrap();
+    }
+}

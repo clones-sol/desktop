@@ -273,3 +273,98 @@ fn validate_content(content: &str) -> Result<(), String> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_id_empty() {
+        let result = validate_id("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Recording ID cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_id_path_traversal() {
+        for bad in ["..", "foo/../bar", "foo\\bar", "foo/bar"] {
+            let result = validate_id(bad);
+            assert!(result.is_err());
+            assert_eq!(
+                result.unwrap_err(),
+                "Invalid recording ID (path traversal detected)"
+            );
+        }
+    }
+
+    #[test]
+    fn test_validate_id_valid() {
+        let result = validate_id("rec_123-OK");
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_validate_filename_empty() {
+        let result = validate_filename("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Filename cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_filename_path_traversal() {
+        for bad in ["..", "foo/../bar", "foo\\bar", "foo/bar"] {
+            let result = validate_filename(bad);
+            assert!(result.is_err());
+            assert_eq!(
+                result.unwrap_err(),
+                "Invalid filename (path traversal detected)"
+            );
+        }
+    }
+
+    #[test]
+    fn test_validate_filename_valid() {
+        let result = validate_filename("file.txt");
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_validate_path_empty() {
+        let result = validate_path("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Path cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_path_path_traversal() {
+        for bad in ["..", "foo/../bar"] {
+            let result = validate_path(bad);
+            assert!(result.is_err());
+            assert_eq!(
+                result.unwrap_err(),
+                "Invalid path (path traversal detected)"
+            );
+        }
+    }
+
+    #[test]
+    fn test_validate_path_valid() {
+        let result = validate_path("/tmp/recordings/file.txt");
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_validate_content_too_large() {
+        let big = "a".repeat(100 * 1024 * 1024 + 1);
+        let result = validate_content(&big);
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Content is too large");
+    }
+
+    #[test]
+    fn test_validate_content_valid() {
+        let small = "a".repeat(1024);
+        let result = validate_content(&small);
+        assert!(result.is_ok());
+    }
+}

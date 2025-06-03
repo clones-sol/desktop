@@ -130,3 +130,46 @@ fn validate_dir_path(path: &str) -> Result<(), String> {
     }
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_dir_path_empty() {
+        let result = validate_dir_path("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Directory path cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_dir_path_too_long() {
+        let long_path = "a".repeat(4097);
+        let result = validate_dir_path(&long_path);
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Directory path is too long");
+    }
+
+    #[test]
+    fn test_validate_dir_path_path_traversal() {
+        let result = validate_dir_path("/tmp/../etc");
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err(),
+            "Invalid directory path (path traversal detected)"
+        );
+
+        let result = validate_dir_path("C:\\evil");
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err(),
+            "Invalid directory path (path traversal detected)"
+        );
+    }
+
+    #[test]
+    fn test_validate_dir_path_valid() {
+        let result = validate_dir_path("/tmp/recordings");
+        assert!(result.is_ok());
+    }
+}
