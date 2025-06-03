@@ -312,3 +312,40 @@ pub fn stop_input_listener() -> Result<(), String> {
     info!("[Input] Input listener stopped");
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn test_input_event_new() {
+        let event_name = "test_event";
+        let event_data = json!({ "key": "value" });
+        let input_event = InputEvent::new(event_name, event_data.clone());
+
+        assert_eq!(input_event.event, event_name);
+        assert_eq!(input_event.data, event_data);
+    }
+
+    #[test]
+    fn test_input_event_to_log_entry() {
+        let event_name = "log_event";
+        let event_data = json!({ "detail": "some_info" });
+        let input_event = InputEvent::new(event_name, event_data.clone());
+
+        let log_entry = input_event.to_log_entry();
+
+        assert_eq!(log_entry["event"], event_name);
+        assert_eq!(log_entry["data"], event_data);
+        assert!(log_entry["time"].is_number());
+
+        let current_time = chrono::Local::now().timestamp_millis();
+        let log_time = log_entry["time"].as_i64().unwrap();
+        // Allow a small difference, e.g., 5 seconds (5000 ms)
+        assert!(
+            (current_time - log_time).abs() < 5000,
+            "Timestamp is not recent"
+        );
+    }
+}

@@ -222,3 +222,53 @@ pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), Stri
     info!("[Pipeline] Successfully processed recording");
     Ok(())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_recording_id_empty() {
+        let result = validate_recording_id("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Recording ID cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_recording_id_path_traversal() {
+        let result = validate_recording_id("..//etc/passwd");
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err(),
+            "Invalid recording ID (path traversal detected)"
+        );
+
+        let result = validate_recording_id("foo/../bar");
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err(),
+            "Invalid recording ID (path traversal detected)"
+        );
+
+        let result = validate_recording_id("foo\\bar");
+        assert!(result.is_err());
+        assert_eq!(
+            result.unwrap_err(),
+            "Invalid recording ID (path traversal detected)"
+        );
+    }
+
+    #[test]
+    fn test_validate_recording_id_too_long() {
+        let long_id = "a".repeat(257);
+        let result = validate_recording_id(&long_id);
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Recording ID is too long");
+    }
+
+    #[test]
+    fn test_validate_recording_id_valid() {
+        let result = validate_recording_id("rec_123-OK");
+        assert!(result.is_ok());
+    }
+}

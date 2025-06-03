@@ -68,3 +68,6 @@ dotenvy = "0.15"
 walkdir = "2"
 wait-timeout = "0.2"
 rlimit = "0.10"
+
+[dev-dependencies]
+tempfile = "3.10.1"

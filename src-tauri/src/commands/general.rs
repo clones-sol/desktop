@@ -5,7 +5,7 @@
 use crate::tools::helpers::lock_with_timeout;
 use crate::tools::sanitize_and_check_path;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
-use chrono::{Duration as ChronoDuration, Utc};
+use chrono::Utc;
 use log::info;
 use serde::{Deserialize, Serialize};
 use serde_json;
@@ -174,4 +174,30 @@ fn validate_name(name: &str) -> Result<(), String> {
         return Err("Name is too long".to_string());
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_validate_name_empty() {
+        let result = validate_name("");
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Name cannot be empty");
+    }
+
+    #[test]
+    fn test_validate_name_too_long() {
+        let long_name = "a".repeat(101);
+        let result = validate_name(&long_name);
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "Name is too long");
+    }
+
+    #[test]
+    fn test_validate_name_valid() {
+        let result = validate_name("Alice");
+        assert!(result.is_ok());
+    }
 }
