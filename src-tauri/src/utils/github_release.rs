@@ -55,7 +55,7 @@ impl BinaryMetadata {
 fn save_metadata(path: &Path, metadata: &BinaryMetadata) -> Result<(), String> {
     let base = path.parent().ok_or("Invalid metadata path")?;
     let filename = path.file_name().ok_or("Invalid metadata path")?;
-    let safe_path = sanitize_and_check_path(base, filename)?;
+    let safe_path = sanitize_and_check_path(base, Path::new(filename))?;
     let json = metadata.to_json();
     let content = serde_json::to_string_pretty(&json)
         .map_err(|e| format!("Failed to serialize metadata: {}", e))?;
