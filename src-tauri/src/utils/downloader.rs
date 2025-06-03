@@ -1,3 +1,8 @@
+//! Utilities for downloading files with retry and progress logging.
+//!
+//! This module provides a function to download files from a URL to a local path, with retry logic and progress reporting.
+
+use crate::tools::sanitize_and_check_path;
 use std::{
     fs,
     io::{Read, Write},
@@ -5,6 +10,15 @@ use std::{
     time::Duration,
 };
 
+/// Downloads a file from the given URL to the specified path, with retry logic and progress logging.
+///
+/// # Arguments
+/// * `url` - The URL to download from.
+/// * `path` - The local file path to write to.
+///
+/// # Returns
+/// * `Ok(())` if the download succeeded.
+/// * `Err` if all retries failed or an error occurred.
 pub fn download_file(url: &str, path: &Path) -> Result<(), String> {
     log::info!(
         "[Downloader] Downloading file from {} to {}",
@@ -91,6 +105,10 @@ fn download_with_progress(
 ) -> Result<(), String> {
     let filename = path.components().last().unwrap().as_os_str();
 
+    // Sanitize and check the path
+    let base = std::env::temp_dir();
+    let safe_path = sanitize_and_check_path(&base, path)?;
+
     let mut resp = client.get(url).send().map_err(|e| {
         log::info!(
             "[Downloader] Error: Failed to download {}: {}",
@@ -101,7 +119,7 @@ fn download_with_progress(
     })?;
 
     // Create file for writing
-    let mut file = fs::File::create(path).map_err(|e| {
+    let mut file = fs::File::create(&safe_path).map_err(|e| {
         log::info!(
             "[Download] Error: Failed to create {}: {}",
             filename.to_string_lossy(),
@@ -109,6 +127,12 @@ fn download_with_progress(
         );
         format!("Failed to create {}: {}", filename.to_string_lossy(), e)
     })?;
+    let metadata = file
+        .metadata()
+        .map_err(|e| format!("Failed to get file metadata: {}", e))?;
+    if metadata.permissions().readonly() {
+        return Err("Downloaded file is not writable".to_string());
+    }
 
     // Download in chunks and write to file
     let mut buffer = [0; 8192]; // 8KB buffer

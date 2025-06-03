@@ -1,8 +1,21 @@
+//! Archive extraction utilities for handling zip and tar.xz files, used to extract binaries for the application.
+
+use crate::tools::sanitize_and_check_path;
 use std::fs;
 use std::io;
 use std::path::Path;
 
-/// Extracts a file from a zip archive
+/// Extracts a file from a zip archive.
+///
+/// # Arguments
+/// * `archive_path` - Path to the zip archive file.
+/// * `output_path` - Path where the extracted file should be written.
+/// * `file_pattern` - Pattern to match the file to extract within the archive.
+///
+/// # Returns
+/// * `Ok(true)` if the file was found and extracted.
+/// * `Ok(false)` if no matching file was found.
+/// * `Err` if an error occurred during extraction.
 pub fn extract_from_zip(
     archive_path: &Path,
     output_path: &Path,
@@ -45,7 +58,18 @@ pub fn extract_from_zip(
     Ok(false) // File not found
 }
 
-/// Extracts a file from a tar.xz archive
+/// Extracts a file from a tar.xz archive.
+///
+/// # Arguments
+/// * `archive_path` - Path to the tar.xz archive file.
+/// * `output_path` - Path where the extracted file should be written.
+/// * `file_pattern` - Pattern to match the file to extract within the archive.
+/// * `exclude_pattern` - Optional pattern to exclude certain files.
+///
+/// # Returns
+/// * `Ok(true)` if the file was found and extracted.
+/// * `Ok(false)` if no matching file was found.
+/// * `Err` if an error occurred during extraction.
 pub fn extract_from_tar_xz(
     archive_path: &Path,
     output_path: &Path,
@@ -106,10 +130,19 @@ pub fn extract_from_tar_xz(
 
 /// Creates the output file for the binary
 fn create_output_file(output_path: &Path) -> Result<fs::File, String> {
-    fs::File::create(output_path).map_err(|e| {
+    let base = std::env::temp_dir();
+    let safe_path = sanitize_and_check_path(&base, output_path)?;
+    let file = fs::File::create(&safe_path).map_err(|e| {
         log::info!("[Archive] Error: Failed to create output file: {}", e);
         format!("Failed to create output file: {}", e)
-    })
+    })?;
+    let metadata = file
+        .metadata()
+        .map_err(|e| format!("Failed to get file metadata: {}", e))?;
+    if metadata.permissions().readonly() {
+        return Err("Output file is not writable".to_string());
+    }
+    Ok(file)
 }
 
 /// Copies data from source to destination
@@ -124,7 +157,14 @@ fn copy_file_data<R: io::Read, W: io::Write>(
     Ok(())
 }
 
-/// Makes a file executable on Unix systems
+/// Makes a file executable on Unix systems.
+///
+/// # Arguments
+/// * `file_path` - Path to the file to make executable.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 #[cfg(unix)]
 pub fn make_file_executable(file_path: &Path) -> Result<(), String> {
     use std::os::unix::fs::PermissionsExt;
@@ -138,7 +178,14 @@ pub fn make_file_executable(file_path: &Path) -> Result<(), String> {
     })
 }
 
-/// Deletes an archive file
+/// Deletes an archive file from disk.
+///
+/// # Arguments
+/// * `archive_path` - Path to the archive file to delete.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 pub fn cleanup_archive(archive_path: &Path) -> Result<(), String> {
     log::info!("[Archive] Cleaning up archive file");
     fs::remove_file(archive_path).map_err(|e| {

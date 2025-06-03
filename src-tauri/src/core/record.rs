@@ -1,3 +1,7 @@
+//! Recording and logging core logic for screen, input, and quest data.
+//!
+//! This module provides the main types and functions for managing recording sessions, metadata, quests, and file operations.
+
 use crate::core::input;
 use crate::tools::axtree;
 use crate::tools::ffmpeg::{init_ffmpeg, FFmpegRecorder, FFMPEG_PATH, FFPROBE_PATH};
@@ -17,6 +21,7 @@ use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_opener::OpenerExt;
 use zip::{write::FileOptions, ZipWriter};
 
+/// Metadata for a recording session, including quest, platform, and monitor info.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct RecordingMeta {
     id: String,
@@ -34,6 +39,7 @@ pub struct RecordingMeta {
     quest: Option<Quest>,
 }
 
+/// Metadata for a quest associated with a recording.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct Quest {
     title: String,
@@ -49,12 +55,14 @@ pub struct Quest {
     task_id: Option<String>,
 }
 
+/// Reward information for a quest.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct QuestReward {
     time: i64,
     max_reward: i64,
 }
 
+/// Information about the primary monitor used for recording.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct MonitorInfo {
     width: u32,
@@ -72,9 +80,27 @@ impl Recorder {
     fn start(&mut self) -> Result<(), String> {
         match self {
             // #[cfg(not(target_os = "macos"))]
-            Recorder::FFmpeg(recorder) => recorder.start(),
-            // #[cfg(target_os = "macos")]
-            // Recorder::MacOS(recorder) => recorder.start(),
+            Recorder::FFmpeg(recorder) => {
+                #[cfg(target_os = "linux")]
+                {
+                    // On veut détecter l'échec pipewire/ffmpeg et logger un avertissement
+                    let input_format = recorder.input_format().map(|s| s.as_str()).unwrap_or("");
+                    if input_format == "pipewire" {
+                        let result = recorder.start();
+                        if let Err(ref err) = result {
+                            log::warn!(
+                                "[record] FFmpeg pipewire capture failed: {}. \
+                                Check that pipewire is running, that ffmpeg was compiled with --enable-libpipewire, \
+                                and that you have the necessary permissions for screen capture under Wayland.",
+                                err
+                            );
+                        }
+                        return result;
+                    }
+                }
+                recorder.start()
+            } // #[cfg(target_os = "macos")]
+              // Recorder::MacOS(recorder) => recorder.start(),
         }
     }
 
@@ -106,7 +132,22 @@ impl Recorder {
                 }
                 #[cfg(target_os = "linux")]
                 {
-                    ("x11grab", ":0.0".to_string())
+                    // Dynamic detection of X11/Wayland
+                    let session_type =
+                        std::env::var("XDG_SESSION_TYPE").unwrap_or_else(|_| "x11".to_string());
+                    if session_type == "wayland" {
+                        log::info!(
+                            "[record] Wayland session detected, using pipewire for screen capture"
+                        );
+                        // pipewire requires ffmpeg compiled with --enable-libpipewire
+                        // and pipewire running on the user side
+                        ("pipewire", "default".to_string())
+                    } else {
+                        log::info!(
+                            "[record] X11 session detected, using x11grab for screen capture"
+                        );
+                        ("x11grab", ":0.0".to_string())
+                    }
                 }
                 #[cfg(target_os = "macos")]
                 {
@@ -194,6 +235,7 @@ impl Recorder {
     }
 }
 
+/// State for managing the current quest and recording session.
 #[derive(Default)]
 pub struct QuestState {
     pub recording_start_time: Mutex<Option<chrono::DateTime<chrono::Local>>>,
@@ -228,6 +270,14 @@ fn get_session_path(app: &tauri::AppHandle) -> Result<(PathBuf, String), String>
     Ok((session_dir, timestamp))
 }
 
+/// List all available recordings and their metadata.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+///
+/// # Returns
+/// * `Ok(Vec<RecordingMeta>)` with all found recordings.
+/// * `Err` if an error occurred.
 pub async fn list_recordings(app: tauri::AppHandle) -> Result<Vec<RecordingMeta>, String> {
     let recordings_dir = app
         .path()
@@ -258,6 +308,16 @@ pub async fn list_recordings(app: tauri::AppHandle) -> Result<Vec<RecordingMeta>
     Ok(recordings)
 }
 
+/// Set the current recording state and emit an event to the frontend.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+/// * `state` - The new state as a string (e.g., "recording", "off").
+/// * `id` - Optional recording ID.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 pub fn set_rec_state(
     app: &tauri::AppHandle,
     state: String,
@@ -286,6 +346,11 @@ pub fn set_rec_state(
     Ok(())
 }
 
+/// Get the current recording state as a string.
+///
+/// # Returns
+/// * `Ok(String)` with the current state.
+/// * `Err` if not initialized or on error.
 pub async fn get_recording_state() -> Result<String, String> {
     let recording_state = RECORDING_STATE.lock().map_err(|e| e.to_string())?;
     recording_state
@@ -294,6 +359,16 @@ pub async fn get_recording_state() -> Result<String, String> {
         .ok_or_else(|| "Recording state not initialized".to_string())
 }
 
+/// Start a new recording session, including screen, input, and quest data.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+/// * `quest_state` - The shared quest state.
+/// * `quest` - Optional quest metadata.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 pub async fn start_recording(
     app: tauri::AppHandle,
     quest_state: State<'_, QuestState>,
@@ -396,6 +471,16 @@ pub async fn start_recording(
     Ok(())
 }
 
+/// Stop the current recording session and finalize files.
+///
+/// # Arguments
+/// * `app` - The Tauri application handle.
+/// * `quest_state` - The shared quest state.
+/// * `reason` - Optional reason for stopping.
+///
+/// # Returns
+/// * `Ok(String)` with the recording ID.
+/// * `Err` if an error occurred.
 pub async fn stop_recording(
     app: tauri::AppHandle,
     quest_state: State<'_, QuestState>,
@@ -496,6 +581,14 @@ pub async fn stop_recording(
     }
 }
 
+/// Log an input event to the current recording session.
+///
+/// # Arguments
+/// * `event` - The event as a JSON value.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 pub fn log_input(event: serde_json::Value) -> Result<(), String> {
     if let Ok(mut state) = LOGGER_STATE.lock() {
         if let Some(logger) = state.as_mut() {
@@ -505,7 +598,15 @@ pub fn log_input(event: serde_json::Value) -> Result<(), String> {
     Ok(())
 }
 
-// #[cfg(not(target_os = "macos"))]
+/// Log FFmpeg output (stdout or stderr) to the current recording session.
+///
+/// # Arguments
+/// * `output` - The output string.
+/// * `is_stderr` - Whether this is stderr output.
+///
+/// # Returns
+/// * `Ok(())` if successful.
+/// * `Err` if an error occurred.
 pub fn log_ffmpeg(output: &str, is_stderr: bool) -> Result<(), String> {
     if let Ok(mut state) = LOGGER_STATE.lock() {
         if let Some(logger) = state.as_mut() {

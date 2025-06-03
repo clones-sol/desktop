@@ -1,11 +1,25 @@
+//! Tauri command for exporting all recordings as a zip archive.
+//!
+//! This module provides a command to zip the entire recordings directory and save it to a user-selected location.
+
+use crate::tools::sanitize_and_check_path;
 use std::{
-    io::{Cursor, Write},
+    io::{Cursor, Read, Write},
     path::Path,
 };
 use tauri::Manager;
 use tauri_plugin_dialog::DialogExt;
+use walkdir::WalkDir;
 use zip::{write::FileOptions, ZipWriter};
 
+/// Exports all recordings by zipping the recordings directory and saving it to a user-selected folder.
+///
+/// # Arguments
+/// * `app` - The Tauri `AppHandle` for accessing app data directories and dialogs.
+///
+/// # Returns
+/// * `Ok(String)` with the path to the saved zip file, or an empty string if cancelled.
+/// * `Err` if zipping or saving failed.
 #[tauri::command]
 pub async fn export_recordings(app: tauri::AppHandle) -> Result<String, String> {
     let recordings_dir = app
@@ -19,54 +33,55 @@ pub async fn export_recordings(app: tauri::AppHandle) -> Result<String, String> 
     let mut zip = ZipWriter::new(buf);
     let options = FileOptions::default().compression_method(zip::CompressionMethod::Stored);
 
-    // Add recordings folder contents to zip
+    const MAX_ZIP_SIZE_BYTES: u64 = 2 * 1024 * 1024 * 1024; // 2 GB
+    let mut total_zip_size: u64 = 0;
+
+    // Add recordings folder contents to zip using walkdir
     if recordings_dir.exists() {
         log::info!("Zipping files in {:?}", recordings_dir.to_string_lossy());
-
-        // Helper function to recursively add files and directories to the zip
-        fn add_dir_to_zip(
-            zip: &mut ZipWriter<Cursor<Vec<u8>>>,
-            options: FileOptions,
-            src_dir: &Path,
-            base_path: &Path,
-        ) -> Result<(), String> {
-            for entry in std::fs::read_dir(src_dir)
-                .map_err(|e| format!("Failed to read directory: {}", e))?
-            {
-                let entry = entry.map_err(|e| format!("Failed to read directory entry: {}", e))?;
-                let path = entry.path();
-
-                // Calculate relative path from base_path
-                let relative_path = path
-                    .strip_prefix(base_path)
-                    .map_err(|e| format!("Failed to strip prefix: {}", e))?;
-                let relative_path_str = relative_path.to_string_lossy();
-
-                if path.is_file() {
-                    // Add file to zip
-                    zip.start_file(relative_path_str.as_ref(), options)
-                        .map_err(|e| format!("Failed to add file to zip: {}", e))?;
-
-                    let contents = std::fs::read(&path)
-                        .map_err(|e| format!("Failed to read file contents: {}", e))?;
-
-                    zip.write_all(&contents)
-                        .map_err(|e| format!("Failed to write file contents to zip: {}", e))?;
-                } else if path.is_dir() {
-                    // Create directory entry in zip
-                    let dir_path = format!("{}/", relative_path_str);
-                    zip.add_directory(dir_path, options)
-                        .map_err(|e| format!("Failed to add directory to zip: {}", e))?;
-
-                    // Recursively add contents of this directory
-                    add_dir_to_zip(zip, options, &path, base_path)?;
+        for entry in WalkDir::new(&recordings_dir)
+            .into_iter()
+            .filter_map(|e| e.ok())
+        {
+            let path = entry.path();
+            let relative_path = path
+                .strip_prefix(&recordings_dir)
+                .map_err(|e| format!("Failed to strip prefix: {}", e))?;
+            let relative_path_str = relative_path.to_string_lossy();
+            if path.is_file() {
+                let file_size = std::fs::metadata(&path)
+                    .map_err(|e| format!("Failed to get file metadata: {}", e))?
+                    .len();
+                if total_zip_size + file_size > MAX_ZIP_SIZE_BYTES {
+                    return Err(format!(
+                        "Exported zip would exceed the maximum allowed size of {} bytes ({} MB). Aborting.",
+                        MAX_ZIP_SIZE_BYTES,
+                        MAX_ZIP_SIZE_BYTES / (1024 * 1024)
+                    ));
                 }
+                zip.start_file(relative_path_str.as_ref(), options)
+                    .map_err(|e| format!("Failed to add file to zip: {}", e))?;
+                // Stream file in chunks
+                let mut file = std::fs::File::open(&path)
+                    .map_err(|e| format!("Failed to open file: {}", e))?;
+                let mut buffer = [0u8; 8 * 1024 * 1024]; // 8 MB
+                loop {
+                    let n = file
+                        .read(&mut buffer)
+                        .map_err(|e| format!("Failed to read file: {}", e))?;
+                    if n == 0 {
+                        break;
+                    }
+                    zip.write_all(&buffer[..n])
+                        .map_err(|e| format!("Failed to write file to zip: {}", e))?;
+                }
+                total_zip_size += file_size;
+            } else if path.is_dir() && !relative_path_str.is_empty() {
+                let dir_path = format!("{}/", relative_path_str);
+                zip.add_directory(dir_path, options)
+                    .map_err(|e| format!("Failed to add directory to zip: {}", e))?;
             }
-            Ok(())
         }
-
-        // Start recursively adding files and directories
-        add_dir_to_zip(&mut zip, options, &recordings_dir, &recordings_dir)?;
     }
 
     let buf = zip
@@ -78,15 +93,40 @@ pub async fn export_recordings(app: tauri::AppHandle) -> Result<String, String> 
 
     // If user cancels the dialog, selected_dir will be None
     if let Some(dir_path) = selected_dir {
-        // Create the full path for history.zip
         let dir_path_str = dir_path.to_string();
+        validate_dir_path(&dir_path_str)?;
+        // Create the full path for history.zip
         let file_path = Path::new(&dir_path_str).join("history.zip");
+        let base = Path::new(&dir_path_str);
+        let safe_path = sanitize_and_check_path(base, Path::new("history.zip"))?;
 
         // Write the buffer to the file
-        std::fs::write(&file_path, buf).map_err(|e| format!("Failed to write zip file: {}", e))?;
+        let file = std::fs::File::create(&safe_path)
+            .map_err(|e| format!("Failed to create zip file: {}", e))?;
+        let metadata = file
+            .metadata()
+            .map_err(|e| format!("Failed to get file metadata: {}", e))?;
+        if metadata.permissions().readonly() {
+            return Err("Zip file is not writable".to_string());
+        }
+        std::io::Write::write_all(&mut &file, &buf)
+            .map_err(|e| format!("Failed to write zip file: {}", e))?;
 
-        Ok(file_path.to_string_lossy().into_owned())
+        Ok(safe_path.to_string_lossy().into_owned())
     } else {
         Ok("".to_string())
     }
+}
+
+fn validate_dir_path(path: &str) -> Result<(), String> {
+    if path.trim().is_empty() {
+        return Err("Directory path cannot be empty".to_string());
+    }
+    if path.len() > 4096 {
+        return Err("Directory path is too long".to_string());
+    }
+    if path.contains("..") || path.contains("\\") {
+        return Err("Invalid directory path (path traversal detected)".to_string());
+    }
+    Ok(())
 }

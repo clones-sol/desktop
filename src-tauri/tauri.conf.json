@@ -11,7 +11,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDFCNTRFQzczQUY2QTcxRDYKUldUV2NXcXZjK3hVRzZ6U3Yzb2JyaTVZb0Q0ZG8xbmxMWkpXZ28va1NTa1hxWEg4ZUFYWWoxc1oK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM1N0NFOEM2QUU4NUYyQjYKUldTMjhvV3V4dWg4eGZSeEZZeExUaFhreXJXUmRCREdjVEhKTmd4SXBNeXczRkNRdFQ1c3F2SUMK",
       "endpoints": [
         "https://github.com/viralmind-ai/desktop/releases/latest/download/latest.json"
       ]

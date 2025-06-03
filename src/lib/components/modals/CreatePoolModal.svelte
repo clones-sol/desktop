@@ -19,7 +19,7 @@
 
   const DEFAULT_ADDRESSES = {
     SOL: 'So11111111111111111111111111111111111111112',
-    VIRAL: 'HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump'
+    VIRAL: import.meta.env.VITE_VIRAL_TOKEN_ADDRESS
   };
 
   const tokenOptions: { type: TokenType; symbol: string; disabled?: boolean }[] = [
