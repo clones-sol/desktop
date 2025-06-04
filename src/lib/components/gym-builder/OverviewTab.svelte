@@ -1,7 +1,7 @@
 <script lang="ts">
   import Card from '../Card.svelte';
   import CopyButton from '../CopyButton.svelte';
-  import { AlertTriangle, LoaderCircle } from 'lucide-svelte';
+  import { AlertTriangle, LoaderCircle, Check } from 'lucide-svelte';
   import { TrainingPoolStatus, type TrainingPool } from '$lib/types/forge';
   import Input from '../form/Input.svelte';
   import Button from '../form/Button.svelte';
@@ -19,39 +19,81 @@
     };
   } = $props();
 
-  let loading = $state(false);
+  type EmailSaveStatus = 'idle' | 'loading' | 'saved' | 'error';
+  let emailSaveStatus = $state<EmailSaveStatus>('idle');
   let email = $state('');
+  let lastSuccessfullySavedEmail = $state('');
+
   onMount(() => {
     email = pool.ownerEmail || '';
+    lastSuccessfullySavedEmail = pool.ownerEmail || '';
+    if (pool.ownerEmail) {
+      emailSaveStatus = 'idle'; // Or 'saved' if we want to show it as saved initially
+    }
   });
+
+  const isLoading = $derived(emailSaveStatus === 'loading');
 
   function formatNumber(num: number) {
     return num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
   async function saveEmail() {
-    if (!email) return;
-    loading = true;
+    if (!email || email === lastSuccessfullySavedEmail) return;
+    emailSaveStatus = 'loading';
     try {
       await updatePoolEmail(pool._id, email);
+      emailSaveStatus = 'saved';
+      lastSuccessfullySavedEmail = email;
+      showToast(
+        'Email Saved',
+        'You will now get email notifications when your gym runs out of funds!',
+        { timeout: 4000 }
+      );
+      // Revert to idle after a delay to show 'Saved' state
+      setTimeout(() => {
+        // Only revert if it's still 'saved' (user hasn't changed email again)
+        if (emailSaveStatus === 'saved') {
+          emailSaveStatus = 'idle';
+        }
+      }, 3000);
     } catch (e) {
+      console.log(e);
+      emailSaveStatus = 'error';
       if ((e as ApiError).status === 400) {
         showToast(
           'Error Saving Email',
           'There was an error validating your email. Make sure you entered it correctly.',
           { timeout: 4000 }
         );
-        loading = false;
-        return;
+      } else {
+        if ((e as ApiError).status === 409) {
+          showToast('No changes made', 'This email is already affected to this gym.', {
+            timeout: 4000
+          });
+        } else {
+          showToast('Error Saving Email', 'An unexpected error occurred. Please try again.', {
+            timeout: 4000
+          });
+        }
       }
+      // Revert to idle after a delay to allow user to see error and try again
+      setTimeout(() => {
+        if (emailSaveStatus === 'error') {
+          emailSaveStatus = 'idle';
+        }
+      }, 5000);
     }
-    showToast(
-      'Email Saved',
-      'You will now get email notifications when your gym runs out of funds!',
-      { timeout: 4000 }
-    );
-    loading = false;
   }
+
+  $effect(() => {
+    if (
+      email !== lastSuccessfullySavedEmail &&
+      (emailSaveStatus === 'saved' || emailSaveStatus === 'error')
+    ) {
+      emailSaveStatus = 'idle';
+    }
+  });
 </script>
 
 <div class="space-y-6">
@@ -117,7 +159,7 @@
         <form
           onsubmit={(e) => {
             e.preventDefault();
-            if (loading) return;
+            if (isLoading) return;
             saveEmail();
           }}
           class="w-full flex gap-2">
@@ -128,11 +170,23 @@
             class="flex-1"
             required
             placeholder="example@example.com" />
-          <Button class="bg-secondary-500! hover:bg-secondary-600!" type="submit" behavior="none">
-            {#if !loading}
-              Save
+          <Button
+            class="bg-secondary-500! hover:bg-secondary-600! min-w-[80px] text-center"
+            type="submit"
+            behavior="none"
+            disabled={isLoading ||
+              !email ||
+              (email === lastSuccessfullySavedEmail &&
+                emailSaveStatus !== 'idle' &&
+                emailSaveStatus !== 'error')}>
+            {#if emailSaveStatus === 'loading'}
+              <LoaderCircle class="w-6 h-6 mx-auto animate-spin" />
+            {:else if emailSaveStatus === 'saved'}
+              <div class="flex items-center justify-center">
+                <Check class="w-5 h-5 mr-1" /> Saved
+              </div>
             {:else}
-              <LoaderCircle class="w-6 h-6 mx-[0.33rem] animate-spin" />
+              Save
             {/if}
           </Button>
         </form>
