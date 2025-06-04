@@ -158,20 +158,72 @@ bun install
 
 ## Multi-environment configuration
 
+**Important:**  
+The Tauri configuration file (`src-tauri/tauri.conf.json`) is generated automatically from a template (`src-tauri/tauri.conf.json.template`) at build time. The placeholder `${APP_IDENTIFIER_SUFFIX}` in the template is replaced with the value of the `APP_IDENTIFIER_SUFFIX` environment variable. This ensures that the application data directory is unique for each environment (production, devnet, testnet, etc.).
+
+**You must use [dotenv-cli](https://www.npmjs.com/package/dotenv-cli) to load environment variables from your `.env` files when building or running the app.**  
+Install it with:
+```bash
+npm install --save-dev dotenv-cli
+# or
+bun add -d dotenv-cli
+```
+
 Create a `.env` file at the root of the project with the following content (adapt the values according to your environment):
 
 ```
 VITE_VIRAL_TOKEN_ADDRESS=HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump
 VITE_SOL_TOKEN_ADDRESS=So11111111111111111111111111111111111111112
+# Suffix for the application identifier to separate data directories per environment
+# -devnet for development/devnet, -testnet for testnet, empty for production
+APP_IDENTIFIER_SUFFIX="-devnet"
 ```
 
-For production, create a `.env.production` file with the appropriate values.
+For production, create a `.env.production` file with the appropriate values, ensuring `APP_IDENTIFIER_SUFFIX` is empty:
+```
+VITE_ENV=production
+APP_IDENTIFIER_SUFFIX=""
+# Add other production-specific VITE_ variables here
+```
 
-Don't forget to add `.env.local` to your `.gitignore` to avoid versioning local secrets.
+For other environments like testnet, create a corresponding file (e.g., `.env.testnet`):
+```
+VITE_ENV=testnet
+APP_IDENTIFIER_SUFFIX="-testnet"
+# Add other testnet-specific VITE_ variables here
+```
+
+Don't forget to add `.env.local` and any other specific `.env.*` files (like `.env.testnet`) to your `.gitignore` to avoid versioning local secrets or environment-specific configurations.
+
+## How the Tauri config is generated
+
+- The file `src-tauri/tauri.conf.json` is generated from `src-tauri/tauri.conf.json.template` at build time.
+- The build script (`src-tauri/build.rs`) replaces `${APP_IDENTIFIER_SUFFIX}` in the template with the value of the environment variable.
+- This ensures the correct app identifier and data directory for each environment.
+
+## Development workflow
+
+- Always use `npx dotenv --` (or `bunx dotenv --`) to load environment variables from your `.env` file when building or running the app.
+- Example for development (devnet by default):
+  ```bash
+  npx dotenv -- bun tauri dev
+  ```
+- Example for testnet:
+  ```bash
+  npx dotenv -e .env.testnet -- bun tauri dev
+  ```
+- Example for production build:
+  ```bash
+  npx dotenv -e .env.production -- bun tauri build
+  ```
+
+## Updated dev script
+
+The script `dev_macos_deeplink.sh` is updated to use `npx dotenv -- env SDKROOT=...` for both the build and dev steps. This ensures that environment variables from `.env` are loaded and the correct data directory is used for development.
 
 ## Environment Variables Reference
 
-Below is a list of all environment variables used for configuration. Add these to your `.env` (and `.env.production` for production) at the root of your project:
+Below is a list of all environment variables used for configuration. Add these to your `.env` (and `.env.production` for production, etc.) at the root of your project:
 
 ```
 # === Frontend (Vite/Svelte) ===
@@ -183,6 +235,7 @@ VITE_PRIVACY_POLICY_URL=https://github.com/viralmind-ai/desktop/blob/main/PRIVAC
 VITE_VIRAL_TOKEN_ADDRESS=HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump
 VITE_SOL_TOKEN_ADDRESS=So11111111111111111111111111111111111111112
 VITE_ENV=dev
+APP_IDENTIFIER_SUFFIX="-devnet"
 
 # === Backend (Rust/Tauri) binaries ===
 # URLs for platform-specific binaries (override to use custom builds or mirrors)
@@ -208,41 +261,60 @@ PIPELINE_URL_MACOS=https://github.com/viralmind-ai/vm-pipeline/releases/latest/d
 
 ## How to run in each environment
 
-### Development (default)
-- By default, Vite/SvelteKit loads the `.env` file at the project root.
-- To start the app in development mode:
-
+To ensure the correct `APP_IDENTIFIER_SUFFIX` (and other environment variables) are loaded for the Tauri process, we'll use `dotenv-cli`. If you don't have it installed, add it as a dev dependency:
 ```bash
-bun tauri dev
+bun add -d dotenv-cli
 ```
-(or `bun dev` depending on your setup)
+
+### Development (devnet environment by default)
+- Ensure your `.env` file (or `.env.local`) contains:
+  ```
+  VITE_ENV=dev
+  APP_IDENTIFIER_SUFFIX="-devnet"
+  # ... other dev variables
+  ```
+- To start the app in development mode (for devnet):
+  ```bash
+  npx dotenv -- bun tauri dev
+  ```
+  (The `beforeDevCommand: "bun run dev"` will still be executed by Tauri, loading frontend-specific `VITE_` variables via Vite's built-in .env handling for the frontend.)
 
 ---
 
 ### Production
-- Place a `.env.production` file at the root with your production variables.
-- To build and run for production:
-
-```bash
-bun tauri build
-```
-(or `bun build`)
-
-The build process will automatically use `.env.production` for environment variables.
-
----
-
-### Other environments (staging, test, etc.)
-- Create files like `.env.staging`, `.env.test`, etc.
-- To use a custom environment file, you can temporarily copy/rename it to `.env` before running your command, or use a tool like [dotenv-cli](https://www.npmjs.com/package/dotenv-cli`) to specify which file to load.
-
-**Example with dotenv-cli:**
-```bash
-npx dotenv -e .env.staging -- bun tauri dev
-```
+- Ensure your `.env.production` file contains:
+  ```
+  VITE_ENV=production
+  APP_IDENTIFIER_SUFFIX=""
+  # ... other production variables
+  ```
+- To build for production:
+  ```bash
+  npx dotenv -e .env.production -- bun tauri build
+  ```
+  The build process will use `.env.production` for both `APP_IDENTIFIER_SUFFIX` (for Tauri) and frontend variables (via `beforeBuildCommand: "bun run build"`). The resulting application will use the production data directory (`ai.viralmind.desktop`).
 
 ---
 
-- `.env` → used by default in development
-- `.env.production` → used automatically for production builds
-- For other environments, copy the desired file to `.env` or use a tool like dotenv-cli
+### Other environments (e.g., testnet)
+- Create a specific environment file, for example `.env.testnet`:
+  ```
+  VITE_ENV=testnet
+  APP_IDENTIFIER_SUFFIX="-testnet"
+  # ... other testnet variables
+  ```
+- To run in development mode for testnet:
+  ```bash
+  npx dotenv -e .env.testnet -- bun tauri dev
+  ```
+- To build for testnet:
+  ```bash
+  npx dotenv -e .env.testnet -- bun tauri build
+  ```
+
+---
+
+Summary of .env file usage with this setup:
+- `.env` (or `.env.local`): Loaded by `npx dotenv -- bun tauri dev` for `APP_IDENTIFIER_SUFFIX`. Also used by Vite (via `bun run dev`) for `VITE_` variables for the frontend. Typically configured for `devnet`.
+- `.env.production`: Loaded by `npx dotenv -e .env.production -- bun tauri build` for `APP_IDENTIFIER_SUFFIX`. Also used by Vite (via `bun run build`) for `VITE_` variables for the frontend. Configured for `production`.
+- `.env.[custom]`: (e.g. `.env.testnet`) Loaded explicitly with `npx dotenv -e .env.[custom] -- bun tauri dev/build`. Configured for that specific environment.

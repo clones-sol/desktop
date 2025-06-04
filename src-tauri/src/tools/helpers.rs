@@ -30,7 +30,7 @@ pub fn sanitize_and_check_path(base: &Path, target: &Path) -> Result<PathBuf, St
         Err(e) => {
             // Si le fichier n'existe pas, on canonicalize le parent
             log::warn!(
-                "[sanitize_and_check_path] canonicalize failed ({}), essaye sur le parent",
+                "[sanitize_and_check_path] canonicalize failed ({}), trying on the parent",
                 e
             );
             if let Some(parent) = joined.parent() {

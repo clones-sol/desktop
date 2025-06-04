@@ -6,7 +6,7 @@ SDK_PATH="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/D
 
 echo ">>> Setting SDKROOT to: $SDK_PATH"
 echo ">>> Step 1: Building the Tauri application in debug mode..."
-SDKROOT="$SDK_PATH" cargo tauri build --debug
+npx dotenv -- env SDKROOT="$SDK_PATH" cargo tauri build --debug
 BUILD_EXIT_CODE=$?
 
 APP_BUNDLE_SOURCE_PATH="src-tauri/target/debug/bundle/macos/${APP_NAME}.app"
@@ -44,7 +44,7 @@ else
 fi
 
 echo ">>> Step 3: Starting the Tauri development server..."
-if SDKROOT="$SDK_PATH" bun tauri dev; then
+if npx dotenv -- env SDKROOT="$SDK_PATH" bun tauri dev; then
     echo "Development server stopped."
 else
     echo "Error: Failed to start 'bun tauri dev'."

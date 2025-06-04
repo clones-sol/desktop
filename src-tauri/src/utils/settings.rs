@@ -110,14 +110,11 @@ impl Settings {
             .path()
             .app_local_data_dir()
             .map_err(|_| "Failed to get app data directory")?;
+        // Ensure base directory exists before canonicalizing
+        std::fs::create_dir_all(&base)
+            .map_err(|e| format!("Failed to create app data directory: {}", e))?;
         let path =
             crate::tools::sanitize_and_check_path(&base, std::path::Path::new("settings.json"))?;
-
-        // Ensure parent directory exists
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)
-                .map_err(|e| format!("Failed to create settings directory: {}", e))?;
-        }
 
         let file =
             File::create(&path).map_err(|e| format!("Failed to create settings file: {}", e))?;
