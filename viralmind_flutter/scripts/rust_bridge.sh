@@ -1,0 +1,1 @@
+flutter_rust_bridge_codegen generate --rust-input crate::lib --rust-root rust/ --dart-output lib/frb_generated
