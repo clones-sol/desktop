@@ -58,7 +58,6 @@
         }
       }, 3000);
     } catch (e) {
-      console.log(e);
       emailSaveStatus = 'error';
       if ((e as ApiError).status === 400) {
         showToast(
@@ -68,7 +67,7 @@
         );
       } else {
         if ((e as ApiError).status === 409) {
-          showToast('No changes made', 'This email is already affected to this gym.', {
+          showToast('No changes made', 'This email is already associated with this gym.', {
             timeout: 4000
           });
         } else {
