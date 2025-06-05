@@ -31,7 +31,12 @@
         Set your nickname to be displayed on the demonstrator leaderboard.
       </p>
       <p class="text-gray-500 mb-2">Maximum length of 25 characters. Make it memorable!</p>
-      <Input type="text" bind:value={newNick} variant="light" placeholder="JohnDoe23" />
+      <Input
+        type="text"
+        bind:value={newNick}
+        variant="light"
+        placeholder="JohnDoe23"
+        maxlength={25} />
       <div class="flex justify-end gap-3 mt-6">
         <Button variant="secondary" onclick={onCancel}>Cancel</Button>
         <Button variant="primary" onclick={onConfirm}>Save</Button>

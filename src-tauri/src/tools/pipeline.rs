@@ -145,6 +145,7 @@ fn validate_recording_id(id: &str) -> Result<(), String> {
 /// * `Ok(())` if processing succeeded.
 /// * `Err` if the pipeline failed or was not initialized.
 pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), String> {
+    info!("process_recording - start");
     validate_recording_id(recording_id)?;
     let pipeline = PIPELINE_PATH
         .get()
@@ -172,20 +173,11 @@ pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), Stri
         use std::os::windows::process::CommandExt;
         command.creation_flags(0x08000000); // CREATE_NO_WINDOW constant
     }
-    // Set resource limits (Unix only)
-    #[cfg(unix)]
-    {
-        setrlimit(
-            Resource::AS,
-            PIPELINE_MAX_MEM_MB * 1024 * 1024,
-            PIPELINE_MAX_MEM_MB * 1024 * 1024,
-        )
-        .map_err(|e| format!("Failed to set memory limit: {}", e))?;
-    }
 
     //todo: check if ffmpeg and ffprobe exist in the path before getting the custom dir.
     let ffmpeg_dir = get_ffmpeg_dir();
     let ffprobe_dir = get_ffprobe_dir();
+
     let mut child = command
         .current_dir(temp_dir)
         .arg("-f")
@@ -198,6 +190,7 @@ pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), Stri
         .arg(ffprobe_dir)
         .spawn()
         .map_err(|e| format!("Failed to execute pipeline: {}", e))?;
+    log::info!("pipeline command: {:?}", command);
     let timeout = Duration::from_secs(PIPELINE_TIMEOUT_SECS);
     match child
         .wait_timeout(timeout)
