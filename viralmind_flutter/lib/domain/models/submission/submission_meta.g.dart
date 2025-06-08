@@ -1,0 +1,43 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'submission_meta.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$SubmissionMetaImpl _$$SubmissionMetaImplFromJson(Map<String, dynamic> json) =>
+    _$SubmissionMetaImpl(
+      id: json['id'] as String,
+      timestamp: json['timestamp'] as String,
+      durationSeconds: (json['duration_seconds'] as num).toInt(),
+      status: json['status'] as String,
+      reason: json['reason'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      platform: json['platform'] as String,
+      arch: json['arch'] as String,
+      version: json['version'] as String,
+      locale: json['locale'] as String,
+      primaryMonitor:
+          MonitorInfo.fromJson(json['primary_monitor'] as Map<String, dynamic>),
+      quest: Quest.fromJson(json['quest'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$$SubmissionMetaImplToJson(
+        _$SubmissionMetaImpl instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'timestamp': instance.timestamp,
+      'duration_seconds': instance.durationSeconds,
+      'status': instance.status,
+      'reason': instance.reason,
+      'title': instance.title,
+      'description': instance.description,
+      'platform': instance.platform,
+      'arch': instance.arch,
+      'version': instance.version,
+      'locale': instance.locale,
+      'primary_monitor': instance.primaryMonitor,
+      'quest': instance.quest,
+    };

@@ -1,73 +1,57 @@
 import 'package:flutter/material.dart';
 
-enum CardVariant { defaultVariant, primary, secondary }
+enum CardVariant { primary, secondary }
 
-enum CardPadding { sm, md, lg, none }
+enum CardPadding { none, small, medium, large }
 
 class CardWidget extends StatelessWidget {
-  final CardVariant variant;
-  final CardPadding padding;
-  final Widget? child;
-
   const CardWidget({
     super.key,
-    this.variant = CardVariant.defaultVariant,
-    this.padding = CardPadding.md,
-    this.child,
+    this.variant = CardVariant.primary,
+    this.padding = CardPadding.medium,
+    required this.child,
+    this.className,
   });
+  final CardVariant variant;
+  final CardPadding padding;
+  final Widget child;
+  final String? className;
 
-  EdgeInsetsGeometry getPadding() {
+  EdgeInsets _getPadding() {
     switch (padding) {
-      case CardPadding.sm:
-        return const EdgeInsets.symmetric(horizontal: 8, vertical: 6);
-      case CardPadding.md:
-        return const EdgeInsets.symmetric(horizontal: 12, vertical: 10);
-      case CardPadding.lg:
-        return const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
       case CardPadding.none:
         return EdgeInsets.zero;
+      case CardPadding.small:
+        return const EdgeInsets.all(12);
+      case CardPadding.medium:
+        return const EdgeInsets.all(16);
+      case CardPadding.large:
+        return const EdgeInsets.all(24);
     }
   }
 
-  BoxDecoration getDecoration(BuildContext context) {
+  BoxDecoration _getDecoration(BuildContext context) {
     switch (variant) {
-      case CardVariant.defaultVariant:
-        return BoxDecoration(
-          color: Colors.white.withValues(alpha: 0.5),
-          border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 6,
-              offset: Offset(0, 2),
-            ),
-          ],
-        );
       case CardVariant.primary:
         return BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary.withValues(alpha: 0.8),
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.15),
-              blurRadius: 8,
-              offset: Offset(0, 3),
+              color:
+                  Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         );
       case CardVariant.secondary:
         return BoxDecoration(
-          color: Colors.grey.shade50,
-          border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 4,
-              offset: Offset(0, 1),
-            ),
-          ],
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
+          ),
         );
     }
   }
@@ -75,9 +59,8 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      decoration: getDecoration(context),
-      padding: getPadding(),
+      decoration: _getDecoration(context),
+      padding: _getPadding(),
       child: child,
     );
   }

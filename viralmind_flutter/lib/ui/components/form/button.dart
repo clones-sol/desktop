@@ -6,14 +6,6 @@ enum ButtonVariant { primary, destroy, warning, secondary, green }
 enum ButtonBehavior { invert, none }
 
 class CustomButton extends StatelessWidget {
-  final String? href;
-  final VoidCallback? onPressed;
-  final Widget child;
-  final ButtonVariant variant;
-  final ButtonBehavior behavior;
-  final ButtonStyle? style;
-  final bool disabled;
-
   const CustomButton({
     super.key,
     this.href,
@@ -24,6 +16,13 @@ class CustomButton extends StatelessWidget {
     this.style,
     this.disabled = false,
   });
+  final String? href;
+  final VoidCallback? onPressed;
+  final Widget child;
+  final ButtonVariant variant;
+  final ButtonBehavior behavior;
+  final ButtonStyle? style;
+  final bool disabled;
 
   Color _backgroundColor() {
     if (behavior == ButtonBehavior.invert) {

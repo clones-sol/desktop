@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextArea extends StatefulWidget {
-  final String? initialValue;
-  final ValueChanged<String>? onChanged;
-  final String variant; // 'dark' ou 'light'
-  final int minLines;
-  final int maxLines;
-  final String? hintText;
-  final String? labelText;
-  final EdgeInsetsGeometry? padding;
-  final TextEditingController? controller;
-
   const CustomTextArea({
     super.key,
     this.initialValue,
@@ -23,6 +13,15 @@ class CustomTextArea extends StatefulWidget {
     this.padding,
     this.controller,
   });
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
+  final String variant; // 'dark' ou 'light'
+  final int minLines;
+  final int maxLines;
+  final String? hintText;
+  final String? labelText;
+  final EdgeInsetsGeometry? padding;
+  final TextEditingController? controller;
 
   @override
   State<CustomTextArea> createState() => _CustomTextAreaState();

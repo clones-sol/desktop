@@ -13,14 +13,6 @@ enum UploadStatus {
 }
 
 class UploadItem {
-  final String id;
-  final String name;
-  UploadStatus status;
-  String? error;
-  double? progress; // en %
-  int? uploadedBytes;
-  int? totalBytes;
-
   UploadItem({
     required this.id,
     required this.name,
@@ -30,21 +22,27 @@ class UploadItem {
     this.uploadedBytes,
     this.totalBytes,
   });
+  final String id;
+  final String name;
+  UploadStatus status;
+  String? error;
+  double? progress; // en %
+  int? uploadedBytes;
+  int? totalBytes;
 }
 
 // UploadManager avec gestion simple de la file et nettoyage
 class UploadManager extends ChangeNotifier {
-  final Map<String, UploadItem> _queue = {};
-
-  Map<String, UploadItem> get queue => _queue;
-
-  Timer? _cleanupTimer;
-
   UploadManager() {
     _cleanupTimer = Timer.periodic(const Duration(seconds: 30), (_) {
       cleanupIntervals();
     });
   }
+  final Map<String, UploadItem> _queue = {};
+
+  Map<String, UploadItem> get queue => _queue;
+
+  Timer? _cleanupTimer;
 
   @override
   void dispose() {
@@ -76,8 +74,8 @@ class UploadManager extends ChangeNotifier {
 String formatFileSize(int? bytes) {
   if (bytes == null) return '0 B';
   const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  double size = bytes.toDouble();
-  int unitIndex = 0;
+  var size = bytes.toDouble();
+  var unitIndex = 0;
 
   while (size >= 1024 && unitIndex < units.length - 1) {
     size /= 1024;
@@ -137,9 +135,8 @@ String getStatusMessage(UploadItem item) {
 }
 
 class UploadManagerWidget extends StatefulWidget {
-  final UploadManager uploadManager;
-
   const UploadManagerWidget({super.key, required this.uploadManager});
+  final UploadManager uploadManager;
 
   @override
   State<UploadManagerWidget> createState() => _UploadManagerWidgetState();
@@ -208,7 +205,7 @@ class _UploadManagerWidgetState extends State<UploadManagerWidget> {
               shape: BoxShape.circle,
               color: Colors.white.withValues(alpha: 0.1),
             ),
-            child: Icon(Icons.upload, color: Colors.white, size: 16),
+            child: const Icon(Icons.upload, color: Colors.white, size: 16),
           ),
 
           Positioned(
@@ -254,9 +251,9 @@ class _UploadManagerWidgetState extends State<UploadManagerWidget> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
+                            const Text(
                               'Upload Manager',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -276,128 +273,120 @@ class _UploadManagerWidgetState extends State<UploadManagerWidget> {
                       Flexible(
                         child: SingleChildScrollView(
                           child: Column(
-                            children:
-                                queueItems.map((item) {
-                                  return Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 12,
+                            children: queueItems.map((item) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      color: Colors.grey[700]!,
                                     ),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          color: Colors.grey[700]!,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Ligne avec icône, nom et bouton fermer
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        // Ligne avec icône, nom et bouton fermer
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Flexible(
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                    getStatusIcon(item.status),
-                                                    color: getStatusColor(
-                                                      item.status,
-                                                      context,
-                                                    ),
-                                                    size: 16,
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Flexible(
-                                                    child: Text(
-                                                      item.name,
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 14,
-                                                        overflow:
-                                                            TextOverflow
-                                                                .ellipsis,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
+                                        Flexible(
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                getStatusIcon(item.status),
+                                                color: getStatusColor(
+                                                  item.status,
+                                                  context,
+                                                ),
+                                                size: 16,
                                               ),
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(
-                                                Icons.close,
-                                                color: Colors.grey,
-                                                size: 14,
+                                              const SizedBox(width: 8),
+                                              Flexible(
+                                                child: Text(
+                                                  item.name,
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
                                               ),
-                                              onPressed: () {
-                                                widget.uploadManager
-                                                    .removeFromQueue(item.id);
-                                              },
-                                              tooltip: 'Remove',
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-
-                                        const SizedBox(height: 4),
-
-                                        // Message de status
-                                        Text(
-                                          getStatusMessage(item),
-                                          style: const TextStyle(
+                                        IconButton(
+                                          icon: const Icon(
+                                            Icons.close,
                                             color: Colors.grey,
-                                            fontSize: 12,
+                                            size: 14,
                                           ),
+                                          onPressed: () {
+                                            widget.uploadManager
+                                                .removeFromQueue(item.id);
+                                          },
+                                          tooltip: 'Remove',
                                         ),
-
-                                        // Barre de progression
-                                        if (item.progress != null)
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 4,
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              child: LinearProgressIndicator(
-                                                value: item.progress! / 100,
-                                                backgroundColor:
-                                                    Colors.grey[700],
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                      Color
-                                                    >(
-                                                      item.status ==
-                                                              UploadStatus
-                                                                  .completed
-                                                          ? Colors.green
-                                                          : Theme.of(context)
-                                                              .colorScheme
-                                                              .secondary,
-                                                    ),
-                                                minHeight: 6,
-                                              ),
-                                            ),
-                                          ),
-
-                                        // Texte taille uploadée
-                                        if (item.status ==
-                                                UploadStatus.uploading &&
-                                            item.uploadedBytes != null &&
-                                            item.totalBytes != null)
-                                          Text(
-                                            '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
-                                            style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 12,
-                                            ),
-                                          ),
                                       ],
                                     ),
-                                  );
-                                }).toList(),
+
+                                    const SizedBox(height: 4),
+
+                                    // Message de status
+                                    Text(
+                                      getStatusMessage(item),
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+
+                                    // Barre de progression
+                                    if (item.progress != null)
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 4,
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          child: LinearProgressIndicator(
+                                            value: item.progress! / 100,
+                                            backgroundColor: Colors.grey[700],
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              item.status ==
+                                                      UploadStatus.completed
+                                                  ? Colors.green
+                                                  : Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                            ),
+                                            minHeight: 6,
+                                          ),
+                                        ),
+                                      ),
+
+                                    // Texte taille uploadée
+                                    if (item.status == UploadStatus.uploading &&
+                                        item.uploadedBytes != null &&
+                                        item.totalBytes != null)
+                                      Text(
+                                        '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                           ),
                         ),
                       ),

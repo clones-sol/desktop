@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:viralmind_flutter/application/connection_token.dart';
+import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
+import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
-class WalletButton extends StatelessWidget {
-  final bool isConnected;
-  final String? walletAddress;
-  final String? nickname;
-  final double? viralBalance;
-  final bool isConnecting;
-  final VoidCallback? onConnect;
-  final VoidCallback? onDisconnect;
-  final VoidCallback? onEditNickname;
-  final List<SubmissionStatus> recentSubmissions;
-
+class WalletButton extends ConsumerStatefulWidget {
   const WalletButton({
     super.key,
     required this.isConnected,
@@ -22,205 +17,339 @@ class WalletButton extends StatelessWidget {
     this.onDisconnect,
     this.onEditNickname,
     this.recentSubmissions = const [],
+    this.variant = 'compact',
+    this.theme = 'dark',
   });
 
-  String formatNumber(double? num) {
-    if (num == null) return '0.00';
-    return num.toStringAsFixed(2);
-  }
-
-  String shortAddress(String? address) {
-    if (address == null || address.length < 8) return address ?? '';
-    return '${address.substring(0, 4)}...${address.substring(address.length - 4)}';
-  }
+  final bool isConnected;
+  final String? walletAddress;
+  final String? nickname;
+  final AsyncValue<double>? viralBalance;
+  final bool isConnecting;
+  final VoidCallback? onConnect;
+  final VoidCallback? onDisconnect;
+  final VoidCallback? onEditNickname;
+  final List<SubmissionStatus> recentSubmissions;
+  final String variant;
+  final String theme;
 
   @override
-  Widget build(BuildContext context) {
-    if (isConnected && walletAddress != null) {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        child: PopupMenuButton<int>(
-          tooltip: 'Wallet',
-          offset: const Offset(0, 40),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          itemBuilder:
-              (context) => [
-                PopupMenuItem(
-                  enabled: false,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Wallet',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Text(
-                        shortAddress(walletAddress),
-                        style: const TextStyle(fontFamily: 'monospace'),
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Nickname',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      TextButton(
-                        onPressed: onEditNickname,
-                        child: Text(
-                          nickname ?? 'Set Your Nickname',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            color:
-                                nickname == null ? Colors.grey : Colors.white,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                PopupMenuItem(
-                  enabled: false,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Balance',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Text(
-                        '${formatNumber(viralBalance)} \$VIRAL',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFFbb4eff),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                if (recentSubmissions.isNotEmpty)
-                  PopupMenuItem(
-                    enabled: false,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+  ConsumerState<WalletButton> createState() => _WalletButtonState();
+}
+
+class _WalletButtonState extends ConsumerState<WalletButton> {
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
+  bool _isHovering = false;
+
+  void _showOverlay() {
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _hideOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  Future<void> _handleConnect() async {
+    final connectionTokenRepository =
+        ref.read(connectionTokenRepositoryProvider);
+    final url = await connectionTokenRepository.getConnectionUrl();
+    if (!mounted) return;
+
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      // Lance le polling après ouverture de l'URL (comme Svelte)
+      await ref.read(connectionTokenNotifierProvider.notifier).startPolling();
+      widget.onConnect?.call();
+    }
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    final renderBox = context.findRenderObject()! as RenderBox;
+    final size = renderBox.size;
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        width: 280,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(size.width + 8, -150),
+          child: MouseRegion(
+            onEnter: (_) {
+              setState(() {
+                _isHovering = true;
+              });
+            },
+            onExit: (_) {
+              setState(() {
+                _isHovering = false;
+                _hideOverlay();
+              });
+            },
+            child: Material(
+              elevation: 8,
+              borderRadius: BorderRadius.circular(12),
+              color: const Color(0xFF1A1A1A),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text(
-                          'Recent Activity',
+                          'Wallet',
                           style: TextStyle(color: Colors.grey),
                         ),
-                        ...recentSubmissions.map(
-                          (submission) => ListTile(
-                            dense: true,
-                            leading: const Icon(
-                              Icons.monetization_on,
-                              color: Color(0xFFbb4eff),
-                              size: 18,
-                            ),
-                            title: Text(
-                              submission.title,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 13,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            subtitle: Text(
-                              submission.date,
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 10,
-                              ),
-                            ),
-                            trailing: Text(
-                              '+${submission.reward} \$VIRAL',
-                              style: const TextStyle(
-                                color: Color(0xFFbb4eff),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                              ),
-                            ),
-                            onTap: () {
-                              // TODO: open Solscan link
-                            },
+                        Text(
+                          shortAddress(widget.walletAddress),
+                          style: const TextStyle(
+                            fontFamily: 'monospace',
+                            color: Colors.white,
                           ),
                         ),
                       ],
                     ),
-                  ),
-                PopupMenuItem(
-                  child: TextButton.icon(
-                    onPressed: onDisconnect,
-                    icon: const Icon(
-                      Icons.logout,
-                      size: 16,
-                      color: Colors.grey,
+                    const SizedBox(height: 12),
+                    // Nickname
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Nickname',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        TextButton(
+                          onPressed: widget.onEditNickname,
+                          child: Text(
+                            widget.nickname ?? 'Set Your Nickname',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              color: widget.nickname == null
+                                  ? Colors.grey
+                                  : Colors.white,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    label: const Text(
-                      'Disconnect Wallet',
-                      style: TextStyle(color: Colors.grey),
+                    const SizedBox(height: 12),
+                    // Balance
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Balance',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        if (widget.viralBalance != null)
+                          widget.viralBalance!.when(
+                            data: (balance) => Text(
+                              '${formatNumber(balance)} \$VIRAL',
+                              style: const TextStyle(
+                                fontFamily: 'monospace',
+                                color: Color(0xFFbb4eff),
+                              ),
+                            ),
+                            loading: () => const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                color: Color(0xFFbb4eff),
+                                strokeWidth: 1,
+                              ),
+                            ),
+                            error: (e, _) => const Text('Error'),
+                          ),
+                      ],
                     ),
-                  ),
+                    if (widget.recentSubmissions.isNotEmpty) ...[
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Recent Activity',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      const SizedBox(height: 8),
+                      ...widget.recentSubmissions.map(
+                        (submission) => Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.monetization_on,
+                                color: Color(0xFFbb4eff),
+                                size: 16,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      submission.meta.title,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 13,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      submission.createdAt,
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Text(
+                                '+${submission.reward} \$VIRAL',
+                                style: const TextStyle(
+                                  color: Color(0xFFbb4eff),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 16),
+                    // Disconnect Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: TextButton.icon(
+                        onPressed: widget.onDisconnect,
+                        icon: const Icon(
+                          Icons.logout,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
+                        label: const Text(
+                          'Disconnect Wallet',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.05),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.account_balance_wallet,
-                  size: 18,
-                  color: Colors.white,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  shortAddress(walletAddress),
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
+              ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.isConnected && widget.walletAddress != null) {
+      return CompositedTransformTarget(
+        link: _layerLink,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+              decoration: BoxDecoration(
+                color: widget.theme == 'light'
+                    ? Colors.white.withOpacity(0.9)
+                    : Colors.white.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(24),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.account_balance_wallet,
+                    size: 18,
+                    color:
+                        widget.theme == 'light' ? Colors.black87 : Colors.white,
+                  ),
+                  if (widget.variant == 'large') ...[
+                    const SizedBox(width: 8),
+                    Text(
+                      shortAddress(widget.walletAddress),
+                      style: TextStyle(
+                        color: widget.theme == 'light'
+                            ? Colors.black87
+                            : Colors.white,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            );
+            return ElevatedButton.icon(
+              onPressed: () {
+                if (_isHovering == false) {
+                  setState(() {
+                    _isHovering = true;
+                    _showOverlay();
+                  });
+                } else {
+                  setState(() {
+                    _isHovering = false;
+                    _hideOverlay();
+                  });
+                }
+              },
+              icon: const Icon(Icons.account_balance_wallet, size: 16),
+              label: widget.variant == 'large'
+                  ? const Text('Connect Wallet')
+                  : const SizedBox.shrink(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: widget.theme == 'light'
+                    ? Colors.white.withOpacity(0.9)
+                    : Colors.white.withOpacity(0.05),
+                foregroundColor:
+                    widget.theme == 'light' ? Colors.black87 : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                ),
+              ),
+            );
+          },
         ),
       );
     } else {
       return ElevatedButton.icon(
-        onPressed: onConnect,
-        icon: const Icon(Icons.account_balance_wallet, size: 18),
-        label: Text(isConnecting ? 'Connecting...' : 'Connect Wallet'),
+        onPressed: _handleConnect,
+        icon: const Icon(Icons.account_balance_wallet, size: 16),
+        label: widget.variant == 'large'
+            ? const Text('Connect Wallet')
+            : const SizedBox.shrink(),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white.withOpacity(0.05),
-          foregroundColor: Colors.white,
+          backgroundColor: widget.theme == 'light'
+              ? Colors.red.withOpacity(0.9)
+              : Colors.red.withOpacity(0.05),
+          foregroundColor:
+              widget.theme == 'light' ? Colors.black87 : Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(18),
           ),
         ),
       );
     }
   }
-}
 
-// Dummy SubmissionStatus class for structure
-class SubmissionStatus {
-  final String title;
-  final String date;
-  final double reward;
-  final String solscanUrl;
-
-  SubmissionStatus({
-    required this.title,
-    required this.date,
-    required this.reward,
-    required this.solscanUrl,
-  });
+  @override
+  void dispose() {
+    _hideOverlay();
+    super.dispose();
+  }
 }

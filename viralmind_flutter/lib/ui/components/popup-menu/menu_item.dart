@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class MenuItem extends StatelessWidget {
-  final Widget? icon;
-  final bool danger;
-  final VoidCallback? onTap;
-  final Widget child;
-
   const MenuItem({
     super.key,
     this.icon,
@@ -13,6 +8,10 @@ class MenuItem extends StatelessWidget {
     this.onTap,
     required this.child,
   });
+  final Widget? icon;
+  final bool danger;
+  final VoidCallback? onTap;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 
 class AxTreeOverlay extends StatelessWidget {
-  final List<dynamic> tree;
-  final Size resolution;
-  final Size videoSize;
-
   const AxTreeOverlay({
     super.key,
     required this.tree,
     required this.resolution,
     required this.videoSize,
   });
+  final List<dynamic> tree;
+  final Size resolution;
+  final Size videoSize;
 
   List<_Box> _renderAxTreeOverlay(List<dynamic> tree) {
-    List<_Box> boxes = [];
+    final boxes = <_Box>[];
     for (final node in tree) {
       if (node['bbox'] != null &&
           (node['bbox']['width'] ?? 0) > 0 &&
@@ -61,44 +60,43 @@ class AxTreeOverlay extends StatelessWidget {
             scale: scale,
             alignment: Alignment.topLeft,
             child: Stack(
-              children:
-                  boxes.map((box) {
-                    return Positioned(
-                      left: box.x,
-                      top: box.y,
-                      width: box.width,
-                      height: box.height,
-                      child: Tooltip(
-                        message:
-                            '${box.name.isNotEmpty ? box.name : "Unnamed"} (${box.role})',
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.5),
-                            ),
-                            color: Colors.transparent,
+              children: boxes.map((box) {
+                return Positioned(
+                  left: box.x,
+                  top: box.y,
+                  width: box.width,
+                  height: box.height,
+                  child: Tooltip(
+                    message:
+                        '${box.name.isNotEmpty ? box.name : "Unnamed"} (${box.role})',
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white.withValues(alpha: 0.5),
+                        ),
+                        color: Colors.transparent,
+                      ),
+                      alignment: Alignment.center,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                          vertical: 1,
+                        ),
+                        color: Colors.black.withValues(alpha: 0.75),
+                        child: Text(
+                          box.name.isNotEmpty ? box.name : box.role,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          alignment: Alignment.center,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4,
-                              vertical: 1,
-                            ),
-                            color: Colors.black.withValues(alpha: 0.75),
-                            child: Text(
-                              box.name.isNotEmpty ? box.name : box.role,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              maxLines: 1,
-                            ),
-                          ),
+                          maxLines: 1,
                         ),
                       ),
-                    );
-                  }).toList(),
+                    ),
+                  ),
+                );
+              }).toList(),
             ),
           ),
         ),
@@ -108,8 +106,6 @@ class AxTreeOverlay extends StatelessWidget {
 }
 
 class _Box {
-  final double x, y, width, height;
-  final String name, role;
   _Box({
     required this.x,
     required this.y,
@@ -118,4 +114,6 @@ class _Box {
     required this.name,
     required this.role,
   });
+  final double x, y, width, height;
+  final String name, role;
 }

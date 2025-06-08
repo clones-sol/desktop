@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatefulWidget {
-  final String? initialValue;
-  final ValueChanged<String>? onChanged;
-  final String variant; // 'dark' ou 'light'
-  final Widget? icon;
-  final String? hintText;
-  final TextInputType? keyboardType;
-  final bool obscureText;
-  final String? labelText;
-  final EdgeInsetsGeometry? padding;
-  final TextEditingController? controller;
-
   const CustomTextField({
     super.key,
     this.initialValue,
@@ -25,6 +14,16 @@ class CustomTextField extends StatefulWidget {
     this.padding,
     this.controller,
   });
+  final String? initialValue;
+  final ValueChanged<String>? onChanged;
+  final String variant; // 'dark' ou 'light'
+  final Widget? icon;
+  final String? hintText;
+  final TextInputType? keyboardType;
+  final bool obscureText;
+  final String? labelText;
+  final EdgeInsetsGeometry? padding;
+  final TextEditingController? controller;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -79,20 +78,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintText: widget.hintText,
           filled: true,
           fillColor: bgColor,
-          prefixIcon:
-              widget.icon != null
-                  ? Padding(
-                    padding: const EdgeInsets.only(left: 12, right: 8),
-                    child: IconTheme(
-                      data: IconThemeData(color: Colors.grey[400]),
-                      child: widget.icon!,
-                    ),
-                  )
-                  : null,
-          contentPadding:
-              widget.icon != null
-                  ? const EdgeInsets.symmetric(vertical: 14, horizontal: 0)
-                  : const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+          prefixIcon: widget.icon != null
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 12, right: 8),
+                  child: IconTheme(
+                    data: IconThemeData(color: Colors.grey[400]),
+                    child: widget.icon!,
+                  ),
+                )
+              : null,
+          contentPadding: widget.icon != null
+              ? const EdgeInsets.symmetric(vertical: 14)
+              : const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
           enabledBorder: _border(borderColor),
           focusedBorder: _border(focusColor),
           border: _border(borderColor),

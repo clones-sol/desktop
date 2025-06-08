@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/ui/components/form/button.dart';
 
 class CountdownButton extends StatefulWidget {
-  final VoidCallback onStart;
-  final VoidCallback onCancel;
-  final bool Function() disabled;
-
   const CountdownButton({
     super.key,
     required this.onStart,
     required this.onCancel,
     required this.disabled,
   });
+  final VoidCallback onStart;
+  final VoidCallback onCancel;
+  final bool Function() disabled;
 
   @override
   State<CountdownButton> createState() => _CountdownButtonState();
@@ -66,14 +65,12 @@ class _CountdownButtonState extends State<CountdownButton> {
     final isDisabled = widget.disabled();
 
     return CustomButton(
-      onPressed:
-          isDisabled
-              ? null
-              : countingDown
+      onPressed: isDisabled
+          ? null
+          : countingDown
               ? cancelCountdown
               : startCountdown,
       variant: countingDown ? ButtonVariant.destroy : ButtonVariant.primary,
-      behavior: ButtonBehavior.invert,
       disabled: isDisabled,
       child: Row(
         mainAxisSize: MainAxisSize.min,

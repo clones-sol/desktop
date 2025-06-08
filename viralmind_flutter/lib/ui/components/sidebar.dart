@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/ui/components/wallet_button.dart';
+import 'package:viralmind_flutter/application/connection_token.dart';
+import 'package:viralmind_flutter/application/wallet.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
+import 'package:viralmind_flutter/ui/components/wallet_button.dart';
 
-// TODO: Remplacer par vos providers Riverpod pour l'état d'enregistrement, navigation, etc.
-
-class Sidebar extends StatelessWidget {
-  final String currentRoute;
-  final bool isRecording;
-  final bool isRecordingLoading;
-  final VoidCallback? onStopRecording;
-
+class Sidebar extends ConsumerWidget {
   const Sidebar({
     super.key,
     required this.currentRoute,
@@ -18,9 +15,21 @@ class Sidebar extends StatelessWidget {
     this.isRecordingLoading = false,
     this.onStopRecording,
   });
+  final String currentRoute;
+  final bool isRecording;
+  final bool isRecordingLoading;
+  final VoidCallback? onStopRecording;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final walletAddress = ref.watch(walletAddressProvider).valueOrNull;
+    final connectionNotifier =
+        ref.watch(connectionTokenNotifierProvider.notifier);
+    final isConnecting = connectionNotifier.isConnecting;
+    final viralBalance = walletAddress != null
+        ? ref.watch(getBalanceProvider(address: walletAddress))
+        : null;
+
     // Définition des boutons
     final earnButtons = [
       _SidebarButtonData(
@@ -46,7 +55,6 @@ class Sidebar extends StatelessWidget {
         icon: Icons.construction,
         label: 'Forge',
       ),
-      // Ajouter d'autres boutons si besoin
     ];
 
     return Container(
@@ -55,7 +63,6 @@ class Sidebar extends StatelessWidget {
       child: Column(
         children: [
           const SizedBox(height: 16),
-          // Logo
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Image.asset(
@@ -65,20 +72,17 @@ class Sidebar extends StatelessWidget {
               fit: BoxFit.contain,
             ),
           ),
-          // Earn section
           _SidebarSection(
             title: 'Earn',
             buttons: earnButtons,
             currentRoute: currentRoute,
           ),
-          // Forge section
           _SidebarSection(
             title: 'Forge',
             buttons: spendButtons,
             currentRoute: currentRoute,
           ),
           const Spacer(),
-          // Recording indicator
           if (isRecording)
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
@@ -112,24 +116,24 @@ class Sidebar extends StatelessWidget {
                 ),
               ),
             ),
-          // UploadManager
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: UploadManagerWidget(
-              uploadManager:
-                  UploadManager(), // TODO: utiliser le provider global
+              uploadManager: UploadManager(),
             ),
           ),
           // WalletButton
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: WalletButton(
-              isConnected: false, // TODO: connecter au provider wallet
-              isConnecting: false,
-              onConnect: () {},
-              onDisconnect: () {},
-              onEditNickname: () {},
-              recentSubmissions: const [],
+              isConnected: walletAddress != null,
+              walletAddress: walletAddress,
+              viralBalance: viralBalance,
+              isConnecting: isConnecting,
+              onDisconnect: connectionNotifier.disconnectWallet,
+              onEditNickname: () {
+                // TODO: Implement nickname editing
+              },
             ),
           ),
         ],
@@ -139,15 +143,14 @@ class Sidebar extends StatelessWidget {
 }
 
 class _SidebarSection extends StatelessWidget {
-  final String title;
-  final List<_SidebarButtonData> buttons;
-  final String currentRoute;
-
   const _SidebarSection({
     required this.title,
     required this.buttons,
     required this.currentRoute,
   });
+  final String title;
+  final List<_SidebarButtonData> buttons;
+  final String currentRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -168,17 +171,16 @@ class _SidebarSection extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 button.icon,
-                color: isActive ? Color(0xFFbb4eff) : Colors.grey,
+                color: isActive ? const Color(0xFFbb4eff) : Colors.grey,
                 size: 24,
               ),
               onPressed: () {
-                // TODO: navigation
-                Navigator.of(context).pushNamed(button.path);
+                context.go(button.path);
               },
               tooltip: button.label,
               style: IconButton.styleFrom(
                 backgroundColor:
-                    isActive ? Color(0xFFbb4eff) : Colors.transparent,
+                    isActive ? const Color(0xFFbb4eff) : Colors.transparent,
                 shape: const CircleBorder(),
               ),
             ),
@@ -190,13 +192,12 @@ class _SidebarSection extends StatelessWidget {
 }
 
 class _SidebarButtonData {
-  final String path;
-  final IconData icon;
-  final String label;
-
   _SidebarButtonData({
     required this.path,
     required this.icon,
     required this.label,
   });
+  final String path;
+  final IconData icon;
+  final String label;
 }

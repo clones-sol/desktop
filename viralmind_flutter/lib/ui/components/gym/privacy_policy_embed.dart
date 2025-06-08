@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PrivacyPolicyWidget extends StatelessWidget {
-  final bool Function() privacyAccepted;
-  final Widget privacyPolicyContent;
-
   const PrivacyPolicyWidget({
     super.key,
     required this.privacyAccepted,
     required this.privacyPolicyContent,
   });
+  final bool Function() privacyAccepted;
+  final Widget privacyPolicyContent;
 
   @override
   Widget build(BuildContext context) {

@@ -12,9 +12,9 @@ use serde_json;
 use std::{
     fs::File,
     io::{BufReader, BufWriter, Cursor, Write},
-    path::{Path, PathBuf},
+    path::Path,
     sync::{Mutex, OnceLock},
-    time::{Duration, Instant},
+    time::Duration,
 };
 use tauri::Manager;
 use xcap::{image::ImageFormat, Monitor};
@@ -77,7 +77,6 @@ pub async fn list_apps(
             .path()
             .app_local_data_dir()
             .map_err(|e| format!("Failed to get app data directory: {}", e))?;
-        let path = base.join("app_list.json");
         let path = sanitize_and_check_path(&base, Path::new("app_list.json"))?;
 
         // Concurrency lock

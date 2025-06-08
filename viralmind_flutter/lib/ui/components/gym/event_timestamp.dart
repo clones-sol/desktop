@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class TimestampButton extends StatelessWidget {
-  final Duration timestamp;
-  final Duration startTime;
-  final VideoPlayerController? videoController;
-
   const TimestampButton({
     super.key,
     required this.timestamp,
     required this.startTime,
     this.videoController,
   });
+  final Duration timestamp;
+  final Duration startTime;
+  final VideoPlayerController? videoController;
 
   String formatTime(Duration duration) {
     final relative = duration - startTime;

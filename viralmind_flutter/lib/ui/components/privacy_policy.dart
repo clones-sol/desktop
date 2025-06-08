@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/ui/components/recording_badge.dart';
 
 class PrivacyPolicy extends StatelessWidget {
-  final String? className;
-
   const PrivacyPolicy({super.key, this.className});
+  final String? className;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -16,7 +15,7 @@ class PrivacyPolicy extends StatelessWidget {
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 6,
-            offset: Offset(0, 2),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -28,7 +27,7 @@ class PrivacyPolicy extends StatelessWidget {
             right: 0,
             child: Container(
               color: Colors.white,
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8),
               child: const Text(
                 'Privacy Policy',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -73,7 +72,6 @@ class PrivacyPolicy extends StatelessWidget {
                         ),
                         child: const RecordingBadge(
                           state: RecordingState.recording,
-                          time: 0,
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -148,30 +146,28 @@ class PrivacyPolicy extends StatelessWidget {
   Widget bulletList(List<String> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          items
-              .map(
-                (item) => Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [const Text('• '), Expanded(child: Text(item))],
-                ),
-              )
-              .toList(),
+      children: items
+          .map(
+            (item) => Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [const Text('• '), Expanded(child: Text(item))],
+            ),
+          )
+          .toList(),
     );
   }
 
   Widget orderedList(List<String> items) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:
-          items.asMap().entries.map((entry) {
-            final index = entry.key + 1;
-            final item = entry.value;
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
-              child: Text('$index. $item'),
-            );
-          }).toList(),
+      children: items.asMap().entries.map((entry) {
+        final index = entry.key + 1;
+        final item = entry.value;
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 4),
+          child: Text('$index. $item'),
+        );
+      }).toList(),
     );
   }
 

@@ -96,7 +96,6 @@ pub async fn export_recordings(app: tauri::AppHandle) -> Result<String, String> 
         let dir_path_str = dir_path.to_string();
         validate_dir_path(&dir_path_str)?;
         // Create the full path for history.zip
-        let file_path = Path::new(&dir_path_str).join("history.zip");
         let base = Path::new(&dir_path_str);
         let safe_path = sanitize_and_check_path(base, Path::new("history.zip"))?;
 
