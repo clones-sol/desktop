@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CopyButton extends StatefulWidget {
-  final String content;
-
   const CopyButton({super.key, required this.content});
+  final String content;
 
   @override
   State<CopyButton> createState() => _CopyButtonState();

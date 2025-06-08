@@ -1,0 +1,884 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'pool.dart';
+
+// **************************************************************************
+// RiverpodGenerator
+// **************************************************************************
+
+String _$poolsRepositoryHash() => r'46ff4152e19fa4ef8ac914b6627aae3e0499c502';
+
+/// See also [poolsRepository].
+@ProviderFor(poolsRepository)
+final poolsRepositoryProvider =
+    AutoDisposeProvider<PoolsRepositoryImpl>.internal(
+  poolsRepository,
+  name: r'poolsRepositoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$poolsRepositoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef PoolsRepositoryRef = AutoDisposeProviderRef<PoolsRepositoryImpl>;
+String _$listPoolsHash() => r'fe6ea3d687fa9e4d82d3641d04d842cf4d5d31c2';
+
+/// See also [listPools].
+@ProviderFor(listPools)
+final listPoolsProvider =
+    AutoDisposeFutureProvider<List<TrainingPool>>.internal(
+  listPools,
+  name: r'listPoolsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$listPoolsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ListPoolsRef = AutoDisposeFutureProviderRef<List<TrainingPool>>;
+String _$refreshPoolHash() => r'df8fc607052d7087612ebd0363138c49d98dbb0d';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+/// See also [refreshPool].
+@ProviderFor(refreshPool)
+const refreshPoolProvider = RefreshPoolFamily();
+
+/// See also [refreshPool].
+class RefreshPoolFamily extends Family<AsyncValue<TrainingPool>> {
+  /// See also [refreshPool].
+  const RefreshPoolFamily();
+
+  /// See also [refreshPool].
+  RefreshPoolProvider call({
+    required String poolId,
+  }) {
+    return RefreshPoolProvider(
+      poolId: poolId,
+    );
+  }
+
+  @override
+  RefreshPoolProvider getProviderOverride(
+    covariant RefreshPoolProvider provider,
+  ) {
+    return call(
+      poolId: provider.poolId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'refreshPoolProvider';
+}
+
+/// See also [refreshPool].
+class RefreshPoolProvider extends AutoDisposeFutureProvider<TrainingPool> {
+  /// See also [refreshPool].
+  RefreshPoolProvider({
+    required String poolId,
+  }) : this._internal(
+          (ref) => refreshPool(
+            ref as RefreshPoolRef,
+            poolId: poolId,
+          ),
+          from: refreshPoolProvider,
+          name: r'refreshPoolProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$refreshPoolHash,
+          dependencies: RefreshPoolFamily._dependencies,
+          allTransitiveDependencies:
+              RefreshPoolFamily._allTransitiveDependencies,
+          poolId: poolId,
+        );
+
+  RefreshPoolProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolId,
+  }) : super.internal();
+
+  final String poolId;
+
+  @override
+  Override overrideWith(
+    FutureOr<TrainingPool> Function(RefreshPoolRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: RefreshPoolProvider._internal(
+        (ref) => create(ref as RefreshPoolRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolId: poolId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<TrainingPool> createElement() {
+    return _RefreshPoolProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is RefreshPoolProvider && other.poolId == poolId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin RefreshPoolRef on AutoDisposeFutureProviderRef<TrainingPool> {
+  /// The parameter `poolId` of this provider.
+  String get poolId;
+}
+
+class _RefreshPoolProviderElement
+    extends AutoDisposeFutureProviderElement<TrainingPool> with RefreshPoolRef {
+  _RefreshPoolProviderElement(super.provider);
+
+  @override
+  String get poolId => (origin as RefreshPoolProvider).poolId;
+}
+
+String _$createPoolHash() => r'f6490de2cd584cf7843b415c5e4c2a30f7748d2d';
+
+/// See also [createPool].
+@ProviderFor(createPool)
+const createPoolProvider = CreatePoolFamily();
+
+/// See also [createPool].
+class CreatePoolFamily extends Family<AsyncValue<void>> {
+  /// See also [createPool].
+  const CreatePoolFamily();
+
+  /// See also [createPool].
+  CreatePoolProvider call({
+    required String poolName,
+    required String skills,
+    required Token token,
+    required List<Map<String, dynamic>> apps,
+    required String ownerAddress,
+  }) {
+    return CreatePoolProvider(
+      poolName: poolName,
+      skills: skills,
+      token: token,
+      apps: apps,
+      ownerAddress: ownerAddress,
+    );
+  }
+
+  @override
+  CreatePoolProvider getProviderOverride(
+    covariant CreatePoolProvider provider,
+  ) {
+    return call(
+      poolName: provider.poolName,
+      skills: provider.skills,
+      token: provider.token,
+      apps: provider.apps,
+      ownerAddress: provider.ownerAddress,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'createPoolProvider';
+}
+
+/// See also [createPool].
+class CreatePoolProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [createPool].
+  CreatePoolProvider({
+    required String poolName,
+    required String skills,
+    required Token token,
+    required List<Map<String, dynamic>> apps,
+    required String ownerAddress,
+  }) : this._internal(
+          (ref) => createPool(
+            ref as CreatePoolRef,
+            poolName: poolName,
+            skills: skills,
+            token: token,
+            apps: apps,
+            ownerAddress: ownerAddress,
+          ),
+          from: createPoolProvider,
+          name: r'createPoolProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$createPoolHash,
+          dependencies: CreatePoolFamily._dependencies,
+          allTransitiveDependencies:
+              CreatePoolFamily._allTransitiveDependencies,
+          poolName: poolName,
+          skills: skills,
+          token: token,
+          apps: apps,
+          ownerAddress: ownerAddress,
+        );
+
+  CreatePoolProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolName,
+    required this.skills,
+    required this.token,
+    required this.apps,
+    required this.ownerAddress,
+  }) : super.internal();
+
+  final String poolName;
+  final String skills;
+  final Token token;
+  final List<Map<String, dynamic>> apps;
+  final String ownerAddress;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(CreatePoolRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CreatePoolProvider._internal(
+        (ref) => create(ref as CreatePoolRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolName: poolName,
+        skills: skills,
+        token: token,
+        apps: apps,
+        ownerAddress: ownerAddress,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _CreatePoolProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CreatePoolProvider &&
+        other.poolName == poolName &&
+        other.skills == skills &&
+        other.token == token &&
+        other.apps == apps &&
+        other.ownerAddress == ownerAddress;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolName.hashCode);
+    hash = _SystemHash.combine(hash, skills.hashCode);
+    hash = _SystemHash.combine(hash, token.hashCode);
+    hash = _SystemHash.combine(hash, apps.hashCode);
+    hash = _SystemHash.combine(hash, ownerAddress.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin CreatePoolRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `poolName` of this provider.
+  String get poolName;
+
+  /// The parameter `skills` of this provider.
+  String get skills;
+
+  /// The parameter `token` of this provider.
+  Token get token;
+
+  /// The parameter `apps` of this provider.
+  List<Map<String, dynamic>> get apps;
+
+  /// The parameter `ownerAddress` of this provider.
+  String get ownerAddress;
+}
+
+class _CreatePoolProviderElement extends AutoDisposeFutureProviderElement<void>
+    with CreatePoolRef {
+  _CreatePoolProviderElement(super.provider);
+
+  @override
+  String get poolName => (origin as CreatePoolProvider).poolName;
+  @override
+  String get skills => (origin as CreatePoolProvider).skills;
+  @override
+  Token get token => (origin as CreatePoolProvider).token;
+  @override
+  List<Map<String, dynamic>> get apps => (origin as CreatePoolProvider).apps;
+  @override
+  String get ownerAddress => (origin as CreatePoolProvider).ownerAddress;
+}
+
+String _$getRewardHash() => r'b1bf0685332af7f5857010a092f5bccc92ecfa2e';
+
+/// See also [getReward].
+@ProviderFor(getReward)
+const getRewardProvider = GetRewardFamily();
+
+/// See also [getReward].
+class GetRewardFamily extends Family<AsyncValue<Map<String, dynamic>>> {
+  /// See also [getReward].
+  const GetRewardFamily();
+
+  /// See also [getReward].
+  GetRewardProvider call({
+    required String poolId,
+    String? taskId,
+  }) {
+    return GetRewardProvider(
+      poolId: poolId,
+      taskId: taskId,
+    );
+  }
+
+  @override
+  GetRewardProvider getProviderOverride(
+    covariant GetRewardProvider provider,
+  ) {
+    return call(
+      poolId: provider.poolId,
+      taskId: provider.taskId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getRewardProvider';
+}
+
+/// See also [getReward].
+class GetRewardProvider
+    extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+  /// See also [getReward].
+  GetRewardProvider({
+    required String poolId,
+    String? taskId,
+  }) : this._internal(
+          (ref) => getReward(
+            ref as GetRewardRef,
+            poolId: poolId,
+            taskId: taskId,
+          ),
+          from: getRewardProvider,
+          name: r'getRewardProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getRewardHash,
+          dependencies: GetRewardFamily._dependencies,
+          allTransitiveDependencies: GetRewardFamily._allTransitiveDependencies,
+          poolId: poolId,
+          taskId: taskId,
+        );
+
+  GetRewardProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolId,
+    required this.taskId,
+  }) : super.internal();
+
+  final String poolId;
+  final String? taskId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Map<String, dynamic>> Function(GetRewardRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetRewardProvider._internal(
+        (ref) => create(ref as GetRewardRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolId: poolId,
+        taskId: taskId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+    return _GetRewardProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetRewardProvider &&
+        other.poolId == poolId &&
+        other.taskId == taskId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolId.hashCode);
+    hash = _SystemHash.combine(hash, taskId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetRewardRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+  /// The parameter `poolId` of this provider.
+  String get poolId;
+
+  /// The parameter `taskId` of this provider.
+  String? get taskId;
+}
+
+class _GetRewardProviderElement
+    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
+    with GetRewardRef {
+  _GetRewardProviderElement(super.provider);
+
+  @override
+  String get poolId => (origin as GetRewardProvider).poolId;
+  @override
+  String? get taskId => (origin as GetRewardProvider).taskId;
+}
+
+String _$createPoolWithAppsHash() =>
+    r'718ce3221b8d09b5b385b68a78ed72bf967e5764';
+
+/// See also [createPoolWithApps].
+@ProviderFor(createPoolWithApps)
+const createPoolWithAppsProvider = CreatePoolWithAppsFamily();
+
+/// See also [createPoolWithApps].
+class CreatePoolWithAppsFamily extends Family<AsyncValue<TrainingPool>> {
+  /// See also [createPoolWithApps].
+  const CreatePoolWithAppsFamily();
+
+  /// See also [createPoolWithApps].
+  CreatePoolWithAppsProvider call({
+    required String poolName,
+    required String skills,
+    required Token token,
+    required List<ForgeApp> apps,
+    required String ownerAddress,
+  }) {
+    return CreatePoolWithAppsProvider(
+      poolName: poolName,
+      skills: skills,
+      token: token,
+      apps: apps,
+      ownerAddress: ownerAddress,
+    );
+  }
+
+  @override
+  CreatePoolWithAppsProvider getProviderOverride(
+    covariant CreatePoolWithAppsProvider provider,
+  ) {
+    return call(
+      poolName: provider.poolName,
+      skills: provider.skills,
+      token: provider.token,
+      apps: provider.apps,
+      ownerAddress: provider.ownerAddress,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'createPoolWithAppsProvider';
+}
+
+/// See also [createPoolWithApps].
+class CreatePoolWithAppsProvider
+    extends AutoDisposeFutureProvider<TrainingPool> {
+  /// See also [createPoolWithApps].
+  CreatePoolWithAppsProvider({
+    required String poolName,
+    required String skills,
+    required Token token,
+    required List<ForgeApp> apps,
+    required String ownerAddress,
+  }) : this._internal(
+          (ref) => createPoolWithApps(
+            ref as CreatePoolWithAppsRef,
+            poolName: poolName,
+            skills: skills,
+            token: token,
+            apps: apps,
+            ownerAddress: ownerAddress,
+          ),
+          from: createPoolWithAppsProvider,
+          name: r'createPoolWithAppsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$createPoolWithAppsHash,
+          dependencies: CreatePoolWithAppsFamily._dependencies,
+          allTransitiveDependencies:
+              CreatePoolWithAppsFamily._allTransitiveDependencies,
+          poolName: poolName,
+          skills: skills,
+          token: token,
+          apps: apps,
+          ownerAddress: ownerAddress,
+        );
+
+  CreatePoolWithAppsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolName,
+    required this.skills,
+    required this.token,
+    required this.apps,
+    required this.ownerAddress,
+  }) : super.internal();
+
+  final String poolName;
+  final String skills;
+  final Token token;
+  final List<ForgeApp> apps;
+  final String ownerAddress;
+
+  @override
+  Override overrideWith(
+    FutureOr<TrainingPool> Function(CreatePoolWithAppsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: CreatePoolWithAppsProvider._internal(
+        (ref) => create(ref as CreatePoolWithAppsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolName: poolName,
+        skills: skills,
+        token: token,
+        apps: apps,
+        ownerAddress: ownerAddress,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<TrainingPool> createElement() {
+    return _CreatePoolWithAppsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is CreatePoolWithAppsProvider &&
+        other.poolName == poolName &&
+        other.skills == skills &&
+        other.token == token &&
+        other.apps == apps &&
+        other.ownerAddress == ownerAddress;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolName.hashCode);
+    hash = _SystemHash.combine(hash, skills.hashCode);
+    hash = _SystemHash.combine(hash, token.hashCode);
+    hash = _SystemHash.combine(hash, apps.hashCode);
+    hash = _SystemHash.combine(hash, ownerAddress.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin CreatePoolWithAppsRef on AutoDisposeFutureProviderRef<TrainingPool> {
+  /// The parameter `poolName` of this provider.
+  String get poolName;
+
+  /// The parameter `skills` of this provider.
+  String get skills;
+
+  /// The parameter `token` of this provider.
+  Token get token;
+
+  /// The parameter `apps` of this provider.
+  List<ForgeApp> get apps;
+
+  /// The parameter `ownerAddress` of this provider.
+  String get ownerAddress;
+}
+
+class _CreatePoolWithAppsProviderElement
+    extends AutoDisposeFutureProviderElement<TrainingPool>
+    with CreatePoolWithAppsRef {
+  _CreatePoolWithAppsProviderElement(super.provider);
+
+  @override
+  String get poolName => (origin as CreatePoolWithAppsProvider).poolName;
+  @override
+  String get skills => (origin as CreatePoolWithAppsProvider).skills;
+  @override
+  Token get token => (origin as CreatePoolWithAppsProvider).token;
+  @override
+  List<ForgeApp> get apps => (origin as CreatePoolWithAppsProvider).apps;
+  @override
+  String get ownerAddress =>
+      (origin as CreatePoolWithAppsProvider).ownerAddress;
+}
+
+String _$updatePoolEmailHash() => r'70f98c6e0a98c5cb0b1a05a1b18d5510cd6ad7ac';
+
+/// See also [updatePoolEmail].
+@ProviderFor(updatePoolEmail)
+const updatePoolEmailProvider = UpdatePoolEmailFamily();
+
+/// See also [updatePoolEmail].
+class UpdatePoolEmailFamily extends Family<AsyncValue<void>> {
+  /// See also [updatePoolEmail].
+  const UpdatePoolEmailFamily();
+
+  /// See also [updatePoolEmail].
+  UpdatePoolEmailProvider call({
+    required String poolId,
+    required String email,
+  }) {
+    return UpdatePoolEmailProvider(
+      poolId: poolId,
+      email: email,
+    );
+  }
+
+  @override
+  UpdatePoolEmailProvider getProviderOverride(
+    covariant UpdatePoolEmailProvider provider,
+  ) {
+    return call(
+      poolId: provider.poolId,
+      email: provider.email,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updatePoolEmailProvider';
+}
+
+/// See also [updatePoolEmail].
+class UpdatePoolEmailProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updatePoolEmail].
+  UpdatePoolEmailProvider({
+    required String poolId,
+    required String email,
+  }) : this._internal(
+          (ref) => updatePoolEmail(
+            ref as UpdatePoolEmailRef,
+            poolId: poolId,
+            email: email,
+          ),
+          from: updatePoolEmailProvider,
+          name: r'updatePoolEmailProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updatePoolEmailHash,
+          dependencies: UpdatePoolEmailFamily._dependencies,
+          allTransitiveDependencies:
+              UpdatePoolEmailFamily._allTransitiveDependencies,
+          poolId: poolId,
+          email: email,
+        );
+
+  UpdatePoolEmailProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolId,
+    required this.email,
+  }) : super.internal();
+
+  final String poolId;
+  final String email;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdatePoolEmailRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdatePoolEmailProvider._internal(
+        (ref) => create(ref as UpdatePoolEmailRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolId: poolId,
+        email: email,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdatePoolEmailProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdatePoolEmailProvider &&
+        other.poolId == poolId &&
+        other.email == email;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolId.hashCode);
+    hash = _SystemHash.combine(hash, email.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdatePoolEmailRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `poolId` of this provider.
+  String get poolId;
+
+  /// The parameter `email` of this provider.
+  String get email;
+}
+
+class _UpdatePoolEmailProviderElement
+    extends AutoDisposeFutureProviderElement<void> with UpdatePoolEmailRef {
+  _UpdatePoolEmailProviderElement(super.provider);
+
+  @override
+  String get poolId => (origin as UpdatePoolEmailProvider).poolId;
+  @override
+  String get email => (origin as UpdatePoolEmailProvider).email;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

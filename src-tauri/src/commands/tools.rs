@@ -8,7 +8,6 @@ use log::error;
 use serde_json;
 use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::{Duration, Instant};
 use tauri::Emitter;
 
 /// Initializes all required tool binaries (FFmpeg, dump-tree, pipeline) in parallel threads.

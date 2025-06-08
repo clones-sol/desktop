@@ -1,15 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viralmind_flutter/rust_api.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
-import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
-import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
-import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/chat/chat_view.dart';
+import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
+
+final _router = GoRouter(
+  initialLocation: '/app/gym',
+  routes: [
+    ShellRoute(
+      builder: (context, state, child) {
+        return MainLayout(
+          currentRoute: state.uri.path,
+          child: child,
+        );
+      },
+      routes: [
+        GoRoute(
+          path: '/app/gym',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: GymView(),
+          ),
+        ),
+        GoRoute(
+          path: '/app/forge',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ForgeView(),
+          ),
+        ),
+        GoRoute(
+          path: '/app/leaderboards',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: LeaderboardsView(),
+          ),
+        ),
+        GoRoute(
+          path: '/app/chat',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ChatView(),
+          ),
+        ),
+      ],
+    ),
+  ],
+);
 
 Future<void> main() async {
-  // Charge les variables d'environnement depuis le fichier .env
+  // Ensure flutter is initialized.
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  runApp(const ViralmindApp());
+  // Initialize rust bindings
+  await initRust();
+  runApp(const ProviderScope(child: ViralmindApp()));
 }
 
 class ViralmindApp extends StatelessWidget {
@@ -17,40 +63,15 @@ class ViralmindApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Viralmind Desktop',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFbb4eff)),
         fontFamily: 'Open Sans',
         useMaterial3: true,
       ),
-      initialRoute: '/app/gym',
-      routes: {
-        '/app/gym':
-            (context) =>
-                const MainLayout(currentRoute: '/app/gym', child: GymView()),
-        '/app/forge':
-            (context) => const MainLayout(
-              currentRoute: '/app/forge',
-              child: ForgeView(),
-            ),
-        '/app/leaderboards':
-            (context) => const MainLayout(
-              currentRoute: '/app/leaderboards',
-              child: LeaderboardsView(),
-            ),
-        '/app/chat':
-            (context) =>
-                const MainLayout(currentRoute: '/app/chat', child: ChatView()),
-      },
-      onUnknownRoute:
-          (settings) => MaterialPageRoute(
-            builder:
-                (context) => const MainLayout(
-                  currentRoute: '/app/gym',
-                  child: GymView(),
-                ),
-          ),
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router,
     );
   }
 }

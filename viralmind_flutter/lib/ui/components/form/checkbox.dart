@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomCheckbox extends StatefulWidget {
-  final bool? value;
-  final ValueChanged<bool?>? onChanged;
-  final String? label;
-  final String variant; // 'dark' ou 'light'
-  final EdgeInsetsGeometry? padding;
-
   const CustomCheckbox({
     super.key,
     this.value,
@@ -15,6 +9,11 @@ class CustomCheckbox extends StatefulWidget {
     this.variant = 'dark',
     this.padding,
   });
+  final bool? value;
+  final ValueChanged<bool?>? onChanged;
+  final String? label;
+  final String variant; // 'dark' ou 'light'
+  final EdgeInsetsGeometry? padding;
 
   @override
   State<CustomCheckbox> createState() => _CustomCheckboxState();

@@ -1,6 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-/// Accès typé aux variables d'environnement (.env)
 class Env {
   static String get viteEnv => dotenv.env['VITE_ENV'] ?? 'dev';
   static String get viralTokenAddress =>

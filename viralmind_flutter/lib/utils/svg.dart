@@ -4,7 +4,7 @@ String svgToCssTransform(String svgTransform) {
   final translateReg = RegExp(r'translate\(([-\d.,]+),([-\d.,]+)\)');
   final scaleReg = RegExp(r'scale\(([-\d.,]+)\)');
 
-  String result = svgTransform.replaceAllMapped(
+  var result = svgTransform.replaceAllMapped(
     translateReg,
     (match) => 'translate(${match[1]}px, ${match[2]}px)',
   );

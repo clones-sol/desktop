@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ContextMenu extends StatefulWidget {
-  final bool open;
-  final Offset position;
-  final VoidCallback? onClose;
-  final Widget child;
-
   const ContextMenu({
     super.key,
     required this.open,
@@ -13,6 +8,10 @@ class ContextMenu extends StatefulWidget {
     this.onClose,
     required this.child,
   });
+  final bool open;
+  final Offset position;
+  final VoidCallback? onClose;
+  final Widget child;
 
   @override
   ContextMenuState createState() => ContextMenuState();
@@ -65,7 +64,7 @@ class ContextMenuState extends State<ContextMenu>
   @override
   Widget build(BuildContext context) {
     if (!widget.open && _controller.status == AnimationStatus.dismissed) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Stack(

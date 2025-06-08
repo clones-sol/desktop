@@ -2,8 +2,8 @@
 //
 // Migrated from src/lib/utils/toast.ts
 
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 /// Show a toast notification
 Future<void> showToast(
@@ -17,10 +17,9 @@ Future<void> showToast(
   // Simple toast (Fluttertoast does not support custom buttons natively)
   await Fluttertoast.showToast(
     msg: title.isNotEmpty ? '$title\n$message' : message,
-    toastLength:
-        timeout != null && timeout > 3500
-            ? Toast.LENGTH_LONG
-            : Toast.LENGTH_SHORT,
+    toastLength: timeout != null && timeout > 3500
+        ? Toast.LENGTH_LONG
+        : Toast.LENGTH_SHORT,
     backgroundColor: backgroundColor ?? Colors.black87,
     textColor: Colors.white,
     gravity: ToastGravity.BOTTOM,

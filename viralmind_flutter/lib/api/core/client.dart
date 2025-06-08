@@ -1,38 +1,29 @@
-// API client for HTTP requests
-//
-// Migrated from src/lib/api/core/client.ts
-
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'auth.dart';
-import 'errors.dart';
-import '../../utils/env.dart';
-
-class RequestOptions {
-  final bool requiresAuth;
-  final Map<String, String>? headers;
-
-  const RequestOptions({this.requiresAuth = false, this.headers});
-}
+import 'package:http/http.dart' as http;
+import 'package:viralmind_flutter/application/connection_token.dart';
+import 'package:viralmind_flutter/domain/models/api/api_error.dart';
+import 'package:viralmind_flutter/domain/models/api/api_response.dart';
+import 'package:viralmind_flutter/domain/models/api/request_options.dart';
+import 'package:viralmind_flutter/utils/env.dart';
+import 'package:viralmind_flutter/utils/errors.dart';
 
 class ApiClient {
+  ApiClient(this.ref, {String? baseUrl})
+      : baseUrl = baseUrl ?? '${Env.apiUrl}/api/v1';
   final String baseUrl;
   final Ref ref;
 
-  ApiClient(this.ref, {String? baseUrl})
-    : baseUrl = baseUrl ?? '${Env.apiUrl}/api/v1';
-
-  String _getAuthToken() => getAuthToken(ref);
-
-  Map<String, String> _getHeaders(RequestOptions options) {
+  Future<Map<String, String>> _getHeaders(RequestOptions options) async {
     final headers = <String, String>{};
     if (options.headers != null) {
       headers.addAll(options.headers!);
     }
     if (options.requiresAuth) {
-      final token = _getAuthToken();
-      if (token.isNotEmpty) {
+      final token =
+          await ref.read(connectionTokenRepositoryProvider).loadToken();
+      if (token != null && token.isNotEmpty) {
         headers['x-connect-token'] = token;
       }
     }
@@ -49,7 +40,7 @@ class ApiClient {
       queryParameters: params?.map((k, v) => MapEntry(k, v.toString())),
     );
 
-    final response = await http.get(uri, headers: _getHeaders(options));
+    final response = await http.get(uri, headers: await _getHeaders(options));
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       await handleApiError(response);
@@ -60,10 +51,10 @@ class ApiClient {
 
     if (!apiResponse.success || apiResponse.data == null) {
       throw ApiError(
-        400,
-        'Error',
-        apiResponse.error?.message ?? 'GET: $endpoint',
-        apiResponse,
+        status: 400,
+        statusText: 'Error',
+        message: apiResponse.error?.message ?? 'GET: $endpoint',
+        data: apiResponse,
       );
     }
     if (fromJson != null) {
@@ -78,7 +69,7 @@ class ApiClient {
     RequestOptions options = const RequestOptions(),
     T Function(dynamic)? fromJson,
   }) async {
-    final headers = _getHeaders(options);
+    final headers = await _getHeaders(options);
     Object? body;
     if (data != null) {
       headers['Content-Type'] = 'application/json';
@@ -100,10 +91,10 @@ class ApiClient {
 
     if (!apiResponse.success || apiResponse.data == null) {
       throw ApiError(
-        400,
-        'Error',
-        apiResponse.error?.message ?? 'POST: $endpoint',
-        apiResponse,
+        status: 400,
+        statusText: 'Error',
+        message: apiResponse.error?.message ?? 'POST: $endpoint',
+        data: apiResponse,
       );
     }
     if (fromJson != null) {
@@ -118,7 +109,7 @@ class ApiClient {
     RequestOptions options = const RequestOptions(),
     T Function(dynamic)? fromJson,
   }) async {
-    final headers = _getHeaders(options);
+    final headers = await _getHeaders(options);
     Object? body;
     if (data != null) {
       headers['Content-Type'] = 'application/json';
@@ -140,10 +131,10 @@ class ApiClient {
 
     if (!apiResponse.success || apiResponse.data == null) {
       throw ApiError(
-        400,
-        'Error',
-        apiResponse.error?.message ?? 'PUT: $endpoint',
-        apiResponse,
+        status: 400,
+        statusText: 'Error',
+        message: apiResponse.error?.message ?? 'PUT: $endpoint',
+        data: apiResponse,
       );
     }
     if (fromJson != null) {
@@ -159,7 +150,7 @@ class ApiClient {
   }) async {
     final response = await http.delete(
       Uri.parse('$baseUrl$endpoint'),
-      headers: _getHeaders(options),
+      headers: await _getHeaders(options),
     );
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -171,10 +162,10 @@ class ApiClient {
 
     if (!apiResponse.success || apiResponse.data == null) {
       throw ApiError(
-        400,
-        'Error',
-        apiResponse.error?.message ?? 'DELETE: $endpoint',
-        apiResponse,
+        status: 400,
+        statusText: 'Error',
+        message: apiResponse.error?.message ?? 'DELETE: $endpoint',
+        data: apiResponse,
       );
     }
     if (fromJson != null) {
@@ -184,5 +175,4 @@ class ApiClient {
   }
 }
 
-// Riverpod provider for ApiClient (singleton per Ref)
-final apiClientProvider = Provider<ApiClient>((ref) => ApiClient(ref));
+final apiClientProvider = Provider<ApiClient>(ApiClient.new);

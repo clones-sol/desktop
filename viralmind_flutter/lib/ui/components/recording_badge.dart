@@ -4,14 +4,13 @@ import 'package:viralmind_flutter/utils/format_time.dart';
 enum RecordingState { recording, stopping, stopped }
 
 class RecordingBadge extends StatelessWidget {
-  final RecordingState state;
-  final int time;
-
   const RecordingBadge({
     super.key,
     this.state = RecordingState.stopped,
     this.time = 0,
   });
+  final RecordingState state;
+  final int time;
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +21,17 @@ class RecordingBadge extends StatelessWidget {
           duration: const Duration(milliseconds: 500),
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-            color:
-                state == RecordingState.recording
-                    ? Colors.red.shade600
-                    : Colors.grey.shade600,
+            color: state == RecordingState.recording
+                ? Colors.red.shade600
+                : Colors.grey.shade600,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Text(
             state == RecordingState.recording
                 ? 'Recording'
                 : state == RecordingState.stopping
-                ? 'Saving...'
-                : '',
+                    ? 'Saving...'
+                    : '',
             style: const TextStyle(
               color: Colors.white,
               fontSize: 12,
