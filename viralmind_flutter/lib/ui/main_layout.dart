@@ -1,12 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/frb_generated/api/tools.dart';
 import 'package:viralmind_flutter/providers/tools_provider.dart';
+import 'package:viralmind_flutter/ui/components/layout_background.dart';
 import 'package:viralmind_flutter/ui/widgets/modals/init_tools_failed_modal.dart';
-import 'package:viralmind_flutter/ui/components/sidebar.dart';
 
 class MainLayout extends ConsumerStatefulWidget {
   const MainLayout({
@@ -52,7 +51,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       final status = checkToolsStatus();
 
       const totalTools = 4;
-      int initializedTools = 0;
+      var initializedTools = 0;
       if (status.ffmpeg) initializedTools++;
       if (status.ffprobe) initializedTools++;
       if (status.dumpTree) initializedTools++;
@@ -62,7 +61,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
       ref
           .read(toolsInitProvider.notifier)
-          .setProgress(progress > 0 ? progress.toDouble() : 5.0);
+          .setProgress(progress > 0 ? progress : 5.0);
 
       if (initializedTools == totalTools) {
         _timer?.cancel();
@@ -111,34 +110,11 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    final isMac = Platform.isMacOS;
-    final primaryColor = Theme.of(context).primaryColor;
-    final bgColor = isMac ? primaryColor.withOpacity(0.5) : primaryColor;
-
-    // The update check logic from Svelte (`checkForUpdate`) was likely Tauri-specific.
-    // You'll need to re-implement it using a Flutter package like `upgrader`
-    // or your own update mechanism.
-
     return Scaffold(
-      backgroundColor: bgColor,
-      body: Row(
-        children: [
-          Sidebar(currentRoute: widget.currentRoute),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  border: Border.all(color: Colors.grey.shade500),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: widget.child,
-              ),
-            ),
-          ),
-        ],
+      backgroundColor: Colors.transparent,
+      body: LayoutBackground(
+        currentRoute: widget.currentRoute,
+        child: widget.child,
       ),
     );
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 
 class ForgeExistingGymCard extends StatelessWidget {
@@ -7,35 +9,63 @@ class ForgeExistingGymCard extends StatelessWidget {
     super.key,
     required this.pool,
     required this.onTap,
+    this.tokenBalance,
   });
+
   final TrainingPool pool;
   final VoidCallback onTap;
+  final double? tokenBalance;
 
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      variant: CardVariant.secondary,
+      padding: CardPadding.small,
       child: InkWell(
         onTap: onTap,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: _buildStatusBadge(context, pool.status),
+            ),
             Text(
               pool.name,
-              style: TextStyle(
-                fontSize: 20,
+              style: const TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.w300,
-                color: pool.status == TrainingPoolStatus.live
-                    ? Theme.of(context).colorScheme.secondary
-                    : Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withValues(alpha: 0.5),
+                color: VMColors.primaryText,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 12),
-            _buildStatusBadge(context, pool.status),
-            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${tokenBalance ?? 0.toStringAsFixed(0)} ${pool.token.symbol}',
+                  style: TextStyle(
+                    color: VMColors.secondaryText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                Text(
+                  'Pool Balance',
+                  style: TextStyle(
+                    color: VMColors.secondaryText,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+              ],
+            ),
+            _demoProgress(
+              context,
+            ),
+            const SizedBox(height: 8),
+            _viewDetailsButton(),
           ],
         ),
       ),
@@ -54,27 +84,27 @@ class ForgeExistingGymCard extends StatelessWidget {
         statusText = 'live';
         break;
       case TrainingPoolStatus.paused:
-        badgeColor = Colors.grey.withValues(alpha: 0.1);
-        textColor = Colors.grey;
+        badgeColor = Colors.blue.withValues(alpha: 0.1);
+        textColor = Colors.blue;
         statusText = 'paused';
         break;
       case TrainingPoolStatus.noFunds:
         badgeColor = Colors.yellow.withValues(alpha: 0.1);
-        textColor = Colors.yellow;
+        textColor = Colors.yellow[700]!;
         statusText = 'no funds';
         break;
       case TrainingPoolStatus.noGas:
         badgeColor = Colors.yellow.withValues(alpha: 0.1);
-        textColor = Colors.yellow;
+        textColor = Colors.yellow[700]!;
         statusText = 'no gas';
         break;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: badgeColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(10),
         border: Border.all(color: badgeColor),
       ),
       child: Row(
@@ -98,6 +128,97 @@ class ForgeExistingGymCard extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _demoProgress(
+    BuildContext context,
+  ) {
+    final pricePerDemo = pool.pricePerDemo;
+    final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
+        ? (tokenBalance ?? 0 / pricePerDemo).floor()
+        : 0;
+    final totalDemos = pool.demonstrations + possibleDemos;
+    final demoPercentage = totalDemos > 0
+        ? (pool.demonstrations / totalDemos * 100).clamp(0, 100)
+        : 0;
+
+    if (pricePerDemo == null || pricePerDemo == 0) {
+      return const SizedBox.shrink();
+    }
+
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Uploads / Remaining Demos',
+              style: TextStyle(
+                color: VMColors.secondaryText,
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            Text(
+              '${pool.demonstrations} / $possibleDemos',
+              style: TextStyle(
+                color: VMColors.secondaryText,
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        Stack(
+          children: [
+            Container(
+              height: 4,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    VMColors.primary.withValues(alpha: 0.3),
+                    VMColors.secondary.withValues(alpha: 0.3),
+                    VMColors.tertiary.withValues(alpha: 0.3),
+                  ],
+                ),
+                borderRadius: BorderRadius.circular(3),
+              ),
+            ),
+            FractionallySizedBox(
+              widthFactor: demoPercentage / 100,
+              child: Container(
+                height: 6,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Theme.of(context).colorScheme.secondary,
+                      Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withValues(alpha: 0.7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(3),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _viewDetailsButton() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: BtnPrimary(
+        widthExpanded: true,
+        onTap: onTap,
+        buttonText: 'View Details',
       ),
     );
   }

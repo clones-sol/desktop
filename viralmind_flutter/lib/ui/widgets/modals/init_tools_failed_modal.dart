@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
 class InitToolsFailedModal extends StatelessWidget {
-  final List<String> errors;
-  final VoidCallback retry;
-
   const InitToolsFailedModal({
     super.key,
     required this.errors,
     required this.retry,
   });
+  final List<String> errors;
+  final VoidCallback retry;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +15,7 @@ class InitToolsFailedModal extends StatelessWidget {
       title: const Text('Tool Initialization Failed'),
       content: SingleChildScrollView(
         child: ListBody(
-          children: errors.map((error) => Text(error)).toList(),
+          children: errors.map(Text.new).toList(),
         ),
       ),
       actions: <Widget>[
@@ -27,8 +26,8 @@ class InitToolsFailedModal extends StatelessWidget {
           },
         ),
         FilledButton(
-          child: const Text('Retry'),
           onPressed: retry,
+          child: const Text('Retry'),
         ),
       ],
     );

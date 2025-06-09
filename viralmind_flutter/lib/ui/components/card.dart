@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:viralmind_flutter/assets.dart';
 
-enum CardVariant { primary, secondary }
+enum CardVariant { primary, secondary, black }
 
 enum CardPadding { none, small, medium, large }
 
@@ -22,7 +23,7 @@ class CardWidget extends StatelessWidget {
       case CardPadding.none:
         return EdgeInsets.zero;
       case CardPadding.small:
-        return const EdgeInsets.all(12);
+        return const EdgeInsets.all(8);
       case CardPadding.medium:
         return const EdgeInsets.all(16);
       case CardPadding.large:
@@ -30,37 +31,25 @@ class CardWidget extends StatelessWidget {
     }
   }
 
-  BoxDecoration _getDecoration(BuildContext context) {
-    switch (variant) {
-      case CardVariant.primary:
-        return BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color:
-                  Theme.of(context).colorScheme.shadow.withValues(alpha: 0.1),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        );
-      case CardVariant.secondary:
-        return BoxDecoration(
-          color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.1),
-          ),
-        );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: _getDecoration(context),
       padding: _getPadding(),
+      decoration: BoxDecoration(
+        color: variant == CardVariant.primary
+            ? VMColors.primary.withValues(alpha: 0.1)
+            : variant == CardVariant.secondary
+                ? VMColors.secondary.withValues(alpha: 0.1)
+                : Colors.black.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: variant == CardVariant.primary
+              ? VMColors.primary.withValues(alpha: 0.2)
+              : variant == CardVariant.secondary
+                  ? VMColors.secondary.withValues(alpha: 0.2)
+                  : Colors.white.withValues(alpha: 0.1),
+        ),
+      ),
       child: child,
     );
   }

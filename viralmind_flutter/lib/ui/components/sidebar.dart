@@ -30,29 +30,20 @@ class Sidebar extends ConsumerWidget {
         ? ref.watch(getBalanceProvider(address: walletAddress))
         : null;
 
-    // Définition des boutons
-    final earnButtons = [
-      _SidebarButtonData(
-        path: '/app/chat',
-        icon: Icons.chat_bubble_outline,
-        label: 'Chat',
-      ),
-      _SidebarButtonData(
+    final buttons = [
+      SidebarButtonData(
         path: '/app/gym',
-        icon: Icons.fitness_center,
+        imagePath: Assets.gymIcon,
         label: 'Gym',
       ),
-      _SidebarButtonData(
+      SidebarButtonData(
         path: '/app/leaderboards',
-        icon: Icons.emoji_events,
+        imagePath: Assets.statsIcon,
         label: 'Leaderboards',
       ),
-    ];
-
-    final spendButtons = [
-      _SidebarButtonData(
+      SidebarButtonData(
         path: '/app/forge',
-        icon: Icons.construction,
+        imagePath: Assets.forgeIcon,
         label: 'Forge',
       ),
     ];
@@ -72,15 +63,11 @@ class Sidebar extends ConsumerWidget {
               fit: BoxFit.contain,
             ),
           ),
-          _SidebarSection(
-            title: 'Earn',
-            buttons: earnButtons,
-            currentRoute: currentRoute,
-          ),
-          _SidebarSection(
-            title: 'Forge',
-            buttons: spendButtons,
-            currentRoute: currentRoute,
+          Expanded(
+            child: _SidebarSection(
+              buttons: buttons,
+              currentRoute: currentRoute,
+            ),
           ),
           const Spacer(),
           if (isRecording)
@@ -122,7 +109,6 @@ class Sidebar extends ConsumerWidget {
               uploadManager: UploadManager(),
             ),
           ),
-          // WalletButton
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: WalletButton(
@@ -144,60 +130,103 @@ class Sidebar extends ConsumerWidget {
 
 class _SidebarSection extends StatelessWidget {
   const _SidebarSection({
-    required this.title,
     required this.buttons,
     required this.currentRoute,
   });
-  final String title;
-  final List<_SidebarButtonData> buttons;
+
+  final List<SidebarButtonData> buttons;
   final String currentRoute;
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          title,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
         ...buttons.map((button) {
           final isActive = currentRoute.startsWith(button.path);
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4),
-            child: IconButton(
-              icon: Icon(
-                button.icon,
-                color: isActive ? const Color(0xFFbb4eff) : Colors.grey,
-                size: 24,
-              ),
-              onPressed: () {
-                context.go(button.path);
-              },
-              tooltip: button.label,
-              style: IconButton.styleFrom(
-                backgroundColor:
-                    isActive ? const Color(0xFFbb4eff) : Colors.transparent,
-                shape: const CircleBorder(),
-              ),
-            ),
-          );
+          return isActive
+              ? Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Opacity(
+                      opacity: 0.5,
+                      child: Container(
+                        width: 70,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: VMColors.secondary.withValues(alpha: 0.2),
+                            width: 0.5,
+                          ),
+                          gradient: LinearGradient(
+                            colors: [
+                              VMColors.secondary.withValues(alpha: 0.2),
+                              Colors.transparent,
+                              Colors.transparent,
+                              VMColors.secondary.withValues(alpha: 0.2),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                      ),
+                    ),
+                    _buildButton(
+                      context,
+                      button,
+                    ),
+                  ],
+                )
+              : Opacity(
+                  opacity: 0.7,
+                  child: _buildButton(
+                    context,
+                    button,
+                  ),
+                );
         }),
       ],
     );
   }
+
+  Widget _buildButton(BuildContext context, SidebarButtonData button) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: InkWell(
+        child: ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return LinearGradient(
+              colors: [
+                VMColors.primary.withValues(alpha: 0.5),
+                VMColors.secondary.withValues(alpha: 0.9),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.dstIn,
+          child: Image.asset(
+            button.imagePath,
+            width: 40,
+            height: 40,
+          ),
+        ),
+        onTap: () {
+          context.go(button.path);
+        },
+      ),
+    );
+  }
 }
 
-class _SidebarButtonData {
-  _SidebarButtonData({
+class SidebarButtonData {
+  SidebarButtonData({
     required this.path,
-    required this.icon,
+    required this.imagePath,
     required this.label,
   });
   final String path;
-  final IconData icon;
+  final String imagePath;
   final String label;
 }
