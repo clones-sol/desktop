@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/ui/components/stats_card.dart';
+import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
 class ForgeGymOverviewTab extends StatelessWidget {
   const ForgeGymOverviewTab({super.key, required this.pool});
   final TrainingPool pool;
-
-  String formatNumber(num value) => value.toStringAsFixed(2);
 
   @override
   Widget build(BuildContext context) {
@@ -17,27 +17,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
         children: [
           Text(pool.name, style: Theme.of(context).textTheme.headlineSmall),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _StatCard(
-                label: 'Total Demonstrations',
-                value: pool.demonstrations.toString(),
-              ),
-              _StatCard(
-                label: 'Reward Per Demo',
-                value: '${pool.pricePerDemo ?? 1} ${pool.token.symbol}',
-              ),
-              _StatCard(
-                label: 'Pool Balance',
-                value: '${formatNumber(pool.funds)} ${pool.token.symbol}',
-              ),
-              _StatCard(
-                label: 'Gas Balance',
-                value: '${formatNumber(pool.solBalance ?? 0)} SOL',
-              ),
-            ],
-          ),
+          _buildGlobalStats(),
           const SizedBox(height: 24),
           Text(
             'Deposit Address',
@@ -128,31 +108,44 @@ class ForgeGymOverviewTab extends StatelessWidget {
       ),
     );
   }
-}
 
-class _StatCard extends StatelessWidget {
-  const _StatCard({required this.label, required this.value});
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Text(
-              label,
-              style: const TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              value,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-          ],
-        ),
+  Widget _buildGlobalStats() {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: 4,
+            crossAxisSpacing: 24,
+            mainAxisSpacing: 24,
+            childAspectRatio: 1.5,
+            children: [
+              StatCard(
+                label: 'Total Demonstrations',
+                value: pool.demonstrations.toString(),
+              ),
+              StatCard(
+                label: 'Reward Per Demo',
+                value:
+                    '${formatNumberWithSeparator(pool.pricePerDemo ?? 1)}\n\$${pool.token.symbol}',
+              ),
+              StatCard(
+                label: 'Pool Balance',
+                value:
+                    '${formatNumberWithSeparator(pool.funds)}\n\$${pool.token.symbol}',
+              ),
+              StatCard(
+                label: 'Gas Balance',
+                value:
+                    '${formatNumberWithSeparator(pool.solBalance ?? 0)}\n\$SOL',
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

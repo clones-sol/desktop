@@ -6,9 +6,17 @@ import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
 class TopWorkers extends ConsumerWidget {
-  const TopWorkers({super.key, required this.workers});
+  const TopWorkers(
+      {super.key,
+      required this.workers,
+      this.showTitle = true,
+      this.listHeight,
+      this.onExpand});
 
   final List<WorkerLeaderboard> workers;
+  final bool showTitle;
+  final double? listHeight;
+  final VoidCallback? onExpand;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,18 +38,31 @@ class TopWorkers extends ConsumerWidget {
             ),
           ),
         ),
-        const Positioned(
-          top: 8,
-          right: 20,
-          child: Text(
-            'Top Workers',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: VMColors.primary,
+        if (showTitle)
+          Positioned(
+            top: 8,
+            right: 20,
+            child: Row(
+              children: [
+                const Text(
+                  'Top Workers',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: VMColors.primary,
+                  ),
+                ),
+                if (onExpand != null) ...[
+                  const SizedBox(width: 12),
+                  IconButton(
+                    icon: const Icon(Icons.open_in_full,
+                        color: VMColors.secondary),
+                    onPressed: onExpand,
+                  ),
+                ],
+              ],
             ),
           ),
-        ),
       ],
     );
   }
@@ -57,7 +78,7 @@ class TopWorkers extends ConsumerWidget {
             children: [
               _buildTableHeader(context),
               SizedBox(
-                height: 300,
+                height: listHeight ?? 300,
                 child: _buildWorkersList(),
               ),
             ],

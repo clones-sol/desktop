@@ -25,8 +25,8 @@ mixin _$TrainingPool {
   String get name => throw _privateConstructorUsedError;
   TrainingPoolStatus get status => throw _privateConstructorUsedError;
   int get demonstrations => throw _privateConstructorUsedError;
-  int get funds => throw _privateConstructorUsedError;
-  int? get solBalance => throw _privateConstructorUsedError;
+  double get funds => throw _privateConstructorUsedError;
+  double? get solBalance => throw _privateConstructorUsedError;
   Token get token => throw _privateConstructorUsedError;
   String get skills => throw _privateConstructorUsedError;
   String? get ownerEmail => throw _privateConstructorUsedError;
@@ -60,8 +60,8 @@ abstract class $TrainingPoolCopyWith<$Res> {
       String name,
       TrainingPoolStatus status,
       int demonstrations,
-      int funds,
-      int? solBalance,
+      double funds,
+      double? solBalance,
       Token token,
       String skills,
       String? ownerEmail,
@@ -131,11 +131,11 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
       funds: null == funds
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       solBalance: freezed == solBalance
           ? _value.solBalance
           : solBalance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -221,8 +221,8 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       String name,
       TrainingPoolStatus status,
       int demonstrations,
-      int funds,
-      int? solBalance,
+      double funds,
+      double? solBalance,
       Token token,
       String skills,
       String? ownerEmail,
@@ -292,11 +292,11 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
       funds: null == funds
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       solBalance: freezed == solBalance
           ? _value.solBalance
           : solBalance // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -380,9 +380,9 @@ class _$TrainingPoolImpl implements _TrainingPool {
   @override
   final int demonstrations;
   @override
-  final int funds;
+  final double funds;
   @override
-  final int? solBalance;
+  final double? solBalance;
   @override
   final Token token;
   @override
@@ -494,8 +494,8 @@ abstract class _TrainingPool implements TrainingPool {
       required final String name,
       required final TrainingPoolStatus status,
       required final int demonstrations,
-      required final int funds,
-      final int? solBalance,
+      required final double funds,
+      final double? solBalance,
       required final Token token,
       required final String skills,
       final String? ownerEmail,
@@ -521,9 +521,9 @@ abstract class _TrainingPool implements TrainingPool {
   @override
   int get demonstrations;
   @override
-  int get funds;
+  double get funds;
   @override
-  int? get solBalance;
+  double? get solBalance;
   @override
   Token get token;
   @override

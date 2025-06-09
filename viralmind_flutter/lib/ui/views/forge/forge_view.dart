@@ -11,6 +11,7 @@ import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dar
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal.dart';
 import 'package:viralmind_flutter/utils/env.dart';
+import 'dart:ui';
 
 class ForgeView extends ConsumerStatefulWidget {
   const ForgeView({super.key});
@@ -30,6 +31,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   double _viralPerSol = 0;
 
   String _skills = '';
+  TrainingPool? _selectedPool;
 
   @override
   void initState() {
@@ -97,28 +99,114 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   @override
   Widget build(BuildContext context) {
     final poolsAsync = ref.watch(listPoolsProvider);
-
-    return Stack(
-      children: [
-        poolsAsync.when(
-          data: _buildPools,
-          error: (error, stack) => Text(error.toString()),
-          loading: () => const Center(child: CircularProgressIndicator()),
-        ),
-        if (_showGenerateGymModal)
-          GenerateGymModal(
-            skills: _skills,
-            onSkillsChange: (skills) {
-              setState(() {
-                _skills = skills;
-              });
-            },
-            onClose: () {
-              setState(() => _showGenerateGymModal = false);
-            },
-            onSave: _handleSave,
-          ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final overlayWidth = constraints.maxWidth;
+        final overlayHeight = constraints.maxHeight;
+        return Stack(
+          children: [
+            poolsAsync.when(
+              data: _buildPools,
+              error: (error, stack) => Text(error.toString()),
+              loading: () => const Center(child: CircularProgressIndicator()),
+            ),
+            if (_showGenerateGymModal)
+              GenerateGymModal(
+                skills: _skills,
+                onSkillsChange: (skills) {
+                  setState(() {
+                    _skills = skills;
+                  });
+                },
+                onClose: () {
+                  setState(() => _showGenerateGymModal = false);
+                },
+                onSave: _handleSave,
+              ),
+            if (_selectedPool != null)
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 400),
+                curve: Curves.easeInOutCubic,
+                left: _selectedPool != null ? 0 : overlayWidth,
+                top: 0,
+                width: overlayWidth,
+                height: overlayHeight,
+                child: IgnorePointer(
+                  ignoring: _selectedPool == null,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: _selectedPool != null ? 1.0 : 0.0,
+                    child: Material(
+                      color: Colors.transparent,
+                      child: Stack(
+                        children: [
+                          BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ),
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOutCubic,
+                            width: _selectedPool != null ? overlayWidth : 0,
+                            height: _selectedPool != null
+                                ? overlayHeight * 0.92
+                                : 0,
+                            child: _selectedPool != null
+                                ? Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(32),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              _selectedPool!.name,
+                                              style: const TextStyle(
+                                                fontSize: 32,
+                                                fontWeight: FontWeight.bold,
+                                                color: VMColors.primary,
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons.close_fullscreen,
+                                                  color: VMColors.secondary,
+                                                  size: 32),
+                                              tooltip: 'Close',
+                                              onPressed: () => setState(
+                                                  () => _selectedPool = null),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 32),
+                                          child: ForgeGymDetail(
+                                            pool: _selectedPool!,
+                                            onBack: () => setState(
+                                                () => _selectedPool = null),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : null,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -238,7 +326,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         ...pools.map(
           (pool) => ForgeExistingGymCard(
             pool: pool,
-            onTap: () => _navigateToGymDetail(pool),
+            onTap: () => setState(() => _selectedPool = pool),
           ),
         ),
       ],

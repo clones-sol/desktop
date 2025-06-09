@@ -4,11 +4,20 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
+import 'dart:ui';
 
 class TopForges extends ConsumerWidget {
-  const TopForges({super.key, required this.forges});
+  const TopForges(
+      {super.key,
+      required this.forges,
+      this.onExpand,
+      this.showTitle = true,
+      this.listHeight});
 
   final List<ForgeLeaderboard> forges;
+  final VoidCallback? onExpand;
+  final bool showTitle;
+  final double? listHeight;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,18 +39,29 @@ class TopForges extends ConsumerWidget {
             ),
           ),
         ),
-        const Positioned(
-          top: 8,
-          right: 20,
-          child: Text(
-            'Top Forges',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: VMColors.primary,
+        if (showTitle)
+          Positioned(
+            top: 8,
+            right: 20,
+            child: Row(
+              children: [
+                const Text(
+                  'Top Forges',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: VMColors.primary,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                IconButton(
+                  icon:
+                      const Icon(Icons.open_in_full, color: VMColors.secondary),
+                  onPressed: onExpand,
+                ),
+              ],
             ),
           ),
-        ),
       ],
     );
   }
@@ -57,7 +77,7 @@ class TopForges extends ConsumerWidget {
             children: [
               _buildTableHeader(context),
               SizedBox(
-                height: 300,
+                height: listHeight ?? 300,
                 child: _buildForgesList(),
               ),
             ],
@@ -191,6 +211,73 @@ class TopForges extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class TopForgesFullscreen extends StatelessWidget {
+  const TopForgesFullscreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: Container(
+              color: Colors.black.withOpacity(0.3),
+            ),
+          ),
+        ),
+        Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: MediaQuery.of(context).size.height * 0.85,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.95),
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 60),
+                    child: TopForges(
+                      forges: (ModalRoute.of(context)?.settings.arguments
+                              as List<ForgeLeaderboard>?) ??
+                          [],
+                    ),
+                  ),
+                  Positioned(
+                    top: 16,
+                    right: 24,
+                    child: IconButton(
+                      icon: const Icon(Icons.close_fullscreen,
+                          color: VMColors.secondary, size: 32),
+                      tooltip: 'Close',
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  const Positioned(
+                    top: 16,
+                    left: 32,
+                    child: Text(
+                      'Top Forges',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: VMColors.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
