@@ -26,7 +26,7 @@ mixin _$TrainingPool {
   TrainingPoolStatus get status => throw _privateConstructorUsedError;
   int get demonstrations => throw _privateConstructorUsedError;
   int get funds => throw _privateConstructorUsedError;
-  int get solBalance => throw _privateConstructorUsedError;
+  int? get solBalance => throw _privateConstructorUsedError;
   Token get token => throw _privateConstructorUsedError;
   String get skills => throw _privateConstructorUsedError;
   String? get ownerEmail => throw _privateConstructorUsedError;
@@ -61,7 +61,7 @@ abstract class $TrainingPoolCopyWith<$Res> {
       TrainingPoolStatus status,
       int demonstrations,
       int funds,
-      int solBalance,
+      int? solBalance,
       Token token,
       String skills,
       String? ownerEmail,
@@ -98,7 +98,7 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
     Object? status = null,
     Object? demonstrations = null,
     Object? funds = null,
-    Object? solBalance = null,
+    Object? solBalance = freezed,
     Object? token = null,
     Object? skills = null,
     Object? ownerEmail = freezed,
@@ -132,10 +132,10 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
               as int,
-      solBalance: null == solBalance
+      solBalance: freezed == solBalance
           ? _value.solBalance
           : solBalance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -222,7 +222,7 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       TrainingPoolStatus status,
       int demonstrations,
       int funds,
-      int solBalance,
+      int? solBalance,
       Token token,
       String skills,
       String? ownerEmail,
@@ -259,7 +259,7 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
     Object? status = null,
     Object? demonstrations = null,
     Object? funds = null,
-    Object? solBalance = null,
+    Object? solBalance = freezed,
     Object? token = null,
     Object? skills = null,
     Object? ownerEmail = freezed,
@@ -293,10 +293,10 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
               as int,
-      solBalance: null == solBalance
+      solBalance: freezed == solBalance
           ? _value.solBalance
           : solBalance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -354,7 +354,7 @@ class _$TrainingPoolImpl implements _TrainingPool {
       required this.status,
       required this.demonstrations,
       required this.funds,
-      required this.solBalance,
+      this.solBalance,
       required this.token,
       required this.skills,
       this.ownerEmail,
@@ -382,7 +382,7 @@ class _$TrainingPoolImpl implements _TrainingPool {
   @override
   final int funds;
   @override
-  final int solBalance;
+  final int? solBalance;
   @override
   final Token token;
   @override
@@ -495,7 +495,7 @@ abstract class _TrainingPool implements TrainingPool {
       required final TrainingPoolStatus status,
       required final int demonstrations,
       required final int funds,
-      required final int solBalance,
+      final int? solBalance,
       required final Token token,
       required final String skills,
       final String? ownerEmail,
@@ -523,7 +523,7 @@ abstract class _TrainingPool implements TrainingPool {
   @override
   int get funds;
   @override
-  int get solBalance;
+  int? get solBalance;
   @override
   Token get token;
   @override

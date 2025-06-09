@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/apps.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal_step1.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal_step2.dart';
@@ -90,12 +92,24 @@ class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
   void initState() {
     super.initState();
     _skillsController = TextEditingController(text: widget.skills);
+    _skillsController.addListener(() {
+      widget.onSkillsChange(_skillsController.text);
+    });
   }
 
   @override
   void dispose() {
     _skillsController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant GenerateGymModal oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.skills != oldWidget.skills &&
+        widget.skills != _skillsController.text) {
+      _skillsController.text = widget.skills;
+    }
   }
 
   void _applyExamplePrompt(String prompt) {
@@ -206,63 +220,80 @@ class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      child: CardWidget(
-        variant: CardVariant.secondary,
-        padding: CardPadding.large,
-        child: Container(
-          width: 600,
-          constraints: const BoxConstraints(maxHeight: 800),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Generate a gym',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  IconButton(
-                    onPressed: widget.onClose,
-                    icon: const Icon(Icons.close),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              if (currentStep == 1) ...[
-                GenerateGymModalStep1(
-                  skillsController: _skillsController,
-                  onSkillsChange: widget.onSkillsChange,
-                  isGenerating: _isGenerating,
-                  onGenerate: _startGeneration,
-                  onClose: widget.onClose,
-                  error: _error,
-                  examplePrompts: examplePrompts,
-                  onExamplePrompt: _applyExamplePrompt,
-                ),
-              ] else if (currentStep == 2) ...[
-                const GenerateGymModalStep2(),
-              ] else if (currentStep == 3) ...[
-                GenerateGymModalStep3(
-                  showJsonEditor: showJsonEditor,
-                  rawAppsJson: rawAppsJson,
-                  onRawJsonChanged: (v) => setState(() => rawAppsJson = v),
-                  onToggleJsonEditor: _toggleJsonEditor,
-                  generatedResponse: generatedResponse,
-                  onGymNameChanged: _updateGymName,
-                  onAppNameChanged: _updateAppName,
-                  onTaskPromptChanged: _updateTaskPrompt,
-                  onBack: _goBackToEdit,
-                  onSave: _handleSave,
-                ),
-              ],
-            ],
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+            child: Container(
+              color: Colors.black.withValues(alpha: 0.5),
+            ),
           ),
         ),
-      ),
+        Center(
+          child: CardWidget(
+            padding: CardPadding.large,
+            child: Container(
+              width: 600,
+              constraints: const BoxConstraints(maxHeight: 800),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Generate a gym',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: VMColors.primaryText,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: widget.onClose,
+                        icon: Icon(
+                          Icons.close,
+                          color: VMColors.secondaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  if (currentStep == 1) ...[
+                    GenerateGymModalStep1(
+                      skillsController: _skillsController,
+                      onSkillsChange: widget.onSkillsChange,
+                      isGenerating: _isGenerating,
+                      onGenerate: _startGeneration,
+                      onClose: widget.onClose,
+                      error: _error,
+                      examplePrompts: examplePrompts,
+                      onExamplePrompt: _applyExamplePrompt,
+                    ),
+                  ] else if (currentStep == 2) ...[
+                    const GenerateGymModalStep2(),
+                  ] else if (currentStep == 3) ...[
+                    GenerateGymModalStep3(
+                      showJsonEditor: showJsonEditor,
+                      rawAppsJson: rawAppsJson,
+                      onRawJsonChanged: (v) => setState(() => rawAppsJson = v),
+                      onToggleJsonEditor: _toggleJsonEditor,
+                      generatedResponse: generatedResponse,
+                      onGymNameChanged: _updateGymName,
+                      onAppNameChanged: _updateAppName,
+                      onTaskPromptChanged: _updateTaskPrompt,
+                      onBack: _goBackToEdit,
+                      onSave: _handleSave,
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

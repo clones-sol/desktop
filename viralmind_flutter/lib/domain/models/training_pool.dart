@@ -26,7 +26,7 @@ class TrainingPool with _$TrainingPool {
     required TrainingPoolStatus status,
     required int demonstrations,
     required int funds,
-    required int solBalance,
+    int? solBalance,
     required Token token,
     required String skills,
     String? ownerEmail,

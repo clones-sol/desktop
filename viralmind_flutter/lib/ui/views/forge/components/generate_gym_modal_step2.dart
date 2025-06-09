@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:viralmind_flutter/assets.dart';
 
 class GenerateGymModalStep2 extends StatelessWidget {
   const GenerateGymModalStep2({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: 60),
-        Center(child: CircularProgressIndicator()),
-        SizedBox(height: 24),
-        Center(
-          child: Text('Generating your gym...', style: TextStyle(fontSize: 16)),
+        const Center(child: CircularProgressIndicator()),
+        const SizedBox(height: 20),
+        const Center(
+          child: Text('Generating your gym...',
+              style: TextStyle(color: VMColors.primaryText, fontSize: 16)),
         ),
-        SizedBox(height: 8),
+        const SizedBox(height: 8),
         Center(
           child: Text(
             'Creating tasks based on your requirements...',
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: VMColors.secondaryText),
           ),
         ),
-        SizedBox(height: 60),
       ],
     );
   }

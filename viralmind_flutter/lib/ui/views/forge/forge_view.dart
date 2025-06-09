@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:viralmind_flutter/application/pool.dart';
 import 'package:viralmind_flutter/application/wallet.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
+import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal.dart';
 import 'package:viralmind_flutter/utils/env.dart';
@@ -28,6 +29,8 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   double _solPrice = 0;
   double _viralPerSol = 0;
 
+  String _skills = '';
+
   @override
   void initState() {
     super.initState();
@@ -47,7 +50,11 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   }
 
   void _navigateToGymDetail(TrainingPool pool) {
-    // TODO: Implement navigation to gym detail page
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => ForgeGymDetail(pool: pool),
+      ),
+    );
   }
 
   Future<void> _handleSave(Map<String, dynamic> generatedResponse) async {
@@ -59,8 +66,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         final poolName = content['name'] ?? 'Unnamed Gym';
         final apps =
             (content['apps'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-        //TODO: get skills from generatedResponse
-        const skills = '';
+        final skills = _skills;
         final token = Token(
           type: TokenType.viral,
           symbol: 'VIRAL',
@@ -78,6 +84,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         ref.invalidate(listPoolsProvider);
         setState(() {
           _showGenerateGymModal = false;
+          _skills = '';
         });
       }
     } catch (e) {
@@ -100,8 +107,12 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         ),
         if (_showGenerateGymModal)
           GenerateGymModal(
-            skills: '',
-            onSkillsChange: (skills) {},
+            skills: _skills,
+            onSkillsChange: (skills) {
+              setState(() {
+                _skills = skills;
+              });
+            },
             onClose: () {
               setState(() => _showGenerateGymModal = false);
             },
@@ -112,79 +123,58 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   }
 
   Widget _buildPools(List<TrainingPool> pools) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Theme.of(context).colorScheme.surface,
-            Theme.of(context).colorScheme.surface.withValues(alpha: 0.95),
-          ],
-        ),
-      ),
-      child: Scrollbar(
-        thumbVisibility: true,
-        thickness: 8,
-        radius: const Radius.circular(4),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      FontAwesomeIcons.hammer,
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 28,
-                    ),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Forge',
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
-                  ],
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Forge',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 0.5,
+                  color: VMColors.secondaryText,
                 ),
-                const SizedBox(height: 12),
-                Text(
-                  'Collect crowd-powered demonstrations, perfect for training AI agents.',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.onSurface.withValues(alpha: 0.7),
-                    fontWeight: FontWeight.w300,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                if (_error != null)
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border:
-                          Border.all(color: Colors.red.withValues(alpha: 0.1)),
-                    ),
-                    child: Text(
-                      _error!,
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                  ),
-                if (pools.isEmpty)
-                  _buildEmptyState()
-                else
-                  _buildPoolsGrid(pools),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
+          const SizedBox(height: 30),
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Collect crowd-powered demonstrations, perfect for training AI agents.',
+                style: TextStyle(
+                  fontSize: 24,
+                  color: VMColors.primaryText,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          if (_error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.withValues(alpha: 0.1)),
+                ),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ),
+          if (pools.isEmpty) _buildEmptyState() else _buildPoolsGrid(pools),
+        ],
       ),
     );
   }
@@ -198,10 +188,14 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
           crossAxisCount: 4,
           crossAxisSpacing: 24,
           mainAxisSpacing: 24,
-          childAspectRatio: 1.5,
+          childAspectRatio: 2,
           children: [
             ForgeNewGymCard(
-                onTap: () => setState(() => _showGenerateGymModal = true)),
+              onTap: () => setState(() {
+                _skills = '';
+                _showGenerateGymModal = true;
+              }),
+            ),
           ],
         ),
         const SizedBox(height: 32),
@@ -232,16 +226,21 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       crossAxisCount: 4,
-      crossAxisSpacing: 24,
-      mainAxisSpacing: 24,
-      childAspectRatio: 1.5,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
       children: [
         ForgeNewGymCard(
-            onTap: () => setState(() => _showGenerateGymModal = true)),
-        ...pools.map((pool) => ForgeExistingGymCard(
-              pool: pool,
-              onTap: () => _navigateToGymDetail(pool),
-            )),
+          onTap: () => setState(() {
+            _skills = '';
+            _showGenerateGymModal = true;
+          }),
+        ),
+        ...pools.map(
+          (pool) => ForgeExistingGymCard(
+            pool: pool,
+            onTap: () => _navigateToGymDetail(pool),
+          ),
+        ),
       ],
     );
   }
