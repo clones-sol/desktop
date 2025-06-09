@@ -176,7 +176,7 @@ class _GenerateAppsProviderElement
   String get prompt => (origin as GenerateAppsProvider).prompt;
 }
 
-String _$getAppsForGymHash() => r'1b7c4bd9009f65158b779a408ff723b5b0cbc208';
+String _$getAppsForGymHash() => r'61087aec2218a1c546d477601fbc5c415a1e6c8f';
 
 /// See also [getAppsForGym].
 @ProviderFor(getAppsForGym)
@@ -189,7 +189,7 @@ class GetAppsForGymFamily extends Family<AsyncValue<List<ForgeApp>>> {
 
   /// See also [getAppsForGym].
   GetAppsForGymProvider call({
-    Map<String, dynamic>? filter,
+    required GymFilter filter,
   }) {
     return GetAppsForGymProvider(
       filter: filter,
@@ -224,7 +224,7 @@ class GetAppsForGymFamily extends Family<AsyncValue<List<ForgeApp>>> {
 class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
   /// See also [getAppsForGym].
   GetAppsForGymProvider({
-    Map<String, dynamic>? filter,
+    required GymFilter filter,
   }) : this._internal(
           (ref) => getAppsForGym(
             ref as GetAppsForGymRef,
@@ -252,7 +252,7 @@ class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
     required this.filter,
   }) : super.internal();
 
-  final Map<String, dynamic>? filter;
+  final GymFilter filter;
 
   @override
   Override overrideWith(
@@ -295,7 +295,7 @@ class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
 // ignore: unused_element
 mixin GetAppsForGymRef on AutoDisposeFutureProviderRef<List<ForgeApp>> {
   /// The parameter `filter` of this provider.
-  Map<String, dynamic>? get filter;
+  GymFilter get filter;
 }
 
 class _GetAppsForGymProviderElement
@@ -304,7 +304,7 @@ class _GetAppsForGymProviderElement
   _GetAppsForGymProviderElement(super.provider);
 
   @override
-  Map<String, dynamic>? get filter => (origin as GetAppsForGymProvider).filter;
+  GymFilter get filter => (origin as GetAppsForGymProvider).filter;
 }
 
 String _$getGymCategoriesHash() => r'7f5f177d7cf9735cdffe7718ed4b10e8878e383f';

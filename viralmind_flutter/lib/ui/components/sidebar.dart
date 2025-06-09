@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/application/connection_token.dart';
 import 'package:viralmind_flutter/application/wallet.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
 import 'package:viralmind_flutter/ui/components/wallet_button.dart';
 
@@ -48,6 +48,10 @@ class Sidebar extends ConsumerWidget {
       ),
     ];
 
+    var activeIndex =
+        buttons.indexWhere((b) => currentRoute.startsWith(b.path));
+    if (activeIndex == -1) activeIndex = 0;
+
     return Container(
       width: 64,
       color: Colors.transparent,
@@ -64,9 +68,12 @@ class Sidebar extends ConsumerWidget {
             ),
           ),
           Expanded(
-            child: _SidebarSection(
+            child: AnimatedSidebarSection(
               buttons: buttons,
-              currentRoute: currentRoute,
+              activeIndex: activeIndex,
+              onTap: (i) {
+                context.go(buttons[i].path);
+              },
             ),
           ),
           const Spacer(),
@@ -128,94 +135,101 @@ class Sidebar extends ConsumerWidget {
   }
 }
 
-class _SidebarSection extends StatelessWidget {
-  const _SidebarSection({
+class AnimatedSidebarSection extends StatelessWidget {
+  const AnimatedSidebarSection({
     required this.buttons,
-    required this.currentRoute,
+    required this.activeIndex,
+    required this.onTap,
   });
 
   final List<SidebarButtonData> buttons;
-  final String currentRoute;
+  final int activeIndex;
+  final Function(int) onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ...buttons.map((button) {
-          final isActive = currentRoute.startsWith(button.path);
-          return isActive
-              ? Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Opacity(
-                      opacity: 0.5,
-                      child: Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: VMColors.secondary.withValues(alpha: 0.2),
-                            width: 0.5,
-                          ),
-                          gradient: LinearGradient(
-                            colors: [
-                              VMColors.secondary.withValues(alpha: 0.2),
-                              Colors.transparent,
-                              Colors.transparent,
-                              VMColors.secondary.withValues(alpha: 0.2),
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
+    const double buttonHeight = 80;
+    const double sidebarWidth = 100;
+    const double highlightSize = 70;
+    final totalHeight = buttons.length * buttonHeight;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final availableHeight = constraints.maxHeight;
+        final topOffset = availableHeight - totalHeight;
+        return Stack(
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(milliseconds: 350),
+              curve: Curves.easeInOut,
+              top: topOffset +
+                  activeIndex * buttonHeight +
+                  (buttonHeight - highlightSize) / 2,
+              left: (sidebarWidth - highlightSize) / 2,
+              width: highlightSize,
+              height: highlightSize,
+              child: Opacity(
+                opacity: 0.5,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: VMColors.secondary.withValues(alpha: 0.2),
+                      width: 0.5,
+                    ),
+                    gradient: LinearGradient(
+                      colors: [
+                        VMColors.secondary.withValues(alpha: 0.2),
+                        Colors.transparent,
+                        Colors.transparent,
+                        VMColors.secondary.withValues(alpha: 0.2),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: topOffset,
+              left: 0,
+              right: 0,
+              child: Column(
+                children: List.generate(buttons.length, (i) {
+                  final button = buttons[i];
+                  return SizedBox(
+                    height: buttonHeight,
+                    child: Center(
+                      child: GestureDetector(
+                        onTap: () => onTap(i),
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              colors: [
+                                VMColors.primary.withValues(alpha: 0.5),
+                                VMColors.secondary.withValues(alpha: 0.9),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: Image.asset(
+                            button.imagePath,
+                            width: 40,
+                            height: 40,
                           ),
                         ),
                       ),
                     ),
-                    _buildButton(
-                      context,
-                      button,
-                    ),
-                  ],
-                )
-              : Opacity(
-                  opacity: 0.7,
-                  child: _buildButton(
-                    context,
-                    button,
-                  ),
-                );
-        }),
-      ],
-    );
-  }
-
-  Widget _buildButton(BuildContext context, SidebarButtonData button) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      child: InkWell(
-        child: ShaderMask(
-          shaderCallback: (Rect bounds) {
-            return LinearGradient(
-              colors: [
-                VMColors.primary.withValues(alpha: 0.5),
-                VMColors.secondary.withValues(alpha: 0.9),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ).createShader(bounds);
-          },
-          blendMode: BlendMode.dstIn,
-          child: Image.asset(
-            button.imagePath,
-            width: 40,
-            height: 40,
-          ),
-        ),
-        onTap: () {
-          context.go(button.path);
-        },
-      ),
+                  );
+                }),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

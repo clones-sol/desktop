@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
+import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/infrastructure/apps.repository.dart';
 
 part 'apps.g.dart';
@@ -40,10 +41,11 @@ Future<List<ForgeApp>> getAppsForSkills(Ref ref) async {
 @riverpod
 Future<List<ForgeApp>> getAppsForGym(
   Ref ref, {
-  Map<String, dynamic>? filter,
+  required GymFilter filter,
 }) async {
   final appsRepository = ref.read(appsRepositoryProvider);
-  return appsRepository.getAppsForGym(filter: filter);
+  final apps = await appsRepository.getAppsForGym(filter: filter.toJson());
+  return apps;
 }
 
 @riverpod
