@@ -387,14 +387,14 @@ class _CreatePoolProviderElement extends AutoDisposeFutureProviderElement<void>
   String get ownerAddress => (origin as CreatePoolProvider).ownerAddress;
 }
 
-String _$getRewardHash() => r'b1bf0685332af7f5857010a092f5bccc92ecfa2e';
+String _$getRewardHash() => r'18f5597f8226a9a413c75586098ba4dd8ee061ec';
 
 /// See also [getReward].
 @ProviderFor(getReward)
 const getRewardProvider = GetRewardFamily();
 
 /// See also [getReward].
-class GetRewardFamily extends Family<AsyncValue<Map<String, dynamic>>> {
+class GetRewardFamily extends Family<AsyncValue<RewardInfo>> {
   /// See also [getReward].
   const GetRewardFamily();
 
@@ -435,8 +435,7 @@ class GetRewardFamily extends Family<AsyncValue<Map<String, dynamic>>> {
 }
 
 /// See also [getReward].
-class GetRewardProvider
-    extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+class GetRewardProvider extends AutoDisposeFutureProvider<RewardInfo> {
   /// See also [getReward].
   GetRewardProvider({
     required String poolId,
@@ -475,7 +474,7 @@ class GetRewardProvider
 
   @override
   Override overrideWith(
-    FutureOr<Map<String, dynamic>> Function(GetRewardRef provider) create,
+    FutureOr<RewardInfo> Function(GetRewardRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -493,7 +492,7 @@ class GetRewardProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+  AutoDisposeFutureProviderElement<RewardInfo> createElement() {
     return _GetRewardProviderElement(this);
   }
 
@@ -516,7 +515,7 @@ class GetRewardProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetRewardRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+mixin GetRewardRef on AutoDisposeFutureProviderRef<RewardInfo> {
   /// The parameter `poolId` of this provider.
   String get poolId;
 
@@ -525,8 +524,7 @@ mixin GetRewardRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
 }
 
 class _GetRewardProviderElement
-    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
-    with GetRewardRef {
+    extends AutoDisposeFutureProviderElement<RewardInfo> with GetRewardRef {
   _GetRewardProviderElement(super.provider);
 
   @override

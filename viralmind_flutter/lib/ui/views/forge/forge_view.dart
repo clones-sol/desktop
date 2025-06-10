@@ -157,7 +157,11 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                                 ? Column(
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.all(32),
+                                        padding: const EdgeInsets.only(
+                                          left: 32,
+                                          right: 32,
+                                          top: 32,
+                                        ),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -172,25 +176,28 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                                             ),
                                             IconButton(
                                               icon: const Icon(
-                                                  Icons.close_fullscreen,
-                                                  color: VMColors.secondary,
-                                                  size: 32),
+                                                Icons.close_fullscreen,
+                                                color: VMColors.secondary,
+                                                size: 32,
+                                              ),
                                               tooltip: 'Close',
                                               onPressed: () => setState(
-                                                  () => _selectedPool = null),
+                                                () => _selectedPool = null,
+                                              ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
                                       Expanded(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
-                                              horizontal: 32),
+                                            horizontal: 32,
+                                          ),
                                           child: ForgeGymDetail(
                                             pool: _selectedPool!,
                                             onBack: () => setState(
-                                                () => _selectedPool = null),
+                                              () => _selectedPool = null,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -211,58 +218,61 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   }
 
   Widget _buildPools(List<TrainingPool> pools) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Forge',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 0.5,
-                  color: VMColors.secondaryText,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Forge',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 0.5,
+                    color: VMColors.secondaryText,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Collect crowd-powered demonstrations, perfect for training AI agents.',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: VMColors.primaryText,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          if (_error != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.red.withValues(alpha: 0.1)),
-                ),
-                child: Text(
-                  _error!,
-                  style: const TextStyle(color: Colors.red),
-                ),
-              ),
+              ],
             ),
-          if (pools.isEmpty) _buildEmptyState() else _buildPoolsGrid(pools),
-        ],
+            const SizedBox(height: 30),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Collect crowd-powered demonstrations, perfect for training AI agents.',
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: VMColors.primaryText,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            if (_error != null)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border:
+                        Border.all(color: Colors.red.withValues(alpha: 0.1)),
+                  ),
+                  child: Text(
+                    _error!,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                ),
+              ),
+            if (pools.isEmpty) _buildEmptyState() else _buildPoolsGrid(pools),
+          ],
+        ),
       ),
     );
   }
@@ -310,26 +320,28 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         return b.createdAt.compareTo(a.createdAt);
       });*/
 
-    return GridView.count(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      crossAxisCount: 4,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      children: [
-        ForgeNewGymCard(
-          onTap: () => setState(() {
-            _skills = '';
-            _showGenerateGymModal = true;
-          }),
-        ),
-        ...pools.map(
-          (pool) => ForgeExistingGymCard(
-            pool: pool,
-            onTap: () => setState(() => _selectedPool = pool),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height - 170,
+      child: GridView.count(
+        physics: const AlwaysScrollableScrollPhysics(),
+        crossAxisCount: 4,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        children: [
+          ForgeNewGymCard(
+            onTap: () => setState(() {
+              _skills = '';
+              _showGenerateGymModal = true;
+            }),
           ),
-        ),
-      ],
+          ...pools.map(
+            (pool) => ForgeExistingGymCard(
+              pool: pool,
+              onTap: () => setState(() => _selectedPool = pool),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

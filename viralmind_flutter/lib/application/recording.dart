@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
+import 'package:viralmind_flutter/frb_generated/frb_generated.dart';
 import 'package:viralmind_flutter/infrastructure/recording.repository.dart';
 
 part 'recording.g.dart';
@@ -22,4 +23,18 @@ Future<void> startRecording(Ref ref, {Quest? quest, int fps = 30}) async {
 Future<String> stopRecording(Ref ref, {String? reason}) async {
   final recordingRepository = ref.read(recordingRepositoryProvider);
   return recordingRepository.stopRecording(reason: reason);
+}
+
+@riverpod
+Future<void> writeRecordingFile(
+  Ref ref, {
+  required String recordingId,
+  required String filename,
+  required String content,
+}) async {
+  await RustLib.instance.api.crateApiRecordingWriteRecordingFile(
+    recordingId: recordingId,
+    filename: filename,
+    content: content,
+  );
 }

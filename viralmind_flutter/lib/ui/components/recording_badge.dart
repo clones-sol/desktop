@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/utils/format_time.dart';
 
-enum RecordingState { recording, stopping, stopped }
+enum RecordingState {
+  off,
+  starting,
+  recording,
+  saving,
+  saved,
+  stopped,
+  stopping
+}
 
 class RecordingBadge extends StatelessWidget {
   const RecordingBadge({
     super.key,
-    this.state = RecordingState.stopped,
+    this.state = RecordingState.off,
     this.time = 0,
   });
   final RecordingState state;

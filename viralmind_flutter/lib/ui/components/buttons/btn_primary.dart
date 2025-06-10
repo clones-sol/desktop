@@ -11,6 +11,7 @@ class BtnPrimary extends StatelessWidget {
     this.btnPrimaryType = BtnPrimaryType.primary,
     this.isLocked = false,
     this.widthExpanded = false,
+    this.icon,
     super.key,
   });
   final String buttonText;
@@ -18,6 +19,7 @@ class BtnPrimary extends StatelessWidget {
   final BtnPrimaryType btnPrimaryType;
   final bool isLocked;
   final bool widthExpanded;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +47,28 @@ class BtnPrimary extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 17, vertical: 8.5),
           alignment: Alignment.center,
           decoration: _getButtonDecoration(),
-          child: Text(
-            buttonText,
-            overflow: TextOverflow.visible,
-            softWrap: false,
-            style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                  color: isLocked
-                      ? Colors.white.withValues(alpha: 0.2)
-                      : Colors.white,
-                  fontWeight: FontWeight.w600,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (icon != null)
+                Padding(
+                  padding:
+                      EdgeInsets.only(right: buttonText.isNotEmpty ? 8 : 0),
+                  child: Icon(icon, color: Colors.white, size: 16),
                 ),
+              if (buttonText.isNotEmpty)
+                Text(
+                  buttonText,
+                  overflow: TextOverflow.visible,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: isLocked
+                            ? Colors.white.withValues(alpha: 0.2)
+                            : Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+            ],
           ),
         ),
       ),
