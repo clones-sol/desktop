@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/rust_api.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
-import 'package:viralmind_flutter/ui/views/chat/chat_view.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
+import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
 
 final _router = GoRouter(
   initialLocation: '/app/gym',
@@ -23,7 +23,7 @@ final _router = GoRouter(
         GoRoute(
           path: '/app/gym',
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: GymView(),
+            child: TrainingSessionView(),
           ),
         ),
         GoRoute(
@@ -41,7 +41,7 @@ final _router = GoRouter(
         GoRoute(
           path: '/app/chat',
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: ChatView(),
+            child: TrainingSessionView(),
           ),
         ),
       ],

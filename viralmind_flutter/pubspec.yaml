@@ -27,6 +27,7 @@ dependencies:
   go_router: ^13.2.0
   intl: ^0.20.2
   gradient_borders: ^1.0.1
+  audioplayers: ^6.4.0
 
 dev_dependencies:
   flutter_test:

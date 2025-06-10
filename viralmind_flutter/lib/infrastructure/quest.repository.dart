@@ -34,8 +34,8 @@ class QuestRepositoryImpl {
       return quest.copyWith(
         poolId: poolId,
         reward: RewardInfo(
-          time: rewardInfo['time'] as int,
-          maxReward: rewardInfo['max_reward'] as int,
+          time: rewardInfo.time,
+          maxReward: rewardInfo.maxReward,
         ),
         taskId: taskId,
       );

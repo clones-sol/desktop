@@ -323,5 +323,169 @@ class _StopRecordingProviderElement
   @override
   String? get reason => (origin as StopRecordingProvider).reason;
 }
+
+String _$writeRecordingFileHash() =>
+    r'1e8c28de8f1b93579bfbb68d1cf6cc3e38990699';
+
+/// See also [writeRecordingFile].
+@ProviderFor(writeRecordingFile)
+const writeRecordingFileProvider = WriteRecordingFileFamily();
+
+/// See also [writeRecordingFile].
+class WriteRecordingFileFamily extends Family<AsyncValue<void>> {
+  /// See also [writeRecordingFile].
+  const WriteRecordingFileFamily();
+
+  /// See also [writeRecordingFile].
+  WriteRecordingFileProvider call({
+    required String recordingId,
+    required String filename,
+    required String content,
+  }) {
+    return WriteRecordingFileProvider(
+      recordingId: recordingId,
+      filename: filename,
+      content: content,
+    );
+  }
+
+  @override
+  WriteRecordingFileProvider getProviderOverride(
+    covariant WriteRecordingFileProvider provider,
+  ) {
+    return call(
+      recordingId: provider.recordingId,
+      filename: provider.filename,
+      content: provider.content,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'writeRecordingFileProvider';
+}
+
+/// See also [writeRecordingFile].
+class WriteRecordingFileProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [writeRecordingFile].
+  WriteRecordingFileProvider({
+    required String recordingId,
+    required String filename,
+    required String content,
+  }) : this._internal(
+          (ref) => writeRecordingFile(
+            ref as WriteRecordingFileRef,
+            recordingId: recordingId,
+            filename: filename,
+            content: content,
+          ),
+          from: writeRecordingFileProvider,
+          name: r'writeRecordingFileProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$writeRecordingFileHash,
+          dependencies: WriteRecordingFileFamily._dependencies,
+          allTransitiveDependencies:
+              WriteRecordingFileFamily._allTransitiveDependencies,
+          recordingId: recordingId,
+          filename: filename,
+          content: content,
+        );
+
+  WriteRecordingFileProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.recordingId,
+    required this.filename,
+    required this.content,
+  }) : super.internal();
+
+  final String recordingId;
+  final String filename;
+  final String content;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(WriteRecordingFileRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: WriteRecordingFileProvider._internal(
+        (ref) => create(ref as WriteRecordingFileRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        recordingId: recordingId,
+        filename: filename,
+        content: content,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _WriteRecordingFileProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WriteRecordingFileProvider &&
+        other.recordingId == recordingId &&
+        other.filename == filename &&
+        other.content == content;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, recordingId.hashCode);
+    hash = _SystemHash.combine(hash, filename.hashCode);
+    hash = _SystemHash.combine(hash, content.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin WriteRecordingFileRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `recordingId` of this provider.
+  String get recordingId;
+
+  /// The parameter `filename` of this provider.
+  String get filename;
+
+  /// The parameter `content` of this provider.
+  String get content;
+}
+
+class _WriteRecordingFileProviderElement
+    extends AutoDisposeFutureProviderElement<void> with WriteRecordingFileRef {
+  _WriteRecordingFileProviderElement(super.provider);
+
+  @override
+  String get recordingId => (origin as WriteRecordingFileProvider).recordingId;
+  @override
+  String get filename => (origin as WriteRecordingFileProvider).filename;
+  @override
+  String get content => (origin as WriteRecordingFileProvider).content;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

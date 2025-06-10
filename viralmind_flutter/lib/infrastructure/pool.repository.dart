@@ -1,6 +1,7 @@
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/api/request_options.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
+import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 
@@ -111,26 +112,27 @@ class PoolsRepositoryImpl {
         return TrainingPoolStatus.live;
       case 'paused':
         return TrainingPoolStatus.paused;
-      case 'noFunds':
+      case 'no-funds':
         return TrainingPoolStatus.noFunds;
-      case 'noGas':
+      case 'no-gas':
         return TrainingPoolStatus.noGas;
       default:
         return TrainingPoolStatus.paused;
     }
   }
 
-  Future<Map<String, dynamic>> getReward({
+  Future<RewardInfo> getReward({
     required String poolId,
     String? taskId,
   }) async {
     try {
       final params = <String, dynamic>{'poolId': poolId};
       if (taskId != null) params['taskId'] = taskId;
-      return await _client.get<Map<String, dynamic>>(
+      return await _client.get<RewardInfo>(
         '/forge/pools/reward',
         params: params,
         options: const RequestOptions(requiresAuth: true),
+        fromJson: (json) => RewardInfo.fromJson(json as Map<String, dynamic>),
       );
     } catch (e) {
       throw Exception('Failed to get reward: $e');

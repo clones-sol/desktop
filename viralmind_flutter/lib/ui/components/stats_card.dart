@@ -12,29 +12,31 @@ class StatCard extends StatelessWidget {
     return CardWidget(
       padding: CardPadding.none,
       variant: CardVariant.secondary,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: VMColors.primary,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 40),
+        child: Column(
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: VMColors.primary,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: VMColors.secondary,
-              letterSpacing: -0.5,
+            const SizedBox(height: 12),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: VMColors.secondary,
+                letterSpacing: -0.5,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

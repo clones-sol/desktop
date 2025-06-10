@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
+import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/infrastructure/pool.repository.dart';
@@ -51,7 +52,7 @@ Future<void> createPool(
 }
 
 @riverpod
-Future<Map<String, dynamic>> getReward(
+Future<RewardInfo> getReward(
   Ref ref, {
   required String poolId,
   String? taskId,

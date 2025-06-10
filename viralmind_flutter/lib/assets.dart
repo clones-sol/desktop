@@ -16,4 +16,12 @@ class VMColors {
   static const Color primary = Color(0xFFC34EFF);
   static const Color secondary = Color(0xFF9050FF);
   static const Color tertiary = Color(0xFF5C51FF);
+
+  static Gradient gradientInputFormBackground = LinearGradient(
+    colors: [
+      const HSLColor.fromAHSL(1, 0, 0, 0.10).toColor().withValues(alpha: 1),
+      const HSLColor.fromAHSL(1, 0, 0, 0.10).toColor().withValues(alpha: 0.3),
+    ],
+    stops: const [0, 1],
+  );
 }
