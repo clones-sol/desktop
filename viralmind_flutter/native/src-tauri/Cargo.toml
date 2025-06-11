@@ -1,8 +1,10 @@
 [package]
 name = "viralmind-desktop"
 version = "0.1.0"
-description = "The Viralmind desktop app."
-authors = ["Dillon DuPont", "Morgan Dean"]
+description = "A new Flutter project."
+authors = ["you"]
+license = ""
+repository = ""
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -15,7 +17,7 @@ name = "gym_desktop_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2", features = [] }
+tauri-build = { version = "2.0.0-beta.23", features = [] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 core-graphics = "0.24.0"
@@ -36,14 +38,10 @@ multiinput = "0.1.0"
 tauri-plugin-updater = "2"
 
 [dependencies]
-tauri = { version = "2", features = [
-  "macos-private-api",
-  "protocol-asset",
-  "devtools",
-] }
-tauri-plugin-opener = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+tauri = { version = "2.0.0-beta.23", features = ["tray-icon", "devtools", "macos-private-api", "protocol-asset"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tauri-plugin-opener = "2.0.0-beta.9"
 rdev = { git = "https://github.com/rustdesk-org/rdev" }
 chrono = "0.4"
 once_cell = "1.19"
@@ -53,26 +51,32 @@ tar = "0.4"
 xz2 = { version = "0.1", features = ["static"] }
 lazy_static = "1.4.0"
 display-info = "0.4.3"
-xcap = "0.6.0"
+xcap = "0.2.2"
 base64 = "0.21.7"
 image = "0.24.7"
-tauri-plugin-shell = "2"
-tauri-plugin-os = "2"
-tauri-plugin-clipboard-manager = "2"
-tauri-plugin-process = "2"
-tauri-plugin-log = "2"
-tauri-plugin-deep-link = "2"
-tauri-plugin-dialog = "2"
+tauri-plugin-shell = "2.0.0-beta.8"
+tauri-plugin-os = "2.0.0-beta.8"
+tauri-plugin-clipboard-manager = "2.0.0-beta.8"
+tauri-plugin-process = "2.0.0-beta.8"
+tauri-plugin-log = { version = "2.0.0-beta.8", features = ["colored"] }
+log = "0.4.26"
+tauri-plugin-deep-link = "2.0.0-beta.8"
+tauri-plugin-dialog = "2.0.0-beta.8"
 dotenvy = "0.15"
 walkdir = "2"
 wait-timeout = "0.2"
 rlimit = "0.10"
-anyhow = "1.0.98"
-flutter_rust_bridge = "=2.10.0"
-log = "0.4.27"
-tokio = { version = "1.45.1", features = ["full"] }
+anyhow = "1.0"
+
+# Ajouts pour le serveur IPC
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+tower-http = { version = "0.5.0", features = ["cors"] }
 
 [dev-dependencies]
 tempfile = "3.10.1"
 
-
+[features]
+# this feature is used for production builds or when `devPath` points to the filesystem
+# DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]
