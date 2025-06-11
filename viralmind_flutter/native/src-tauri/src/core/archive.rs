@@ -308,7 +308,7 @@ mod tests {
     mod cleanup_tests {
         use super::super::*; // Access parent (archive.rs) functions
         use std::path::PathBuf;
-        use tempfile::{tempdir, NamedTempFile};
+        use tempfile::tempdir;
 
         #[test]
         fn test_cleanup_archive_success() {
