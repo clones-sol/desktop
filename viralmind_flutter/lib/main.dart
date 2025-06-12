@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:viralmind_flutter/rust_api.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
-import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
 
 final _router = GoRouter(
-  initialLocation: '/app/gym',
+  initialLocation: '/app/forge',
   routes: [
     ShellRoute(
       builder: (context, state, child) {
@@ -53,8 +51,6 @@ Future<void> main() async {
   // Ensure flutter is initialized.
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  // Initialize rust bindings
-  await initRust();
   runApp(const ProviderScope(child: ViralmindApp()));
 }
 

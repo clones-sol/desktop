@@ -8,20 +8,14 @@ part of 'message.dart';
 
 _$MessageImpl _$$MessageImplFromJson(Map<String, dynamic> json) =>
     _$MessageImpl(
-      role: $enumDecode(_$MessageRoleEnumMap, json['role']),
-      parts: (json['parts'] as List<dynamic>)
-          .map((e) => MessagePart.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      role: json['role'] as String,
+      content: json['content'] as String,
+      timestamp: (json['timestamp'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$MessageImplToJson(_$MessageImpl instance) =>
     <String, dynamic>{
-      'role': _$MessageRoleEnumMap[instance.role]!,
-      'parts': instance.parts,
+      'role': instance.role,
+      'content': instance.content,
+      'timestamp': instance.timestamp,
     };
-
-const _$MessageRoleEnumMap = {
-  MessageRole.assistant: 'assistant',
-  MessageRole.user: 'user',
-  MessageRole.system: 'system',
-};

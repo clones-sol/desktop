@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:viralmind_flutter/application/connection_token.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
@@ -274,11 +275,23 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.account_balance_wallet,
-                    size: 18,
-                    color:
-                        widget.theme == 'light' ? Colors.black87 : Colors.white,
+                  ShaderMask(
+                    shaderCallback: (Rect bounds) {
+                      return LinearGradient(
+                        colors: [
+                          VMColors.primary.withValues(alpha: 0.5),
+                          VMColors.secondary.withValues(alpha: 0.9),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                      ).createShader(bounds);
+                    },
+                    blendMode: BlendMode.dstIn,
+                    child: Image.asset(
+                      'assets/wallet_icon.png',
+                      width: 40,
+                      height: 40,
+                    ),
                   ),
                   if (widget.variant == 'large') ...[
                     const SizedBox(width: 8),
@@ -294,8 +307,8 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                 ],
               ),
             );
-            return ElevatedButton.icon(
-              onPressed: () {
+            return InkWell(
+              onTap: () {
                 if (_isHovering == false) {
                   setState(() {
                     _isHovering = true;
@@ -308,18 +321,22 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                   });
                 }
               },
-              icon: const Icon(Icons.account_balance_wallet, size: 16),
-              label: widget.variant == 'large'
-                  ? const Text('Connect Wallet')
-                  : const SizedBox.shrink(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: widget.theme == 'light'
-                    ? Colors.white.withOpacity(0.9)
-                    : Colors.white.withOpacity(0.05),
-                foregroundColor:
-                    widget.theme == 'light' ? Colors.black87 : Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18),
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return LinearGradient(
+                    colors: [
+                      VMColors.primary.withValues(alpha: 0.5),
+                      VMColors.secondary.withValues(alpha: 0.9),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.dstIn,
+                child: Image.asset(
+                  'assets/wallet_icon.png',
+                  width: 40,
+                  height: 40,
                 ),
               ),
             );
@@ -327,20 +344,24 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
         ),
       );
     } else {
-      return ElevatedButton.icon(
-        onPressed: _handleConnect,
-        icon: const Icon(Icons.account_balance_wallet, size: 16),
-        label: widget.variant == 'large'
-            ? const Text('Connect Wallet')
-            : const SizedBox.shrink(),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: widget.theme == 'light'
-              ? Colors.red.withOpacity(0.9)
-              : Colors.red.withOpacity(0.05),
-          foregroundColor:
-              widget.theme == 'light' ? Colors.black87 : Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
+      return InkWell(
+        onTap: _handleConnect,
+        child: ShaderMask(
+          shaderCallback: (Rect bounds) {
+            return LinearGradient(
+              colors: [
+                VMColors.primary.withValues(alpha: 0.5),
+                VMColors.secondary.withValues(alpha: 0.9),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ).createShader(bounds);
+          },
+          blendMode: BlendMode.dstIn,
+          child: Image.asset(
+            'assets/wallet_icon.png',
+            width: 40,
+            height: 40,
           ),
         ),
       );

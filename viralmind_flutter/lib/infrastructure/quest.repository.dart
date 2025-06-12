@@ -1,5 +1,6 @@
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
+import 'package:viralmind_flutter/domain/models/quest/quest_reward.dart';
 import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/infrastructure/pool.repository.dart';
 
@@ -33,7 +34,7 @@ class QuestRepositoryImpl {
       );
       return quest.copyWith(
         poolId: poolId,
-        reward: RewardInfo(
+        reward: QuestReward(
           time: rewardInfo.time,
           maxReward: rewardInfo.maxReward,
         ),

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
-import 'package:viralmind_flutter/frb_generated/frb_generated.dart';
 import 'package:viralmind_flutter/infrastructure/recording.repository.dart';
+import 'package:viralmind_flutter/providers/api_provider.dart';
 
 part 'recording.g.dart';
 
@@ -32,7 +32,8 @@ Future<void> writeRecordingFile(
   required String filename,
   required String content,
 }) async {
-  await RustLib.instance.api.crateApiRecordingWriteRecordingFile(
+  final tauriApiClient = ref.read(tauriApiClientProvider);
+  await tauriApiClient.writeRecordingFile(
     recordingId: recordingId,
     filename: filename,
     content: content,

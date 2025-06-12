@@ -1,18 +1,40 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:viralmind_flutter/domain/models/message/message_part.dart';
 
 part 'message.freezed.dart';
 part 'message.g.dart';
 
-enum MessageRole { assistant, user, system }
-
-
 @freezed
 class Message with _$Message {
   const factory Message({
-    required MessageRole role,
-    required List<MessagePart> parts,
+    required String role,
+    required String content,
+    int? timestamp,
   }) = _Message;
 
-  factory Message.fromJson(Map<String, dynamic> json) => _$MessageFromJson(json);
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
+}
+
+Message generateAssistantMessage(
+  String content, {
+  int? timestamp,
+  bool audio = true,
+  bool delay = true,
+}) {
+  return Message(
+    role: 'assistant',
+    content: content,
+    timestamp: timestamp,
+  );
+}
+
+Message generateUserMessage(
+  String content, {
+  int? timestamp,
+}) {
+  return Message(
+    role: 'user',
+    content: content,
+    timestamp: timestamp,
+  );
 }

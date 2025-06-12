@@ -325,7 +325,7 @@ class _StopRecordingProviderElement
 }
 
 String _$writeRecordingFileHash() =>
-    r'1e8c28de8f1b93579bfbb68d1cf6cc3e38990699';
+    r'cbb7f3f9671485df7779455c6f51df4a30cc2f9a';
 
 /// See also [writeRecordingFile].
 @ProviderFor(writeRecordingFile)

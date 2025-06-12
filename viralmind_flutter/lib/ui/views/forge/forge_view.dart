@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/pool.dart';
@@ -6,12 +8,12 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/ui/components/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal.dart';
 import 'package:viralmind_flutter/utils/env.dart';
-import 'dart:ui';
 
 class ForgeView extends ConsumerStatefulWidget {
   const ForgeView({super.key});
@@ -107,7 +109,16 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
           children: [
             poolsAsync.when(
               data: _buildPools,
-              error: (error, stack) => Text(error.toString()),
+              error: (error, stack) => Padding(
+                padding: const EdgeInsets.all(20),
+                child: MessageBox(
+                  messageBoxType: MessageBoxType.warning,
+                  content: Text(
+                    error.toString(),
+                    style: const TextStyle(color: Color(0xFFFF8400)),
+                  ),
+                ),
+              ),
               loading: () => const Center(child: CircularProgressIndicator()),
             ),
             if (_showGenerateGymModal)
@@ -270,43 +281,10 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                   ),
                 ),
               ),
-            if (pools.isEmpty) _buildEmptyState() else _buildPoolsGrid(pools),
+            _buildPoolsGrid(pools),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildEmptyState() {
-    return Column(
-      children: [
-        GridView.count(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 4,
-          crossAxisSpacing: 24,
-          mainAxisSpacing: 24,
-          childAspectRatio: 2,
-          children: [
-            ForgeNewGymCard(
-              onTap: () => setState(() {
-                _skills = '';
-                _showGenerateGymModal = true;
-              }),
-            ),
-          ],
-        ),
-        const SizedBox(height: 32),
-        Text(
-          'No AI agent gyms found. Create one to get started!',
-          style: TextStyle(
-            color:
-                Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
-            fontWeight: FontWeight.w300,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:viralmind_flutter/domain/models/quest/quest_reward.dart';
 import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 
 part 'quest.freezed.dart';
@@ -9,11 +10,11 @@ class Quest with _$Quest {
   const factory Quest({
     required String title,
     required String app,
-    required String iconUrl,
+    @JsonKey(name: 'icon_url') required String iconUrl,
     required List<String> objectives,
     required String content,
     String? poolId,
-    RewardInfo? reward,
+    QuestReward? reward,
     String? taskId,
   }) = _Quest;
 

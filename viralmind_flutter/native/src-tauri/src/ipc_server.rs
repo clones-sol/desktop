@@ -5,9 +5,9 @@ use axum::{
     routing::{get, post},
     Router,
 };
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
-use tauri::AppHandle;
+use tauri::{AppHandle, Manager};
 use tower_http::cors::{Any, CorsLayer};
 
 // On importe la logique métier depuis le module `core` local
@@ -50,6 +50,12 @@ pub struct StartRecordingPayload {
     fps: u32,
 }
 
+// Structure pour la requête de stop_recording
+#[derive(Deserialize)]
+pub struct StopRecordingPayload {
+    status: String,
+}
+
 // Structure pour le payload de `set_upload_data_allowed`
 #[derive(Deserialize)]
 pub struct SetUploadAllowedPayload {
@@ -80,6 +86,7 @@ pub async fn init(app_handle: AppHandle) {
         .route("/recordings", get(list_recordings_handler))
         .route("/recording/file", post(write_recording_file_handler))
         .route("/recording/start", post(start_recording_handler))
+        .route("/recording/stop", post(stop_recording_handler))
         .route("/recording/:id", axum::routing::delete(delete_recording_handler))
         .route("/apps", get(list_apps_handler))
         .route("/screenshot", get(take_screenshot_handler))
@@ -101,8 +108,8 @@ pub async fn init(app_handle: AppHandle) {
 
     // On lance le serveur dans une tâche Tokio pour ne pas bloquer le thread principal de Tauri
     tokio::spawn(async move {
-        axum::Server::bind(&addr)
-            .serve(app.into_make_service())
+        let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
+        axum::serve(listener, app.into_make_service())
             .await
             .unwrap();
     });
@@ -144,7 +151,7 @@ async fn start_recording_handler(
     // On récupère le "QuestState" depuis le state manager de Tauri via l'AppHandle
     let quest_state: tauri::State<record::QuestState> = state.app_handle.state();
     match record::start_recording(
-        state.app_handle,
+        state.app_handle.clone(),
         quest_state,
         payload.quest,
         payload.fps,
@@ -152,6 +159,18 @@ async fn start_recording_handler(
     .await
     {
         Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+// Handler pour arrêter un enregistrement
+async fn stop_recording_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<StopRecordingPayload>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    let quest_state: tauri::State<record::QuestState> = state.app_handle.state();
+    match record::stop_recording(state.app_handle.clone(), quest_state, Some(payload.status)).await {
+        Ok(recording_id) => Ok((StatusCode::OK, recording_id)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 }
@@ -200,13 +219,23 @@ async fn set_upload_data_allowed_handler(
 // Handler pour `has_ax_perms`
 async fn has_ax_perms_handler() -> impl IntoResponse {
     let status = has_ax_perms();
-    (StatusCode::OK, Json(PermissionStatus { has_permission: status }))
+    (
+        StatusCode::OK,
+        Json(PermissionStatus {
+            has_permission: status,
+        }),
+    )
 }
 
 // --- Handlers pour les permissions et settings ---
 
 async fn has_record_perms_handler() -> impl IntoResponse {
-    (StatusCode::OK, Json(PermissionStatus { has_permission: has_record_perms() }))
+    (
+        StatusCode::OK,
+        Json(PermissionStatus {
+            has_permission: has_record_perms(),
+        }),
+    )
 }
 
 async fn request_record_perms_handler() -> StatusCode {
@@ -216,7 +245,12 @@ async fn request_record_perms_handler() -> StatusCode {
 
 async fn get_onboarding_complete_handler(State(state): State<AppState>) -> impl IntoResponse {
     let status = get_onboarding_complete(state.app_handle);
-    (StatusCode::OK, Json(PermissionStatus { has_permission: status }))
+    (
+        StatusCode::OK,
+        Json(PermissionStatus {
+            has_permission: status,
+        }),
+    )
 }
 
 async fn set_onboarding_complete_handler(
