@@ -20,6 +20,7 @@ ForgeTaskItem _$ForgeTaskItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ForgeTaskItem {
+  @JsonKey(name: '_id')
   String? get id => throw _privateConstructorUsedError;
   String get prompt => throw _privateConstructorUsedError;
   int? get uploadLimit => throw _privateConstructorUsedError;
@@ -48,7 +49,7 @@ abstract class $ForgeTaskItemCopyWith<$Res> {
       _$ForgeTaskItemCopyWithImpl<$Res, ForgeTaskItem>;
   @useResult
   $Res call(
-      {String? id,
+      {@JsonKey(name: '_id') String? id,
       String prompt,
       int? uploadLimit,
       int? rewardLimit,
@@ -140,7 +141,7 @@ abstract class _$$ForgeTaskItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? id,
+      {@JsonKey(name: '_id') String? id,
       String prompt,
       int? uploadLimit,
       int? rewardLimit,
@@ -225,7 +226,7 @@ class __$$ForgeTaskItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ForgeTaskItemImpl implements _ForgeTaskItem {
   const _$ForgeTaskItemImpl(
-      {this.id,
+      {@JsonKey(name: '_id') this.id,
       required this.prompt,
       this.uploadLimit,
       this.rewardLimit,
@@ -240,6 +241,7 @@ class _$ForgeTaskItemImpl implements _ForgeTaskItem {
       _$$ForgeTaskItemImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id')
   final String? id;
   @override
   final String prompt;
@@ -322,7 +324,7 @@ class _$ForgeTaskItemImpl implements _ForgeTaskItem {
 
 abstract class _ForgeTaskItem implements ForgeTaskItem {
   const factory _ForgeTaskItem(
-      {final String? id,
+      {@JsonKey(name: '_id') final String? id,
       required final String prompt,
       final int? uploadLimit,
       final int? rewardLimit,
@@ -337,6 +339,7 @@ abstract class _ForgeTaskItem implements ForgeTaskItem {
       _$ForgeTaskItemImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id')
   String? get id;
   @override
   String get prompt;

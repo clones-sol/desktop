@@ -117,7 +117,7 @@ class Sidebar extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            padding: const EdgeInsets.symmetric(vertical: 20),
             child: WalletButton(
               isConnected: walletAddress != null,
               walletAddress: walletAddress,

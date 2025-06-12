@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ToolsInitState {
+  ToolsInitState({this.initializing = true, this.progress = 0.0});
   final bool initializing;
   final double progress;
-
-  ToolsInitState({this.initializing = true, this.progress = 0.0});
 
   ToolsInitState copyWith({bool? initializing, double? progress}) {
     return ToolsInitState(

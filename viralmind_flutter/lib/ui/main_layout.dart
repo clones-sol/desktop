@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:viralmind_flutter/frb_generated/api/tools.dart';
+import 'package:viralmind_flutter/providers/api_provider.dart';
 import 'package:viralmind_flutter/providers/tools_provider.dart';
 import 'package:viralmind_flutter/ui/components/layout_background.dart';
-import 'package:viralmind_flutter/ui/widgets/modals/init_tools_failed_modal.dart';
 
 class MainLayout extends ConsumerStatefulWidget {
   const MainLayout({
@@ -22,7 +21,6 @@ class MainLayout extends ConsumerStatefulWidget {
 
 class _MainLayoutState extends ConsumerState<MainLayout> {
   Timer? _timer;
-  List<String> _initErrors = [];
 
   @override
   void initState() {
@@ -31,13 +29,8 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
   }
 
   Future<void> _initializeTools() async {
-    final errors = await initTools();
-    if (errors.isNotEmpty && mounted) {
-      setState(() {
-        _initErrors = errors;
-      });
-      _showErrorModal();
-    }
+    final tauriApiClient = ref.read(tauriApiClientProvider);
+    await tauriApiClient.initTools();
 
     await _checkToolsStatus();
 
@@ -48,14 +41,15 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   Future<void> _checkToolsStatus() async {
     try {
-      final status = checkToolsStatus();
+      final tauriApiClient = ref.read(tauriApiClientProvider);
+      final status = await tauriApiClient.checkTools();
 
       const totalTools = 4;
       var initializedTools = 0;
-      if (status.ffmpeg) initializedTools++;
-      if (status.ffprobe) initializedTools++;
-      if (status.dumpTree) initializedTools++;
-      if (status.pipeline) initializedTools++;
+      if (status['ffmpeg'] ?? false) initializedTools++;
+      if (status['ffprobe'] ?? false) initializedTools++;
+      if (status['dump_tree'] ?? false) initializedTools++;
+      if (status['pipeline'] ?? false) initializedTools++;
 
       final progress = (initializedTools / totalTools) * 100;
 
@@ -80,26 +74,9 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
         }
       }
     } catch (error) {
-      print('Failed to check tools status: $error');
+      debugPrint('Failed to check tools status: $error');
       _timer?.cancel();
     }
-  }
-
-  void _showErrorModal() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        showDialog(
-          context: context,
-          builder: (context) => InitToolsFailedModal(
-            errors: _initErrors,
-            retry: () {
-              Navigator.of(context).pop();
-              _initializeTools();
-            },
-          ),
-        );
-      }
-    });
   }
 
   @override

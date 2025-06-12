@@ -20,8 +20,9 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Message {
-  MessageRole get role => throw _privateConstructorUsedError;
-  List<MessagePart> get parts => throw _privateConstructorUsedError;
+  String get role => throw _privateConstructorUsedError;
+  String get content => throw _privateConstructorUsedError;
+  int? get timestamp => throw _privateConstructorUsedError;
 
   /// Serializes this Message to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +38,7 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({MessageRole role, List<MessagePart> parts});
+  $Res call({String role, String content, int? timestamp});
 }
 
 /// @nodoc
@@ -56,17 +57,22 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   @override
   $Res call({
     Object? role = null,
-    Object? parts = null,
+    Object? content = null,
+    Object? timestamp = freezed,
   }) {
     return _then(_value.copyWith(
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as MessageRole,
-      parts: null == parts
-          ? _value.parts
-          : parts // ignore: cast_nullable_to_non_nullable
-              as List<MessagePart>,
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -78,7 +84,7 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({MessageRole role, List<MessagePart> parts});
+  $Res call({String role, String content, int? timestamp});
 }
 
 /// @nodoc
@@ -95,17 +101,22 @@ class __$$MessageImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? role = null,
-    Object? parts = null,
+    Object? content = null,
+    Object? timestamp = freezed,
   }) {
     return _then(_$MessageImpl(
       role: null == role
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
-              as MessageRole,
-      parts: null == parts
-          ? _value._parts
-          : parts // ignore: cast_nullable_to_non_nullable
-              as List<MessagePart>,
+              as String,
+      content: null == content
+          ? _value.content
+          : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      timestamp: freezed == timestamp
+          ? _value.timestamp
+          : timestamp // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -114,25 +125,21 @@ class __$$MessageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MessageImpl implements _Message {
   const _$MessageImpl(
-      {required this.role, required final List<MessagePart> parts})
-      : _parts = parts;
+      {required this.role, required this.content, this.timestamp});
 
   factory _$MessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageImplFromJson(json);
 
   @override
-  final MessageRole role;
-  final List<MessagePart> _parts;
+  final String role;
   @override
-  List<MessagePart> get parts {
-    if (_parts is EqualUnmodifiableListView) return _parts;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_parts);
-  }
+  final String content;
+  @override
+  final int? timestamp;
 
   @override
   String toString() {
-    return 'Message(role: $role, parts: $parts)';
+    return 'Message(role: $role, content: $content, timestamp: $timestamp)';
   }
 
   @override
@@ -141,13 +148,14 @@ class _$MessageImpl implements _Message {
         (other.runtimeType == runtimeType &&
             other is _$MessageImpl &&
             (identical(other.role, role) || other.role == role) &&
-            const DeepCollectionEquality().equals(other._parts, _parts));
+            (identical(other.content, content) || other.content == content) &&
+            (identical(other.timestamp, timestamp) ||
+                other.timestamp == timestamp));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, role, const DeepCollectionEquality().hash(_parts));
+  int get hashCode => Object.hash(runtimeType, role, content, timestamp);
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -167,15 +175,18 @@ class _$MessageImpl implements _Message {
 
 abstract class _Message implements Message {
   const factory _Message(
-      {required final MessageRole role,
-      required final List<MessagePart> parts}) = _$MessageImpl;
+      {required final String role,
+      required final String content,
+      final int? timestamp}) = _$MessageImpl;
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$MessageImpl.fromJson;
 
   @override
-  MessageRole get role;
+  String get role;
   @override
-  List<MessagePart> get parts;
+  String get content;
+  @override
+  int? get timestamp;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.

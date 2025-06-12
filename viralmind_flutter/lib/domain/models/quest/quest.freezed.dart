@@ -22,11 +22,12 @@ Quest _$QuestFromJson(Map<String, dynamic> json) {
 mixin _$Quest {
   String get title => throw _privateConstructorUsedError;
   String get app => throw _privateConstructorUsedError;
+  @JsonKey(name: 'icon_url')
   String get iconUrl => throw _privateConstructorUsedError;
   List<String> get objectives => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   String? get poolId => throw _privateConstructorUsedError;
-  RewardInfo? get reward => throw _privateConstructorUsedError;
+  QuestReward? get reward => throw _privateConstructorUsedError;
   String? get taskId => throw _privateConstructorUsedError;
 
   /// Serializes this Quest to a JSON map.
@@ -46,14 +47,14 @@ abstract class $QuestCopyWith<$Res> {
   $Res call(
       {String title,
       String app,
-      String iconUrl,
+      @JsonKey(name: 'icon_url') String iconUrl,
       List<String> objectives,
       String content,
       String? poolId,
-      RewardInfo? reward,
+      QuestReward? reward,
       String? taskId});
 
-  $RewardInfoCopyWith<$Res>? get reward;
+  $QuestRewardCopyWith<$Res>? get reward;
 }
 
 /// @nodoc
@@ -108,7 +109,7 @@ class _$QuestCopyWithImpl<$Res, $Val extends Quest>
       reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as RewardInfo?,
+              as QuestReward?,
       taskId: freezed == taskId
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -120,12 +121,12 @@ class _$QuestCopyWithImpl<$Res, $Val extends Quest>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $RewardInfoCopyWith<$Res>? get reward {
+  $QuestRewardCopyWith<$Res>? get reward {
     if (_value.reward == null) {
       return null;
     }
 
-    return $RewardInfoCopyWith<$Res>(_value.reward!, (value) {
+    return $QuestRewardCopyWith<$Res>(_value.reward!, (value) {
       return _then(_value.copyWith(reward: value) as $Val);
     });
   }
@@ -141,15 +142,15 @@ abstract class _$$QuestImplCopyWith<$Res> implements $QuestCopyWith<$Res> {
   $Res call(
       {String title,
       String app,
-      String iconUrl,
+      @JsonKey(name: 'icon_url') String iconUrl,
       List<String> objectives,
       String content,
       String? poolId,
-      RewardInfo? reward,
+      QuestReward? reward,
       String? taskId});
 
   @override
-  $RewardInfoCopyWith<$Res>? get reward;
+  $QuestRewardCopyWith<$Res>? get reward;
 }
 
 /// @nodoc
@@ -202,7 +203,7 @@ class __$$QuestImplCopyWithImpl<$Res>
       reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as RewardInfo?,
+              as QuestReward?,
       taskId: freezed == taskId
           ? _value.taskId
           : taskId // ignore: cast_nullable_to_non_nullable
@@ -217,7 +218,7 @@ class _$QuestImpl implements _Quest {
   const _$QuestImpl(
       {required this.title,
       required this.app,
-      required this.iconUrl,
+      @JsonKey(name: 'icon_url') required this.iconUrl,
       required final List<String> objectives,
       required this.content,
       this.poolId,
@@ -233,6 +234,7 @@ class _$QuestImpl implements _Quest {
   @override
   final String app;
   @override
+  @JsonKey(name: 'icon_url')
   final String iconUrl;
   final List<String> _objectives;
   @override
@@ -247,7 +249,7 @@ class _$QuestImpl implements _Quest {
   @override
   final String? poolId;
   @override
-  final RewardInfo? reward;
+  final QuestReward? reward;
   @override
   final String? taskId;
 
@@ -305,11 +307,11 @@ abstract class _Quest implements Quest {
   const factory _Quest(
       {required final String title,
       required final String app,
-      required final String iconUrl,
+      @JsonKey(name: 'icon_url') required final String iconUrl,
       required final List<String> objectives,
       required final String content,
       final String? poolId,
-      final RewardInfo? reward,
+      final QuestReward? reward,
       final String? taskId}) = _$QuestImpl;
 
   factory _Quest.fromJson(Map<String, dynamic> json) = _$QuestImpl.fromJson;
@@ -319,6 +321,7 @@ abstract class _Quest implements Quest {
   @override
   String get app;
   @override
+  @JsonKey(name: 'icon_url')
   String get iconUrl;
   @override
   List<String> get objectives;
@@ -327,7 +330,7 @@ abstract class _Quest implements Quest {
   @override
   String? get poolId;
   @override
-  RewardInfo? get reward;
+  QuestReward? get reward;
   @override
   String? get taskId;
 

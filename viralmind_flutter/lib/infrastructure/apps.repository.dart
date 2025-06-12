@@ -160,11 +160,9 @@ class AppsRepositoryImpl {
       final apps = await _client.get<List<dynamic>>(
         '/forge/apps',
         params: params,
-        fromJson: (json) => (json as List)
-            .map(
-              (e) => ForgeApp.fromJson(e as Map<String, dynamic>),
-            )
-            .toList(),
+        fromJson: (json) => (json as List).map((e) {
+          return ForgeApp.fromJson(e as Map<String, dynamic>);
+        }).toList(),
       ) as List<ForgeApp>;
 
       if (filter != null && filter['poolId'] != null) {

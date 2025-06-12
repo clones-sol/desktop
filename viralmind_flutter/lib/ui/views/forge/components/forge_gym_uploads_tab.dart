@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:viralmind_flutter/application/submissions.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/pool_submission.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 
@@ -32,7 +33,12 @@ class ForgeGymUploadsTab extends ConsumerWidget {
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (submissions) {
         if (submissions.isEmpty) {
-          return const Center(child: Text('No uploads yet.'));
+          return Center(
+            child: Text(
+              'No uploads yet.',
+              style: TextStyle(color: VMColors.secondaryText),
+            ),
+          );
         }
         return ListView.separated(
           padding: const EdgeInsets.all(16),

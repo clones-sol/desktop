@@ -6,7 +6,7 @@ part 'forge_task_item.g.dart';
 @freezed
 class ForgeTaskItem with _$ForgeTaskItem {
   const factory ForgeTaskItem({
-    String? id,
+    @JsonKey(name: '_id') String? id,
     required String prompt,
     int? uploadLimit,
     int? rewardLimit,
