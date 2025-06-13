@@ -16,6 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$TrainingSessionState {
+  String? get prompt => throw _privateConstructorUsedError;
+  String? get poolId => throw _privateConstructorUsedError;
   Quest? get currentQuest => throw _privateConstructorUsedError;
   Quest? get activeQuest => throw _privateConstructorUsedError;
   bool get recordingLoading => throw _privateConstructorUsedError;
@@ -25,6 +27,16 @@ mixin _$TrainingSessionState {
   bool get isUploading => throw _privateConstructorUsedError;
   bool get loadingSftData => throw _privateConstructorUsedError;
   RecordingState get recordingState => throw _privateConstructorUsedError;
+  List<Message> get chatMessages => throw _privateConstructorUsedError;
+  TypingMessage? get typingMessage => throw _privateConstructorUsedError;
+  bool get isWaitingForResponse => throw _privateConstructorUsedError;
+  int? get hoveredMessageIndex => throw _privateConstructorUsedError;
+  List<DeletedRange> get deletedRanges => throw _privateConstructorUsedError;
+  List<SftMessage>? get originalSftData => throw _privateConstructorUsedError;
+  AppInfo? get app => throw _privateConstructorUsedError;
+  int get scrollToBottomNonce => throw _privateConstructorUsedError;
+  AudioPlayer? get toneAudio => throw _privateConstructorUsedError;
+  AudioPlayer? get blipAudio => throw _privateConstructorUsedError;
 
   /// Create a copy of TrainingSessionState
   /// with the given fields replaced by the non-null parameter values.
@@ -40,7 +52,9 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       _$TrainingSessionStateCopyWithImpl<$Res, TrainingSessionState>;
   @useResult
   $Res call(
-      {Quest? currentQuest,
+      {String? prompt,
+      String? poolId,
+      Quest? currentQuest,
       Quest? activeQuest,
       bool recordingLoading,
       bool recordingProcessing,
@@ -48,10 +62,22 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       String? currentRecordingId,
       bool isUploading,
       bool loadingSftData,
-      RecordingState recordingState});
+      RecordingState recordingState,
+      List<Message> chatMessages,
+      TypingMessage? typingMessage,
+      bool isWaitingForResponse,
+      int? hoveredMessageIndex,
+      List<DeletedRange> deletedRanges,
+      List<SftMessage>? originalSftData,
+      AppInfo? app,
+      int scrollToBottomNonce,
+      AudioPlayer? toneAudio,
+      AudioPlayer? blipAudio});
 
   $QuestCopyWith<$Res>? get currentQuest;
   $QuestCopyWith<$Res>? get activeQuest;
+  $TypingMessageCopyWith<$Res>? get typingMessage;
+  $AppInfoCopyWith<$Res>? get app;
 }
 
 /// @nodoc
@@ -70,6 +96,8 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? prompt = freezed,
+    Object? poolId = freezed,
     Object? currentQuest = freezed,
     Object? activeQuest = freezed,
     Object? recordingLoading = null,
@@ -79,8 +107,26 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
     Object? isUploading = null,
     Object? loadingSftData = null,
     Object? recordingState = null,
+    Object? chatMessages = null,
+    Object? typingMessage = freezed,
+    Object? isWaitingForResponse = null,
+    Object? hoveredMessageIndex = freezed,
+    Object? deletedRanges = null,
+    Object? originalSftData = freezed,
+    Object? app = freezed,
+    Object? scrollToBottomNonce = null,
+    Object? toneAudio = freezed,
+    Object? blipAudio = freezed,
   }) {
     return _then(_value.copyWith(
+      prompt: freezed == prompt
+          ? _value.prompt
+          : prompt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      poolId: freezed == poolId
+          ? _value.poolId
+          : poolId // ignore: cast_nullable_to_non_nullable
+              as String?,
       currentQuest: freezed == currentQuest
           ? _value.currentQuest
           : currentQuest // ignore: cast_nullable_to_non_nullable
@@ -117,6 +163,46 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
           ? _value.recordingState
           : recordingState // ignore: cast_nullable_to_non_nullable
               as RecordingState,
+      chatMessages: null == chatMessages
+          ? _value.chatMessages
+          : chatMessages // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
+      typingMessage: freezed == typingMessage
+          ? _value.typingMessage
+          : typingMessage // ignore: cast_nullable_to_non_nullable
+              as TypingMessage?,
+      isWaitingForResponse: null == isWaitingForResponse
+          ? _value.isWaitingForResponse
+          : isWaitingForResponse // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hoveredMessageIndex: freezed == hoveredMessageIndex
+          ? _value.hoveredMessageIndex
+          : hoveredMessageIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      deletedRanges: null == deletedRanges
+          ? _value.deletedRanges
+          : deletedRanges // ignore: cast_nullable_to_non_nullable
+              as List<DeletedRange>,
+      originalSftData: freezed == originalSftData
+          ? _value.originalSftData
+          : originalSftData // ignore: cast_nullable_to_non_nullable
+              as List<SftMessage>?,
+      app: freezed == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as AppInfo?,
+      scrollToBottomNonce: null == scrollToBottomNonce
+          ? _value.scrollToBottomNonce
+          : scrollToBottomNonce // ignore: cast_nullable_to_non_nullable
+              as int,
+      toneAudio: freezed == toneAudio
+          ? _value.toneAudio
+          : toneAudio // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
+      blipAudio: freezed == blipAudio
+          ? _value.blipAudio
+          : blipAudio // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
     ) as $Val);
   }
 
@@ -147,6 +233,34 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
       return _then(_value.copyWith(activeQuest: value) as $Val);
     });
   }
+
+  /// Create a copy of TrainingSessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $TypingMessageCopyWith<$Res>? get typingMessage {
+    if (_value.typingMessage == null) {
+      return null;
+    }
+
+    return $TypingMessageCopyWith<$Res>(_value.typingMessage!, (value) {
+      return _then(_value.copyWith(typingMessage: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TrainingSessionState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AppInfoCopyWith<$Res>? get app {
+    if (_value.app == null) {
+      return null;
+    }
+
+    return $AppInfoCopyWith<$Res>(_value.app!, (value) {
+      return _then(_value.copyWith(app: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -158,7 +272,9 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Quest? currentQuest,
+      {String? prompt,
+      String? poolId,
+      Quest? currentQuest,
       Quest? activeQuest,
       bool recordingLoading,
       bool recordingProcessing,
@@ -166,12 +282,26 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
       String? currentRecordingId,
       bool isUploading,
       bool loadingSftData,
-      RecordingState recordingState});
+      RecordingState recordingState,
+      List<Message> chatMessages,
+      TypingMessage? typingMessage,
+      bool isWaitingForResponse,
+      int? hoveredMessageIndex,
+      List<DeletedRange> deletedRanges,
+      List<SftMessage>? originalSftData,
+      AppInfo? app,
+      int scrollToBottomNonce,
+      AudioPlayer? toneAudio,
+      AudioPlayer? blipAudio});
 
   @override
   $QuestCopyWith<$Res>? get currentQuest;
   @override
   $QuestCopyWith<$Res>? get activeQuest;
+  @override
+  $TypingMessageCopyWith<$Res>? get typingMessage;
+  @override
+  $AppInfoCopyWith<$Res>? get app;
 }
 
 /// @nodoc
@@ -187,6 +317,8 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? prompt = freezed,
+    Object? poolId = freezed,
     Object? currentQuest = freezed,
     Object? activeQuest = freezed,
     Object? recordingLoading = null,
@@ -196,8 +328,26 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
     Object? isUploading = null,
     Object? loadingSftData = null,
     Object? recordingState = null,
+    Object? chatMessages = null,
+    Object? typingMessage = freezed,
+    Object? isWaitingForResponse = null,
+    Object? hoveredMessageIndex = freezed,
+    Object? deletedRanges = null,
+    Object? originalSftData = freezed,
+    Object? app = freezed,
+    Object? scrollToBottomNonce = null,
+    Object? toneAudio = freezed,
+    Object? blipAudio = freezed,
   }) {
     return _then(_$TrainingSessionStateImpl(
+      prompt: freezed == prompt
+          ? _value.prompt
+          : prompt // ignore: cast_nullable_to_non_nullable
+              as String?,
+      poolId: freezed == poolId
+          ? _value.poolId
+          : poolId // ignore: cast_nullable_to_non_nullable
+              as String?,
       currentQuest: freezed == currentQuest
           ? _value.currentQuest
           : currentQuest // ignore: cast_nullable_to_non_nullable
@@ -234,6 +384,46 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
           ? _value.recordingState
           : recordingState // ignore: cast_nullable_to_non_nullable
               as RecordingState,
+      chatMessages: null == chatMessages
+          ? _value._chatMessages
+          : chatMessages // ignore: cast_nullable_to_non_nullable
+              as List<Message>,
+      typingMessage: freezed == typingMessage
+          ? _value.typingMessage
+          : typingMessage // ignore: cast_nullable_to_non_nullable
+              as TypingMessage?,
+      isWaitingForResponse: null == isWaitingForResponse
+          ? _value.isWaitingForResponse
+          : isWaitingForResponse // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hoveredMessageIndex: freezed == hoveredMessageIndex
+          ? _value.hoveredMessageIndex
+          : hoveredMessageIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
+      deletedRanges: null == deletedRanges
+          ? _value._deletedRanges
+          : deletedRanges // ignore: cast_nullable_to_non_nullable
+              as List<DeletedRange>,
+      originalSftData: freezed == originalSftData
+          ? _value._originalSftData
+          : originalSftData // ignore: cast_nullable_to_non_nullable
+              as List<SftMessage>?,
+      app: freezed == app
+          ? _value.app
+          : app // ignore: cast_nullable_to_non_nullable
+              as AppInfo?,
+      scrollToBottomNonce: null == scrollToBottomNonce
+          ? _value.scrollToBottomNonce
+          : scrollToBottomNonce // ignore: cast_nullable_to_non_nullable
+              as int,
+      toneAudio: freezed == toneAudio
+          ? _value.toneAudio
+          : toneAudio // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
+      blipAudio: freezed == blipAudio
+          ? _value.blipAudio
+          : blipAudio // ignore: cast_nullable_to_non_nullable
+              as AudioPlayer?,
     ));
   }
 }
@@ -242,7 +432,9 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
 
 class _$TrainingSessionStateImpl extends _TrainingSessionState {
   const _$TrainingSessionStateImpl(
-      {this.currentQuest,
+      {this.prompt,
+      this.poolId,
+      this.currentQuest,
       this.activeQuest,
       this.recordingLoading = false,
       this.recordingProcessing = false,
@@ -250,9 +442,26 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
       this.currentRecordingId,
       this.isUploading = false,
       this.loadingSftData = false,
-      this.recordingState = RecordingState.off})
-      : super._();
+      this.recordingState = RecordingState.off,
+      final List<Message> chatMessages = const [],
+      this.typingMessage = null,
+      this.isWaitingForResponse = false,
+      this.hoveredMessageIndex = null,
+      final List<DeletedRange> deletedRanges = const [],
+      final List<SftMessage>? originalSftData = null,
+      this.app,
+      this.scrollToBottomNonce = 0,
+      this.toneAudio,
+      this.blipAudio})
+      : _chatMessages = chatMessages,
+        _deletedRanges = deletedRanges,
+        _originalSftData = originalSftData,
+        super._();
 
+  @override
+  final String? prompt;
+  @override
+  final String? poolId;
   @override
   final Quest? currentQuest;
   @override
@@ -277,10 +486,57 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   @override
   @JsonKey()
   final RecordingState recordingState;
+  final List<Message> _chatMessages;
+  @override
+  @JsonKey()
+  List<Message> get chatMessages {
+    if (_chatMessages is EqualUnmodifiableListView) return _chatMessages;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_chatMessages);
+  }
+
+  @override
+  @JsonKey()
+  final TypingMessage? typingMessage;
+  @override
+  @JsonKey()
+  final bool isWaitingForResponse;
+  @override
+  @JsonKey()
+  final int? hoveredMessageIndex;
+  final List<DeletedRange> _deletedRanges;
+  @override
+  @JsonKey()
+  List<DeletedRange> get deletedRanges {
+    if (_deletedRanges is EqualUnmodifiableListView) return _deletedRanges;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deletedRanges);
+  }
+
+  final List<SftMessage>? _originalSftData;
+  @override
+  @JsonKey()
+  List<SftMessage>? get originalSftData {
+    final value = _originalSftData;
+    if (value == null) return null;
+    if (_originalSftData is EqualUnmodifiableListView) return _originalSftData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final AppInfo? app;
+  @override
+  @JsonKey()
+  final int scrollToBottomNonce;
+  @override
+  final AudioPlayer? toneAudio;
+  @override
+  final AudioPlayer? blipAudio;
 
   @override
   String toString() {
-    return 'TrainingSessionState(currentQuest: $currentQuest, activeQuest: $activeQuest, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, loadingSftData: $loadingSftData, recordingState: $recordingState)';
+    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentQuest: $currentQuest, activeQuest: $activeQuest, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
   }
 
   @override
@@ -288,6 +544,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TrainingSessionStateImpl &&
+            (identical(other.prompt, prompt) || other.prompt == prompt) &&
+            (identical(other.poolId, poolId) || other.poolId == poolId) &&
             (identical(other.currentQuest, currentQuest) ||
                 other.currentQuest == currentQuest) &&
             (identical(other.activeQuest, activeQuest) ||
@@ -305,21 +563,53 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
             (identical(other.loadingSftData, loadingSftData) ||
                 other.loadingSftData == loadingSftData) &&
             (identical(other.recordingState, recordingState) ||
-                other.recordingState == recordingState));
+                other.recordingState == recordingState) &&
+            const DeepCollectionEquality()
+                .equals(other._chatMessages, _chatMessages) &&
+            (identical(other.typingMessage, typingMessage) ||
+                other.typingMessage == typingMessage) &&
+            (identical(other.isWaitingForResponse, isWaitingForResponse) ||
+                other.isWaitingForResponse == isWaitingForResponse) &&
+            (identical(other.hoveredMessageIndex, hoveredMessageIndex) ||
+                other.hoveredMessageIndex == hoveredMessageIndex) &&
+            const DeepCollectionEquality()
+                .equals(other._deletedRanges, _deletedRanges) &&
+            const DeepCollectionEquality()
+                .equals(other._originalSftData, _originalSftData) &&
+            (identical(other.app, app) || other.app == app) &&
+            (identical(other.scrollToBottomNonce, scrollToBottomNonce) ||
+                other.scrollToBottomNonce == scrollToBottomNonce) &&
+            (identical(other.toneAudio, toneAudio) ||
+                other.toneAudio == toneAudio) &&
+            (identical(other.blipAudio, blipAudio) ||
+                other.blipAudio == blipAudio));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      currentQuest,
-      activeQuest,
-      recordingLoading,
-      recordingProcessing,
-      showUploadConfirmModal,
-      currentRecordingId,
-      isUploading,
-      loadingSftData,
-      recordingState);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        prompt,
+        poolId,
+        currentQuest,
+        activeQuest,
+        recordingLoading,
+        recordingProcessing,
+        showUploadConfirmModal,
+        currentRecordingId,
+        isUploading,
+        loadingSftData,
+        recordingState,
+        const DeepCollectionEquality().hash(_chatMessages),
+        typingMessage,
+        isWaitingForResponse,
+        hoveredMessageIndex,
+        const DeepCollectionEquality().hash(_deletedRanges),
+        const DeepCollectionEquality().hash(_originalSftData),
+        app,
+        scrollToBottomNonce,
+        toneAudio,
+        blipAudio
+      ]);
 
   /// Create a copy of TrainingSessionState
   /// with the given fields replaced by the non-null parameter values.
@@ -334,7 +624,9 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
 
 abstract class _TrainingSessionState extends TrainingSessionState {
   const factory _TrainingSessionState(
-      {final Quest? currentQuest,
+      {final String? prompt,
+      final String? poolId,
+      final Quest? currentQuest,
       final Quest? activeQuest,
       final bool recordingLoading,
       final bool recordingProcessing,
@@ -342,9 +634,23 @@ abstract class _TrainingSessionState extends TrainingSessionState {
       final String? currentRecordingId,
       final bool isUploading,
       final bool loadingSftData,
-      final RecordingState recordingState}) = _$TrainingSessionStateImpl;
+      final RecordingState recordingState,
+      final List<Message> chatMessages,
+      final TypingMessage? typingMessage,
+      final bool isWaitingForResponse,
+      final int? hoveredMessageIndex,
+      final List<DeletedRange> deletedRanges,
+      final List<SftMessage>? originalSftData,
+      final AppInfo? app,
+      final int scrollToBottomNonce,
+      final AudioPlayer? toneAudio,
+      final AudioPlayer? blipAudio}) = _$TrainingSessionStateImpl;
   const _TrainingSessionState._() : super._();
 
+  @override
+  String? get prompt;
+  @override
+  String? get poolId;
   @override
   Quest? get currentQuest;
   @override
@@ -363,6 +669,26 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   bool get loadingSftData;
   @override
   RecordingState get recordingState;
+  @override
+  List<Message> get chatMessages;
+  @override
+  TypingMessage? get typingMessage;
+  @override
+  bool get isWaitingForResponse;
+  @override
+  int? get hoveredMessageIndex;
+  @override
+  List<DeletedRange> get deletedRanges;
+  @override
+  List<SftMessage>? get originalSftData;
+  @override
+  AppInfo? get app;
+  @override
+  int get scrollToBottomNonce;
+  @override
+  AudioPlayer? get toneAudio;
+  @override
+  AudioPlayer? get blipAudio;
 
   /// Create a copy of TrainingSessionState
   /// with the given fields replaced by the non-null parameter values.

@@ -11,6 +11,7 @@ class BtnPrimary extends StatelessWidget {
     this.btnPrimaryType = BtnPrimaryType.primary,
     this.isLocked = false,
     this.widthExpanded = false,
+    this.isLoading = false,
     this.icon,
     super.key,
   });
@@ -20,6 +21,7 @@ class BtnPrimary extends StatelessWidget {
   final bool isLocked;
   final bool widthExpanded;
   final IconData? icon;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,15 @@ class BtnPrimary extends StatelessWidget {
                             : Colors.white,
                         fontWeight: FontWeight.w600,
                       ),
+                ),
+              if (isLoading)
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
                 ),
             ],
           ),

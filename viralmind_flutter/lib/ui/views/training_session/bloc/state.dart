@@ -1,4 +1,10 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:viralmind_flutter/domain/app_info.dart';
+import 'package:viralmind_flutter/domain/models/message/deleted_range.dart';
+import 'package:viralmind_flutter/domain/models/message/message.dart';
+import 'package:viralmind_flutter/domain/models/message/sft_message.dart';
+import 'package:viralmind_flutter/domain/models/message/typing_message.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 
 part 'state.freezed.dart';
@@ -8,6 +14,8 @@ enum RecordingState { off, recording, saved }
 @freezed
 class TrainingSessionState with _$TrainingSessionState {
   const factory TrainingSessionState({
+    String? prompt,
+    String? poolId,
     Quest? currentQuest,
     Quest? activeQuest,
     @Default(false) bool recordingLoading,
@@ -17,6 +25,16 @@ class TrainingSessionState with _$TrainingSessionState {
     @Default(false) bool isUploading,
     @Default(false) bool loadingSftData,
     @Default(RecordingState.off) RecordingState recordingState,
+    @Default([]) List<Message> chatMessages,
+    @Default(null) TypingMessage? typingMessage,
+    @Default(false) bool isWaitingForResponse,
+    @Default(null) int? hoveredMessageIndex,
+    @Default([]) List<DeletedRange> deletedRanges,
+    @Default(null) List<SftMessage>? originalSftData,
+    AppInfo? app,
+    @Default(0) int scrollToBottomNonce,
+    AudioPlayer? toneAudio,
+    AudioPlayer? blipAudio,
   }) = _TrainingSessionState;
   const TrainingSessionState._();
 }
