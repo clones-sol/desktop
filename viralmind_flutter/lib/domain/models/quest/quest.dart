@@ -1,6 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest_reward.dart';
-import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 
 part 'quest.freezed.dart';
 part 'quest.g.dart';

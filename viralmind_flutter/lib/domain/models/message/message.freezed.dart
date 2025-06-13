@@ -23,6 +23,7 @@ mixin _$Message {
   String get role => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
   int? get timestamp => throw _privateConstructorUsedError;
+  MessageType get type => throw _privateConstructorUsedError;
 
   /// Serializes this Message to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +39,7 @@ abstract class $MessageCopyWith<$Res> {
   factory $MessageCopyWith(Message value, $Res Function(Message) then) =
       _$MessageCopyWithImpl<$Res, Message>;
   @useResult
-  $Res call({String role, String content, int? timestamp});
+  $Res call({String role, String content, int? timestamp, MessageType type});
 }
 
 /// @nodoc
@@ -59,6 +60,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? role = null,
     Object? content = null,
     Object? timestamp = freezed,
+    Object? type = null,
   }) {
     return _then(_value.copyWith(
       role: null == role
@@ -73,6 +75,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int?,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as MessageType,
     ) as $Val);
   }
 }
@@ -84,7 +90,7 @@ abstract class _$$MessageImplCopyWith<$Res> implements $MessageCopyWith<$Res> {
       __$$MessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String role, String content, int? timestamp});
+  $Res call({String role, String content, int? timestamp, MessageType type});
 }
 
 /// @nodoc
@@ -103,6 +109,7 @@ class __$$MessageImplCopyWithImpl<$Res>
     Object? role = null,
     Object? content = null,
     Object? timestamp = freezed,
+    Object? type = null,
   }) {
     return _then(_$MessageImpl(
       role: null == role
@@ -117,6 +124,10 @@ class __$$MessageImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int?,
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as MessageType,
     ));
   }
 }
@@ -125,7 +136,10 @@ class __$$MessageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$MessageImpl implements _Message {
   const _$MessageImpl(
-      {required this.role, required this.content, this.timestamp});
+      {required this.role,
+      required this.content,
+      this.timestamp,
+      this.type = MessageType.text});
 
   factory _$MessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$MessageImplFromJson(json);
@@ -136,10 +150,13 @@ class _$MessageImpl implements _Message {
   final String content;
   @override
   final int? timestamp;
+  @override
+  @JsonKey()
+  final MessageType type;
 
   @override
   String toString() {
-    return 'Message(role: $role, content: $content, timestamp: $timestamp)';
+    return 'Message(role: $role, content: $content, timestamp: $timestamp, type: $type)';
   }
 
   @override
@@ -150,12 +167,13 @@ class _$MessageImpl implements _Message {
             (identical(other.role, role) || other.role == role) &&
             (identical(other.content, content) || other.content == content) &&
             (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp));
+                other.timestamp == timestamp) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, role, content, timestamp);
+  int get hashCode => Object.hash(runtimeType, role, content, timestamp, type);
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
@@ -177,7 +195,8 @@ abstract class _Message implements Message {
   const factory _Message(
       {required final String role,
       required final String content,
-      final int? timestamp}) = _$MessageImpl;
+      final int? timestamp,
+      final MessageType type}) = _$MessageImpl;
 
   factory _Message.fromJson(Map<String, dynamic> json) = _$MessageImpl.fromJson;
 
@@ -187,6 +206,8 @@ abstract class _Message implements Message {
   String get content;
   @override
   int? get timestamp;
+  @override
+  MessageType get type;
 
   /// Create a copy of Message
   /// with the given fields replaced by the non-null parameter values.
