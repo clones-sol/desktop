@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/components/message_box/message_box.dart';
-import 'package:viralmind_flutter/ui/components/checkbox/checkbox_confirm.dart';
 import 'package:flutter/services.dart';
+import 'package:viralmind_flutter/assets.dart';
+import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/checkbox/checkbox_confirm.dart';
 
 class ForgeGymSettingsTab extends StatefulWidget {
   const ForgeGymSettingsTab({super.key, required this.pool});
@@ -210,7 +209,7 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
             decoration: BoxDecoration(
               color: Colors.blue[50],
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.blue[100]!, width: 1),
+              border: Border.all(color: Colors.blue[100]!),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -413,7 +412,7 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
               decoration: BoxDecoration(
                 color: Colors.grey[100],
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey[200]!, width: 1),
+                border: Border.all(color: Colors.grey[200]!),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

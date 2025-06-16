@@ -72,7 +72,7 @@ class _QuestPanelState extends ConsumerState<QuestPanel> {
               const SizedBox(height: 8),
               ...widget.objectives.map(
                 (obj) => Padding(
-                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  padding: const EdgeInsets.only(left: 8, bottom: 4),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

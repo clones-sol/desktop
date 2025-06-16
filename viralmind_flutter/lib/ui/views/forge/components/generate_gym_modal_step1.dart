@@ -67,7 +67,8 @@ class GenerateGymModalStep1 extends StatelessWidget {
                 contentPadding: const EdgeInsets.only(left: 10),
                 hintText: 'List the skills to train (one per line)...',
                 hintStyle: TextStyle(
-                    color: VMColors.secondaryText.withValues(alpha: 0.3)),
+                  color: VMColors.secondaryText.withValues(alpha: 0.3),
+                ),
               ),
               onChanged: onSkillsChange,
             ),

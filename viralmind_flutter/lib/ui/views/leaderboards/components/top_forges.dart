@@ -8,12 +8,13 @@ import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
 class TopForges extends ConsumerWidget {
-  const TopForges(
-      {super.key,
-      required this.forges,
-      this.onExpand,
-      this.showTitle = true,
-      this.listHeight});
+  const TopForges({
+    super.key,
+    required this.forges,
+    this.onExpand,
+    this.showTitle = true,
+    this.listHeight,
+  });
 
   final List<ForgeLeaderboard> forges;
   final VoidCallback? onExpand;
@@ -255,8 +256,11 @@ class TopForgesFullscreen extends StatelessWidget {
                     top: 16,
                     right: 24,
                     child: IconButton(
-                      icon: const Icon(Icons.close_fullscreen,
-                          color: VMColors.secondary, size: 32),
+                      icon: const Icon(
+                        Icons.close_fullscreen,
+                        color: VMColors.secondary,
+                        size: 32,
+                      ),
                       tooltip: 'Close',
                       onPressed: () => Navigator.of(context).pop(),
                     ),

@@ -6,7 +6,7 @@ class Pfp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Placeholder for the PFP widget from the Svelte code
-    return CircleAvatar(
+    return const CircleAvatar(
       // In the svelte code, it's an image: <img src={pfp} ...>
       // I'll use a placeholder icon for now.
       child: Icon(Icons.person),

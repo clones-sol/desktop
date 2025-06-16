@@ -12,8 +12,10 @@ class GenerateGymModalStep2 extends StatelessWidget {
         const Center(child: CircularProgressIndicator()),
         const SizedBox(height: 20),
         const Center(
-          child: Text('Generating your gym...',
-              style: TextStyle(color: VMColors.primaryText, fontSize: 16)),
+          child: Text(
+            'Generating your gym...',
+            style: TextStyle(color: VMColors.primaryText, fontSize: 16),
+          ),
         ),
         const SizedBox(height: 8),
         Center(

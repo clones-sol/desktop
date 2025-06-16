@@ -33,7 +33,9 @@ class ForgeGymOverviewTab extends StatelessWidget {
                     SelectableText(
                       pool.depositAddress,
                       style: TextStyle(
-                          fontSize: 14, color: VMColors.secondaryText),
+                        fontSize: 14,
+                        color: VMColors.secondaryText,
+                      ),
                     ),
                   ],
                 ),
