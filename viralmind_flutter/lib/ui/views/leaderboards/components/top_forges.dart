@@ -1,10 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
-import 'dart:ui';
 
 class TopForges extends ConsumerWidget {
   const TopForges(

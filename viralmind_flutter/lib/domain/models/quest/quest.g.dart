@@ -14,11 +14,11 @@ _$QuestImpl _$$QuestImplFromJson(Map<String, dynamic> json) => _$QuestImpl(
           .map((e) => e as String)
           .toList(),
       content: json['content'] as String,
-      poolId: json['poolId'] as String?,
+      poolId: json['pool_id'] as String?,
       reward: json['reward'] == null
           ? null
           : QuestReward.fromJson(json['reward'] as Map<String, dynamic>),
-      taskId: json['taskId'] as String?,
+      taskId: json['task_id'] as String?,
     );
 
 Map<String, dynamic> _$$QuestImplToJson(_$QuestImpl instance) =>
@@ -28,7 +28,7 @@ Map<String, dynamic> _$$QuestImplToJson(_$QuestImpl instance) =>
       'icon_url': instance.iconUrl,
       'objectives': instance.objectives,
       'content': instance.content,
-      'poolId': instance.poolId,
+      'pool_id': instance.poolId,
       'reward': instance.reward,
-      'taskId': instance.taskId,
+      'task_id': instance.taskId,
     };

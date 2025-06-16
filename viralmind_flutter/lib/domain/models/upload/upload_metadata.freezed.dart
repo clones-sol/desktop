@@ -20,9 +20,9 @@ UploadMetadata _$UploadMetadataFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UploadMetadata {
+  String get id => throw _privateConstructorUsedError;
   String? get poolId => throw _privateConstructorUsedError;
   int? get generatedTime => throw _privateConstructorUsedError;
-  String get id => throw _privateConstructorUsedError;
 
   /// Serializes this UploadMetadata to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $UploadMetadataCopyWith<$Res> {
           UploadMetadata value, $Res Function(UploadMetadata) then) =
       _$UploadMetadataCopyWithImpl<$Res, UploadMetadata>;
   @useResult
-  $Res call({String? poolId, int? generatedTime, String id});
+  $Res call({String id, String? poolId, int? generatedTime});
 }
 
 /// @nodoc
@@ -58,11 +58,15 @@ class _$UploadMetadataCopyWithImpl<$Res, $Val extends UploadMetadata>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? poolId = freezed,
     Object? generatedTime = freezed,
-    Object? id = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
@@ -71,10 +75,6 @@ class _$UploadMetadataCopyWithImpl<$Res, $Val extends UploadMetadata>
           ? _value.generatedTime
           : generatedTime // ignore: cast_nullable_to_non_nullable
               as int?,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$UploadMetadataImplCopyWith<$Res>
       __$$UploadMetadataImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? poolId, int? generatedTime, String id});
+  $Res call({String id, String? poolId, int? generatedTime});
 }
 
 /// @nodoc
@@ -103,11 +103,15 @@ class __$$UploadMetadataImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? poolId = freezed,
     Object? generatedTime = freezed,
-    Object? id = null,
   }) {
     return _then(_$UploadMetadataImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
       poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
@@ -116,10 +120,6 @@ class __$$UploadMetadataImplCopyWithImpl<$Res>
           ? _value.generatedTime
           : generatedTime // ignore: cast_nullable_to_non_nullable
               as int?,
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -128,21 +128,21 @@ class __$$UploadMetadataImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$UploadMetadataImpl implements _UploadMetadata {
   const _$UploadMetadataImpl(
-      {this.poolId, this.generatedTime, required this.id});
+      {required this.id, this.poolId, this.generatedTime});
 
   factory _$UploadMetadataImpl.fromJson(Map<String, dynamic> json) =>
       _$$UploadMetadataImplFromJson(json);
 
   @override
+  final String id;
+  @override
   final String? poolId;
   @override
   final int? generatedTime;
-  @override
-  final String id;
 
   @override
   String toString() {
-    return 'UploadMetadata(poolId: $poolId, generatedTime: $generatedTime, id: $id)';
+    return 'UploadMetadata(id: $id, poolId: $poolId, generatedTime: $generatedTime)';
   }
 
   @override
@@ -150,15 +150,15 @@ class _$UploadMetadataImpl implements _UploadMetadata {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$UploadMetadataImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.poolId, poolId) || other.poolId == poolId) &&
             (identical(other.generatedTime, generatedTime) ||
-                other.generatedTime == generatedTime) &&
-            (identical(other.id, id) || other.id == id));
+                other.generatedTime == generatedTime));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, poolId, generatedTime, id);
+  int get hashCode => Object.hash(runtimeType, id, poolId, generatedTime);
 
   /// Create a copy of UploadMetadata
   /// with the given fields replaced by the non-null parameter values.
@@ -179,19 +179,19 @@ class _$UploadMetadataImpl implements _UploadMetadata {
 
 abstract class _UploadMetadata implements UploadMetadata {
   const factory _UploadMetadata(
-      {final String? poolId,
-      final int? generatedTime,
-      required final String id}) = _$UploadMetadataImpl;
+      {required final String id,
+      final String? poolId,
+      final int? generatedTime}) = _$UploadMetadataImpl;
 
   factory _UploadMetadata.fromJson(Map<String, dynamic> json) =
       _$UploadMetadataImpl.fromJson;
 
   @override
+  String get id;
+  @override
   String? get poolId;
   @override
   int? get generatedTime;
-  @override
-  String get id;
 
   /// Create a copy of UploadMetadata
   /// with the given fields replaced by the non-null parameter values.

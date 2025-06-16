@@ -20,11 +20,16 @@ ForgeTask _$ForgeTaskFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ForgeTask {
+  @JsonKey(name: '_id', includeIfNull: false)
   String get id => throw _privateConstructorUsedError;
   String get prompt => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int get uploadLimit => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int get rewardLimit => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   bool get uploadLimitReached => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int get currentSubmissions => throw _privateConstructorUsedError;
   String get limitReason => throw _privateConstructorUsedError;
   ForgeApp get app => throw _privateConstructorUsedError;
@@ -45,12 +50,12 @@ abstract class $ForgeTaskCopyWith<$Res> {
       _$ForgeTaskCopyWithImpl<$Res, ForgeTask>;
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(name: '_id', includeIfNull: false) String id,
       String prompt,
-      int uploadLimit,
-      int rewardLimit,
-      bool uploadLimitReached,
-      int currentSubmissions,
+      @JsonKey(includeIfNull: false) int uploadLimit,
+      @JsonKey(includeIfNull: false) int rewardLimit,
+      @JsonKey(includeIfNull: false) bool uploadLimitReached,
+      @JsonKey(includeIfNull: false) int currentSubmissions,
       String limitReason,
       ForgeApp app});
 
@@ -137,12 +142,12 @@ abstract class _$$ForgeTaskImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String id,
+      {@JsonKey(name: '_id', includeIfNull: false) String id,
       String prompt,
-      int uploadLimit,
-      int rewardLimit,
-      bool uploadLimitReached,
-      int currentSubmissions,
+      @JsonKey(includeIfNull: false) int uploadLimit,
+      @JsonKey(includeIfNull: false) int rewardLimit,
+      @JsonKey(includeIfNull: false) bool uploadLimitReached,
+      @JsonKey(includeIfNull: false) int currentSubmissions,
       String limitReason,
       ForgeApp app});
 
@@ -213,12 +218,12 @@ class __$$ForgeTaskImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ForgeTaskImpl implements _ForgeTask {
   const _$ForgeTaskImpl(
-      {required this.id,
+      {@JsonKey(name: '_id', includeIfNull: false) required this.id,
       required this.prompt,
-      required this.uploadLimit,
-      required this.rewardLimit,
-      required this.uploadLimitReached,
-      required this.currentSubmissions,
+      @JsonKey(includeIfNull: false) required this.uploadLimit,
+      @JsonKey(includeIfNull: false) required this.rewardLimit,
+      @JsonKey(includeIfNull: false) required this.uploadLimitReached,
+      @JsonKey(includeIfNull: false) required this.currentSubmissions,
       required this.limitReason,
       required this.app});
 
@@ -226,16 +231,21 @@ class _$ForgeTaskImpl implements _ForgeTask {
       _$$ForgeTaskImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id', includeIfNull: false)
   final String id;
   @override
   final String prompt;
   @override
+  @JsonKey(includeIfNull: false)
   final int uploadLimit;
   @override
+  @JsonKey(includeIfNull: false)
   final int rewardLimit;
   @override
+  @JsonKey(includeIfNull: false)
   final bool uploadLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   final int currentSubmissions;
   @override
   final String limitReason;
@@ -290,12 +300,12 @@ class _$ForgeTaskImpl implements _ForgeTask {
 
 abstract class _ForgeTask implements ForgeTask {
   const factory _ForgeTask(
-      {required final String id,
+      {@JsonKey(name: '_id', includeIfNull: false) required final String id,
       required final String prompt,
-      required final int uploadLimit,
-      required final int rewardLimit,
-      required final bool uploadLimitReached,
-      required final int currentSubmissions,
+      @JsonKey(includeIfNull: false) required final int uploadLimit,
+      @JsonKey(includeIfNull: false) required final int rewardLimit,
+      @JsonKey(includeIfNull: false) required final bool uploadLimitReached,
+      @JsonKey(includeIfNull: false) required final int currentSubmissions,
       required final String limitReason,
       required final ForgeApp app}) = _$ForgeTaskImpl;
 
@@ -303,16 +313,21 @@ abstract class _ForgeTask implements ForgeTask {
       _$ForgeTaskImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id', includeIfNull: false)
   String get id;
   @override
   String get prompt;
   @override
+  @JsonKey(includeIfNull: false)
   int get uploadLimit;
   @override
+  @JsonKey(includeIfNull: false)
   int get rewardLimit;
   @override
+  @JsonKey(includeIfNull: false)
   bool get uploadLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   int get currentSubmissions;
   @override
   String get limitReason;

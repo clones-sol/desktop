@@ -8,7 +8,7 @@ part of 'forge_task.dart';
 
 _$ForgeTaskImpl _$$ForgeTaskImplFromJson(Map<String, dynamic> json) =>
     _$ForgeTaskImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       prompt: json['prompt'] as String,
       uploadLimit: (json['uploadLimit'] as num).toInt(),
       rewardLimit: (json['rewardLimit'] as num).toInt(),
@@ -20,7 +20,7 @@ _$ForgeTaskImpl _$$ForgeTaskImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ForgeTaskImplToJson(_$ForgeTaskImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'prompt': instance.prompt,
       'uploadLimit': instance.uploadLimit,
       'rewardLimit': instance.rewardLimit,

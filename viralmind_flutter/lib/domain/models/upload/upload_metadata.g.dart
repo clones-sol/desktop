@@ -8,15 +8,15 @@ part of 'upload_metadata.dart';
 
 _$UploadMetadataImpl _$$UploadMetadataImplFromJson(Map<String, dynamic> json) =>
     _$UploadMetadataImpl(
+      id: json['id'] as String,
       poolId: json['poolId'] as String?,
       generatedTime: (json['generatedTime'] as num?)?.toInt(),
-      id: json['id'] as String,
     );
 
 Map<String, dynamic> _$$UploadMetadataImplToJson(
         _$UploadMetadataImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'poolId': instance.poolId,
       'generatedTime': instance.generatedTime,
-      'id': instance.id,
     };

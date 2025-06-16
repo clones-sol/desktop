@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 import 'package:viralmind_flutter/infrastructure/recording.repository.dart';
-import 'package:viralmind_flutter/providers/api_provider.dart';
+import 'package:viralmind_flutter/application/tauri_api.dart';
 
 part 'recording.g.dart';
 

@@ -20,7 +20,8 @@ SubmissionFile _$SubmissionFileFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SubmissionFile {
-  String get file => throw _privateConstructorUsedError;
+  String get file =>
+      throw _privateConstructorUsedError; // TODO: s3key versus id ?
   String get s3Key => throw _privateConstructorUsedError;
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
@@ -138,6 +139,7 @@ class _$SubmissionFileImpl implements _SubmissionFile {
 
   @override
   final String file;
+// TODO: s3key versus id ?
   @override
   final String s3Key;
   @override
@@ -190,7 +192,7 @@ abstract class _SubmissionFile implements SubmissionFile {
       _$SubmissionFileImpl.fromJson;
 
   @override
-  String get file;
+  String get file; // TODO: s3key versus id ?
   @override
   String get s3Key;
   @override

@@ -8,6 +8,7 @@ part of 'forge_app.dart';
 
 _$ForgeAppImpl _$$ForgeAppImplFromJson(Map<String, dynamic> json) =>
     _$ForgeAppImpl(
+      id: json['_id'] as String?,
       name: json['name'] as String,
       domain: json['domain'] as String,
       description: json['description'] as String,
@@ -17,9 +18,9 @@ _$ForgeAppImpl _$$ForgeAppImplFromJson(Map<String, dynamic> json) =>
       tasks: (json['tasks'] as List<dynamic>)
           .map((e) => ForgeTaskItem.fromJson(e as Map<String, dynamic>))
           .toList(),
-      poolId: json['poolId'] == null
+      poolId: json['pool_id'] == null
           ? null
-          : PoolId.fromJson(json['poolId'] as Map<String, dynamic>),
+          : PoolId.fromJson(json['pool_id'] as Map<String, dynamic>),
       seen: json['seen'] as bool?,
       gymLimitReached: json['gymLimitReached'] as bool?,
       gymSubmissions: (json['gymSubmissions'] as num?)?.toInt(),
@@ -29,15 +30,16 @@ _$ForgeAppImpl _$$ForgeAppImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ForgeAppImplToJson(_$ForgeAppImpl instance) =>
     <String, dynamic>{
+      if (instance.id case final value?) '_id': value,
       'name': instance.name,
       'domain': instance.domain,
       'description': instance.description,
       'categories': instance.categories,
       'tasks': instance.tasks,
-      'poolId': instance.poolId,
-      'seen': instance.seen,
-      'gymLimitReached': instance.gymLimitReached,
-      'gymSubmissions': instance.gymSubmissions,
-      'gymLimitType': instance.gymLimitType,
-      'gymLimitValue': instance.gymLimitValue,
+      if (instance.poolId case final value?) 'pool_id': value,
+      if (instance.seen case final value?) 'seen': value,
+      if (instance.gymLimitReached case final value?) 'gymLimitReached': value,
+      if (instance.gymSubmissions case final value?) 'gymSubmissions': value,
+      if (instance.gymLimitType case final value?) 'gymLimitType': value,
+      if (instance.gymLimitValue case final value?) 'gymLimitValue': value,
     };

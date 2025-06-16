@@ -20,9 +20,13 @@ PoolId _$PoolIdFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PoolId {
+  @JsonKey(name: '_id', includeIfNull: false)
   String get id => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   String get status => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   double get pricePerDemo => throw _privateConstructorUsedError;
 
   /// Serializes this PoolId to a JSON map.
@@ -39,7 +43,11 @@ abstract class $PoolIdCopyWith<$Res> {
   factory $PoolIdCopyWith(PoolId value, $Res Function(PoolId) then) =
       _$PoolIdCopyWithImpl<$Res, PoolId>;
   @useResult
-  $Res call({String id, String name, String status, double pricePerDemo});
+  $Res call(
+      {@JsonKey(name: '_id', includeIfNull: false) String id,
+      @JsonKey(includeIfNull: false) String name,
+      @JsonKey(includeIfNull: false) String status,
+      @JsonKey(includeIfNull: false) double pricePerDemo});
 }
 
 /// @nodoc
@@ -90,7 +98,11 @@ abstract class _$$PoolIdImplCopyWith<$Res> implements $PoolIdCopyWith<$Res> {
       __$$PoolIdImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name, String status, double pricePerDemo});
+  $Res call(
+      {@JsonKey(name: '_id', includeIfNull: false) String id,
+      @JsonKey(includeIfNull: false) String name,
+      @JsonKey(includeIfNull: false) String status,
+      @JsonKey(includeIfNull: false) double pricePerDemo});
 }
 
 /// @nodoc
@@ -136,21 +148,25 @@ class __$$PoolIdImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$PoolIdImpl implements _PoolId {
   const _$PoolIdImpl(
-      {required this.id,
-      required this.name,
-      required this.status,
-      required this.pricePerDemo});
+      {@JsonKey(name: '_id', includeIfNull: false) required this.id,
+      @JsonKey(includeIfNull: false) required this.name,
+      @JsonKey(includeIfNull: false) required this.status,
+      @JsonKey(includeIfNull: false) required this.pricePerDemo});
 
   factory _$PoolIdImpl.fromJson(Map<String, dynamic> json) =>
       _$$PoolIdImplFromJson(json);
 
   @override
+  @JsonKey(name: '_id', includeIfNull: false)
   final String id;
   @override
+  @JsonKey(includeIfNull: false)
   final String name;
   @override
+  @JsonKey(includeIfNull: false)
   final String status;
   @override
+  @JsonKey(includeIfNull: false)
   final double pricePerDemo;
 
   @override
@@ -192,20 +208,25 @@ class _$PoolIdImpl implements _PoolId {
 
 abstract class _PoolId implements PoolId {
   const factory _PoolId(
-      {required final String id,
-      required final String name,
-      required final String status,
-      required final double pricePerDemo}) = _$PoolIdImpl;
+          {@JsonKey(name: '_id', includeIfNull: false) required final String id,
+          @JsonKey(includeIfNull: false) required final String name,
+          @JsonKey(includeIfNull: false) required final String status,
+          @JsonKey(includeIfNull: false) required final double pricePerDemo}) =
+      _$PoolIdImpl;
 
   factory _PoolId.fromJson(Map<String, dynamic> json) = _$PoolIdImpl.fromJson;
 
   @override
+  @JsonKey(name: '_id', includeIfNull: false)
   String get id;
   @override
+  @JsonKey(includeIfNull: false)
   String get name;
   @override
+  @JsonKey(includeIfNull: false)
   String get status;
   @override
+  @JsonKey(includeIfNull: false)
   double get pricePerDemo;
 
   /// Create a copy of PoolId

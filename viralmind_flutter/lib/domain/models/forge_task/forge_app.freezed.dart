@@ -20,16 +20,24 @@ ForgeApp _$ForgeAppFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ForgeApp {
+  @JsonKey(name: '_id', includeIfNull: false)
+  String? get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get domain => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   List<String> get categories => throw _privateConstructorUsedError;
   List<ForgeTaskItem> get tasks => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pool_id', includeIfNull: false)
   PoolId? get poolId => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   bool? get seen => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   bool? get gymLimitReached => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int? get gymSubmissions => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   String? get gymLimitType => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int? get gymLimitValue => throw _privateConstructorUsedError;
 
   /// Serializes this ForgeApp to a JSON map.
@@ -48,17 +56,18 @@ abstract class $ForgeAppCopyWith<$Res> {
       _$ForgeAppCopyWithImpl<$Res, ForgeApp>;
   @useResult
   $Res call(
-      {String name,
+      {@JsonKey(name: '_id', includeIfNull: false) String? id,
+      String name,
       String domain,
       String description,
       List<String> categories,
       List<ForgeTaskItem> tasks,
-      PoolId? poolId,
-      bool? seen,
-      bool? gymLimitReached,
-      int? gymSubmissions,
-      String? gymLimitType,
-      int? gymLimitValue});
+      @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
+      @JsonKey(includeIfNull: false) bool? seen,
+      @JsonKey(includeIfNull: false) bool? gymLimitReached,
+      @JsonKey(includeIfNull: false) int? gymSubmissions,
+      @JsonKey(includeIfNull: false) String? gymLimitType,
+      @JsonKey(includeIfNull: false) int? gymLimitValue});
 
   $PoolIdCopyWith<$Res>? get poolId;
 }
@@ -78,6 +87,7 @@ class _$ForgeAppCopyWithImpl<$Res, $Val extends ForgeApp>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = null,
     Object? domain = null,
     Object? description = null,
@@ -91,6 +101,10 @@ class _$ForgeAppCopyWithImpl<$Res, $Val extends ForgeApp>
     Object? gymLimitValue = freezed,
   }) {
     return _then(_value.copyWith(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -162,17 +176,18 @@ abstract class _$$ForgeAppImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String name,
+      {@JsonKey(name: '_id', includeIfNull: false) String? id,
+      String name,
       String domain,
       String description,
       List<String> categories,
       List<ForgeTaskItem> tasks,
-      PoolId? poolId,
-      bool? seen,
-      bool? gymLimitReached,
-      int? gymSubmissions,
-      String? gymLimitType,
-      int? gymLimitValue});
+      @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
+      @JsonKey(includeIfNull: false) bool? seen,
+      @JsonKey(includeIfNull: false) bool? gymLimitReached,
+      @JsonKey(includeIfNull: false) int? gymSubmissions,
+      @JsonKey(includeIfNull: false) String? gymLimitType,
+      @JsonKey(includeIfNull: false) int? gymLimitValue});
 
   @override
   $PoolIdCopyWith<$Res>? get poolId;
@@ -191,6 +206,7 @@ class __$$ForgeAppImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = freezed,
     Object? name = null,
     Object? domain = null,
     Object? description = null,
@@ -204,6 +220,10 @@ class __$$ForgeAppImplCopyWithImpl<$Res>
     Object? gymLimitValue = freezed,
   }) {
     return _then(_$ForgeAppImpl(
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
       name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -256,23 +276,27 @@ class __$$ForgeAppImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ForgeAppImpl implements _ForgeApp {
   const _$ForgeAppImpl(
-      {required this.name,
+      {@JsonKey(name: '_id', includeIfNull: false) this.id,
+      required this.name,
       required this.domain,
       required this.description,
       required final List<String> categories,
       required final List<ForgeTaskItem> tasks,
-      this.poolId,
-      this.seen,
-      this.gymLimitReached,
-      this.gymSubmissions,
-      this.gymLimitType,
-      this.gymLimitValue})
+      @JsonKey(name: 'pool_id', includeIfNull: false) this.poolId,
+      @JsonKey(includeIfNull: false) this.seen,
+      @JsonKey(includeIfNull: false) this.gymLimitReached,
+      @JsonKey(includeIfNull: false) this.gymSubmissions,
+      @JsonKey(includeIfNull: false) this.gymLimitType,
+      @JsonKey(includeIfNull: false) this.gymLimitValue})
       : _categories = categories,
         _tasks = tasks;
 
   factory _$ForgeAppImpl.fromJson(Map<String, dynamic> json) =>
       _$$ForgeAppImplFromJson(json);
 
+  @override
+  @JsonKey(name: '_id', includeIfNull: false)
+  final String? id;
   @override
   final String name;
   @override
@@ -296,21 +320,27 @@ class _$ForgeAppImpl implements _ForgeApp {
   }
 
   @override
+  @JsonKey(name: 'pool_id', includeIfNull: false)
   final PoolId? poolId;
   @override
+  @JsonKey(includeIfNull: false)
   final bool? seen;
   @override
+  @JsonKey(includeIfNull: false)
   final bool? gymLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   final int? gymSubmissions;
   @override
+  @JsonKey(includeIfNull: false)
   final String? gymLimitType;
   @override
+  @JsonKey(includeIfNull: false)
   final int? gymLimitValue;
 
   @override
   String toString() {
-    return 'ForgeApp(name: $name, domain: $domain, description: $description, categories: $categories, tasks: $tasks, poolId: $poolId, seen: $seen, gymLimitReached: $gymLimitReached, gymSubmissions: $gymSubmissions, gymLimitType: $gymLimitType, gymLimitValue: $gymLimitValue)';
+    return 'ForgeApp(id: $id, name: $name, domain: $domain, description: $description, categories: $categories, tasks: $tasks, poolId: $poolId, seen: $seen, gymLimitReached: $gymLimitReached, gymSubmissions: $gymSubmissions, gymLimitType: $gymLimitType, gymLimitValue: $gymLimitValue)';
   }
 
   @override
@@ -318,6 +348,7 @@ class _$ForgeAppImpl implements _ForgeApp {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ForgeAppImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.domain, domain) || other.domain == domain) &&
             (identical(other.description, description) ||
@@ -341,6 +372,7 @@ class _$ForgeAppImpl implements _ForgeApp {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      id,
       name,
       domain,
       description,
@@ -371,21 +403,26 @@ class _$ForgeAppImpl implements _ForgeApp {
 
 abstract class _ForgeApp implements ForgeApp {
   const factory _ForgeApp(
-      {required final String name,
-      required final String domain,
-      required final String description,
-      required final List<String> categories,
-      required final List<ForgeTaskItem> tasks,
-      final PoolId? poolId,
-      final bool? seen,
-      final bool? gymLimitReached,
-      final int? gymSubmissions,
-      final String? gymLimitType,
-      final int? gymLimitValue}) = _$ForgeAppImpl;
+          {@JsonKey(name: '_id', includeIfNull: false) final String? id,
+          required final String name,
+          required final String domain,
+          required final String description,
+          required final List<String> categories,
+          required final List<ForgeTaskItem> tasks,
+          @JsonKey(name: 'pool_id', includeIfNull: false) final PoolId? poolId,
+          @JsonKey(includeIfNull: false) final bool? seen,
+          @JsonKey(includeIfNull: false) final bool? gymLimitReached,
+          @JsonKey(includeIfNull: false) final int? gymSubmissions,
+          @JsonKey(includeIfNull: false) final String? gymLimitType,
+          @JsonKey(includeIfNull: false) final int? gymLimitValue}) =
+      _$ForgeAppImpl;
 
   factory _ForgeApp.fromJson(Map<String, dynamic> json) =
       _$ForgeAppImpl.fromJson;
 
+  @override
+  @JsonKey(name: '_id', includeIfNull: false)
+  String? get id;
   @override
   String get name;
   @override
@@ -397,16 +434,22 @@ abstract class _ForgeApp implements ForgeApp {
   @override
   List<ForgeTaskItem> get tasks;
   @override
+  @JsonKey(name: 'pool_id', includeIfNull: false)
   PoolId? get poolId;
   @override
+  @JsonKey(includeIfNull: false)
   bool? get seen;
   @override
+  @JsonKey(includeIfNull: false)
   bool? get gymLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   int? get gymSubmissions;
   @override
+  @JsonKey(includeIfNull: false)
   String? get gymLimitType;
   @override
+  @JsonKey(includeIfNull: false)
   int? get gymLimitValue;
 
   /// Create a copy of ForgeApp

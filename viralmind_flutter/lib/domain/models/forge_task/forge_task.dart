@@ -7,12 +7,12 @@ part 'forge_task.g.dart';
 @freezed
 class ForgeTask with _$ForgeTask {
   const factory ForgeTask({
-    required String id,
+    @JsonKey(name: '_id', includeIfNull: false) required String id,
     required String prompt,
-    required int uploadLimit,
-    required int rewardLimit,
-    required bool uploadLimitReached,
-    required int currentSubmissions,
+    @JsonKey(includeIfNull: false) required int uploadLimit,
+    @JsonKey(includeIfNull: false) required int rewardLimit,
+    @JsonKey(includeIfNull: false) required bool uploadLimitReached,
+    @JsonKey(includeIfNull: false) required int currentSubmissions,
     required String limitReason,
     required ForgeApp app,
   }) = _ForgeTask;

@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/api/core/client.dart';
+import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 import 'package:viralmind_flutter/infrastructure/quest.repository.dart';
 
@@ -11,7 +12,8 @@ QuestRepositoryImpl questRepository(
   Ref ref,
 ) {
   final apiClient = ref.watch(apiClientProvider);
-  return QuestRepositoryImpl(apiClient);
+  final tauriClient = ref.watch(tauriApiClientProvider);
+  return QuestRepositoryImpl(apiClient, tauriClient);
 }
 
 @riverpod

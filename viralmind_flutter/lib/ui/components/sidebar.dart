@@ -110,11 +110,9 @@ class Sidebar extends ConsumerWidget {
                 ),
               ),
             ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: UploadManagerWidget(
-              uploadManager: UploadManager(),
-            ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: UploadManagerWidget(),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),

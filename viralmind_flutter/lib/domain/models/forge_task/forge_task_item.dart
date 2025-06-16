@@ -6,16 +6,16 @@ part 'forge_task_item.g.dart';
 @freezed
 class ForgeTaskItem with _$ForgeTaskItem {
   const factory ForgeTaskItem({
-    @JsonKey(name: '_id') String? id,
+    @JsonKey(name: '_id', includeIfNull: false) String? id,
     required String prompt,
-    int? uploadLimit,
-    int? rewardLimit,
-    bool? completed,
-    String? recordingId,
-    double? score,
-    bool? uploadLimitReached,
-    int? currentSubmissions,
-    String? limitReason,
+    @JsonKey(includeIfNull: false) int? uploadLimit,
+    @JsonKey(includeIfNull: false) int? rewardLimit,
+    @JsonKey(includeIfNull: false) bool? completed,
+    @JsonKey(includeIfNull: false) String? recordingId,
+    @JsonKey(includeIfNull: false) double? score,
+    @JsonKey(includeIfNull: false) bool? uploadLimitReached,
+    @JsonKey(includeIfNull: false) int? currentSubmissions,
+    @JsonKey(includeIfNull: false) String? limitReason,
   }) = _ForgeTaskItem;
 
   factory ForgeTaskItem.fromJson(Map<String, dynamic> json) =>

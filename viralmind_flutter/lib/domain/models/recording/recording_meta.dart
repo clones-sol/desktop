@@ -9,7 +9,7 @@ class RecordingMeta with _$RecordingMeta {
   const factory RecordingMeta({
     required String id,
     required String timestamp,
-    required int duration_seconds,
+    @JsonKey(name: 'duration_seconds') required int durationSeconds,
     required String status,
     String? reason,
     required String title,
@@ -18,7 +18,6 @@ class RecordingMeta with _$RecordingMeta {
     required String arch,
     required String version,
     required String locale,
-    required MonitorInfo primary_monitor,
     Quest? quest,
   }) = _RecordingMeta;
 

@@ -172,16 +172,6 @@ pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), Stri
         use std::os::windows::process::CommandExt;
         command.creation_flags(0x08000000); // CREATE_NO_WINDOW constant
     }
-    // Set resource limits (Unix only)
-    #[cfg(unix)]
-    {
-        setrlimit(
-            Resource::AS,
-            PIPELINE_MAX_MEM_MB * 1024 * 1024,
-            PIPELINE_MAX_MEM_MB * 1024 * 1024,
-        )
-        .map_err(|e| format!("Failed to set memory limit: {}", e))?;
-    }
 
     //todo: check if ffmpeg and ffprobe exist in the path before getting the custom dir.
     let ffmpeg_dir = get_ffmpeg_dir();

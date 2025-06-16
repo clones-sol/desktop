@@ -421,25 +421,25 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
+                      const Text(
                         'Uploads',
                         style: TextStyle(fontWeight: FontWeight.w500),
                       ),
                       Text(
                         '0/$_uploadLimit',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                   const SizedBox(height: 6),
-                  LinearProgressIndicator(
+                  const LinearProgressIndicator(
                     value: 0,
                     minHeight: 6,
                     backgroundColor: Colors.grey,
                     color: Colors.blue,
                   ),
                   const SizedBox(height: 6),
-                  Text(
+                  const Text(
                     'Upload stats and breakdown coming soon.',
                     style: TextStyle(color: Colors.grey),
                   ),

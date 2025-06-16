@@ -1,8 +1,9 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
-import 'package:viralmind_flutter/domain/recording_meta.dart';
+import 'package:viralmind_flutter/domain/models/recording/recording_meta.dart';
 
 class TauriApiClient {
   TauriApiClient({http.Client? client}) : _client = client ?? http.Client();
@@ -26,10 +27,9 @@ class TauriApiClient {
     required String content,
   }) async {
     final response = await _client.post(
-      Uri.parse('$_baseUrl/recording/file'),
+      Uri.parse('$_baseUrl/recordings/$recordingId/files'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
-        'recording_id': recordingId,
         'filename': filename,
         'content': content,
       }),
@@ -45,9 +45,7 @@ class TauriApiClient {
     required String filename,
   }) async {
     final response = await _client.get(
-      Uri.parse(
-        '$_baseUrl/recording/file?recording_id=$recordingId&filename=$filename',
-      ),
+      Uri.parse('$_baseUrl/recordings/$recordingId/files?filename=$filename'),
     );
     if (response.statusCode == 200) {
       return utf8.decode(response.bodyBytes);
@@ -58,7 +56,7 @@ class TauriApiClient {
 
   Future<void> startRecording({Quest? quest, required int fps}) async {
     final response = await _client.post(
-      Uri.parse('$_baseUrl/recording/start'),
+      Uri.parse('$_baseUrl/recordings/start'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'quest': quest?.toJson(),
@@ -73,7 +71,7 @@ class TauriApiClient {
 
   Future<String> stopRecording(String status) async {
     final response = await _client.post(
-      Uri.parse('$_baseUrl/recording/stop'),
+      Uri.parse('$_baseUrl/recordings/stop'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({'status': status}),
     );
@@ -86,7 +84,7 @@ class TauriApiClient {
 
   Future<String> deleteRecording(String recordingId) async {
     final response = await _client.delete(
-      Uri.parse('$_baseUrl/recording/$recordingId'),
+      Uri.parse('$_baseUrl/recordings/$recordingId'),
     );
 
     if (response.statusCode == 200) {
@@ -96,6 +94,7 @@ class TauriApiClient {
     }
   }
 
+  // TODO: Not used ?
   Future<List<AppInfo>> listApps() async {
     final response = await _client.get(Uri.parse('$_baseUrl/apps'));
 
@@ -127,6 +126,19 @@ class TauriApiClient {
 
     if (response.statusCode != 200) {
       throw Exception('Failed to set upload data allowed: ${response.body}');
+    }
+  }
+
+  Future<bool> getUploadDataAllowed() async {
+    final response =
+        await _client.get(Uri.parse('$_baseUrl/settings/upload-allowed'));
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception(
+        'Failed to check upload confirmation allowance: ${response.body}',
+      );
     }
   }
 
@@ -205,7 +217,7 @@ class TauriApiClient {
 
   Future<void> processRecording(String recordingId) async {
     final response = await _client
-        .post(Uri.parse('$_baseUrl/recording/$recordingId/process'));
+        .post(Uri.parse('$_baseUrl/recordings/$recordingId/process'));
     if (response.statusCode != 200) {
       throw Exception('Failed to process recording: ${response.body}');
     }
@@ -213,7 +225,7 @@ class TauriApiClient {
 
   Future<void> openRecordingFolder(String recordingId) async {
     final response =
-        await _client.post(Uri.parse('$_baseUrl/recording/$recordingId/open'));
+        await _client.post(Uri.parse('$_baseUrl/recordings/$recordingId/open'));
     if (response.statusCode != 200) {
       throw Exception('Failed to open recording folder: ${response.body}');
     }
@@ -226,5 +238,15 @@ class TauriApiClient {
       return response.body;
     }
     throw Exception('Failed to export recordings: ${response.body}');
+  }
+
+  Future<Uint8List> getRecordingZip(String recordingId) async {
+    final response =
+        await _client.get(Uri.parse('$_baseUrl/recordings/$recordingId/zip'));
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to get recording zip: ${response.body}');
+    }
   }
 }

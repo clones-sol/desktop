@@ -2,10 +2,12 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
-import 'package:viralmind_flutter/domain/models/upload_limit.dart';
+import 'package:viralmind_flutter/domain/models/upload/upload_limit.dart';
 
 part 'training_pool.freezed.dart';
 part 'training_pool.g.dart';
+
+const kMinSolBalance = 0.017;
 
 enum TrainingPoolStatus {
   @JsonValue('live')

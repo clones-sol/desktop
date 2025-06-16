@@ -169,7 +169,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
             ),
             Text(
               pool.status == TrainingPoolStatus.noGas
-                  ? 'Your gym needs SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
+                  ? 'Your gym needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
                   : "Your gym needs VIRAL tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
               style: TextStyle(
                 color: VMColors.secondaryText,

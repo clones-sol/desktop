@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:viralmind_flutter/providers/api_provider.dart';
-import 'package:viralmind_flutter/providers/tools_provider.dart';
+import 'package:viralmind_flutter/application/tauri_api.dart';
+import 'package:viralmind_flutter/application/tools_provider.dart';
 import 'package:viralmind_flutter/ui/components/layout_background.dart';
 
 class MainLayout extends ConsumerStatefulWidget {

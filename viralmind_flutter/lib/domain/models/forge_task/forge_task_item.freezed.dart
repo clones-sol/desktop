@@ -20,16 +20,24 @@ ForgeTaskItem _$ForgeTaskItemFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ForgeTaskItem {
-  @JsonKey(name: '_id')
+  @JsonKey(name: '_id', includeIfNull: false)
   String? get id => throw _privateConstructorUsedError;
   String get prompt => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int? get uploadLimit => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int? get rewardLimit => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   bool? get completed => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   String? get recordingId => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   double? get score => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   bool? get uploadLimitReached => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   int? get currentSubmissions => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
   String? get limitReason => throw _privateConstructorUsedError;
 
   /// Serializes this ForgeTaskItem to a JSON map.
@@ -49,16 +57,16 @@ abstract class $ForgeTaskItemCopyWith<$Res> {
       _$ForgeTaskItemCopyWithImpl<$Res, ForgeTaskItem>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@JsonKey(name: '_id', includeIfNull: false) String? id,
       String prompt,
-      int? uploadLimit,
-      int? rewardLimit,
-      bool? completed,
-      String? recordingId,
-      double? score,
-      bool? uploadLimitReached,
-      int? currentSubmissions,
-      String? limitReason});
+      @JsonKey(includeIfNull: false) int? uploadLimit,
+      @JsonKey(includeIfNull: false) int? rewardLimit,
+      @JsonKey(includeIfNull: false) bool? completed,
+      @JsonKey(includeIfNull: false) String? recordingId,
+      @JsonKey(includeIfNull: false) double? score,
+      @JsonKey(includeIfNull: false) bool? uploadLimitReached,
+      @JsonKey(includeIfNull: false) int? currentSubmissions,
+      @JsonKey(includeIfNull: false) String? limitReason});
 }
 
 /// @nodoc
@@ -141,16 +149,16 @@ abstract class _$$ForgeTaskItemImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String? id,
+      {@JsonKey(name: '_id', includeIfNull: false) String? id,
       String prompt,
-      int? uploadLimit,
-      int? rewardLimit,
-      bool? completed,
-      String? recordingId,
-      double? score,
-      bool? uploadLimitReached,
-      int? currentSubmissions,
-      String? limitReason});
+      @JsonKey(includeIfNull: false) int? uploadLimit,
+      @JsonKey(includeIfNull: false) int? rewardLimit,
+      @JsonKey(includeIfNull: false) bool? completed,
+      @JsonKey(includeIfNull: false) String? recordingId,
+      @JsonKey(includeIfNull: false) double? score,
+      @JsonKey(includeIfNull: false) bool? uploadLimitReached,
+      @JsonKey(includeIfNull: false) int? currentSubmissions,
+      @JsonKey(includeIfNull: false) String? limitReason});
 }
 
 /// @nodoc
@@ -226,40 +234,48 @@ class __$$ForgeTaskItemImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$ForgeTaskItemImpl implements _ForgeTaskItem {
   const _$ForgeTaskItemImpl(
-      {@JsonKey(name: '_id') this.id,
+      {@JsonKey(name: '_id', includeIfNull: false) this.id,
       required this.prompt,
-      this.uploadLimit,
-      this.rewardLimit,
-      this.completed,
-      this.recordingId,
-      this.score,
-      this.uploadLimitReached,
-      this.currentSubmissions,
-      this.limitReason});
+      @JsonKey(includeIfNull: false) this.uploadLimit,
+      @JsonKey(includeIfNull: false) this.rewardLimit,
+      @JsonKey(includeIfNull: false) this.completed,
+      @JsonKey(includeIfNull: false) this.recordingId,
+      @JsonKey(includeIfNull: false) this.score,
+      @JsonKey(includeIfNull: false) this.uploadLimitReached,
+      @JsonKey(includeIfNull: false) this.currentSubmissions,
+      @JsonKey(includeIfNull: false) this.limitReason});
 
   factory _$ForgeTaskItemImpl.fromJson(Map<String, dynamic> json) =>
       _$$ForgeTaskItemImplFromJson(json);
 
   @override
-  @JsonKey(name: '_id')
+  @JsonKey(name: '_id', includeIfNull: false)
   final String? id;
   @override
   final String prompt;
   @override
+  @JsonKey(includeIfNull: false)
   final int? uploadLimit;
   @override
+  @JsonKey(includeIfNull: false)
   final int? rewardLimit;
   @override
+  @JsonKey(includeIfNull: false)
   final bool? completed;
   @override
+  @JsonKey(includeIfNull: false)
   final String? recordingId;
   @override
+  @JsonKey(includeIfNull: false)
   final double? score;
   @override
+  @JsonKey(includeIfNull: false)
   final bool? uploadLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   final int? currentSubmissions;
   @override
+  @JsonKey(includeIfNull: false)
   final String? limitReason;
 
   @override
@@ -324,40 +340,49 @@ class _$ForgeTaskItemImpl implements _ForgeTaskItem {
 
 abstract class _ForgeTaskItem implements ForgeTaskItem {
   const factory _ForgeTaskItem(
-      {@JsonKey(name: '_id') final String? id,
-      required final String prompt,
-      final int? uploadLimit,
-      final int? rewardLimit,
-      final bool? completed,
-      final String? recordingId,
-      final double? score,
-      final bool? uploadLimitReached,
-      final int? currentSubmissions,
-      final String? limitReason}) = _$ForgeTaskItemImpl;
+          {@JsonKey(name: '_id', includeIfNull: false) final String? id,
+          required final String prompt,
+          @JsonKey(includeIfNull: false) final int? uploadLimit,
+          @JsonKey(includeIfNull: false) final int? rewardLimit,
+          @JsonKey(includeIfNull: false) final bool? completed,
+          @JsonKey(includeIfNull: false) final String? recordingId,
+          @JsonKey(includeIfNull: false) final double? score,
+          @JsonKey(includeIfNull: false) final bool? uploadLimitReached,
+          @JsonKey(includeIfNull: false) final int? currentSubmissions,
+          @JsonKey(includeIfNull: false) final String? limitReason}) =
+      _$ForgeTaskItemImpl;
 
   factory _ForgeTaskItem.fromJson(Map<String, dynamic> json) =
       _$ForgeTaskItemImpl.fromJson;
 
   @override
-  @JsonKey(name: '_id')
+  @JsonKey(name: '_id', includeIfNull: false)
   String? get id;
   @override
   String get prompt;
   @override
+  @JsonKey(includeIfNull: false)
   int? get uploadLimit;
   @override
+  @JsonKey(includeIfNull: false)
   int? get rewardLimit;
   @override
+  @JsonKey(includeIfNull: false)
   bool? get completed;
   @override
+  @JsonKey(includeIfNull: false)
   String? get recordingId;
   @override
+  @JsonKey(includeIfNull: false)
   double? get score;
   @override
+  @JsonKey(includeIfNull: false)
   bool? get uploadLimitReached;
   @override
+  @JsonKey(includeIfNull: false)
   int? get currentSubmissions;
   @override
+  @JsonKey(includeIfNull: false)
   String? get limitReason;
 
   /// Create a copy of ForgeTaskItem
