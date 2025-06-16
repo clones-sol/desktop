@@ -23,13 +23,14 @@ mixin _$PoolSubmission {
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  Meta get meta => throw _privateConstructorUsedError;
+  SubmissionMeta get meta => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   List<SubmissionFile> get files => throw _privateConstructorUsedError;
+  @JsonKey(name: 'grade_result')
   GradeResult? get gradeResult => throw _privateConstructorUsedError;
-  double get reward => throw _privateConstructorUsedError;
-  double get maxReward => throw _privateConstructorUsedError;
-  double get clampedScore => throw _privateConstructorUsedError;
+  double? get reward => throw _privateConstructorUsedError;
+  double? get maxReward => throw _privateConstructorUsedError;
+  double? get clampedScore => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -52,17 +53,17 @@ abstract class $PoolSubmissionCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: '_id') String id,
       String address,
-      Meta meta,
+      SubmissionMeta meta,
       String status,
       List<SubmissionFile> files,
-      GradeResult? gradeResult,
-      double reward,
-      double maxReward,
-      double clampedScore,
+      @JsonKey(name: 'grade_result') GradeResult? gradeResult,
+      double? reward,
+      double? maxReward,
+      double? clampedScore,
       String createdAt,
       String updatedAt});
 
-  $MetaCopyWith<$Res> get meta;
+  $SubmissionMetaCopyWith<$Res> get meta;
   $GradeResultCopyWith<$Res>? get gradeResult;
 }
 
@@ -87,9 +88,9 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
     Object? status = null,
     Object? files = null,
     Object? gradeResult = freezed,
-    Object? reward = null,
-    Object? maxReward = null,
-    Object? clampedScore = null,
+    Object? reward = freezed,
+    Object? maxReward = freezed,
+    Object? clampedScore = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -105,7 +106,7 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
       meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta,
+              as SubmissionMeta,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -118,18 +119,18 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
           ? _value.gradeResult
           : gradeResult // ignore: cast_nullable_to_non_nullable
               as GradeResult?,
-      reward: null == reward
+      reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as double,
-      maxReward: null == maxReward
+              as double?,
+      maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as double,
-      clampedScore: null == clampedScore
+              as double?,
+      clampedScore: freezed == clampedScore
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -145,8 +146,8 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $MetaCopyWith<$Res> get meta {
-    return $MetaCopyWith<$Res>(_value.meta, (value) {
+  $SubmissionMetaCopyWith<$Res> get meta {
+    return $SubmissionMetaCopyWith<$Res>(_value.meta, (value) {
       return _then(_value.copyWith(meta: value) as $Val);
     });
   }
@@ -177,18 +178,18 @@ abstract class _$$PoolSubmissionImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: '_id') String id,
       String address,
-      Meta meta,
+      SubmissionMeta meta,
       String status,
       List<SubmissionFile> files,
-      GradeResult? gradeResult,
-      double reward,
-      double maxReward,
-      double clampedScore,
+      @JsonKey(name: 'grade_result') GradeResult? gradeResult,
+      double? reward,
+      double? maxReward,
+      double? clampedScore,
       String createdAt,
       String updatedAt});
 
   @override
-  $MetaCopyWith<$Res> get meta;
+  $SubmissionMetaCopyWith<$Res> get meta;
   @override
   $GradeResultCopyWith<$Res>? get gradeResult;
 }
@@ -212,9 +213,9 @@ class __$$PoolSubmissionImplCopyWithImpl<$Res>
     Object? status = null,
     Object? files = null,
     Object? gradeResult = freezed,
-    Object? reward = null,
-    Object? maxReward = null,
-    Object? clampedScore = null,
+    Object? reward = freezed,
+    Object? maxReward = freezed,
+    Object? clampedScore = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -230,7 +231,7 @@ class __$$PoolSubmissionImplCopyWithImpl<$Res>
       meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
-              as Meta,
+              as SubmissionMeta,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -243,18 +244,18 @@ class __$$PoolSubmissionImplCopyWithImpl<$Res>
           ? _value.gradeResult
           : gradeResult // ignore: cast_nullable_to_non_nullable
               as GradeResult?,
-      reward: null == reward
+      reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as double,
-      maxReward: null == maxReward
+              as double?,
+      maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as double,
-      clampedScore: null == clampedScore
+              as double?,
+      clampedScore: freezed == clampedScore
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -276,10 +277,10 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
       required this.meta,
       required this.status,
       required final List<SubmissionFile> files,
-      this.gradeResult,
-      required this.reward,
-      required this.maxReward,
-      required this.clampedScore,
+      @JsonKey(name: 'grade_result') this.gradeResult,
+      this.reward,
+      this.maxReward,
+      this.clampedScore,
       required this.createdAt,
       required this.updatedAt})
       : _files = files;
@@ -293,7 +294,7 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
   @override
   final String address;
   @override
-  final Meta meta;
+  final SubmissionMeta meta;
   @override
   final String status;
   final List<SubmissionFile> _files;
@@ -305,13 +306,14 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
   }
 
   @override
+  @JsonKey(name: 'grade_result')
   final GradeResult? gradeResult;
   @override
-  final double reward;
+  final double? reward;
   @override
-  final double maxReward;
+  final double? maxReward;
   @override
-  final double clampedScore;
+  final double? clampedScore;
   @override
   final String createdAt;
   @override
@@ -382,13 +384,13 @@ abstract class _PoolSubmission implements PoolSubmission {
   const factory _PoolSubmission(
       {@JsonKey(name: '_id') required final String id,
       required final String address,
-      required final Meta meta,
+      required final SubmissionMeta meta,
       required final String status,
       required final List<SubmissionFile> files,
-      final GradeResult? gradeResult,
-      required final double reward,
-      required final double maxReward,
-      required final double clampedScore,
+      @JsonKey(name: 'grade_result') final GradeResult? gradeResult,
+      final double? reward,
+      final double? maxReward,
+      final double? clampedScore,
       required final String createdAt,
       required final String updatedAt}) = _$PoolSubmissionImpl;
 
@@ -401,19 +403,20 @@ abstract class _PoolSubmission implements PoolSubmission {
   @override
   String get address;
   @override
-  Meta get meta;
+  SubmissionMeta get meta;
   @override
   String get status;
   @override
   List<SubmissionFile> get files;
   @override
+  @JsonKey(name: 'grade_result')
   GradeResult? get gradeResult;
   @override
-  double get reward;
+  double? get reward;
   @override
-  double get maxReward;
+  double? get maxReward;
   @override
-  double get clampedScore;
+  double? get clampedScore;
   @override
   String get createdAt;
   @override

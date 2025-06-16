@@ -20,6 +20,7 @@ class UploadTaskState with _$UploadTaskState {
     @Default(0) int totalBytes,
     @Default(0) int uploadedBytes,
     String? uploadId,
+    String? submissionId,
     String? error,
   }) = _UploadTaskState;
   const UploadTaskState._();

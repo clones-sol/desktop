@@ -21,19 +21,19 @@ SubmissionStatus _$SubmissionStatusFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SubmissionStatus {
   @JsonKey(name: '_id')
-  String get id => throw _privateConstructorUsedError;
-  String get address => throw _privateConstructorUsedError;
+  String? get id => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
   SubmissionMeta get meta => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   List<SubmissionFile> get files => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
-  int get clampedScore => throw _privateConstructorUsedError;
+  int? get clampedScore => throw _privateConstructorUsedError;
   @JsonKey(name: 'grade_result')
-  GradeResult get gradeResult => throw _privateConstructorUsedError;
-  int get maxReward => throw _privateConstructorUsedError;
-  int get reward => throw _privateConstructorUsedError;
+  GradeResult? get gradeResult => throw _privateConstructorUsedError;
+  int? get maxReward => throw _privateConstructorUsedError;
+  int? get reward => throw _privateConstructorUsedError;
   TreasuryTransfer? get treasuryTransfer => throw _privateConstructorUsedError;
 
   /// Serializes this SubmissionStatus to a JSON map.
@@ -53,22 +53,22 @@ abstract class $SubmissionStatusCopyWith<$Res> {
       _$SubmissionStatusCopyWithImpl<$Res, SubmissionStatus>;
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
-      String address,
+      {@JsonKey(name: '_id') String? id,
+      String? address,
       SubmissionMeta meta,
       String status,
       List<SubmissionFile> files,
       String? error,
       String createdAt,
       String updatedAt,
-      int clampedScore,
-      @JsonKey(name: 'grade_result') GradeResult gradeResult,
-      int maxReward,
-      int reward,
+      int? clampedScore,
+      @JsonKey(name: 'grade_result') GradeResult? gradeResult,
+      int? maxReward,
+      int? reward,
       TreasuryTransfer? treasuryTransfer});
 
   $SubmissionMetaCopyWith<$Res> get meta;
-  $GradeResultCopyWith<$Res> get gradeResult;
+  $GradeResultCopyWith<$Res>? get gradeResult;
   $TreasuryTransferCopyWith<$Res>? get treasuryTransfer;
 }
 
@@ -87,29 +87,29 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? address = null,
+    Object? id = freezed,
+    Object? address = freezed,
     Object? meta = null,
     Object? status = null,
     Object? files = null,
     Object? error = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? clampedScore = null,
-    Object? gradeResult = null,
-    Object? maxReward = null,
-    Object? reward = null,
+    Object? clampedScore = freezed,
+    Object? gradeResult = freezed,
+    Object? maxReward = freezed,
+    Object? reward = freezed,
     Object? treasuryTransfer = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: null == address
+              as String?,
+      address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
@@ -134,22 +134,22 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
-      clampedScore: null == clampedScore
+      clampedScore: freezed == clampedScore
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
-              as int,
-      gradeResult: null == gradeResult
+              as int?,
+      gradeResult: freezed == gradeResult
           ? _value.gradeResult
           : gradeResult // ignore: cast_nullable_to_non_nullable
-              as GradeResult,
-      maxReward: null == maxReward
+              as GradeResult?,
+      maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as int,
-      reward: null == reward
+              as int?,
+      reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       treasuryTransfer: freezed == treasuryTransfer
           ? _value.treasuryTransfer
           : treasuryTransfer // ignore: cast_nullable_to_non_nullable
@@ -171,8 +171,12 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $GradeResultCopyWith<$Res> get gradeResult {
-    return $GradeResultCopyWith<$Res>(_value.gradeResult, (value) {
+  $GradeResultCopyWith<$Res>? get gradeResult {
+    if (_value.gradeResult == null) {
+      return null;
+    }
+
+    return $GradeResultCopyWith<$Res>(_value.gradeResult!, (value) {
       return _then(_value.copyWith(gradeResult: value) as $Val);
     });
   }
@@ -201,24 +205,24 @@ abstract class _$$SubmissionStatusImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: '_id') String id,
-      String address,
+      {@JsonKey(name: '_id') String? id,
+      String? address,
       SubmissionMeta meta,
       String status,
       List<SubmissionFile> files,
       String? error,
       String createdAt,
       String updatedAt,
-      int clampedScore,
-      @JsonKey(name: 'grade_result') GradeResult gradeResult,
-      int maxReward,
-      int reward,
+      int? clampedScore,
+      @JsonKey(name: 'grade_result') GradeResult? gradeResult,
+      int? maxReward,
+      int? reward,
       TreasuryTransfer? treasuryTransfer});
 
   @override
   $SubmissionMetaCopyWith<$Res> get meta;
   @override
-  $GradeResultCopyWith<$Res> get gradeResult;
+  $GradeResultCopyWith<$Res>? get gradeResult;
   @override
   $TreasuryTransferCopyWith<$Res>? get treasuryTransfer;
 }
@@ -236,29 +240,29 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
-    Object? address = null,
+    Object? id = freezed,
+    Object? address = freezed,
     Object? meta = null,
     Object? status = null,
     Object? files = null,
     Object? error = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
-    Object? clampedScore = null,
-    Object? gradeResult = null,
-    Object? maxReward = null,
-    Object? reward = null,
+    Object? clampedScore = freezed,
+    Object? gradeResult = freezed,
+    Object? maxReward = freezed,
+    Object? reward = freezed,
     Object? treasuryTransfer = freezed,
   }) {
     return _then(_$SubmissionStatusImpl(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: null == address
+              as String?,
+      address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       meta: null == meta
           ? _value.meta
           : meta // ignore: cast_nullable_to_non_nullable
@@ -283,22 +287,22 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String,
-      clampedScore: null == clampedScore
+      clampedScore: freezed == clampedScore
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
-              as int,
-      gradeResult: null == gradeResult
+              as int?,
+      gradeResult: freezed == gradeResult
           ? _value.gradeResult
           : gradeResult // ignore: cast_nullable_to_non_nullable
-              as GradeResult,
-      maxReward: null == maxReward
+              as GradeResult?,
+      maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as int,
-      reward: null == reward
+              as int?,
+      reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       treasuryTransfer: freezed == treasuryTransfer
           ? _value.treasuryTransfer
           : treasuryTransfer // ignore: cast_nullable_to_non_nullable
@@ -311,18 +315,18 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SubmissionStatusImpl implements _SubmissionStatus {
   const _$SubmissionStatusImpl(
-      {@JsonKey(name: '_id') required this.id,
-      required this.address,
+      {@JsonKey(name: '_id') this.id,
+      this.address,
       required this.meta,
       required this.status,
       required final List<SubmissionFile> files,
       this.error,
       required this.createdAt,
       required this.updatedAt,
-      required this.clampedScore,
-      @JsonKey(name: 'grade_result') required this.gradeResult,
-      required this.maxReward,
-      required this.reward,
+      this.clampedScore,
+      @JsonKey(name: 'grade_result') this.gradeResult,
+      this.maxReward,
+      this.reward,
       this.treasuryTransfer})
       : _files = files;
 
@@ -331,9 +335,9 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
 
   @override
   @JsonKey(name: '_id')
-  final String id;
+  final String? id;
   @override
-  final String address;
+  final String? address;
   @override
   final SubmissionMeta meta;
   @override
@@ -353,14 +357,14 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
   @override
   final String updatedAt;
   @override
-  final int clampedScore;
+  final int? clampedScore;
   @override
   @JsonKey(name: 'grade_result')
-  final GradeResult gradeResult;
+  final GradeResult? gradeResult;
   @override
-  final int maxReward;
+  final int? maxReward;
   @override
-  final int reward;
+  final int? reward;
   @override
   final TreasuryTransfer? treasuryTransfer;
 
@@ -432,18 +436,18 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
 
 abstract class _SubmissionStatus implements SubmissionStatus {
   const factory _SubmissionStatus(
-      {@JsonKey(name: '_id') required final String id,
-      required final String address,
+      {@JsonKey(name: '_id') final String? id,
+      final String? address,
       required final SubmissionMeta meta,
       required final String status,
       required final List<SubmissionFile> files,
       final String? error,
       required final String createdAt,
       required final String updatedAt,
-      required final int clampedScore,
-      @JsonKey(name: 'grade_result') required final GradeResult gradeResult,
-      required final int maxReward,
-      required final int reward,
+      final int? clampedScore,
+      @JsonKey(name: 'grade_result') final GradeResult? gradeResult,
+      final int? maxReward,
+      final int? reward,
       final TreasuryTransfer? treasuryTransfer}) = _$SubmissionStatusImpl;
 
   factory _SubmissionStatus.fromJson(Map<String, dynamic> json) =
@@ -451,9 +455,9 @@ abstract class _SubmissionStatus implements SubmissionStatus {
 
   @override
   @JsonKey(name: '_id')
-  String get id;
+  String? get id;
   @override
-  String get address;
+  String? get address;
   @override
   SubmissionMeta get meta;
   @override
@@ -467,14 +471,14 @@ abstract class _SubmissionStatus implements SubmissionStatus {
   @override
   String get updatedAt;
   @override
-  int get clampedScore;
+  int? get clampedScore;
   @override
   @JsonKey(name: 'grade_result')
-  GradeResult get gradeResult;
+  GradeResult? get gradeResult;
   @override
-  int get maxReward;
+  int? get maxReward;
   @override
-  int get reward;
+  int? get reward;
   @override
   TreasuryTransfer? get treasuryTransfer;
 

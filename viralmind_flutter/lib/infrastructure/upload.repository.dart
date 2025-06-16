@@ -62,7 +62,7 @@ class UploadRepositoryImpl {
     return UploadProgress.fromJson(response);
   }
 
-  Future<Map<String, dynamic>> getStatus(String uploadId) async {
+  Future<Map<String, dynamic>> getUploadStatus(String uploadId) async {
     return _client.get<Map<String, dynamic>>(
       '/forge/upload/status/$uploadId',
       options: const RequestOptions(requiresAuth: true),

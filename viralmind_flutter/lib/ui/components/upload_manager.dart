@@ -49,64 +49,58 @@ Color getStatusColor(UploadStatus status, BuildContext context) {
   }
 }
 
-class UploadManagerWidget extends ConsumerWidget {
+class UploadManagerWidget extends ConsumerStatefulWidget {
   const UploadManagerWidget({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final queueItems = ref.watch(uploadQueueProvider).values.toList();
+  ConsumerState<UploadManagerWidget> createState() =>
+      _UploadManagerWidgetState();
+}
 
-    if (queueItems.isEmpty) {
-      return const SizedBox.shrink();
-    }
+class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
+  OverlayEntry? _overlayEntry;
+  final LayerLink _layerLink = LayerLink();
+  bool _isOverlayVisible = false;
 
-    Color badgeColor;
-    if (queueItems.any((item) => item.uploadStatus == UploadStatus.error)) {
-      badgeColor = Colors.red[500]!;
-    } else if (queueItems.any(
-      (item) =>
-          item.uploadStatus == UploadStatus.uploading ||
-          item.uploadStatus == UploadStatus.processing ||
-          item.uploadStatus == UploadStatus.zipping,
-    )) {
-      badgeColor = Colors.yellow[500]!;
-    } else if (queueItems.every(
-      (item) => item.uploadStatus == UploadStatus.done,
-    )) {
-      badgeColor = Colors.green[500]!;
-    } else {
-      badgeColor = Theme.of(
-        context,
-      ).colorScheme.secondary.withValues(alpha: 0.7);
-    }
+  @override
+  void dispose() {
+    _hideOverlay();
+    super.dispose();
+  }
 
-    return MouseRegion(
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withValues(alpha: 0.1),
-            ),
-            child: const Icon(Icons.upload, color: Colors.white, size: 16),
-          ),
-          Positioned(
-            top: -4,
-            right: -4,
-            child: Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: badgeColor,
-                shape: BoxShape.circle,
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 48,
+  void _showOverlay() {
+    _overlayEntry = _createOverlayEntry();
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _hideOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  OverlayEntry _createOverlayEntry() {
+    final queueItems = ref.read(uploadQueueProvider).values.toList();
+
+    return OverlayEntry(
+      builder: (context) => Positioned(
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          targetAnchor: Alignment.bottomRight,
+          followerAnchor: Alignment.bottomLeft,
+          offset: const Offset(12, -40),
+          child: MouseRegion(
+            onEnter: (_) {
+              setState(() {
+                _isOverlayVisible = true;
+              });
+            },
+            onExit: (_) {
+              setState(() {
+                _isOverlayVisible = false;
+                _hideOverlay();
+              });
+            },
             child: Material(
               elevation: 8,
               borderRadius: BorderRadius.circular(12),
@@ -151,125 +145,186 @@ class UploadManagerWidget extends ConsumerWidget {
                     ),
 
                     // Liste des items
-                    Flexible(
-                      child: SingleChildScrollView(
+                    ...queueItems.map((item) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: Colors.grey[700]!,
+                            ),
+                          ),
+                        ),
                         child: Column(
-                          children: queueItems.map((item) {
-                            return Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey[700]!,
-                                  ),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Ligne avec icône, nom et bouton fermer
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Ligne avec icône, nom et bouton fermer
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Flexible(
+                                  child: Row(
                                     children: [
-                                      Flexible(
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              getStatusIcon(item.uploadStatus),
-                                              color: getStatusColor(
-                                                item.uploadStatus,
-                                                context,
-                                              ),
-                                              size: 16,
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Flexible(
-                                              child: Text(
-                                                item.name ?? 'Unknown',
-                                                style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
+                                      Icon(
+                                        getStatusIcon(item.uploadStatus),
+                                        color: getStatusColor(
+                                          item.uploadStatus,
+                                          context,
                                         ),
+                                        size: 16,
                                       ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.close,
-                                          color: Colors.grey,
-                                          size: 14,
+                                      const SizedBox(width: 8),
+                                      Flexible(
+                                        child: Text(
+                                          item.name ?? 'Unknown',
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                        onPressed: () {
-                                          // TODO: Remove item from queue
-                                        },
-                                        tooltip: 'Remove',
                                       ),
                                     ],
                                   ),
-
-                                  const SizedBox(height: 4),
-
-                                  // Message de status
-                                  Text(
-                                    item.uploadStatus.name,
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.close,
+                                    color: Colors.grey,
+                                    size: 14,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 4,
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: LinearProgressIndicator(
-                                        value: item.getProgress() / 100,
-                                        backgroundColor: Colors.grey[700],
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                          item.uploadStatus == UploadStatus.done
-                                              ? Colors.green
-                                              : Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                        ),
-                                        minHeight: 6,
-                                      ),
-                                    ),
-                                  ),
+                                  onPressed: () {
+                                    // TODO: Remove item from queue
+                                  },
+                                  tooltip: 'Remove',
+                                ),
+                              ],
+                            ),
 
-                                  // Texte taille uploadée
-                                  if (item.uploadStatus ==
-                                      UploadStatus.uploading)
-                                    Text(
-                                      '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                ],
+                            const SizedBox(height: 4),
+
+                            // Message de status
+                            Text(
+                              item.uploadStatus.name,
+                              style: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 12,
                               ),
-                            );
-                          }).toList(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 4,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: LinearProgressIndicator(
+                                  value: item.getProgress() / 100,
+                                  backgroundColor: Colors.grey[700],
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    item.uploadStatus == UploadStatus.done
+                                        ? Colors.green
+                                        : Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                  ),
+                                  minHeight: 6,
+                                ),
+                              ),
+                            ),
+
+                            // Texte taille uploadée
+                            if (item.uploadStatus == UploadStatus.uploading)
+                              Text(
+                                '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 12,
+                                ),
+                              ),
+                          ],
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
               ),
             ),
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final queueItems = ref.watch(uploadQueueProvider).values.toList();
+
+    if (queueItems.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    Color badgeColor;
+    if (queueItems.any((item) => item.uploadStatus == UploadStatus.error)) {
+      badgeColor = Colors.red[500]!;
+    } else if (queueItems.any(
+      (item) =>
+          item.uploadStatus == UploadStatus.uploading ||
+          item.uploadStatus == UploadStatus.processing ||
+          item.uploadStatus == UploadStatus.zipping,
+    )) {
+      badgeColor = Colors.yellow[500]!;
+    } else if (queueItems.every(
+      (item) => item.uploadStatus == UploadStatus.done,
+    )) {
+      badgeColor = Colors.green[500]!;
+    } else {
+      badgeColor = Theme.of(
+        context,
+      ).colorScheme.secondary.withValues(alpha: 0.7);
+    }
+
+    return CompositedTransformTarget(
+      link: _layerLink,
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _isOverlayVisible = !_isOverlayVisible;
+            if (_isOverlayVisible) {
+              _showOverlay();
+            } else {
+              _hideOverlay();
+            }
+          });
+        },
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white.withOpacity(0.1),
+              ),
+              child: const Icon(Icons.upload, color: Colors.white, size: 16),
+            ),
+            Positioned(
+              top: -4,
+              right: -4,
+              child: Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: badgeColor,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

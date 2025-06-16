@@ -12,18 +12,18 @@ part 'submission_status.g.dart';
 @freezed
 class SubmissionStatus with _$SubmissionStatus {
   const factory SubmissionStatus({
-    @JsonKey(name: '_id') required String id,
-    required String address,
+    @JsonKey(name: '_id') String? id,
+    String? address,
     required SubmissionMeta meta,
     required String status,
     required List<SubmissionFile> files,
     String? error,
     required String createdAt,
     required String updatedAt,
-    required int clampedScore,
-    @JsonKey(name: 'grade_result') required GradeResult gradeResult,
-    required int maxReward,
-    required int reward,
+    int? clampedScore,
+    @JsonKey(name: 'grade_result') GradeResult? gradeResult,
+    int? maxReward,
+    int? reward,
     TreasuryTransfer? treasuryTransfer,
   }) = _SubmissionStatus;
 

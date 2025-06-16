@@ -22,6 +22,7 @@ mixin _$UploadTaskState {
   int get totalBytes => throw _privateConstructorUsedError;
   int get uploadedBytes => throw _privateConstructorUsedError;
   String? get uploadId => throw _privateConstructorUsedError;
+  String? get submissionId => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
 
   /// Create a copy of UploadTaskState
@@ -44,6 +45,7 @@ abstract class $UploadTaskStateCopyWith<$Res> {
       int totalBytes,
       int uploadedBytes,
       String? uploadId,
+      String? submissionId,
       String? error});
 }
 
@@ -68,6 +70,7 @@ class _$UploadTaskStateCopyWithImpl<$Res, $Val extends UploadTaskState>
     Object? totalBytes = null,
     Object? uploadedBytes = null,
     Object? uploadId = freezed,
+    Object? submissionId = freezed,
     Object? error = freezed,
   }) {
     return _then(_value.copyWith(
@@ -95,6 +98,10 @@ class _$UploadTaskStateCopyWithImpl<$Res, $Val extends UploadTaskState>
           ? _value.uploadId
           : uploadId // ignore: cast_nullable_to_non_nullable
               as String?,
+      submissionId: freezed == submissionId
+          ? _value.submissionId
+          : submissionId // ignore: cast_nullable_to_non_nullable
+              as String?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -118,6 +125,7 @@ abstract class _$$UploadTaskStateImplCopyWith<$Res>
       int totalBytes,
       int uploadedBytes,
       String? uploadId,
+      String? submissionId,
       String? error});
 }
 
@@ -140,6 +148,7 @@ class __$$UploadTaskStateImplCopyWithImpl<$Res>
     Object? totalBytes = null,
     Object? uploadedBytes = null,
     Object? uploadId = freezed,
+    Object? submissionId = freezed,
     Object? error = freezed,
   }) {
     return _then(_$UploadTaskStateImpl(
@@ -167,6 +176,10 @@ class __$$UploadTaskStateImplCopyWithImpl<$Res>
           ? _value.uploadId
           : uploadId // ignore: cast_nullable_to_non_nullable
               as String?,
+      submissionId: freezed == submissionId
+          ? _value.submissionId
+          : submissionId // ignore: cast_nullable_to_non_nullable
+              as String?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -185,6 +198,7 @@ class _$UploadTaskStateImpl extends _UploadTaskState {
       this.totalBytes = 0,
       this.uploadedBytes = 0,
       this.uploadId,
+      this.submissionId,
       this.error})
       : super._();
 
@@ -203,11 +217,13 @@ class _$UploadTaskStateImpl extends _UploadTaskState {
   @override
   final String? uploadId;
   @override
+  final String? submissionId;
+  @override
   final String? error;
 
   @override
   String toString() {
-    return 'UploadTaskState(recordingId: $recordingId, name: $name, uploadStatus: $uploadStatus, totalBytes: $totalBytes, uploadedBytes: $uploadedBytes, uploadId: $uploadId, error: $error)';
+    return 'UploadTaskState(recordingId: $recordingId, name: $name, uploadStatus: $uploadStatus, totalBytes: $totalBytes, uploadedBytes: $uploadedBytes, uploadId: $uploadId, submissionId: $submissionId, error: $error)';
   }
 
   @override
@@ -226,12 +242,14 @@ class _$UploadTaskStateImpl extends _UploadTaskState {
                 other.uploadedBytes == uploadedBytes) &&
             (identical(other.uploadId, uploadId) ||
                 other.uploadId == uploadId) &&
+            (identical(other.submissionId, submissionId) ||
+                other.submissionId == submissionId) &&
             (identical(other.error, error) || other.error == error));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, recordingId, name, uploadStatus,
-      totalBytes, uploadedBytes, uploadId, error);
+      totalBytes, uploadedBytes, uploadId, submissionId, error);
 
   /// Create a copy of UploadTaskState
   /// with the given fields replaced by the non-null parameter values.
@@ -251,6 +269,7 @@ abstract class _UploadTaskState extends UploadTaskState {
       final int totalBytes,
       final int uploadedBytes,
       final String? uploadId,
+      final String? submissionId,
       final String? error}) = _$UploadTaskStateImpl;
   const _UploadTaskState._() : super._();
 
@@ -266,6 +285,8 @@ abstract class _UploadTaskState extends UploadTaskState {
   int get uploadedBytes;
   @override
   String? get uploadId;
+  @override
+  String? get submissionId;
   @override
   String? get error;
 

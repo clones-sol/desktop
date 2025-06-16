@@ -23,6 +23,7 @@ class SubmissionMeta with _$SubmissionMeta {
     required String locale,
     @JsonKey(name: 'primary_monitor') required MonitorInfo primaryMonitor,
     required Quest quest,
+    String? poolId,
   }) = _SubmissionMeta;
 
   factory SubmissionMeta.fromJson(Map<String, dynamic> json) =>
