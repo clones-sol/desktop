@@ -8,17 +8,18 @@ part 'forge_app.g.dart';
 @freezed
 class ForgeApp with _$ForgeApp {
   const factory ForgeApp({
+    @JsonKey(name: '_id', includeIfNull: false) String? id,
     required String name,
     required String domain,
     required String description,
     required List<String> categories,
     required List<ForgeTaskItem> tasks,
-    PoolId? poolId,
-    bool? seen,
-    bool? gymLimitReached,
-    int? gymSubmissions,
-    String? gymLimitType,
-    int? gymLimitValue,
+    @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
+    @JsonKey(includeIfNull: false) bool? seen,
+    @JsonKey(includeIfNull: false) bool? gymLimitReached,
+    @JsonKey(includeIfNull: false) int? gymSubmissions,
+    @JsonKey(includeIfNull: false) String? gymLimitType,
+    @JsonKey(includeIfNull: false) int? gymLimitValue,
   }) = _ForgeApp;
 
   factory ForgeApp.fromJson(Map<String, dynamic> json) =>

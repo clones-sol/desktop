@@ -10,6 +10,7 @@ import 'package:viralmind_flutter/ui/components/pfp.dart';
 import 'package:viralmind_flutter/ui/components/recording_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/bloc/provider.dart';
 import 'package:viralmind_flutter/ui/views/training_session/components/quest_panel.dart';
+import 'package:viralmind_flutter/ui/views/training_session/components/upload_confirm_modal.dart';
 import 'package:viralmind_flutter/utils/ui/card.dart';
 import 'package:viralmind_flutter/utils/widgets/buttons.dart';
 
@@ -202,6 +203,31 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     final trainingSession = ref.watch(trainingSessionNotifierProvider);
 
     ref.listen(
+      trainingSessionNotifierProvider.select((s) => s.showUploadConfirmModal),
+      (previous, next) {
+        if (next) {
+          showDialog<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return UploadConfirmModal(
+                onConfirm: () {
+                  ref
+                      .read(trainingSessionNotifierProvider.notifier)
+                      .confirmAndUpload();
+                },
+              );
+            },
+          ).then((_) {
+            // Reset the flag when the dialog is dismissed
+            ref
+                .read(trainingSessionNotifierProvider.notifier)
+                .setShowUploadConfirmModal(false);
+          });
+        }
+      },
+    );
+
+    ref.listen(
       trainingSessionNotifierProvider.select((s) => s.scrollToBottomNonce),
       (previous, next) {
         if (previous != next) {
@@ -360,7 +386,11 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           PrimaryButton(
             onPressed: trainingSession.isUploading
                 ? null
-                : () {/* handleUploadClick logic here */},
+                : () {
+                    ref
+                        .read(trainingSessionNotifierProvider.notifier)
+                        .uploadRecording(trainingSession.currentRecordingId!);
+                  },
             child: trainingSession.isUploading
                 ? const Text('Uploading...')
                 : const Row(

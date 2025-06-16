@@ -1,27 +1,31 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'provider.dart';
+part of 'tauri_api.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trainingSessionNotifierHash() =>
-    r'997d10343cefe6c2ece3cf05a12e4bf908a0de17';
+String _$tauriApiClientHash() => r'764110f5b35305a4f31607f6ce97ba0b0aceebb7';
 
-/// See also [TrainingSessionNotifier].
-@ProviderFor(TrainingSessionNotifier)
-final trainingSessionNotifierProvider = AutoDisposeNotifierProvider<
-    TrainingSessionNotifier, TrainingSessionState>.internal(
-  TrainingSessionNotifier.new,
-  name: r'trainingSessionNotifierProvider',
+///
+/// Provider for the Tauri API client.
+///
+///
+/// Copied from [tauriApiClient].
+@ProviderFor(tauriApiClient)
+final tauriApiClientProvider = AutoDisposeProvider<TauriApiClient>.internal(
+  tauriApiClient,
+  name: r'tauriApiClientProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$trainingSessionNotifierHash,
+      : _$tauriApiClientHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TrainingSessionNotifier = AutoDisposeNotifier<TrainingSessionState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef TauriApiClientRef = AutoDisposeProviderRef<TauriApiClient>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

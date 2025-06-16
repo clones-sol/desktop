@@ -1,21 +1,22 @@
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest_reward.dart';
-import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/infrastructure/pool.repository.dart';
+import 'package:viralmind_flutter/infrastructure/tauri_api_client.dart';
 
 class QuestRepositoryImpl {
-  QuestRepositoryImpl(this._client);
+  QuestRepositoryImpl(this._client, this._tauriClient);
   final ApiClient _client;
-
+  final TauriApiClient _tauriClient;
+  // TODO: Not used ?
   Future<Quest> generateQuest({
     required String prompt,
     required String address,
     String? poolId,
     String? taskId,
   }) async {
-    // TODO: Get the list of installed applications (equivalent Tauri)
-    const appList = ''; // Placeholder
+    final apps = await _tauriClient.listApps();
+    final appList = apps.map((app) => app.name).join('\n');
 
     final quest = await _client.post<Quest>(
       '/gym/quest',
@@ -45,11 +46,11 @@ class QuestRepositoryImpl {
     return quest;
   }
 
+  // TODO: Not used ?
   Future<Map<String, dynamic>> checkQuestProgress(
     Quest quest,
   ) async {
-    // TODO: Take a screenshot (equivalent Tauri)
-    const screenshot = null; // Placeholder
+    final screenshot = await _tauriClient.takeScreenshot();
 
     return _client.post<Map<String, dynamic>>(
       '/gym/progress',

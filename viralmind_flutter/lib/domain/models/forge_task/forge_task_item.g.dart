@@ -22,14 +22,16 @@ _$ForgeTaskItemImpl _$$ForgeTaskItemImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$ForgeTaskItemImplToJson(_$ForgeTaskItemImpl instance) =>
     <String, dynamic>{
-      '_id': instance.id,
+      if (instance.id case final value?) '_id': value,
       'prompt': instance.prompt,
-      'uploadLimit': instance.uploadLimit,
-      'rewardLimit': instance.rewardLimit,
-      'completed': instance.completed,
-      'recordingId': instance.recordingId,
-      'score': instance.score,
-      'uploadLimitReached': instance.uploadLimitReached,
-      'currentSubmissions': instance.currentSubmissions,
-      'limitReason': instance.limitReason,
+      if (instance.uploadLimit case final value?) 'uploadLimit': value,
+      if (instance.rewardLimit case final value?) 'rewardLimit': value,
+      if (instance.completed case final value?) 'completed': value,
+      if (instance.recordingId case final value?) 'recordingId': value,
+      if (instance.score case final value?) 'score': value,
+      if (instance.uploadLimitReached case final value?)
+        'uploadLimitReached': value,
+      if (instance.currentSubmissions case final value?)
+        'currentSubmissions': value,
+      if (instance.limitReason case final value?) 'limitReason': value,
     };

@@ -7,7 +7,7 @@ part of 'pool_id.dart';
 // **************************************************************************
 
 _$PoolIdImpl _$$PoolIdImplFromJson(Map<String, dynamic> json) => _$PoolIdImpl(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       name: json['name'] as String,
       status: json['status'] as String,
       pricePerDemo: (json['pricePerDemo'] as num).toDouble(),
@@ -15,7 +15,7 @@ _$PoolIdImpl _$$PoolIdImplFromJson(Map<String, dynamic> json) => _$PoolIdImpl(
 
 Map<String, dynamic> _$$PoolIdImplToJson(_$PoolIdImpl instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'status': instance.status,
       'pricePerDemo': instance.pricePerDemo,

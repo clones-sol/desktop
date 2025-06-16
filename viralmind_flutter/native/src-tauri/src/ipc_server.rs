@@ -1,5 +1,5 @@
 use axum::{
-    extract::{Json, State},
+    extract::{Json, Query, State},
     http::{Method, StatusCode},
     response::IntoResponse,
     routing::{get, post},
@@ -10,71 +10,76 @@ use std::net::SocketAddr;
 use tauri::{AppHandle, Manager};
 use tower_http::cors::{Any, CorsLayer};
 
-// On importe la logique métier depuis le module `core` local
+// Import business logic from the local `core` module
 use crate::core::record::{self, Quest};
-// On importe les fonctions de `commands/general`
+// Import functions from `commands/general`
 use crate::commands::general::{list_apps, take_screenshot};
-// On importe la fonction de `commands/settings`
-use crate::commands::settings::set_upload_data_allowed;
-// On importe la fonction de `utils/permissions`
+// Import function from `commands/settings`
+use crate::commands::settings::{get_upload_data_allowed, set_upload_data_allowed};
+// Import function from `utils/permissions`
 use crate::utils::permissions::has_ax_perms;
-// On importe les fonctions de `commands/recordings`
+// Import functions from `commands/recordings`
 use crate::commands::recordings::export_recordings;
-// On importe les fonctions de `commands/tools`
+// Import functions from `commands/tools`
 use crate::commands::tools::{check_tools, init_tools};
-// On importe les fonctions de `core/record`
+// Import functions from `core/record`
 use crate::core::record::{open_recording_folder, process_recording};
-// On importe les fonctions de `utils/permissions`
+// Import functions from `utils/permissions`
 use crate::utils::permissions::{has_record_perms, request_record_perms};
-// On importe les fonctions de `commands/settings`
+// Import functions from `commands/settings`
 use crate::commands::settings::{get_onboarding_complete, set_onboarding_complete};
 
-// Helper pour wrapper l'AppHandle dans l'état du serveur
+// Helper to wrap AppHandle in the server state
 #[derive(Clone)]
 pub struct AppState {
     pub app_handle: AppHandle,
 }
 
-// Structure pour la requête de write_recording_file
+// Structure for the write_recording_file request
 #[derive(Deserialize)]
 pub struct WriteFilePayload {
-    recording_id: String,
     filename: String,
     content: String,
 }
 
-// Structure pour la requête de start_recording
+// Structure for the get_recording_file query
+#[derive(Deserialize)]
+pub struct GetFileQuery {
+    filename: String,
+}
+
+// Structure for the start_recording request
 #[derive(Deserialize)]
 pub struct StartRecordingPayload {
     quest: Option<Quest>,
     fps: u32,
 }
 
-// Structure pour la requête de stop_recording
+// Structure for the stop_recording request
 #[derive(Deserialize)]
 pub struct StopRecordingPayload {
     status: String,
 }
 
-// Structure pour le payload de `set_upload_data_allowed`
+// Structure for the `set_upload_data_allowed` payload
 #[derive(Deserialize)]
 pub struct SetUploadAllowedPayload {
     allowed: bool,
 }
 
-// Structure pour la réponse de has_ax_perms
+// Structure for the has_ax_perms response
 #[derive(Serialize)]
 pub struct PermissionStatus {
     has_permission: bool,
 }
 
-// Structure pour le payload de `set_onboarding_complete`
+// Structure for the `set_onboarding_complete` payload
 #[derive(Deserialize)]
 pub struct SetOnboardingCompletePayload {
     complete: bool,
 }
 
-// Fonction principale pour démarrer le serveur
+// Main function to start the server
 pub async fn init(app_handle: AppHandle) {
     let state = AppState { app_handle };
 
@@ -83,22 +88,62 @@ pub async fn init(app_handle: AppHandle) {
         .allow_origin(Any);
 
     let app = Router::new()
+        // GET /recordings: Retrieve a list of all recordings.
+        // Used for fetching read-only data, so GET is appropriate.
         .route("/recordings", get(list_recordings_handler))
-        .route("/recording/file", post(write_recording_file_handler))
-        .route("/recording/start", post(start_recording_handler))
-        .route("/recording/stop", post(stop_recording_handler))
-        .route("/recording/:id", axum::routing::delete(delete_recording_handler))
+        // POST /recordings/:id/files: Create a new file within a specific recording.
+        // This is a create operation on a sub-resource, making POST suitable.
+        .route("/recordings/:id/files", post(write_recording_file_handler).get(get_recording_file_handler))
+        // POST /recordings/start: Initiate a new recording session.
+        // This is an action that changes server state, so POST is used.
+        .route("/recordings/start", post(start_recording_handler))
+        // POST /recordings/stop: Stop the current recording session.
+        // This is an action that changes server state, so POST is used.
+        .route("/recordings/stop", post(stop_recording_handler))
+        // DELETE /recordings/:id: Remove a specific recording.
+        // Standard RESTful method for resource deletion.
+        .route("/recordings/:id", axum::routing::delete(delete_recording_handler))
+        // GET /recordings/:id/zip: Retrieve a zip archive of a specific recording.
+        // Though it involves creation, the primary action is data retrieval, so GET is acceptable.
+        .route("/recordings/:id/zip", get(create_recording_zip_handler))
+        // GET /apps: Retrieve a list of installed applications.
+        // Read-only data retrieval.
         .route("/apps", get(list_apps_handler))
+        // GET /screenshot: Capture and retrieve a screenshot.
+        // Idempotent action for data retrieval.
         .route("/screenshot", get(take_screenshot_handler))
-        .route("/settings/upload-allowed", post(set_upload_data_allowed_handler))
+        // GET & POST /settings/upload-allowed: GET to read, POST to update the setting.
+        // Follows standard practice for resource state management.
+        .route(
+            "/settings/upload-allowed",
+            get(get_upload_data_allowed_handler).post(set_upload_data_allowed_handler),
+        )
+        // GET /permissions/ax: Check accessibility permissions status.
+        // Read-only check.
         .route("/permissions/ax", get(has_ax_perms_handler))
+        // GET /permissions/record: Check screen recording permissions status.
+        // Read-only check.
         .route("/permissions/record", get(has_record_perms_handler))
+        // POST /permissions/record/request: Trigger a request for screen recording permissions.
+        // Action that initiates a system prompt.
         .route("/permissions/record/request", post(request_record_perms_handler))
+        // GET & POST /onboarding/complete: GET to read, POST to update onboarding status.
+        // Standard resource state management.
         .route("/onboarding/complete", get(get_onboarding_complete_handler).post(set_onboarding_complete_handler))
+        // POST /tools/init: Trigger the initialization of external tools.
+        // Action that changes server state.
         .route("/tools/init", post(init_tools_handler))
+        // GET /tools/check: Check the status of external tools.
+        // Read-only check.
         .route("/tools/check", get(check_tools_handler))
-        .route("/recording/:id/process", post(process_recording_handler))
-        .route("/recording/:id/open", post(open_recording_folder_handler))
+        // POST /recordings/:id/process: Trigger post-processing for a specific recording.
+        // Action performed on a specific resource.
+        .route("/recordings/:id/process", post(process_recording_handler))
+        // POST /recordings/:id/open: Trigger opening the folder of a specific recording.
+        // Action performed on a specific resource.
+        .route("/recordings/:id/open", post(open_recording_folder_handler))
+        // POST /recordings/export: Trigger an export of all recordings.
+        // Action that creates a file for the user to download.
         .route("/recordings/export", post(export_recordings_handler))
         .with_state(state)
         .layer(cors);
@@ -106,7 +151,7 @@ pub async fn init(app_handle: AppHandle) {
     let addr = SocketAddr::from(([127, 0, 0, 1], 19847));
     println!("[IPC Server] Listening on {}", addr);
 
-    // On lance le serveur dans une tâche Tokio pour ne pas bloquer le thread principal de Tauri
+    // We launch the server in a Tokio task so as not to block the main Tauri thread
     tokio::spawn(async move {
         let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
         axum::serve(listener, app.into_make_service())
@@ -115,7 +160,7 @@ pub async fn init(app_handle: AppHandle) {
     });
 }
 
-// Handler pour lister les enregistrements
+// Handler to list recordings
 async fn list_recordings_handler(
     State(state): State<AppState>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
@@ -125,14 +170,15 @@ async fn list_recordings_handler(
     }
 }
 
-// Handler pour écrire un fichier d'enregistrement
+// Handler to write a recording file
 async fn write_recording_file_handler(
     State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
     Json(payload): Json<WriteFilePayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
     match record::write_recording_file(
         state.app_handle,
-        payload.recording_id,
+        id,
         payload.filename,
         payload.content,
     )
@@ -143,12 +189,32 @@ async fn write_recording_file_handler(
     }
 }
 
-// Handler pour démarrer un enregistrement
+// Handler to get a recording file
+async fn get_recording_file_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+    Query(query): Query<GetFileQuery>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match record::get_recording_file(
+        state.app_handle,
+        id,
+        query.filename,
+        Some(false), // as_base64
+        Some(false), // as_path
+    )
+    .await
+    {
+        Ok(content) => Ok((StatusCode::OK, content)),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+// Handler to start a recording
 async fn start_recording_handler(
     State(state): State<AppState>,
     Json(payload): Json<StartRecordingPayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
-    // On récupère le "QuestState" depuis le state manager de Tauri via l'AppHandle
+    // We get the "QuestState" from the Tauri state manager via the AppHandle
     let quest_state: tauri::State<record::QuestState> = state.app_handle.state();
     match record::start_recording(
         state.app_handle.clone(),
@@ -163,7 +229,7 @@ async fn start_recording_handler(
     }
 }
 
-// Handler pour arrêter un enregistrement
+// Handler to stop a recording
 async fn stop_recording_handler(
     State(state): State<AppState>,
     Json(payload): Json<StopRecordingPayload>,
@@ -175,7 +241,7 @@ async fn stop_recording_handler(
     }
 }
 
-// Handler pour supprimer un enregistrement
+// Handler to delete a recording
 async fn delete_recording_handler(
     State(state): State<AppState>,
     axum::extract::Path(id): axum::extract::Path<String>,
@@ -186,18 +252,41 @@ async fn delete_recording_handler(
     }
 }
 
-// Handler pour lister les applications
+// Handler to create a zip of a recording
+async fn create_recording_zip_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match record::create_recording_zip(state.app_handle, id.clone()).await {
+        Ok(zip_data) => {
+            let filename = format!("attachment; filename=\"recording_{}.zip\"", id);
+            let mut headers = axum::http::HeaderMap::new();
+            headers.insert(
+                axum::http::header::CONTENT_TYPE,
+                "application/zip".parse().unwrap(),
+            );
+            headers.insert(
+                axum::http::header::CONTENT_DISPOSITION,
+                filename.parse().unwrap(),
+            );
+            Ok((headers, zip_data))
+        }
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+// Handler to list applications
 async fn list_apps_handler(
     State(state): State<AppState>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
-    // Le second paramètre `include_icons` est un `Option<bool>`, on met `Some(true)` pour avoir les icônes.
+    // The second parameter `include_icons` is an `Option<bool>`, we set it to `Some(true)` to get the icons.
     match list_apps(state.app_handle, Some(true)).await {
         Ok(apps) => Ok((StatusCode::OK, Json(apps))),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 }
 
-// Handler pour prendre une capture d'écran
+// Handler to take a screenshot
 async fn take_screenshot_handler() -> Result<impl IntoResponse, (StatusCode, String)> {
     match take_screenshot().await {
         Ok(base64_image) => Ok((StatusCode::OK, base64_image)),
@@ -205,7 +294,15 @@ async fn take_screenshot_handler() -> Result<impl IntoResponse, (StatusCode, Str
     }
 }
 
-// Handler pour `set_upload_data_allowed`
+// Handler for `get_upload_data_allowed`
+async fn get_upload_data_allowed_handler(State(state): State<AppState>) -> impl IntoResponse {
+    (
+        StatusCode::OK,
+        Json(get_upload_data_allowed(state.app_handle)),
+    )
+}
+
+// Handler for `set_upload_data_allowed`
 async fn set_upload_data_allowed_handler(
     State(state): State<AppState>,
     Json(payload): Json<SetUploadAllowedPayload>,
@@ -216,7 +313,7 @@ async fn set_upload_data_allowed_handler(
     }
 }
 
-// Handler pour `has_ax_perms`
+// Handler for `has_ax_perms`
 async fn has_ax_perms_handler() -> impl IntoResponse {
     let status = has_ax_perms();
     (
@@ -227,7 +324,7 @@ async fn has_ax_perms_handler() -> impl IntoResponse {
     )
 }
 
-// --- Handlers pour les permissions et settings ---
+// --- Handlers for permissions and settings ---
 
 async fn has_record_perms_handler() -> impl IntoResponse {
     (
@@ -263,7 +360,7 @@ async fn set_onboarding_complete_handler(
     }
 }
 
-// --- Handlers pour les outils ---
+// --- Handlers for tools ---
 
 async fn init_tools_handler(State(state): State<AppState>) -> Result<StatusCode, (StatusCode, String)> {
     match init_tools(state.app_handle).await {
@@ -279,7 +376,7 @@ async fn check_tools_handler() -> Result<impl IntoResponse, (StatusCode, String)
     }
 }
 
-// --- Handlers pour les actions sur les enregistrements ---
+// --- Handlers for recording actions ---
 
 async fn process_recording_handler(
     State(state): State<AppState>,
@@ -304,6 +401,6 @@ async fn open_recording_folder_handler(
 async fn export_recordings_handler(State(state): State<AppState>) -> Result<impl IntoResponse, (StatusCode, String)> {
     match export_recordings(state.app_handle).await {
         Ok(path) => Ok((StatusCode::OK, path)),
-        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 } 

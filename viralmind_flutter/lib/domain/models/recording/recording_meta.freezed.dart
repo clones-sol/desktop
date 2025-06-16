@@ -22,7 +22,8 @@ RecordingMeta _$RecordingMetaFromJson(Map<String, dynamic> json) {
 mixin _$RecordingMeta {
   String get id => throw _privateConstructorUsedError;
   String get timestamp => throw _privateConstructorUsedError;
-  int get duration_seconds => throw _privateConstructorUsedError;
+  @JsonKey(name: 'duration_seconds')
+  int get durationSeconds => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
   String? get reason => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
@@ -31,7 +32,6 @@ mixin _$RecordingMeta {
   String get arch => throw _privateConstructorUsedError;
   String get version => throw _privateConstructorUsedError;
   String get locale => throw _privateConstructorUsedError;
-  MonitorInfo get primary_monitor => throw _privateConstructorUsedError;
   Quest? get quest => throw _privateConstructorUsedError;
 
   /// Serializes this RecordingMeta to a JSON map.
@@ -53,7 +53,7 @@ abstract class $RecordingMetaCopyWith<$Res> {
   $Res call(
       {String id,
       String timestamp,
-      int duration_seconds,
+      @JsonKey(name: 'duration_seconds') int durationSeconds,
       String status,
       String? reason,
       String title,
@@ -62,10 +62,8 @@ abstract class $RecordingMetaCopyWith<$Res> {
       String arch,
       String version,
       String locale,
-      MonitorInfo primary_monitor,
       Quest? quest});
 
-  $MonitorInfoCopyWith<$Res> get primary_monitor;
   $QuestCopyWith<$Res>? get quest;
 }
 
@@ -86,7 +84,7 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
   $Res call({
     Object? id = null,
     Object? timestamp = null,
-    Object? duration_seconds = null,
+    Object? durationSeconds = null,
     Object? status = null,
     Object? reason = freezed,
     Object? title = null,
@@ -95,7 +93,6 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
     Object? arch = null,
     Object? version = null,
     Object? locale = null,
-    Object? primary_monitor = null,
     Object? quest = freezed,
   }) {
     return _then(_value.copyWith(
@@ -107,9 +104,9 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as String,
-      duration_seconds: null == duration_seconds
-          ? _value.duration_seconds
-          : duration_seconds // ignore: cast_nullable_to_non_nullable
+      durationSeconds: null == durationSeconds
+          ? _value.durationSeconds
+          : durationSeconds // ignore: cast_nullable_to_non_nullable
               as int,
       status: null == status
           ? _value.status
@@ -143,25 +140,11 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
-      primary_monitor: null == primary_monitor
-          ? _value.primary_monitor
-          : primary_monitor // ignore: cast_nullable_to_non_nullable
-              as MonitorInfo,
       quest: freezed == quest
           ? _value.quest
           : quest // ignore: cast_nullable_to_non_nullable
               as Quest?,
     ) as $Val);
-  }
-
-  /// Create a copy of RecordingMeta
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $MonitorInfoCopyWith<$Res> get primary_monitor {
-    return $MonitorInfoCopyWith<$Res>(_value.primary_monitor, (value) {
-      return _then(_value.copyWith(primary_monitor: value) as $Val);
-    });
   }
 
   /// Create a copy of RecordingMeta
@@ -190,7 +173,7 @@ abstract class _$$RecordingMetaImplCopyWith<$Res>
   $Res call(
       {String id,
       String timestamp,
-      int duration_seconds,
+      @JsonKey(name: 'duration_seconds') int durationSeconds,
       String status,
       String? reason,
       String title,
@@ -199,11 +182,8 @@ abstract class _$$RecordingMetaImplCopyWith<$Res>
       String arch,
       String version,
       String locale,
-      MonitorInfo primary_monitor,
       Quest? quest});
 
-  @override
-  $MonitorInfoCopyWith<$Res> get primary_monitor;
   @override
   $QuestCopyWith<$Res>? get quest;
 }
@@ -223,7 +203,7 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? timestamp = null,
-    Object? duration_seconds = null,
+    Object? durationSeconds = null,
     Object? status = null,
     Object? reason = freezed,
     Object? title = null,
@@ -232,7 +212,6 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
     Object? arch = null,
     Object? version = null,
     Object? locale = null,
-    Object? primary_monitor = null,
     Object? quest = freezed,
   }) {
     return _then(_$RecordingMetaImpl(
@@ -244,9 +223,9 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as String,
-      duration_seconds: null == duration_seconds
-          ? _value.duration_seconds
-          : duration_seconds // ignore: cast_nullable_to_non_nullable
+      durationSeconds: null == durationSeconds
+          ? _value.durationSeconds
+          : durationSeconds // ignore: cast_nullable_to_non_nullable
               as int,
       status: null == status
           ? _value.status
@@ -280,10 +259,6 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
-      primary_monitor: null == primary_monitor
-          ? _value.primary_monitor
-          : primary_monitor // ignore: cast_nullable_to_non_nullable
-              as MonitorInfo,
       quest: freezed == quest
           ? _value.quest
           : quest // ignore: cast_nullable_to_non_nullable
@@ -298,7 +273,7 @@ class _$RecordingMetaImpl implements _RecordingMeta {
   const _$RecordingMetaImpl(
       {required this.id,
       required this.timestamp,
-      required this.duration_seconds,
+      @JsonKey(name: 'duration_seconds') required this.durationSeconds,
       required this.status,
       this.reason,
       required this.title,
@@ -307,7 +282,6 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       required this.arch,
       required this.version,
       required this.locale,
-      required this.primary_monitor,
       this.quest});
 
   factory _$RecordingMetaImpl.fromJson(Map<String, dynamic> json) =>
@@ -318,7 +292,8 @@ class _$RecordingMetaImpl implements _RecordingMeta {
   @override
   final String timestamp;
   @override
-  final int duration_seconds;
+  @JsonKey(name: 'duration_seconds')
+  final int durationSeconds;
   @override
   final String status;
   @override
@@ -336,13 +311,11 @@ class _$RecordingMetaImpl implements _RecordingMeta {
   @override
   final String locale;
   @override
-  final MonitorInfo primary_monitor;
-  @override
   final Quest? quest;
 
   @override
   String toString() {
-    return 'RecordingMeta(id: $id, timestamp: $timestamp, duration_seconds: $duration_seconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primary_monitor: $primary_monitor, quest: $quest)';
+    return 'RecordingMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, quest: $quest)';
   }
 
   @override
@@ -353,8 +326,8 @@ class _$RecordingMetaImpl implements _RecordingMeta {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp) &&
-            (identical(other.duration_seconds, duration_seconds) ||
-                other.duration_seconds == duration_seconds) &&
+            (identical(other.durationSeconds, durationSeconds) ||
+                other.durationSeconds == durationSeconds) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.reason, reason) || other.reason == reason) &&
             (identical(other.title, title) || other.title == title) &&
@@ -365,8 +338,6 @@ class _$RecordingMetaImpl implements _RecordingMeta {
             (identical(other.arch, arch) || other.arch == arch) &&
             (identical(other.version, version) || other.version == version) &&
             (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.primary_monitor, primary_monitor) ||
-                other.primary_monitor == primary_monitor) &&
             (identical(other.quest, quest) || other.quest == quest));
   }
 
@@ -376,7 +347,7 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       runtimeType,
       id,
       timestamp,
-      duration_seconds,
+      durationSeconds,
       status,
       reason,
       title,
@@ -385,7 +356,6 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       arch,
       version,
       locale,
-      primary_monitor,
       quest);
 
   /// Create a copy of RecordingMeta
@@ -408,7 +378,7 @@ abstract class _RecordingMeta implements RecordingMeta {
   const factory _RecordingMeta(
       {required final String id,
       required final String timestamp,
-      required final int duration_seconds,
+      @JsonKey(name: 'duration_seconds') required final int durationSeconds,
       required final String status,
       final String? reason,
       required final String title,
@@ -417,7 +387,6 @@ abstract class _RecordingMeta implements RecordingMeta {
       required final String arch,
       required final String version,
       required final String locale,
-      required final MonitorInfo primary_monitor,
       final Quest? quest}) = _$RecordingMetaImpl;
 
   factory _RecordingMeta.fromJson(Map<String, dynamic> json) =
@@ -428,7 +397,8 @@ abstract class _RecordingMeta implements RecordingMeta {
   @override
   String get timestamp;
   @override
-  int get duration_seconds;
+  @JsonKey(name: 'duration_seconds')
+  int get durationSeconds;
   @override
   String get status;
   @override
@@ -445,8 +415,6 @@ abstract class _RecordingMeta implements RecordingMeta {
   String get version;
   @override
   String get locale;
-  @override
-  MonitorInfo get primary_monitor;
   @override
   Quest? get quest;
 

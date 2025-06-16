@@ -9,6 +9,7 @@ part 'submission_file.g.dart';
 class SubmissionFile with _$SubmissionFile {
   const factory SubmissionFile({
     required String file,
+    // TODO: s3key versus id ?
     required String s3Key,
     @JsonKey(name: '_id') required String id,
   }) = _SubmissionFile;

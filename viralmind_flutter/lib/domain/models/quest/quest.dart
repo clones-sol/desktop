@@ -12,9 +12,9 @@ class Quest with _$Quest {
     @JsonKey(name: 'icon_url') required String iconUrl,
     required List<String> objectives,
     required String content,
-    String? poolId,
+    @JsonKey(name: 'pool_id') String? poolId,
     QuestReward? reward,
-    String? taskId,
+    @JsonKey(name: 'task_id') String? taskId,
   }) = _Quest;
 
   factory Quest.fromJson(Map<String, dynamic> json) => _$QuestFromJson(json);

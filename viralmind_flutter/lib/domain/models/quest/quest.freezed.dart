@@ -26,8 +26,10 @@ mixin _$Quest {
   String get iconUrl => throw _privateConstructorUsedError;
   List<String> get objectives => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  @JsonKey(name: 'pool_id')
   String? get poolId => throw _privateConstructorUsedError;
   QuestReward? get reward => throw _privateConstructorUsedError;
+  @JsonKey(name: 'task_id')
   String? get taskId => throw _privateConstructorUsedError;
 
   /// Serializes this Quest to a JSON map.
@@ -50,9 +52,9 @@ abstract class $QuestCopyWith<$Res> {
       @JsonKey(name: 'icon_url') String iconUrl,
       List<String> objectives,
       String content,
-      String? poolId,
+      @JsonKey(name: 'pool_id') String? poolId,
       QuestReward? reward,
-      String? taskId});
+      @JsonKey(name: 'task_id') String? taskId});
 
   $QuestRewardCopyWith<$Res>? get reward;
 }
@@ -145,9 +147,9 @@ abstract class _$$QuestImplCopyWith<$Res> implements $QuestCopyWith<$Res> {
       @JsonKey(name: 'icon_url') String iconUrl,
       List<String> objectives,
       String content,
-      String? poolId,
+      @JsonKey(name: 'pool_id') String? poolId,
       QuestReward? reward,
-      String? taskId});
+      @JsonKey(name: 'task_id') String? taskId});
 
   @override
   $QuestRewardCopyWith<$Res>? get reward;
@@ -221,9 +223,9 @@ class _$QuestImpl implements _Quest {
       @JsonKey(name: 'icon_url') required this.iconUrl,
       required final List<String> objectives,
       required this.content,
-      this.poolId,
+      @JsonKey(name: 'pool_id') this.poolId,
       this.reward,
-      this.taskId})
+      @JsonKey(name: 'task_id') this.taskId})
       : _objectives = objectives;
 
   factory _$QuestImpl.fromJson(Map<String, dynamic> json) =>
@@ -247,10 +249,12 @@ class _$QuestImpl implements _Quest {
   @override
   final String content;
   @override
+  @JsonKey(name: 'pool_id')
   final String? poolId;
   @override
   final QuestReward? reward;
   @override
+  @JsonKey(name: 'task_id')
   final String? taskId;
 
   @override
@@ -310,9 +314,9 @@ abstract class _Quest implements Quest {
       @JsonKey(name: 'icon_url') required final String iconUrl,
       required final List<String> objectives,
       required final String content,
-      final String? poolId,
+      @JsonKey(name: 'pool_id') final String? poolId,
       final QuestReward? reward,
-      final String? taskId}) = _$QuestImpl;
+      @JsonKey(name: 'task_id') final String? taskId}) = _$QuestImpl;
 
   factory _Quest.fromJson(Map<String, dynamic> json) = _$QuestImpl.fromJson;
 
@@ -328,10 +332,12 @@ abstract class _Quest implements Quest {
   @override
   String get content;
   @override
+  @JsonKey(name: 'pool_id')
   String? get poolId;
   @override
   QuestReward? get reward;
   @override
+  @JsonKey(name: 'task_id')
   String? get taskId;
 
   /// Create a copy of Quest

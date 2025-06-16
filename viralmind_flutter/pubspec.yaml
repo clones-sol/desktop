@@ -28,6 +28,7 @@ dependencies:
   intl: ^0.20.2
   gradient_borders: ^1.0.1
   audioplayers: ^6.4.0
+  dio: ^5.8.0+1
 
 dev_dependencies:
   flutter_test:
