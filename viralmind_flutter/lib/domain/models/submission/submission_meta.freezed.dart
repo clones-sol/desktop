@@ -35,6 +35,7 @@ mixin _$SubmissionMeta {
   @JsonKey(name: 'primary_monitor')
   MonitorInfo get primaryMonitor => throw _privateConstructorUsedError;
   Quest get quest => throw _privateConstructorUsedError;
+  String? get poolId => throw _privateConstructorUsedError;
 
   /// Serializes this SubmissionMeta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,7 +66,8 @@ abstract class $SubmissionMetaCopyWith<$Res> {
       String version,
       String locale,
       @JsonKey(name: 'primary_monitor') MonitorInfo primaryMonitor,
-      Quest quest});
+      Quest quest,
+      String? poolId});
 
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
   $QuestCopyWith<$Res> get quest;
@@ -99,6 +101,7 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
     Object? locale = null,
     Object? primaryMonitor = null,
     Object? quest = null,
+    Object? poolId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -153,6 +156,10 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
           ? _value.quest
           : quest // ignore: cast_nullable_to_non_nullable
               as Quest,
+      poolId: freezed == poolId
+          ? _value.poolId
+          : poolId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -198,7 +205,8 @@ abstract class _$$SubmissionMetaImplCopyWith<$Res>
       String version,
       String locale,
       @JsonKey(name: 'primary_monitor') MonitorInfo primaryMonitor,
-      Quest quest});
+      Quest quest,
+      String? poolId});
 
   @override
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
@@ -232,6 +240,7 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
     Object? locale = null,
     Object? primaryMonitor = null,
     Object? quest = null,
+    Object? poolId = freezed,
   }) {
     return _then(_$SubmissionMetaImpl(
       id: null == id
@@ -286,6 +295,10 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
           ? _value.quest
           : quest // ignore: cast_nullable_to_non_nullable
               as Quest,
+      poolId: freezed == poolId
+          ? _value.poolId
+          : poolId // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -306,7 +319,8 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
       required this.version,
       required this.locale,
       @JsonKey(name: 'primary_monitor') required this.primaryMonitor,
-      required this.quest});
+      required this.quest,
+      this.poolId});
 
   factory _$SubmissionMetaImpl.fromJson(Map<String, dynamic> json) =>
       _$$SubmissionMetaImplFromJson(json);
@@ -339,10 +353,12 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
   final MonitorInfo primaryMonitor;
   @override
   final Quest quest;
+  @override
+  final String? poolId;
 
   @override
   String toString() {
-    return 'SubmissionMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, quest: $quest)';
+    return 'SubmissionMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, quest: $quest, poolId: $poolId)';
   }
 
   @override
@@ -367,7 +383,8 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.primaryMonitor, primaryMonitor) ||
                 other.primaryMonitor == primaryMonitor) &&
-            (identical(other.quest, quest) || other.quest == quest));
+            (identical(other.quest, quest) || other.quest == quest) &&
+            (identical(other.poolId, poolId) || other.poolId == poolId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -386,7 +403,8 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
       version,
       locale,
       primaryMonitor,
-      quest);
+      quest,
+      poolId);
 
   /// Create a copy of SubmissionMeta
   /// with the given fields replaced by the non-null parameter values.
@@ -420,7 +438,8 @@ abstract class _SubmissionMeta implements SubmissionMeta {
       required final String locale,
       @JsonKey(name: 'primary_monitor')
       required final MonitorInfo primaryMonitor,
-      required final Quest quest}) = _$SubmissionMetaImpl;
+      required final Quest quest,
+      final String? poolId}) = _$SubmissionMetaImpl;
 
   factory _SubmissionMeta.fromJson(Map<String, dynamic> json) =
       _$SubmissionMetaImpl.fromJson;
@@ -453,6 +472,8 @@ abstract class _SubmissionMeta implements SubmissionMeta {
   MonitorInfo get primaryMonitor;
   @override
   Quest get quest;
+  @override
+  String? get poolId;
 
   /// Create a copy of SubmissionMeta
   /// with the given fields replaced by the non-null parameter values.

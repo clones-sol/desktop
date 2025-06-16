@@ -97,6 +97,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     }
   }
 
+  // TODO: hmmm ?
   // Function to handle upload button click
 /*  Future<void> handleUploadClick() async {
     if (currentRecordingId != null && !isUploading) {

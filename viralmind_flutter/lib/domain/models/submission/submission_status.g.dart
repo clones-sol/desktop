@@ -9,8 +9,8 @@ part of 'submission_status.dart';
 _$SubmissionStatusImpl _$$SubmissionStatusImplFromJson(
         Map<String, dynamic> json) =>
     _$SubmissionStatusImpl(
-      id: json['_id'] as String,
-      address: json['address'] as String,
+      id: json['_id'] as String?,
+      address: json['address'] as String?,
       meta: SubmissionMeta.fromJson(json['meta'] as Map<String, dynamic>),
       status: json['status'] as String,
       files: (json['files'] as List<dynamic>)
@@ -19,11 +19,12 @@ _$SubmissionStatusImpl _$$SubmissionStatusImplFromJson(
       error: json['error'] as String?,
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
-      clampedScore: (json['clampedScore'] as num).toInt(),
-      gradeResult:
-          GradeResult.fromJson(json['grade_result'] as Map<String, dynamic>),
-      maxReward: (json['maxReward'] as num).toInt(),
-      reward: (json['reward'] as num).toInt(),
+      clampedScore: (json['clampedScore'] as num?)?.toInt(),
+      gradeResult: json['grade_result'] == null
+          ? null
+          : GradeResult.fromJson(json['grade_result'] as Map<String, dynamic>),
+      maxReward: (json['maxReward'] as num?)?.toInt(),
+      reward: (json['reward'] as num?)?.toInt(),
       treasuryTransfer: json['treasuryTransfer'] == null
           ? null
           : TreasuryTransfer.fromJson(

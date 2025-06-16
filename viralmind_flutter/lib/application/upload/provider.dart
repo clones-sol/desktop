@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viralmind_flutter/application/submissions.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/application/upload.dart';
 import 'package:viralmind_flutter/application/upload/state.dart';
 import 'package:viralmind_flutter/application/wallet.dart';
-import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_metadata.dart';
 
 final uploadQueueProvider =
@@ -17,9 +17,11 @@ final uploadQueueProvider =
 class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
   UploadQueueNotifier(this.ref) : super({});
   final Ref ref;
-  final Map<String, Timer> statusIntervals = {};
 
-  void _updateTaskState(String recordingId, UploadTaskState taskState) {
+  void _updateTaskState(
+    String recordingId,
+    UploadTaskState taskState,
+  ) {
     state = {
       ...state,
       recordingId: taskState,
@@ -68,12 +70,14 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
       ),
     );
 
-    final initResult = await ref.read(uploadRepositoryProvider).initUpload(
-          metadata: UploadMetadata(
-            id: recordingId,
-          ),
-          totalChunks: chunks.length,
-        );
+    final initResult = await ref.read(
+      initUploadProvider(
+        UploadMetadata(
+          id: recordingId,
+        ),
+        chunks.length,
+      ).future,
+    );
 
     final uploadId = initResult['uploadId'] as String;
 
@@ -93,37 +97,42 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
     var uploadedBytes = 0;
     for (var i = 0; i < chunks.length; i++) {
       debugPrint('uploading chunk $i of ${chunks.length}');
-      await ref.read(uploadRepositoryProvider).uploadChunk(
-            uploadId: uploadId,
-            chunk: chunks[i],
-            chunkIndex: i,
-          );
+      final uploadProgress = await ref.read(
+        uploadChunkProvider(
+          uploadId: uploadId,
+          chunk: chunks[i],
+          chunkIndex: i,
+        ).future,
+      );
 
       uploadedBytes += chunks[i].length;
 
+      debugPrint('uploadId: ${uploadProgress.uploadId}');
       _updateTaskState(
         recordingId,
         UploadTaskState(
           recordingId: recordingId,
           name: name,
-          uploadId: uploadId,
+          uploadId: uploadProgress.uploadId,
           uploadStatus: UploadStatus.uploading,
           totalBytes: totalBytes,
           uploadedBytes: uploadedBytes,
         ),
       );
     }
-
-    await completeUpload(uploadId);
+    final completeResult =
+        await ref.read(completeUploadProvider(uploadId).future);
+    final submissionId = completeResult['submissionId'] as String;
 
     _updateTaskState(
       recordingId,
       state[recordingId]!.copyWith(
         uploadStatus: UploadStatus.processing,
+        submissionId: submissionId,
       ),
     );
 
-    pollSubmissionStatus(recordingId);
+    _pollSubmissionStatus(recordingId, submissionId);
 
     _updateTaskState(
       recordingId,
@@ -133,39 +142,23 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
     );
   }
 
-  Future<void> completeUpload(String uploadId) async {
-    await ref.read(uploadRepositoryProvider).completeUpload(uploadId);
-  }
-
-  void pollSubmissionStatus(String recordingId) {
-    if (statusIntervals.containsKey(recordingId)) {
-      statusIntervals[recordingId]?.cancel();
-    }
-
-    statusIntervals[recordingId] =
-        Timer.periodic(const Duration(seconds: 5), (timer) async {
+  void _pollSubmissionStatus(String recordingId, String submissionId) {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       try {
-        final task = state[recordingId];
-        if (task == null || task.uploadId == null) {
-          timer.cancel();
-          statusIntervals.remove(recordingId);
-          return;
-        }
-        final status =
-            await ref.read(uploadRepositoryProvider).getStatus(task.uploadId!);
-
-        final submissionStatus = SubmissionStatus.fromJson(status);
+        final submissionStatus = await ref.read(
+          getSubmissionStatusProvider(
+            submissionId: submissionId,
+          ).future,
+        );
 
         if (submissionStatus.status == 'completed') {
           timer.cancel();
-          statusIntervals.remove(recordingId);
           _updateTaskState(
             recordingId,
             state[recordingId]!.copyWith(uploadStatus: UploadStatus.done),
           );
         } else if (submissionStatus.status == 'failed') {
           timer.cancel();
-          statusIntervals.remove(recordingId);
           _updateTaskState(
             recordingId,
             state[recordingId]!
@@ -175,7 +168,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
       } catch (error) {
         debugPrint('Failed to get submission status: $error');
         timer.cancel();
-        statusIntervals.remove(recordingId);
         _updateTaskState(
           recordingId,
           state[recordingId]!.copyWith(

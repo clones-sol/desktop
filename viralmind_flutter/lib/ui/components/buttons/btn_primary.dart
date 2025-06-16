@@ -71,12 +71,15 @@ class BtnPrimary extends StatelessWidget {
                       ),
                 ),
               if (isLoading)
-                const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
+                const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
             ],

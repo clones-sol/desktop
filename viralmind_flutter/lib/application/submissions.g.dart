@@ -181,5 +181,160 @@ class _GetSubmissionStatusProviderElement
   String get submissionId =>
       (origin as GetSubmissionStatusProvider).submissionId;
 }
+
+String _$listSubmissionsHash() => r'46888695c0f037788c57967f6a40e375483b951e';
+
+/// See also [listSubmissions].
+@ProviderFor(listSubmissions)
+final listSubmissionsProvider =
+    AutoDisposeFutureProvider<List<SubmissionStatus>>.internal(
+  listSubmissions,
+  name: r'listSubmissionsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$listSubmissionsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef ListSubmissionsRef
+    = AutoDisposeFutureProviderRef<List<SubmissionStatus>>;
+String _$getPoolSubmissionsHash() =>
+    r'bb7e8cab8859f77604bf7a2cadc6c7b244d49c82';
+
+/// See also [getPoolSubmissions].
+@ProviderFor(getPoolSubmissions)
+const getPoolSubmissionsProvider = GetPoolSubmissionsFamily();
+
+/// See also [getPoolSubmissions].
+class GetPoolSubmissionsFamily
+    extends Family<AsyncValue<List<PoolSubmission>>> {
+  /// See also [getPoolSubmissions].
+  const GetPoolSubmissionsFamily();
+
+  /// See also [getPoolSubmissions].
+  GetPoolSubmissionsProvider call(
+    String poolId,
+  ) {
+    return GetPoolSubmissionsProvider(
+      poolId,
+    );
+  }
+
+  @override
+  GetPoolSubmissionsProvider getProviderOverride(
+    covariant GetPoolSubmissionsProvider provider,
+  ) {
+    return call(
+      provider.poolId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getPoolSubmissionsProvider';
+}
+
+/// See also [getPoolSubmissions].
+class GetPoolSubmissionsProvider
+    extends AutoDisposeFutureProvider<List<PoolSubmission>> {
+  /// See also [getPoolSubmissions].
+  GetPoolSubmissionsProvider(
+    String poolId,
+  ) : this._internal(
+          (ref) => getPoolSubmissions(
+            ref as GetPoolSubmissionsRef,
+            poolId,
+          ),
+          from: getPoolSubmissionsProvider,
+          name: r'getPoolSubmissionsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getPoolSubmissionsHash,
+          dependencies: GetPoolSubmissionsFamily._dependencies,
+          allTransitiveDependencies:
+              GetPoolSubmissionsFamily._allTransitiveDependencies,
+          poolId: poolId,
+        );
+
+  GetPoolSubmissionsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolId,
+  }) : super.internal();
+
+  final String poolId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<PoolSubmission>> Function(GetPoolSubmissionsRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetPoolSubmissionsProvider._internal(
+        (ref) => create(ref as GetPoolSubmissionsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolId: poolId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<PoolSubmission>> createElement() {
+    return _GetPoolSubmissionsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetPoolSubmissionsProvider && other.poolId == poolId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetPoolSubmissionsRef
+    on AutoDisposeFutureProviderRef<List<PoolSubmission>> {
+  /// The parameter `poolId` of this provider.
+  String get poolId;
+}
+
+class _GetPoolSubmissionsProviderElement
+    extends AutoDisposeFutureProviderElement<List<PoolSubmission>>
+    with GetPoolSubmissionsRef {
+  _GetPoolSubmissionsProviderElement(super.provider);
+
+  @override
+  String get poolId => (origin as GetPoolSubmissionsProvider).poolId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -14,8 +14,10 @@ class SubmissionsRepositoryImpl {
       return await _client.get<SubmissionStatus>(
         '/forge/submissions/$submissionId',
         options: const RequestOptions(requiresAuth: true),
-        fromJson: (json) =>
-            SubmissionStatus.fromJson(json as Map<String, dynamic>),
+        fromJson: (json) {
+          print(json);
+          return SubmissionStatus.fromJson(json as Map<String, dynamic>);
+        },
       );
     } catch (e) {
       throw Exception('Failed to get submission status: $e');
@@ -46,9 +48,10 @@ class SubmissionsRepositoryImpl {
       final submissions = await _client.get<List<dynamic>>(
         '/forge/submissions/pool/$poolId',
         options: const RequestOptions(requiresAuth: true),
-        fromJson: (json) => (json as List)
-            .map((e) => PoolSubmission.fromJson(e as Map<String, dynamic>))
-            .toList(),
+        fromJson: (json) => (json as List).map((e) {
+          print(e);
+          return PoolSubmission.fromJson(e as Map<String, dynamic>);
+        }).toList(),
       );
       return submissions.cast<PoolSubmission>();
     } catch (e) {
