@@ -1,11 +1,12 @@
 import 'dart:async';
+
 import 'package:crypto/crypto.dart';
+import 'package:dio/dio.dart' hide RequestOptions;
 import 'package:flutter/foundation.dart';
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/api/request_options.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_metadata.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_progress.dart';
-import 'package:dio/dio.dart' hide RequestOptions;
 
 class UploadRepositoryImpl {
   UploadRepositoryImpl(this._client);

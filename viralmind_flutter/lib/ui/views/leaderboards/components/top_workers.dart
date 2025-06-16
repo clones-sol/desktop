@@ -6,12 +6,13 @@ import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/utils/wallet.dart';
 
 class TopWorkers extends ConsumerWidget {
-  const TopWorkers(
-      {super.key,
-      required this.workers,
-      this.showTitle = true,
-      this.listHeight,
-      this.onExpand});
+  const TopWorkers({
+    super.key,
+    required this.workers,
+    this.showTitle = true,
+    this.listHeight,
+    this.onExpand,
+  });
 
   final List<WorkerLeaderboard> workers;
   final bool showTitle;
@@ -55,8 +56,10 @@ class TopWorkers extends ConsumerWidget {
                 if (onExpand != null) ...[
                   const SizedBox(width: 12),
                   IconButton(
-                    icon: const Icon(Icons.open_in_full,
-                        color: VMColors.secondary),
+                    icon: const Icon(
+                      Icons.open_in_full,
+                      color: VMColors.secondary,
+                    ),
                     onPressed: onExpand,
                   ),
                 ],

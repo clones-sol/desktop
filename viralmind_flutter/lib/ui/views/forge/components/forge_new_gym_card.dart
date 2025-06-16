@@ -56,7 +56,7 @@ class ForgeNewGymCard extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),

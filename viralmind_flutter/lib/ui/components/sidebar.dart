@@ -135,6 +135,7 @@ class Sidebar extends ConsumerWidget {
 
 class AnimatedSidebarSection extends StatelessWidget {
   const AnimatedSidebarSection({
+    super.key,
     required this.buttons,
     required this.activeIndex,
     required this.onTap,

@@ -4,16 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/assets.dart';
+import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
-  const ForgeGymTasksTab(
-      {super.key, required this.pool, required this.onRegenerateTasks});
+  const ForgeGymTasksTab({
+    super.key,
+    required this.pool,
+    required this.onRegenerateTasks,
+  });
   final TrainingPool pool;
   final VoidCallback onRegenerateTasks;
 

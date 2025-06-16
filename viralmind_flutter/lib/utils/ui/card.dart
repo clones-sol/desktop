@@ -19,7 +19,7 @@ class AppCard extends StatelessWidget {
     return Card(
       color: variant == AppCardVariant.primary ? Colors.blue : Colors.grey[300],
       child: Padding(
-        padding: padding ?? const EdgeInsets.all(8.0),
+        padding: padding ?? const EdgeInsets.all(8),
         child: child,
       ),
     );
