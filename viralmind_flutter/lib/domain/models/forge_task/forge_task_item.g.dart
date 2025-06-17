@@ -14,7 +14,7 @@ _$ForgeTaskItemImpl _$$ForgeTaskItemImplFromJson(Map<String, dynamic> json) =>
       rewardLimit: (json['rewardLimit'] as num?)?.toInt(),
       completed: json['completed'] as bool?,
       recordingId: json['recordingId'] as String?,
-      score: (json['score'] as num?)?.toDouble(),
+      score: (json['score'] as num?)?.toInt(),
       uploadLimitReached: json['uploadLimitReached'] as bool?,
       currentSubmissions: (json['currentSubmissions'] as num?)?.toInt(),
       limitReason: json['limitReason'] as String?,

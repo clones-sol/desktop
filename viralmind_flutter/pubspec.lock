@@ -97,6 +97,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -440,6 +448,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.2"
+  graphview:
+    dependency: "direct main"
+    description:
+      name: graphview
+      sha256: bdba183583b23c30c71edea09ad5f0beef612572d3e39e855467a925bd08392f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   hotreloader:
     dependency: transitive
     description:
