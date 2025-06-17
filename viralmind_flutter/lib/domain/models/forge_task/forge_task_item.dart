@@ -12,7 +12,7 @@ class ForgeTaskItem with _$ForgeTaskItem {
     @JsonKey(includeIfNull: false) int? rewardLimit,
     @JsonKey(includeIfNull: false) bool? completed,
     @JsonKey(includeIfNull: false) String? recordingId,
-    @JsonKey(includeIfNull: false) double? score,
+    @JsonKey(includeIfNull: false) int? score,
     @JsonKey(includeIfNull: false) bool? uploadLimitReached,
     @JsonKey(includeIfNull: false) int? currentSubmissions,
     @JsonKey(includeIfNull: false) String? limitReason,

@@ -1,7 +1,12 @@
 import 'dart:math';
+
+import 'package:collection/collection.dart';
 import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_task_item.dart';
+import 'package:viralmind_flutter/domain/models/forge_task/pool_id.dart';
+import 'package:viralmind_flutter/domain/models/recording/recording_meta.dart';
+import 'package:viralmind_flutter/infrastructure/submissions.repository.dart';
 
 class AppsRepositoryImpl {
   AppsRepositoryImpl(this._client);
@@ -19,40 +24,42 @@ class AppsRepositoryImpl {
     }
   }
 
-  // TODO: fix it
-  /* Future<List<ForgeApp>> getAppsForHistory() async {
+  Future<List<ForgeApp>> getAppsForHistory(
+      List<RecordingMeta> recordings) async {
     try {
-      final recordings =
-          await _tauriBridge.invoke<List<dynamic>>('list_recordings');
       final appMap = <String, ForgeApp>{};
 
-      for (var rec in recordings) {
-        final recording = Recording.fromJson(rec as Map<String, dynamic>);
-
+      for (final recording in recordings) {
         if (recording.status == 'completed' && recording.quest != null) {
           final quest = recording.quest!;
           if (!appMap.containsKey(quest.app)) {
             appMap[quest.app] = ForgeApp(
               name: quest.app,
-              domain: quest.iconUrl?.split('domain=')[1]?.split('&')[0] ?? '',
+              domain: quest.iconUrl.split('domain=')[1].split('&')[0],
               description: '',
               categories: [],
               tasks: [],
-              poolId:
-                  Pool(id: '', name: '', status: 'completed', pricePerDemo: 0),
+              poolId: const PoolId(
+                id: '',
+                name: '',
+                status: 'completed',
+                pricePerDemo: 0,
+              ),
               seen: true,
             );
           }
 
           final app = appMap[quest.app]!;
-          if (!app.tasks.any((t) => t.prompt == quest.title)) {
-            app.tasks.add(
+          final newTasks = app.tasks.toList();
+          if (!newTasks.any((t) => t.prompt == quest.title)) {
+            newTasks.add(
               ForgeTaskItem(
                 prompt: quest.title,
                 completed: true,
                 recordingId: recording.id,
               ),
             );
+            appMap[quest.app] = app.copyWith(tasks: newTasks);
           }
         }
       }
@@ -66,44 +73,53 @@ class AppsRepositoryImpl {
     }
   }
 
-  Future<List<ForgeApp>> getAppsForSkills() async {
+  Future<List<ForgeApp>> getAppsForSkills(
+    List<RecordingMeta> recordings,
+  ) async {
     try {
-      final historyApps = await getAppsForHistory();
-      final appMap = {for (var app in historyApps) app.name: app};
+      final historyApps = await getAppsForHistory(recordings);
+      final appMap = <String, ForgeApp>{};
+      final submissions =
+          await SubmissionsRepositoryImpl(_client).listSubmissions();
 
-      final submissions = await _submissionRepository.listSubmissions();
-
-      for (var app in appMap.values) {
-        app.tasks = app.tasks.map((task) {
+      for (final app in historyApps) {
+        final newTasks = app.tasks.map((task) {
           if (task.recordingId != null) {
-            final submission = submissions.firstWhere(
-              (s) => s.meta?.id == task.recordingId,
-              orElse: () => Submission.empty(),
+            final submission = submissions.firstWhereOrNull(
+              (s) => s.meta.id == task.recordingId,
             );
-            if (submission.clampedScore != null) {
+            if (submission != null && submission.clampedScore != null) {
               return task.copyWith(score: submission.clampedScore);
             }
           }
           return task;
         }).toList();
+        appMap[app.name] = app.copyWith(tasks: newTasks);
       }
 
-      final apiApps = await _client.get<List<dynamic>>(
-        '/forge/apps',
-        fromJson: (json) => (json as List)
-            .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))
-            .toList(),
-      );
+      // TODO: Write a method to get the apps from the API
+      final appsJson = await _client.get<List<dynamic>>('/forge/apps');
+      final apiApps = appsJson
+          .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))
+          .toList();
 
-      for (var apiApp in apiApps) {
-        final existingApp = appMap[apiApp.name];
+      for (final apiApp in apiApps) {
+        var existingApp = appMap[apiApp.name];
         if (existingApp != null) {
-          existingApp.domain = apiApp.domain;
-          existingApp.description = apiApp.description;
-          existingApp.categories = apiApp.categories;
-          for (var apiTask in apiApp.tasks) {
-            if (!existingApp.tasks.any((t) => t.prompt == apiTask.prompt)) {
-              existingApp.tasks.add(apiTask.copyWith(completed: false));
+          existingApp = existingApp.copyWith(
+            domain: apiApp.domain,
+            description: apiApp.description,
+            categories: apiApp.categories,
+          );
+
+          for (final apiTask in apiApp.tasks) {
+            if (!existingApp!.tasks.any((t) => t.prompt == apiTask.prompt)) {
+              existingApp = existingApp.copyWith(
+                tasks: [
+                  ...existingApp.tasks,
+                  apiTask.copyWith(completed: false),
+                ],
+              );
             }
           }
         } else {
@@ -120,8 +136,8 @@ class AppsRepositoryImpl {
         return [];
       }
 
-      final seen = allApps.where((app) => app.seen).toList();
-      final unseen = allApps.where((app) => !app.seen).toList();
+      final seen = allApps.where((app) => app.seen == true).toList();
+      final unseen = allApps.where((app) => app.seen != true).toList();
 
       var result = [...seen];
       if (unseen.isNotEmpty) {
@@ -135,7 +151,6 @@ class AppsRepositoryImpl {
       throw Exception('Failed to get apps for skills: $e');
     }
   }
-*/
 
   Future<List<ForgeApp>> getAppsForGym({
     Map<String, dynamic>? filter,
@@ -157,13 +172,13 @@ class AppsRepositoryImpl {
         if (filter['query'] != null) params['query'] = filter['query'];
       }
 
-      final apps = await _client.get<List<dynamic>>(
+      final appsJson = await _client.get<List<dynamic>>(
         '/forge/apps',
         params: params,
-        fromJson: (json) => (json as List).map((e) {
-          return ForgeApp.fromJson(e as Map<String, dynamic>);
-        }).toList(),
-      ) as List<ForgeApp>;
+      );
+      final apps = appsJson
+          .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))
+          .toList();
 
       if (filter != null && filter['poolId'] != null) {
         return apps;
@@ -186,7 +201,6 @@ class AppsRepositoryImpl {
     try {
       final categories = await _client.get<List<dynamic>>(
         '/forge/apps/categories',
-        fromJson: (json) => (json as List).map((e) => e as String).toList(),
       );
       return categories.cast<String>();
     } catch (e) {

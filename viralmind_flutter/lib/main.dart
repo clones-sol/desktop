@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/gym/skill_tree.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
 
@@ -21,7 +22,7 @@ final _router = GoRouter(
         GoRoute(
           path: '/app/gym',
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: TrainingSessionView(),
+            child: SkillTree(),
           ),
         ),
         GoRoute(

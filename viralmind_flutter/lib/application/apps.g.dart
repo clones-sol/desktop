@@ -176,6 +176,42 @@ class _GenerateAppsProviderElement
   String get prompt => (origin as GenerateAppsProvider).prompt;
 }
 
+String _$getAppsForHistoryHash() => r'8f7969bcd4f6bdf81b952f4535fbaaf9936fa04d';
+
+/// See also [getAppsForHistory].
+@ProviderFor(getAppsForHistory)
+final getAppsForHistoryProvider =
+    AutoDisposeFutureProvider<List<ForgeApp>>.internal(
+  getAppsForHistory,
+  name: r'getAppsForHistoryProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getAppsForHistoryHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetAppsForHistoryRef = AutoDisposeFutureProviderRef<List<ForgeApp>>;
+String _$getAppsForSkillsHash() => r'5b39dc02d34fb7654baefece62043a055965516d';
+
+/// See also [getAppsForSkills].
+@ProviderFor(getAppsForSkills)
+final getAppsForSkillsProvider =
+    AutoDisposeFutureProvider<List<ForgeApp>>.internal(
+  getAppsForSkills,
+  name: r'getAppsForSkillsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getAppsForSkillsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetAppsForSkillsRef = AutoDisposeFutureProviderRef<List<ForgeApp>>;
 String _$getAppsForGymHash() => r'61087aec2218a1c546d477601fbc5c415a1e6c8f';
 
 /// See also [getAppsForGym].
