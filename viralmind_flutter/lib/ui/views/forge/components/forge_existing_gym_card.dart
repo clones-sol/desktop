@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
@@ -9,12 +10,10 @@ class ForgeExistingGymCard extends StatelessWidget {
     super.key,
     required this.pool,
     required this.onTap,
-    this.tokenBalance,
   });
 
   final TrainingPool pool;
   final VoidCallback onTap;
-  final double? tokenBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +43,7 @@ class ForgeExistingGymCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${tokenBalance ?? 0.toStringAsFixed(0)} ${pool.token.symbol}',
+                  '${pool.tokenBalance ?? 0.toStringAsFixed(0)} ${pool.token.symbol}',
                   style: TextStyle(
                     color: VMColors.secondaryText,
                     fontSize: 14,
@@ -137,7 +136,14 @@ class ForgeExistingGymCard extends StatelessWidget {
   ) {
     final pricePerDemo = pool.pricePerDemo;
     final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
-        ? (tokenBalance ?? 0 / pricePerDemo).floor()
+        ? (Decimal.parse(
+                  pool.tokenBalance == null
+                      ? '0'
+                      : pool.tokenBalance.toString(),
+                ) /
+                Decimal.parse(pricePerDemo.toString()))
+            .toDouble()
+            .floor()
         : 0;
     final totalDemos = pool.demonstrations + possibleDemos;
     final demoPercentage = totalDemos > 0
@@ -154,14 +160,19 @@ class ForgeExistingGymCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Uploads / Remaining Demos',
-              style: TextStyle(
-                color: VMColors.secondaryText,
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
+            Flexible(
+              child: Text(
+                'Uploads / Remaining Demos',
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: VMColors.secondaryText,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
             ),
+            const SizedBox(width: 4),
             Text(
               '${pool.demonstrations} / $possibleDemos',
               style: TextStyle(
@@ -191,15 +202,12 @@ class ForgeExistingGymCard extends StatelessWidget {
             FractionallySizedBox(
               widthFactor: demoPercentage / 100,
               child: Container(
-                height: 6,
+                height: 5,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Theme.of(context).colorScheme.secondary,
-                      Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withValues(alpha: 0.7),
+                      VMColors.secondary.withValues(alpha: 0.3),
+                      VMColors.secondary,
                     ],
                   ),
                   borderRadius: BorderRadius.circular(3),

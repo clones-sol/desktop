@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/pool.dart';
@@ -23,43 +24,10 @@ class ForgeView extends ConsumerStatefulWidget {
 }
 
 class _ForgeViewState extends ConsumerState<ForgeView> {
-  bool _loadingPrices = true;
   bool _showGenerateGymModal = false;
   String? _error;
-  Set<String> _refreshingPools = {};
-
-  double _viralPrice = 0;
-  double _solPrice = 0;
-  double _viralPerSol = 0;
-
   String _skills = '';
   TrainingPool? _selectedPool;
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchPrices();
-  }
-
-  Future<void> _fetchPrices() async {
-    try {
-      setState(() => _loadingPrices = true);
-      // TODO: Implement price fetching from Jupiter API
-      // This will be implemented when we add the price service
-    } catch (e) {
-      debugPrint('Error fetching prices: $e');
-    } finally {
-      setState(() => _loadingPrices = false);
-    }
-  }
-
-  void _navigateToGymDetail(TrainingPool pool) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ForgeGymDetail(pool: pool),
-      ),
-    );
-  }
 
   Future<void> _handleSave(Map<String, dynamic> generatedResponse) async {
     try {
@@ -154,7 +122,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                           BackdropFilter(
                             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                             child: Container(
-                              color: Colors.black.withOpacity(0.3),
+                              color: Colors.black.withValues(alpha: 0.3),
                             ),
                           ),
                           AnimatedContainer(
@@ -253,12 +221,17 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
             const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Collect crowd-powered demonstrations, perfect for training AI agents.',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: VMColors.primaryText,
-                    fontWeight: FontWeight.w500,
+                Expanded(
+                  child: AutoSizeText(
+                    'Collect crowd-powered demonstrations, perfect for training AI agents.',
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    minFontSize: 14,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: VMColors.primaryText,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],
@@ -289,37 +262,40 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   }
 
   Widget _buildPoolsGrid(List<TrainingPool> pools) {
-    /* final sortedPools = List<TrainingPool>.from(_trainingPools)
+    final sortedPools = List<TrainingPool>.from(pools)
       ..sort((a, b) {
         if (a.status == TrainingPoolStatus.live &&
-            b.status != TrainingPoolStatus.live) return -1;
+            b.status != TrainingPoolStatus.live) {
+          return -1;
+        }
         if (a.status != TrainingPoolStatus.live &&
-            b.status == TrainingPoolStatus.live) return 1;
-        return b.createdAt.compareTo(a.createdAt);
-      });*/
+            b.status == TrainingPoolStatus.live) {
+          return 1;
+        }
+        return b.createdAt!.compareTo(a.createdAt!);
+      });
 
-    return SizedBox(
-      height: MediaQuery.of(context).size.height - 170,
-      child: GridView.count(
-        physics: const AlwaysScrollableScrollPhysics(),
-        crossAxisCount: 4,
-        crossAxisSpacing: 20,
-        mainAxisSpacing: 20,
-        children: [
-          ForgeNewGymCard(
-            onTap: () => setState(() {
-              _skills = '';
-              _showGenerateGymModal = true;
-            }),
+    return GridView.extent(
+      maxCrossAxisExtent: 350,
+      childAspectRatio: 0.95,
+      crossAxisSpacing: 20,
+      mainAxisSpacing: 20,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        ForgeNewGymCard(
+          onTap: () => setState(() {
+            _skills = '';
+            _showGenerateGymModal = true;
+          }),
+        ),
+        ...sortedPools.map(
+          (pool) => ForgeExistingGymCard(
+            pool: pool,
+            onTap: () => setState(() => _selectedPool = pool),
           ),
-          ...pools.map(
-            (pool) => ForgeExistingGymCard(
-              pool: pool,
-              onTap: () => setState(() => _selectedPool = pool),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
