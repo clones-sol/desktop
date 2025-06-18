@@ -38,6 +38,8 @@ mixin _$TrainingPool {
   bool get unsavedPrice => throw _privateConstructorUsedError;
   UploadLimit? get uploadLimit => throw _privateConstructorUsedError;
   bool get unsavedUploadLimit => throw _privateConstructorUsedError;
+  double? get tokenBalance => throw _privateConstructorUsedError;
+  DateTime? get createdAt => throw _privateConstructorUsedError;
 
   /// Serializes this TrainingPool to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -72,7 +74,9 @@ abstract class $TrainingPoolCopyWith<$Res> {
       double? pricePerDemo,
       bool unsavedPrice,
       UploadLimit? uploadLimit,
-      bool unsavedUploadLimit});
+      bool unsavedUploadLimit,
+      double? tokenBalance,
+      DateTime? createdAt});
 
   $TokenCopyWith<$Res> get token;
   $UploadLimitCopyWith<$Res>? get uploadLimit;
@@ -110,6 +114,8 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
     Object? unsavedPrice = null,
     Object? uploadLimit = freezed,
     Object? unsavedUploadLimit = null,
+    Object? tokenBalance = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -180,6 +186,14 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
           ? _value.unsavedUploadLimit
           : unsavedUploadLimit // ignore: cast_nullable_to_non_nullable
               as bool,
+      tokenBalance: freezed == tokenBalance
+          ? _value.tokenBalance
+          : tokenBalance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 
@@ -233,7 +247,9 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       double? pricePerDemo,
       bool unsavedPrice,
       UploadLimit? uploadLimit,
-      bool unsavedUploadLimit});
+      bool unsavedUploadLimit,
+      double? tokenBalance,
+      DateTime? createdAt});
 
   @override
   $TokenCopyWith<$Res> get token;
@@ -271,6 +287,8 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
     Object? unsavedPrice = null,
     Object? uploadLimit = freezed,
     Object? unsavedUploadLimit = null,
+    Object? tokenBalance = freezed,
+    Object? createdAt = freezed,
   }) {
     return _then(_$TrainingPoolImpl(
       id: null == id
@@ -341,6 +359,14 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
           ? _value.unsavedUploadLimit
           : unsavedUploadLimit // ignore: cast_nullable_to_non_nullable
               as bool,
+      tokenBalance: freezed == tokenBalance
+          ? _value.tokenBalance
+          : tokenBalance // ignore: cast_nullable_to_non_nullable
+              as double?,
+      createdAt: freezed == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -365,7 +391,9 @@ class _$TrainingPoolImpl implements _TrainingPool {
       this.pricePerDemo,
       this.unsavedPrice = false,
       this.uploadLimit,
-      this.unsavedUploadLimit = false});
+      this.unsavedUploadLimit = false,
+      this.tokenBalance,
+      this.createdAt});
 
   factory _$TrainingPoolImpl.fromJson(Map<String, dynamic> json) =>
       _$$TrainingPoolImplFromJson(json);
@@ -409,10 +437,14 @@ class _$TrainingPoolImpl implements _TrainingPool {
   @override
   @JsonKey()
   final bool unsavedUploadLimit;
+  @override
+  final double? tokenBalance;
+  @override
+  final DateTime? createdAt;
 
   @override
   String toString() {
-    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit)';
+    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, tokenBalance: $tokenBalance, createdAt: $createdAt)';
   }
 
   @override
@@ -447,30 +479,37 @@ class _$TrainingPoolImpl implements _TrainingPool {
             (identical(other.uploadLimit, uploadLimit) ||
                 other.uploadLimit == uploadLimit) &&
             (identical(other.unsavedUploadLimit, unsavedUploadLimit) ||
-                other.unsavedUploadLimit == unsavedUploadLimit));
+                other.unsavedUploadLimit == unsavedUploadLimit) &&
+            (identical(other.tokenBalance, tokenBalance) ||
+                other.tokenBalance == tokenBalance) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      name,
-      status,
-      demonstrations,
-      funds,
-      solBalance,
-      token,
-      skills,
-      ownerEmail,
-      ownerAddress,
-      depositAddress,
-      expanded,
-      unsavedSkills,
-      pricePerDemo,
-      unsavedPrice,
-      uploadLimit,
-      unsavedUploadLimit);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        id,
+        name,
+        status,
+        demonstrations,
+        funds,
+        solBalance,
+        token,
+        skills,
+        ownerEmail,
+        ownerAddress,
+        depositAddress,
+        expanded,
+        unsavedSkills,
+        pricePerDemo,
+        unsavedPrice,
+        uploadLimit,
+        unsavedUploadLimit,
+        tokenBalance,
+        createdAt
+      ]);
 
   /// Create a copy of TrainingPool
   /// with the given fields replaced by the non-null parameter values.
@@ -506,7 +545,9 @@ abstract class _TrainingPool implements TrainingPool {
       final double? pricePerDemo,
       final bool unsavedPrice,
       final UploadLimit? uploadLimit,
-      final bool unsavedUploadLimit}) = _$TrainingPoolImpl;
+      final bool unsavedUploadLimit,
+      final double? tokenBalance,
+      final DateTime? createdAt}) = _$TrainingPoolImpl;
 
   factory _TrainingPool.fromJson(Map<String, dynamic> json) =
       _$TrainingPoolImpl.fromJson;
@@ -546,6 +587,10 @@ abstract class _TrainingPool implements TrainingPool {
   UploadLimit? get uploadLimit;
   @override
   bool get unsavedUploadLimit;
+  @override
+  double? get tokenBalance;
+  @override
+  DateTime? get createdAt;
 
   /// Create a copy of TrainingPool
   /// with the given fields replaced by the non-null parameter values.

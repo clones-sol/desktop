@@ -42,11 +42,9 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
       final data =
           await ref.read(leaderboardRepositoryProvider).getLeaderboardData();
       setState(() {
-        // Sort workers by avgScore
         _topWorkers = (data['workersLeaderboard'] as List<WorkerLeaderboard>)
           ..sort((a, b) => b.avgScore.compareTo(a.avgScore));
 
-        // Sort forges by payout
         _topForges = (data['forgeLeaderboard'] as List<ForgeLeaderboard>)
           ..sort((a, b) => b.payout.compareTo(a.payout));
 
@@ -97,7 +95,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
-                            FontAwesomeIcons.exclamationTriangle,
+                            FontAwesomeIcons.triangleExclamation,
                             color: Colors.red[400],
                             size: 48,
                           ),
@@ -235,7 +233,6 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                 ),
               ),
             ),
-            // Overlay fullscreen pour TopWorkers
             AnimatedPositioned(
               duration: const Duration(milliseconds: 400),
               curve: Curves.easeInOutCubic,
@@ -337,7 +334,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
             crossAxisCount: 4,
             crossAxisSpacing: 24,
             mainAxisSpacing: 24,
-            childAspectRatio: 1.5,
+            childAspectRatio: 1.8,
             children: [
               StatCard(
                 label: 'Total Demonstrators',

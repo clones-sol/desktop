@@ -18,7 +18,6 @@ use wait_timeout::ChildExt;
 pub static PIPELINE_PATH: OnceLock<PathBuf> = OnceLock::new();
 
 const PIPELINE_TIMEOUT_SECS: u64 = 300; // 5 minutes
-const PIPELINE_MAX_MEM_MB: u64 = 2048; // 2 GB
 
 #[cfg(target_os = "windows")]
 fn get_pipeline_url() -> String {

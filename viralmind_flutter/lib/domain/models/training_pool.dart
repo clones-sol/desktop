@@ -40,6 +40,8 @@ class TrainingPool with _$TrainingPool {
     @Default(false) bool unsavedPrice,
     UploadLimit? uploadLimit,
     @Default(false) bool unsavedUploadLimit,
+    double? tokenBalance,
+    DateTime? createdAt,
   }) = _TrainingPool;
 
   factory TrainingPool.fromJson(Map<String, dynamic> json) =>

@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
@@ -10,33 +11,37 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardWidget(
-      padding: CardPadding.none,
       variant: CardVariant.secondary,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 40),
-        child: Column(
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: VMColors.primary,
-              ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AutoSizeText(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            minFontSize: 14,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: VMColors.primary,
             ),
-            const SizedBox(height: 12),
-            Text(
+          ),
+          const SizedBox(height: 4),
+          Expanded(
+            child: AutoSizeText(
               value,
+              maxLines: 2,
+              minFontSize: 14,
               style: const TextStyle(
-                fontSize: 28,
+                fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: VMColors.secondary,
                 letterSpacing: -0.5,
               ),
               textAlign: TextAlign.center,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
