@@ -56,7 +56,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         await ref
             .read(tauriApiClientProvider)
             .startRecording(quest: state.activeQuest, fps: fps);
-        // TODO: To check
+        // TODO(reddwarf03): To check
         // await emit('quest-overlay', { quest: activeQuest! });
         setRecordingState(RecordingState.recording);
       }
@@ -117,36 +117,23 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     bool delay = true,
   }) async {
     final messageIndex = state.chatMessages.length;
-
-    // Check if the message is an image
     final isText = msg.type == MessageType.text;
 
     if (msg.role == 'assistant' && isText) {
-      // Add empty message first
-
-      setChatMessages([
-        ...state.chatMessages,
-        Message(role: msg.role, content: '', timestamp: msg.timestamp),
-      ]);
-      triggerScrollToBottom();
-
-      // Then animate typing
       await typeMessage(
         msg.content,
         messageIndex,
         delay: delay,
       );
 
-      // Finally update with full message
-      setChatMessages(
-        List.generate(
-          state.chatMessages.length,
-          (i) => i == messageIndex ? msg : state.chatMessages[i],
-        ),
-      );
+      setChatMessages([
+        ...state.chatMessages,
+        msg,
+      ]);
+      triggerScrollToBottom();
     } else {
       if (audio) {
-        // TODO: To check
+        // TODO(reddwarf03): To check
         // await state.blipAudio!.seek(Duration.zero);
         // await state.blipAudio!.resume();
       }
@@ -345,7 +332,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     // Parse the start, end, and count from the delete message
     if (clickedMessageIndex != null && state.originalSftData != null) {
       final deleteMsg = state.chatMessages[clickedMessageIndex];
-      // TODO: check this
+      // TODO(reddwarf03): check this
       if (deleteMsg.type == MessageType.delete) {
         final content = deleteMsg.content;
         final parts = content.split(' ').map(int.parse).toList();
@@ -434,7 +421,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         type: MessageType.loading,
       ),
     );
-    // TODO: To check
+    // TODO(reddwarf03): To check
     // await emit('quest-overlay', { 'quest': null });
 
     setRecordingLoading(false);
@@ -584,21 +571,14 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
   Future<void> giveUp() async {
     if (state.recordingState == RecordingState.recording) {
       try {
-        final recordingId =
-            await ref.read(tauriApiClientProvider).stopRecording('fail');
+        await ref.read(tauriApiClientProvider).stopRecording('fail');
 
         setActiveQuest(null);
         setRecordingState(RecordingState.off);
 
-        // TODO: To check
+        // TODO(reddwarf03): To check
         // await emit('quest-overlay', { 'quest': null });
 
-        await addMessage(
-          generateUserMessage(
-            recordingId,
-            type: MessageType.recording,
-          ),
-        );
         await addMessage(
           generateUserMessage('I give up on this task.'),
         );
@@ -678,7 +658,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
           .read(tauriApiClientProvider)
           .deleteRecording(trainingSession.currentRecordingId!);
       if (deleted.isNotEmpty) {
-        // TODO: /app/gym
+        // TODO(reddwarf03): /app/gym
         //Navigator.of(context).pop();
       }
     }

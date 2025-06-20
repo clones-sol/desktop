@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:viralmind_flutter/ui/components/checkbox/checkbox_custom.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/checkbox/checkbox_custom.dart';
 
 class CheckboxConfirm extends StatelessWidget {
   const CheckboxConfirm({

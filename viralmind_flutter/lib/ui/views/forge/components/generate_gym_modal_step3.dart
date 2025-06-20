@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 
 class GenerateGymModalStep3 extends StatelessWidget {
   const GenerateGymModalStep3({

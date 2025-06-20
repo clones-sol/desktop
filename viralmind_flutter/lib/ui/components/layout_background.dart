@@ -7,11 +7,11 @@ class LayoutBackground extends StatelessWidget {
     super.key,
     required this.child,
     required this.currentRoute,
-    this.withHeader = false,
+    this.actions,
   });
   final Widget child;
   final String currentRoute;
-  final bool withHeader;
+  final Widget? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +39,6 @@ class LayoutBackground extends StatelessWidget {
                 ),
               ),
             ),
-            if (withHeader)
-              Container(
-                height: MediaQuery.of(context).size.height * 0.6,
-                width: double.infinity,
-                color: const Color.fromARGB(255, 208, 179, 206)
-                    .withValues(alpha: 0.05),
-              ),
             Positioned(
               top: bandHeight * 1.3 - clampedLogoSize / 2,
               right: 50,
@@ -59,41 +52,6 @@ class LayoutBackground extends StatelessWidget {
                 ),
               ),
             ),
-            if (withHeader)
-              Positioned(
-                top: screenHeight * 0.05,
-                left: screenWidth * 0.05,
-                child: Row(
-                  children: [
-                    Opacity(
-                      opacity: 0.7,
-                      child: Image.asset(
-                        Assets.logoIcon,
-                        width: screenWidth * 0.07,
-                        height: screenWidth * 0.07,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenWidth * 0.015,
-                    ),
-                    Text(
-                      'COMPUTER-USE AI FOR EVERYONE',
-                      style:
-                          Theme.of(context).textTheme.headlineLarge?.copyWith(
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontSize: (screenWidth * 0.035).clamp(
-                                  18.0,
-                                  40.0,
-                                ),
-                                fontWeight: FontWeight.w300,
-                                letterSpacing: 1.5,
-                                height: 1.5,
-                              ),
-                    ),
-                  ],
-                ),
-              ),
             Positioned.fill(
               child: Row(
                 children: [
@@ -116,7 +74,18 @@ class LayoutBackground extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(child: child),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(child: child),
+                        if (actions != null)
+                          Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: actions,
+                          ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),

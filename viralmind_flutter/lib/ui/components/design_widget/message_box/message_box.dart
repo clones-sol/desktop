@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-// TODO(dev): Update locked
-enum MessageBoxType { success, warning, locked, info }
+enum MessageBoxType { success, warning, locked, info, talkLeft, talkRight }
 
 class MessageBox extends StatelessWidget {
   const MessageBox({
@@ -44,28 +43,38 @@ class MessageBox extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         child: Padding(
           padding: const EdgeInsets.all(12),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: _getLeadingIcon(messageBoxType),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 2),
-                  child: content,
+          child: (messageBoxType == MessageBoxType.talkLeft ||
+                  messageBoxType == MessageBoxType.talkRight)
+              ? content
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: messageBoxType == MessageBoxType.talkRight
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    if (_getLeadingIcon(messageBoxType) != null) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: _getLeadingIcon(messageBoxType) ??
+                            const SizedBox.shrink(),
+                      ),
+                      const SizedBox(width: 12),
+                    ],
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: content,
+                      ),
+                    ),
+                    if (onTap != null &&
+                        messageBoxType != MessageBoxType.locked)
+                      const Icon(
+                        Icons.arrow_forward_ios,
+                        color: Colors.white,
+                        size: 14,
+                      ),
+                  ],
                 ),
-              ),
-              if (onTap != null && messageBoxType != MessageBoxType.locked)
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.white,
-                  size: 14,
-                ),
-            ],
-          ),
         ),
       ),
     );
@@ -81,6 +90,10 @@ class MessageBox extends StatelessWidget {
         return const Color(0xFF262626);
       case MessageBoxType.info:
         return const Color(0xFF5540BF).withValues(alpha: 0.2);
+      case MessageBoxType.talkLeft:
+        return const Color.fromARGB(255, 140, 122, 228).withValues(alpha: 0.2);
+      case MessageBoxType.talkRight:
+        return const Color.fromARGB(255, 49, 27, 163).withValues(alpha: 0.2);
     }
   }
 
@@ -94,10 +107,14 @@ class MessageBox extends StatelessWidget {
         return const Color(0xFF343434);
       case MessageBoxType.info:
         return const Color(0xFF5540BF);
+      case MessageBoxType.talkLeft:
+        return const Color.fromARGB(255, 140, 122, 228);
+      case MessageBoxType.talkRight:
+        return const Color.fromARGB(255, 49, 27, 163);
     }
   }
 
-  Widget _getLeadingIcon(MessageBoxType messageBoxType) {
+  Widget? _getLeadingIcon(MessageBoxType messageBoxType) {
     switch (messageBoxType) {
       case MessageBoxType.success:
         return const Icon(Icons.done_all, color: Colors.white, size: 16);
@@ -125,6 +142,9 @@ class MessageBox extends StatelessWidget {
             size: 16,
           ),
         );
+      case MessageBoxType.talkLeft:
+      case MessageBoxType.talkRight:
+        return null;
     }
   }
 }

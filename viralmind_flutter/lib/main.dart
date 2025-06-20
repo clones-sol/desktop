@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
-import 'package:viralmind_flutter/ui/views/gym/skill_tree.dart';
+import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
 
@@ -22,7 +23,7 @@ final _router = GoRouter(
         GoRoute(
           path: '/app/gym',
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: SkillTree(),
+            child: GymView(),
           ),
         ),
         GoRoute(
@@ -66,6 +67,26 @@ class ViralmindApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFbb4eff)),
         fontFamily: 'Open Sans',
         useMaterial3: true,
+        textTheme: ThemeData.light().textTheme.copyWith(
+              bodySmall: TextStyle(
+                color: VMColors.secondaryText,
+              ),
+              bodyMedium: TextStyle(
+                color: VMColors.secondaryText,
+              ),
+              bodyLarge: TextStyle(
+                color: VMColors.secondaryText,
+              ),
+              titleLarge: const TextStyle(
+                color: VMColors.primaryText,
+              ),
+              titleMedium: const TextStyle(
+                color: VMColors.primaryText,
+              ),
+              titleSmall: const TextStyle(
+                color: VMColors.primaryText,
+              ),
+            ),
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,

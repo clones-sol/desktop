@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_overview_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_settings_tab.dart';
@@ -22,10 +21,10 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
   final bool _loading = false;
   String? _error;
 
-  // Ajout pour la modal de génération
+  // To show the generate gym modal
   bool _showGenerateGymModal = false;
 
-  // Pour rafraîchir les tâches après génération
+  // To refresh the tasks after generation
   void _handleRegenerateTasks() {
     setState(() => _showGenerateGymModal = true);
   }
@@ -35,9 +34,9 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
   }
 
   void _handleSaveGenerateGymModal(Map<String, dynamic> generatedResponse) {
-    // TODO: Mettre à jour les apps du pool avec la réponse générée
+    // TODO(reddwarf03): Update the pool with the generated response
     setState(() => _showGenerateGymModal = false);
-    // TODO: Rafraîchir la liste des apps dans ForgeGymTasksTab si besoin
+    // TODO(reddwarf03): Refresh the list of apps in ForgeGymTasksTab if needed
   }
 
   @override
@@ -58,23 +57,6 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
       children: [
         Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: TabBar(
-              indicatorColor: VMColors.secondary,
-              dividerColor: Colors.transparent,
-              labelColor: VMColors.secondary,
-              unselectedLabelColor: VMColors.secondaryText,
-              controller: _tabController,
-              tabAlignment: TabAlignment.fill,
-              tabs: const [
-                Tab(text: 'Overview'),
-                Tab(text: 'Settings'),
-                Tab(text: 'Tasks'),
-                Tab(text: 'Uploads'),
-              ],
-            ),
-          ),
           body: _loading
               ? const Center(child: CircularProgressIndicator())
               : _error != null
@@ -101,7 +83,7 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
           GenerateGymModal(
             skills: widget.pool.skills,
             onSkillsChange:
-                (skills) {}, // Optionnel: mettre à jour les skills du pool
+                (skills) {}, // TODO(reddwarf03): Update the skills of the pool
             onClose: _handleCloseGenerateGymModal,
             onSave: _handleSaveGenerateGymModal,
           ),

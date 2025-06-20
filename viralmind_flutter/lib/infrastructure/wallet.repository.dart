@@ -65,7 +65,7 @@ class WalletRepositoryImpl {
     }
   }
 
-  // TODO: Check if this is needed
+  // TODO(reddwarf03): Check if this is needed
   Future<void> saveNickname({
     required String address,
     required String nickname,

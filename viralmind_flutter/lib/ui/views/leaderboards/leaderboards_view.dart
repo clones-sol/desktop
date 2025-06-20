@@ -9,9 +9,9 @@ import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.d
 import 'package:viralmind_flutter/domain/models/leaderboard/stats_leader_board.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/worker_leader_board.dart';
 import 'package:viralmind_flutter/ui/components/stats_card.dart';
-import 'package:viralmind_flutter/ui/utils/wallet.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/components/top_forges.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/components/top_workers.dart';
+import 'package:viralmind_flutter/utils/format_num.dart';
 
 class LeaderboardsView extends ConsumerStatefulWidget {
   const LeaderboardsView({super.key});

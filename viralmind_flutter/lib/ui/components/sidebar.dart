@@ -123,7 +123,7 @@ class Sidebar extends ConsumerWidget {
               isConnecting: isConnecting,
               onDisconnect: connectionNotifier.disconnectWallet,
               onEditNickname: () {
-                // TODO: Implement nickname editing
+                // TODO(reddwarf03): Implement nickname editing
               },
             ),
           ),

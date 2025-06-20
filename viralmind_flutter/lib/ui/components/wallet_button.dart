@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:viralmind_flutter/application/connection_token.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
-import 'package:viralmind_flutter/ui/utils/wallet.dart';
+import 'package:viralmind_flutter/utils/format_address.dart';
 
 class WalletButton extends ConsumerStatefulWidget {
   const WalletButton({
@@ -109,7 +109,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                           style: TextStyle(color: Colors.grey),
                         ),
                         Text(
-                          shortAddress(widget.walletAddress),
+                          widget.walletAddress?.shortAddress() ?? '',
                           style: const TextStyle(
                             fontFamily: 'monospace',
                             color: Colors.white,
@@ -153,7 +153,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                         if (widget.viralBalance != null)
                           widget.viralBalance!.when(
                             data: (balance) => Text(
-                              '${formatNumber(balance)} \$VIRAL',
+                              '${balance.toStringAsFixed(2)} \$VIRAL',
                               style: const TextStyle(
                                 fontFamily: 'monospace',
                                 color: Color(0xFFbb4eff),
@@ -240,7 +240,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                           style: TextStyle(color: Colors.grey),
                         ),
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.white.withOpacity(0.05),
+                          backgroundColor: Colors.white.withValues(alpha: 0.05),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
@@ -268,8 +268,8 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               decoration: BoxDecoration(
                 color: widget.theme == 'light'
-                    ? Colors.white.withOpacity(0.9)
-                    : Colors.white.withOpacity(0.05),
+                    ? Colors.white.withValues(alpha: 0.9)
+                    : Colors.white.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Row(
@@ -296,7 +296,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                   if (widget.variant == 'large') ...[
                     const SizedBox(width: 8),
                     Text(
-                      shortAddress(widget.walletAddress),
+                      widget.walletAddress?.shortAddress() ?? '',
                       style: TextStyle(
                         color: widget.theme == 'light'
                             ? Colors.black87

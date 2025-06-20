@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:viralmind_flutter/application/upload/provider.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/utils/env.dart';
 
 class UploadConfirmModal extends ConsumerWidget {

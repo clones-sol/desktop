@@ -8,7 +8,7 @@ class QuestRepositoryImpl {
   QuestRepositoryImpl(this._client, this._tauriClient);
   final ApiClient _client;
   final TauriApiClient _tauriClient;
-  // TODO: Not used ?
+  // TODO(reddwarf03): Not used ?
   Future<Quest> generateQuest({
     required String prompt,
     required String address,
@@ -46,7 +46,7 @@ class QuestRepositoryImpl {
     return quest;
   }
 
-  // TODO: Not used ?
+  // TODO(reddwarf03): Not used ?
   Future<Map<String, dynamic>> checkQuestProgress(
     Quest quest,
   ) async {

@@ -25,7 +25,8 @@ class AppsRepositoryImpl {
   }
 
   Future<List<ForgeApp>> getAppsForHistory(
-      List<RecordingMeta> recordings) async {
+    List<RecordingMeta> recordings,
+  ) async {
     try {
       final appMap = <String, ForgeApp>{};
 
@@ -97,7 +98,7 @@ class AppsRepositoryImpl {
         appMap[app.name] = app.copyWith(tasks: newTasks);
       }
 
-      // TODO: Write a method to get the apps from the API
+      // TODO(reddwarf03): Write a method to get the apps from the API
       final appsJson = await _client.get<List<dynamic>>('/forge/apps');
       final apiApps = appsJson
           .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))

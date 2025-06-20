@@ -69,6 +69,7 @@ class TauriApiClient {
     }
   }
 
+  // TODO(reddwarf03): If fail, cancel record storage
   Future<String> stopRecording(String status) async {
     final response = await _client.post(
       Uri.parse('$_baseUrl/recordings/stop'),
@@ -94,7 +95,7 @@ class TauriApiClient {
     }
   }
 
-  // TODO: Not used ?
+  // TODO(reddwarf03): Not used ?
   Future<List<AppInfo>> listApps() async {
     final response = await _client.get(Uri.parse('$_baseUrl/apps'));
 

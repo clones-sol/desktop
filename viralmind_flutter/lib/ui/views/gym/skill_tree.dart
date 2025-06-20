@@ -92,7 +92,7 @@ class _SkillTreeState extends ConsumerState<SkillTree> {
           rootNode,
           appNode,
           paint: Paint()
-            ..color = Colors.white.withOpacity(0.8)
+            ..color = Colors.white.withValues(alpha: 0.8)
             ..strokeWidth = 1,
         );
 
@@ -112,7 +112,7 @@ class _SkillTreeState extends ConsumerState<SkillTree> {
             appNode,
             taskNode,
             paint: Paint()
-              ..color = Colors.white.withOpacity(0.8)
+              ..color = Colors.white.withValues(alpha: 0.8)
               ..strokeWidth = 1,
           );
       }
@@ -183,7 +183,7 @@ class _SkillTreeState extends ConsumerState<SkillTree> {
       width: 160,
       height: 160,
       decoration: BoxDecoration(
-        color: VMColors.tertiary.withOpacity(0.8),
+        color: VMColors.tertiary.withValues(alpha: 0.8),
         border: Border.all(
           color: (data.seen ?? false)
               ? VMColors.tertiary
@@ -243,10 +243,10 @@ class _SkillTreeState extends ConsumerState<SkillTree> {
       onTap: () {
         if (isCompleted) {
           debugPrint('Navigate to history recording: ${data.recordingId}');
-          // TODO: Implement navigation with go_router
+          // TODO(reddwarf03): Implement navigation with go_router
         } else {
           debugPrint('Navigate to chat for task: ${data.name}');
-          // TODO: Implement navigation with go_router
+          // TODO(reddwarf03): Implement navigation with go_router
         }
       },
       child: Container(
@@ -254,7 +254,7 @@ class _SkillTreeState extends ConsumerState<SkillTree> {
         height: 140,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
-          color: VMColors.secondary.withOpacity(0.8),
+          color: VMColors.secondary.withValues(alpha: 0.8),
         ),
         child: Stack(
           children: [

@@ -1,16 +1,17 @@
 import 'dart:convert';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/pool_submission.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/utils/env.dart';
 
 class DownloadScriptsModal extends StatefulWidget {
-  final List<PoolSubmission> submissions;
   const DownloadScriptsModal({super.key, required this.submissions});
+  final List<PoolSubmission> submissions;
 
   @override
   State<DownloadScriptsModal> createState() => _DownloadScriptsModalState();
@@ -35,14 +36,16 @@ class _DownloadScriptsModalState extends State<DownloadScriptsModal>
   String _generateNodejsScript() {
     final submissionLinks = widget.submissions
         .where((sub) => sub.files.isNotEmpty)
-        .expand((sub) => sub.files.map((file) {
-              final s3Key = file.s3Key ?? '';
-              return {
-                'url': '${Env.s3BaseUrl}/$s3Key',
-                'id': sub.id,
-                'filename': s3Key.split('-').last,
-              };
-            }))
+        .expand(
+          (sub) => sub.files.map((file) {
+            final s3Key = file.s3Key;
+            return {
+              'url': '${Env.s3BaseUrl}/$s3Key',
+              'id': sub.id,
+              'filename': s3Key.split('-').last,
+            };
+          }),
+        )
         .toList();
 
     const jsonEncoder = JsonEncoder.withIndent('  ');
@@ -99,14 +102,16 @@ files.forEach(file => {
   String _generatePythonScript() {
     final submissionLinks = widget.submissions
         .where((sub) => sub.files.isNotEmpty)
-        .expand((sub) => sub.files.map((file) {
-              final s3Key = file.s3Key ?? '';
-              return {
-                'url': '${Env.s3BaseUrl}/$s3Key',
-                'id': sub.id,
-                'filename': s3Key.split('-').last,
-              };
-            }))
+        .expand(
+          (sub) => sub.files.map((file) {
+            final s3Key = file.s3Key;
+            return {
+              'url': '${Env.s3BaseUrl}/$s3Key',
+              'id': sub.id,
+              'filename': s3Key.split('-').last,
+            };
+          }),
+        )
         .toList();
 
     const jsonEncoder = JsonEncoder.withIndent('  ');
@@ -154,14 +159,16 @@ for file in files:
   String _generateShellScript() {
     final submissionLinks = widget.submissions
         .where((sub) => sub.files.isNotEmpty)
-        .expand((sub) => sub.files.map((file) {
-              final s3Key = file.s3Key ?? '';
-              return {
-                'url': '${Env.s3BaseUrl}/$s3Key',
-                'id': sub.id,
-                'filename': s3Key.split('-').last,
-              };
-            }))
+        .expand(
+          (sub) => sub.files.map((file) {
+            final s3Key = file.s3Key;
+            return {
+              'url': '${Env.s3BaseUrl}/$s3Key',
+              'id': sub.id,
+              'filename': s3Key.split('-').last,
+            };
+          }),
+        )
         .toList();
 
     final filesString = submissionLinks
@@ -294,7 +301,6 @@ done
                             labelColor: VMColors.primaryText,
                             unselectedLabelColor: VMColors.secondaryText,
                             indicatorColor: VMColors.primary,
-                            indicatorWeight: 2,
                             indicatorSize: TabBarIndicatorSize.tab,
                             indicatorPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),
@@ -325,9 +331,10 @@ done
                       spacing: 20,
                       children: [
                         BtnPrimary(
-                            buttonText: 'Copy to Clipboard',
-                            onTap: _copyToClipboard,
-                            btnPrimaryType: BtnPrimaryType.outlinePrimary),
+                          buttonText: 'Copy to Clipboard',
+                          onTap: _copyToClipboard,
+                          btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                        ),
                         BtnPrimary(
                           buttonText: 'Download Script',
                           onTap: _downloadScript,

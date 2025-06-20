@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/utils/format_time.dart';
 
-// TODO: Doublon?
+// TODO(reddwarf03): Doublon?
 enum RecordingState {
   off,
   starting,
