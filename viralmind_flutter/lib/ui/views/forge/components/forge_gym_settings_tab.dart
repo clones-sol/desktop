@@ -4,7 +4,6 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/checkbox/checkbox_confirm.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_tasks_tab.dart';
 
 class ForgeGymSettingsTab extends StatefulWidget {
   const ForgeGymSettingsTab({super.key, required this.pool});

@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/views/generate_gym/bloc/provider.dart';
 
-class GenerateGymModalStep1 extends StatelessWidget {
+class GenerateGymModalStep1 extends ConsumerStatefulWidget {
   const GenerateGymModalStep1({
     super.key,
-    required this.skillsController,
-    required this.onSkillsChange,
-    required this.isGenerating,
-    required this.onGenerate,
     required this.onClose,
-    required this.error,
-    required this.examplePrompts,
-    required this.onExamplePrompt,
   });
-  final TextEditingController skillsController;
-  final Function(String) onSkillsChange;
-  final bool isGenerating;
-  final VoidCallback onGenerate;
+
   final VoidCallback onClose;
-  final String? error;
-  final List<Map<String, String>> examplePrompts;
-  final Function(String) onExamplePrompt;
+
+  @override
+  ConsumerState<GenerateGymModalStep1> createState() =>
+      _GenerateGymModalStep1State();
+}
+
+class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
+  late TextEditingController skillsController;
+
+  @override
+  void initState() {
+    super.initState();
+    final generateGym = ref.read(generateGymNotifierProvider);
+    skillsController = TextEditingController(text: generateGym.skills);
+  }
+
+  @override
+  void dispose() {
+    skillsController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +41,7 @@ class GenerateGymModalStep1 extends StatelessWidget {
       children: [
         Text(
           'You can generate a gym by describing your dream agent, or by sharing the skills you want a training dataset for.',
-          style: TextStyle(
-            color: VMColors.secondaryText,
-            fontSize: 14,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
         DecoratedBox(
@@ -60,41 +68,43 @@ class GenerateGymModalStep1 extends StatelessWidget {
               textInputAction: TextInputAction.newline,
               keyboardType: TextInputType.multiline,
               maxLines: 5,
+              onChanged: (v) =>
+                  ref.read(generateGymNotifierProvider.notifier).setSkills(v),
               cursorColor: VMColors.secondaryText,
-              style: TextStyle(fontSize: 14, color: VMColors.secondaryText),
+              style: Theme.of(context).textTheme.bodyMedium,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(left: 10),
                 hintText: 'List the skills to train (one per line)...',
-                hintStyle: TextStyle(
-                  color: VMColors.secondaryText.withValues(alpha: 0.3),
-                ),
+                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: VMColors.secondaryText.withValues(alpha: 0.3),
+                    ),
               ),
-              onChanged: onSkillsChange,
             ),
           ),
         ),
         const SizedBox(height: 10),
-        _examplePrompts(),
+        _examplePrompts(ref),
         const SizedBox(height: 20),
-        _footerButtons(),
+        _footerButtons(ref),
       ],
     );
   }
 
-  Widget _examplePrompts() {
+  Widget _examplePrompts(WidgetRef ref) {
+    final generateGym = ref.watch(generateGymNotifierProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Example prompts:',
-          style: TextStyle(color: VMColors.secondaryText, fontSize: 13),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 10),
         Wrap(
           spacing: 8,
           runSpacing: 8,
-          children: examplePrompts.map((prompt) {
+          children: generateGym.examplePrompts.map((prompt) {
             return OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(
@@ -104,41 +114,53 @@ class GenerateGymModalStep1 extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               ),
-              onPressed: () => onExamplePrompt(prompt['text']!),
+              onPressed: () {
+                skillsController.text = prompt['text']!;
+                ref
+                    .read(generateGymNotifierProvider.notifier)
+                    .setSkills(prompt['text']!);
+              },
               child: Text(
                 prompt['label']!,
-                style: const TextStyle(
-                  color: VMColors.primaryText,
-                  fontWeight: FontWeight.w200,
-                  wordSpacing: 1.2,
-                  fontSize: 12,
-                ),
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             );
           }).toList(),
         ),
-        if (error != null) ...[
-          const SizedBox(height: 16),
-          Text(error!, style: const TextStyle(color: Colors.red)),
+        if (generateGym.error != null) ...[
+          const SizedBox(height: 20),
+          MessageBox(
+            messageBoxType: MessageBoxType.warning,
+            content: Row(
+              children: [
+                Text(
+                  generateGym.error!,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ),
         ],
       ],
     );
   }
 
-  Widget _footerButtons() {
+  Widget _footerButtons(WidgetRef ref) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         BtnPrimary(
           buttonText: 'Cancel',
-          onTap: onClose,
+          onTap: widget.onClose,
           btnPrimaryType: BtnPrimaryType.outlinePrimary,
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 10),
         BtnPrimary(
           buttonText: 'Generate',
-          onTap: isGenerating ? null : onGenerate,
-          isLocked: isGenerating,
+          onTap: () =>
+              ref.read(generateGymNotifierProvider.notifier).startGeneration(),
+          isLocked:
+              ref.watch(generateGymNotifierProvider).skills?.isEmpty ?? true,
         ),
       ],
     );

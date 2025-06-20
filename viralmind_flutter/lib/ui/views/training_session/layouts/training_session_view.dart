@@ -12,9 +12,9 @@ import 'package:viralmind_flutter/ui/components/design_widget/message_box/messag
 import 'package:viralmind_flutter/ui/components/pfp.dart';
 import 'package:viralmind_flutter/ui/components/recording_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/bloc/provider.dart';
-import 'package:viralmind_flutter/ui/views/training_session/components/record_panel.dart';
-import 'package:viralmind_flutter/ui/views/training_session/components/typing_indicator.dart';
-import 'package:viralmind_flutter/ui/views/training_session/components/upload_confirm_modal.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/components/record_panel.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/components/typing_indicator.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/components/upload_confirm_modal.dart';
 import 'package:viralmind_flutter/utils/widgets/buttons.dart';
 
 class TrainingSessionView extends ConsumerStatefulWidget {

@@ -5,9 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
-import 'package:viralmind_flutter/ui/views/gym/gym_view.dart';
-import 'package:viralmind_flutter/ui/views/leaderboards/leaderboards_view.dart';
-import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
+import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 
 final _router = GoRouter(
   initialLocation: '/app/forge',
