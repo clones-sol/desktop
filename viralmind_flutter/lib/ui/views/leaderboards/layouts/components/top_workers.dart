@@ -5,7 +5,7 @@ import 'package:viralmind_flutter/domain/models/leaderboard/worker_leader_board.
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/utils/format_num.dart';
 
-class TopWorkers extends ConsumerWidget {
+class TopWorkers extends ConsumerStatefulWidget {
   const TopWorkers({
     super.key,
     required this.workers,
@@ -20,26 +20,38 @@ class TopWorkers extends ConsumerWidget {
   final VoidCallback? onExpand;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TopWorkers> createState() => _TopWorkersState();
+}
+
+class _TopWorkersState extends ConsumerState<TopWorkers> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        Scrollbar(
-          thumbVisibility: true,
-          thickness: 8,
-          radius: const Radius.circular(4),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildLeaderboardTable(context),
-                ],
-              ),
-            ),
+        Padding(
+          padding: const EdgeInsets.only(top: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildLeaderboardTable(context),
+            ],
           ),
         ),
-        if (showTitle)
+        if (widget.showTitle)
           Positioned(
             top: 8,
             right: 20,
@@ -53,14 +65,14 @@ class TopWorkers extends ConsumerWidget {
                     color: VMColors.primary,
                   ),
                 ),
-                if (onExpand != null) ...[
+                if (widget.onExpand != null) ...[
                   const SizedBox(width: 12),
                   IconButton(
                     icon: const Icon(
                       Icons.open_in_full,
                       color: VMColors.secondary,
                     ),
-                    onPressed: onExpand,
+                    onPressed: widget.onExpand,
                   ),
                 ],
               ],
@@ -81,7 +93,7 @@ class TopWorkers extends ConsumerWidget {
             children: [
               _buildTableHeader(context),
               SizedBox(
-                height: listHeight ?? 300,
+                height: widget.listHeight ?? 300,
                 child: _buildWorkersList(),
               ),
             ],
@@ -157,109 +169,116 @@ class TopWorkers extends ConsumerWidget {
   }
 
   Widget _buildWorkersList() {
-    return ListView.separated(
-      itemCount: workers.length,
-      itemBuilder: (context, index) {
-        final worker = workers[index];
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: _truncateAddress(worker.address),
-                            style: const TextStyle(
-                              color: VMColors.primaryText,
+    return Scrollbar(
+      controller: _scrollController,
+      thumbVisibility: true,
+      thickness: 8,
+      radius: const Radius.circular(4),
+      child: ListView.separated(
+        controller: _scrollController,
+        itemCount: widget.workers.length,
+        itemBuilder: (context, index) {
+          final worker = widget.workers[index];
+          return Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: _truncateAddress(worker.address),
+                              style: const TextStyle(
+                                color: VMColors.primaryText,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text: worker.nickname == null ||
-                                    worker.nickname!.isEmpty
-                                ? ''
-                                : '\n${worker.nickname}',
-                            style: const TextStyle(
-                              color: VMColors.secondary,
+                            TextSpan(
+                              text: worker.nickname == null ||
+                                      worker.nickname!.isEmpty
+                                  ? ''
+                                  : '\n${worker.nickname}',
+                              style: const TextStyle(
+                                color: VMColors.secondary,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${worker.avgScore.toStringAsFixed(0)}%',
+                        style: const TextStyle(
+                          color: Colors.green,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${worker.tasks} Tasks',
+                        style: TextStyle(
+                          color: VMColors.secondaryText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatNumberWithSeparator(worker.rewards),
+                        style: TextStyle(
+                          color: VMColors.secondaryText,
+                        ),
+                      ),
+                      const Text(
+                        r' $VIRAL',
+                        style: TextStyle(
+                          color: VMColors.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return FractionallySizedBox(
+            widthFactor: 0.8,
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withValues(alpha: 0.05),
+                    Colors.white.withValues(alpha: 0.3),
+                    Colors.white.withValues(alpha: 0.05),
                   ],
                 ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${worker.avgScore.toStringAsFixed(0)}%',
-                      style: const TextStyle(
-                        color: Colors.green,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${worker.tasks} Tasks',
-                      style: TextStyle(
-                        color: VMColors.secondaryText,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      formatNumberWithSeparator(worker.rewards),
-                      style: TextStyle(
-                        color: VMColors.secondaryText,
-                      ),
-                    ),
-                    const Text(
-                      r' $VIRAL',
-                      style: TextStyle(
-                        color: VMColors.secondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withValues(alpha: 0.05),
-                  Colors.white.withValues(alpha: 0.3),
-                  Colors.white.withValues(alpha: 0.05),
-                ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 

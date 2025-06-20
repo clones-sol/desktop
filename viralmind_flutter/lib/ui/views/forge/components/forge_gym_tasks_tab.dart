@@ -9,6 +9,7 @@ import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
+import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
@@ -291,8 +292,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
               itemCount: localApps.length,
               itemBuilder: (context, appIdx) {
                 final ForgeApp app = localApps[appIdx];
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
+                return CardWidget(
+                  padding: CardPadding.large,
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: Column(
@@ -300,7 +301,6 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                       children: [
                         Row(
                           children: [
-                            // Favicon
                             if (app.domain.isNotEmpty)
                               Padding(
                                 padding: const EdgeInsets.only(right: 8),
@@ -312,7 +312,6 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                       const Icon(Icons.language, size: 24),
                                 ),
                               ),
-                            // App name (editable)
                             if (editingAppIdx == appIdx &&
                                 editingAppField == 'name')
                               Row(
@@ -348,7 +347,6 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                 ),
                               ),
                             const SizedBox(width: 8),
-                            // Domain (editable)
                             if (editingAppIdx == appIdx &&
                                 editingAppField == 'domain')
                               Row(
@@ -365,7 +363,10 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.check),
+                                    icon: const Icon(
+                                      Icons.check,
+                                      color: VMColors.primaryText,
+                                    ),
                                     onPressed: saveEditingApp,
                                   ),
                                   IconButton(
@@ -379,7 +380,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                 onTap: () => startEditingApp(appIdx, 'domain'),
                                 child: Text(
                                   app.domain,
-                                  style: const TextStyle(color: Colors.grey),
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
                             const Spacer(),
@@ -395,16 +396,16 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
                               app.description,
-                              style: const TextStyle(fontSize: 13),
+                              style: Theme.of(context).textTheme.bodyMedium,
                             ),
                           ),
                         const SizedBox(height: 8),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               'Tasks',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: Theme.of(context).textTheme.titleMedium,
                             ),
                             TextButton.icon(
                               icon: const Icon(Icons.add),
@@ -414,13 +415,19 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                           ],
                         ),
                         if ((app.tasks as List).isEmpty)
-                          const Text('Aucune tâche pour cette app.'),
+                          Text(
+                            'No tasks for this app.',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
                         if ((app.tasks as List).isNotEmpty)
                           ...List.generate(app.tasks.length, (taskIdx) {
                             final task = app.tasks[taskIdx];
                             return ListTile(
                               contentPadding: EdgeInsets.zero,
-                              title: Text(task.prompt),
+                              title: Text(
+                                task.prompt,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -483,7 +490,10 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.videocam),
+                                    icon: Icon(
+                                      Icons.videocam,
+                                      color: VMColors.secondaryText,
+                                    ),
                                     tooltip: 'Record Task',
                                     onPressed: () {
                                       final appInfo = AppInfo(
@@ -507,13 +517,19 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                     },
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.edit),
+                                    icon: Icon(
+                                      Icons.edit,
+                                      color: VMColors.secondaryText,
+                                    ),
                                     onPressed: () =>
                                         openTaskModal(appIdx, taskIdx),
                                     tooltip: 'Edit task',
                                   ),
                                   IconButton(
-                                    icon: const Icon(Icons.delete_outline),
+                                    icon: Icon(
+                                      Icons.delete_outline,
+                                      color: VMColors.secondaryText,
+                                    ),
                                     onPressed: () =>
                                         removeTask(appIdx, taskIdx),
                                     tooltip: 'Delete task',

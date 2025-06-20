@@ -26,9 +26,13 @@ class GenerateGymModal extends ConsumerStatefulWidget {
 class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
   @override
   void initState() {
-    if (widget.skills != null) {
-      ref.read(generateGymNotifierProvider.notifier).setSkills(widget.skills!);
-    }
+    Future.delayed(Duration.zero, () async {
+      if (widget.skills != null) {
+        ref
+            .read(generateGymNotifierProvider.notifier)
+            .setSkills(widget.skills!);
+      }
+    });
     super.initState();
   }
 
