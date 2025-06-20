@@ -49,12 +49,6 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
               ),
               loading: () => const Center(child: CircularProgressIndicator()),
             ),
-            if (_showGenerateGymModal)
-              GenerateGymModal(
-                onClose: () {
-                  setState(() => _showGenerateGymModal = false);
-                },
-              ),
             if (_selectedPool != null)
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 400),
@@ -136,6 +130,10 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                                             onBack: () => setState(
                                               () => _selectedPool = null,
                                             ),
+                                            onRegenerateTasks: () =>
+                                                setState(() {
+                                              _showGenerateGymModal = true;
+                                            }),
                                           ),
                                         ),
                                       ),
@@ -171,6 +169,12 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                     ),
                   ),
                 ),
+              ),
+            if (_showGenerateGymModal)
+              GenerateGymModal(
+                onClose: () {
+                  setState(() => _showGenerateGymModal = false);
+                },
               ),
           ],
         );

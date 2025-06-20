@@ -64,7 +64,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final overlayHeight = constraints.maxHeight * 0.92;
+        final overlayHeight = constraints.maxHeight * 0.9 - 100;
         return Stack(
           children: [
             Padding(
@@ -178,7 +178,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                           duration: const Duration(milliseconds: 400),
                           curve: Curves.easeInOutCubic,
                           width: _forgesFullscreen ? constraints.maxWidth : 0,
-                          height: _forgesFullscreen ? overlayHeight : 0,
+                          height: _forgesFullscreen ? constraints.maxHeight : 0,
                           child: _forgesFullscreen
                               ? Column(
                                   children: [
@@ -258,7 +258,8 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                           duration: const Duration(milliseconds: 400),
                           curve: Curves.easeInOutCubic,
                           width: _workersFullscreen ? constraints.maxWidth : 0,
-                          height: _workersFullscreen ? overlayHeight : 0,
+                          height:
+                              _workersFullscreen ? constraints.maxHeight : 0,
                           child: _workersFullscreen
                               ? Column(
                                   children: [
@@ -299,7 +300,8 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                                         child: TopWorkers(
                                           workers: _topWorkers,
                                           showTitle: false,
-                                          listHeight: overlayHeight - 80,
+                                          listHeight:
+                                              constraints.maxHeight - 250,
                                         ),
                                       ),
                                     ),

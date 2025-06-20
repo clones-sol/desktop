@@ -7,7 +7,7 @@ import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.d
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/utils/format_num.dart';
 
-class TopForges extends ConsumerWidget {
+class TopForges extends ConsumerStatefulWidget {
   const TopForges({
     super.key,
     required this.forges,
@@ -22,26 +22,40 @@ class TopForges extends ConsumerWidget {
   final double? listHeight;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TopForges> createState() => _TopForgesState();
+}
+
+class _TopForgesState extends ConsumerState<TopForges> {
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
-        Scrollbar(
-          thumbVisibility: true,
-          thickness: 8,
-          radius: const Radius.circular(4),
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.only(top: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildLeaderboardTable(context),
-                ],
-              ),
-            ),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 25,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildLeaderboardTable(context),
+            ],
           ),
         ),
-        if (showTitle)
+        if (widget.showTitle)
           Positioned(
             top: 8,
             right: 20,
@@ -59,7 +73,7 @@ class TopForges extends ConsumerWidget {
                 IconButton(
                   icon:
                       const Icon(Icons.open_in_full, color: VMColors.secondary),
-                  onPressed: onExpand,
+                  onPressed: widget.onExpand,
                 ),
               ],
             ),
@@ -79,7 +93,7 @@ class TopForges extends ConsumerWidget {
             children: [
               _buildTableHeader(context),
               SizedBox(
-                height: listHeight ?? 300,
+                height: widget.listHeight ?? 300,
                 child: _buildForgesList(),
               ),
             ],
@@ -142,77 +156,84 @@ class TopForges extends ConsumerWidget {
   }
 
   Widget _buildForgesList() {
-    return ListView.separated(
-      itemCount: forges.length,
-      itemBuilder: (context, index) {
-        final forge = forges[index];
-        return Container(
-          padding: const EdgeInsets.all(20),
-          child: Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Text(
-                  forge.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+    return Scrollbar(
+      controller: _scrollController,
+      thumbVisibility: true,
+      thickness: 8,
+      radius: const Radius.circular(4),
+      child: ListView.separated(
+        controller: _scrollController,
+        itemCount: widget.forges.length,
+        itemBuilder: (context, index) {
+          final forge = widget.forges[index];
+          return Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    forge.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: VMColors.primaryText,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      '${forge.tasks} Tasks',
-                      style: TextStyle(
-                        color: VMColors.secondaryText,
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${forge.tasks} Tasks',
+                        style: TextStyle(
+                          color: VMColors.secondaryText,
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        formatNumberWithSeparator(forge.payout),
+                        style: TextStyle(
+                          color: VMColors.secondaryText,
+                        ),
+                      ),
+                      const Text(
+                        r' $VIRAL',
+                        style: TextStyle(
+                          color: VMColors.secondary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return FractionallySizedBox(
+            widthFactor: 0.8,
+            child: Container(
+              height: 1,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withValues(alpha: 0.05),
+                    Colors.white.withValues(alpha: 0.3),
+                    Colors.white.withValues(alpha: 0.05),
                   ],
                 ),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(
-                      formatNumberWithSeparator(forge.payout),
-                      style: TextStyle(
-                        color: VMColors.secondaryText,
-                      ),
-                    ),
-                    const Text(
-                      r' $VIRAL',
-                      style: TextStyle(
-                        color: VMColors.secondary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-      separatorBuilder: (context, index) {
-        return FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Container(
-            height: 1,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white.withValues(alpha: 0.05),
-                  Colors.white.withValues(alpha: 0.3),
-                  Colors.white.withValues(alpha: 0.05),
-                ],
               ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

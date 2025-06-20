@@ -4,12 +4,17 @@ import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_overview_t
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_settings_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_tasks_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_uploads_tab.dart';
-import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
 class ForgeGymDetail extends StatefulWidget {
-  const ForgeGymDetail({super.key, required this.pool, this.onBack});
+  const ForgeGymDetail({
+    super.key,
+    required this.pool,
+    required this.onBack,
+    required this.onRegenerateTasks,
+  });
   final TrainingPool pool;
-  final VoidCallback? onBack;
+  final VoidCallback onBack;
+  final VoidCallback onRegenerateTasks;
 
   @override
   State<ForgeGymDetail> createState() => _ForgeGymDetailState();
@@ -18,20 +23,6 @@ class ForgeGymDetail extends StatefulWidget {
 class _ForgeGymDetailState extends State<ForgeGymDetail>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final bool _loading = false;
-  String? _error;
-
-  // To show the generate gym modal
-  bool _showGenerateGymModal = false;
-
-  // To refresh the tasks after generation
-  void _handleRegenerateTasks() {
-    setState(() => _showGenerateGymModal = true);
-  }
-
-  void _handleCloseGenerateGymModal() {
-    setState(() => _showGenerateGymModal = false);
-  }
 
   @override
   void initState() {
@@ -47,38 +38,25 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: _loading
-              ? const Center(child: CircularProgressIndicator())
-              : _error != null
-                  ? Center(
-                      child: Text(
-                        _error!,
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    )
-                  : TabBarView(
-                      controller: _tabController,
-                      children: [
-                        ForgeGymOverviewTab(pool: widget.pool),
-                        ForgeGymSettingsTab(pool: widget.pool),
-                        ForgeGymTasksTab(
-                          pool: widget.pool,
-                          onRegenerateTasks: _handleRegenerateTasks,
-                        ),
-                        ForgeGymUploadsTab(pool: widget.pool),
-                      ],
-                    ),
-        ),
-        if (_showGenerateGymModal)
-          GenerateGymModal(
-            skills: widget.pool.skills,
-            onClose: _handleCloseGenerateGymModal,
-          ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          children: [
+            TabBarView(
+              controller: _tabController,
+              children: [
+                ForgeGymOverviewTab(pool: widget.pool),
+                ForgeGymSettingsTab(pool: widget.pool),
+                ForgeGymTasksTab(
+                  pool: widget.pool,
+                  onRegenerateTasks: widget.onRegenerateTasks,
+                ),
+                ForgeGymUploadsTab(pool: widget.pool),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
