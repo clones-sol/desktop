@@ -2,8 +2,9 @@ import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/gym_status.dart';
 
 class ForgeExistingGymCard extends StatelessWidget {
   const ForgeExistingGymCard({
@@ -26,7 +27,7 @@ class ForgeExistingGymCard extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: _buildStatusBadge(context, pool.status),
+              child: GymStatus(status: pool.status),
             ),
             Text(
               pool.name,
@@ -67,66 +68,6 @@ class ForgeExistingGymCard extends StatelessWidget {
             _viewDetailsButton(),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildStatusBadge(BuildContext context, TrainingPoolStatus status) {
-    Color badgeColor = Colors.grey;
-    Color textColor = Colors.grey;
-    var statusText = '';
-
-    switch (status) {
-      case TrainingPoolStatus.live:
-        badgeColor = Colors.green.withValues(alpha: 0.1);
-        textColor = Colors.green;
-        statusText = 'live';
-        break;
-      case TrainingPoolStatus.paused:
-        badgeColor = Colors.blue.withValues(alpha: 0.1);
-        textColor = Colors.blue;
-        statusText = 'paused';
-        break;
-      case TrainingPoolStatus.noFunds:
-        badgeColor = Colors.yellow.withValues(alpha: 0.1);
-        textColor = Colors.yellow[700]!;
-        statusText = 'no funds';
-        break;
-      case TrainingPoolStatus.noGas:
-        badgeColor = Colors.yellow.withValues(alpha: 0.1);
-        textColor = Colors.yellow[700]!;
-        statusText = 'no gas';
-        break;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-      decoration: BoxDecoration(
-        color: badgeColor,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: badgeColor),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 6,
-            height: 6,
-            decoration: BoxDecoration(
-              color: textColor,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            statusText,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 12,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -5,7 +5,7 @@ import 'package:viralmind_flutter/application/submissions.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/pool_submission.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/modals/download_scripts_modal.dart';
 
 final _selectedSubmissionsProvider =
@@ -41,10 +41,6 @@ class ForgeGymUploadsTab extends ConsumerWidget {
     final totalSize =
         submission.files.fold<int>(0, (prev, file) => prev + file.size);
 
-    if (totalSize == 0) {
-      final hasSizeInfo = submission.files.any((f) => f.size != null);
-      if (!hasSizeInfo) return '-';
-    }
     return '${(totalSize / (1024 * 1024)).toStringAsFixed(2)} MB';
   }
 
@@ -165,8 +161,8 @@ class ForgeGymUploadsTab extends ConsumerWidget {
               size: 14,
               color: VMColors.secondaryText,
             ),
-          )
-        ]
+          ),
+        ],
       ],
     );
   }
@@ -253,7 +249,7 @@ class ForgeGymUploadsTab extends ConsumerWidget {
                                 : submissions;
                             showDialog(
                               context: context,
-                              barrierColor: Colors.black.withOpacity(0.5),
+                              barrierColor: Colors.black.withValues(alpha: 0.5),
                               builder: (context) =>
                                   DownloadScriptsModal(submissions: subs),
                             );

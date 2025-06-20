@@ -4,14 +4,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/message/message.dart';
+import 'package:viralmind_flutter/domain/models/message/typing_message.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/pfp.dart';
 import 'package:viralmind_flutter/ui/components/recording_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/bloc/provider.dart';
-import 'package:viralmind_flutter/ui/views/training_session/components/quest_panel.dart';
+import 'package:viralmind_flutter/ui/views/training_session/components/record_panel.dart';
+import 'package:viralmind_flutter/ui/views/training_session/components/typing_indicator.dart';
 import 'package:viralmind_flutter/ui/views/training_session/components/upload_confirm_modal.dart';
-import 'package:viralmind_flutter/utils/ui/card.dart';
 import 'package:viralmind_flutter/utils/widgets/buttons.dart';
 
 class TrainingSessionView extends ConsumerStatefulWidget {
@@ -31,7 +34,6 @@ class TrainingSessionView extends ConsumerStatefulWidget {
 }
 
 class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
-  // UI state
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -83,196 +85,134 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
   @override
   void dispose() {
     _scrollController.dispose();
-
     super.dispose();
   }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
-  // TODO: hmmm ?
-  // Function to handle upload button click
-/*  Future<void> handleUploadClick() async {
-    if (currentRecordingId != null && !isUploading) {
-      isUploading = true;
-
-      try {
-        final uploadStarted = await ref
-            .read(tauriApiClientProvider)
-            .handleUpload(
-          currentRecordingId!,
-          currentQuest?.title ?? activeQuest?.title ?? 'Unknown',
-        );
-
-        if (!uploadStarted) {
-          // If upload didn't start, show confirmation modal
-          showUploadConfirmModal = true;
-          isUploading = false;
-          return;
-        }
-
-        // Upload started successfully
-        await _addMessage(
-          generateAssistantMessage(
-            'Your demonstration is being processed. This may take a while. Feel free to complete more tasks or come back later when it is done processing!',
-          ),
-        );
-
-        // Set up a one-time event listener for this specific recording ID
-        final unsubscribe = ref
-            .read(tauriApiClientProvider)
-            .on('queueUpdate', currentRecordingId!, (_, status) {
-          if (status.status == 'completed') {
-            if (unsubscribe != null) unsubscribe(); // Remove the listener once we're done
-
-            // Add success messages
-            chatMessages = [
-              ...chatMessages,
-              generateAssistantMessage(
-                'Your demonstration was successfully uploaded!',
-              ),
-            ];
-
-            // If we have a submission ID, try to get more details
-            if (status.submissionId) {
-              ref
-                  .read(tauriApiClientProvider)
-                  .getSubmissionStatus(status.submissionId)
-                .then((submissionDetails) => {
-                  chatMessages = [
-                    ...chatMessages,
-                    {
-                      role: 'assistant',
-                      content: `You scored ${submissionDetails.clampedScore}% on this task.`
-                    }
-                  ];
-
-                  // Add feedback if available
-                  if (submissionDetails.grade_result) {
-                    chatMessages = [
-                      ...chatMessages,
-                      {
-                        role: 'assistant',
-                        content: `Feedback:\n${submissionDetails.grade_result.summary}`
-                      }
-                    ];
-                  }
-
-                  // Ensure scroll to bottom
-                  setTimeout(scrollToBottom, 100);
-                })
-                .catch((error) => {
-                  console.error('Failed to get submission details:', error);
-                });
-            }
-
-            // Reset uploading state
-            isUploading = false;
-          } else if (status.status === 'failed') {
-            if (unsubscribe) unsubscribe(); // Remove the listener once we're done
-
-            // Add error message
-            addMessage({
-              role: 'assistant',
-              content: `There was an error processing your demonstration: ${status.error || 'Unknown error'}`
-            });
-
-            // Reset uploading state
-            isUploading = false;
-          }
-        });
-      } catch (error) {
-        console.error('Error in upload process:', error);
-        await addMessage({
-          role: 'assistant',
-          content: `There was an error starting the upload: ${error instanceof Error ? error.message : 'Unknown error'}`
-        });
-        isUploading = false;
-      }
-    }
-  }*/
-
   @override
   Widget build(BuildContext context) {
-    final trainingSession = ref.watch(trainingSessionNotifierProvider);
-
-    ref.listen(
-      trainingSessionNotifierProvider.select((s) => s.showUploadConfirmModal),
-      (previous, next) {
-        if (next) {
-          showDialog<void>(
-            context: context,
-            builder: (BuildContext context) {
-              return UploadConfirmModal(
-                onConfirm: () {
-                  ref
-                      .read(trainingSessionNotifierProvider.notifier)
-                      .confirmAndUpload();
-                },
-              );
-            },
-          ).then((_) {
-            // Reset the flag when the dialog is dismissed
-            ref
-                .read(trainingSessionNotifierProvider.notifier)
-                .setShowUploadConfirmModal(false);
-          });
-        }
-      },
-    );
-
-    ref.listen(
-      trainingSessionNotifierProvider.select((s) => s.scrollToBottomNonce),
-      (previous, next) {
-        if (previous != next) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            _scrollToBottom();
-          });
-        }
-      },
-    );
-
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              padding: const EdgeInsets.all(16),
-              itemCount: trainingSession.chatMessages.length +
-                  (trainingSession.isWaitingForResponse ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == trainingSession.chatMessages.length) {
-                  return _buildTypingIndicator();
-                }
-                final message = trainingSession.chatMessages[index];
-                return _buildMessageItem(message, index);
+    ref
+      ..listen(
+        trainingSessionNotifierProvider.select((s) => s.showUploadConfirmModal),
+        (previous, next) {
+          if (next) {
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) {
+                return UploadConfirmModal(
+                  onConfirm: () {
+                    ref
+                        .read(trainingSessionNotifierProvider.notifier)
+                        .confirmAndUpload();
+                  },
+                );
               },
-            ),
-          ),
-          if (trainingSession.activeQuest != null)
-            QuestPanel(
-              title: trainingSession.activeQuest!.title,
-              reward: trainingSession.activeQuest!.reward,
-              objectives: trainingSession.activeQuest!.objectives,
-              onStartRecording: (fps) => ref
+            ).then((_) {
+              ref
                   .read(trainingSessionNotifierProvider.notifier)
-                  .startRecording(fps),
-              onComplete: ref
-                  .read(trainingSessionNotifierProvider.notifier)
-                  .recordingComplete,
-              onGiveUp:
-                  ref.read(trainingSessionNotifierProvider.notifier).giveUp,
+                  .setShowUploadConfirmModal(false);
+            });
+          }
+        },
+      )
+      ..listen(
+        trainingSessionNotifierProvider.select((s) => s.scrollToBottomNonce),
+        (previous, next) {
+          if (previous != next) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (_scrollController.hasClients) {
+                _scrollController.animateTo(
+                  _scrollController.position.maxScrollExtent,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                );
+              }
+            });
+          }
+        },
+      );
+
+    final trainingSession = ref.watch(trainingSessionNotifierProvider);
+    final showTypingIndicator = trainingSession.isWaitingForResponse &&
+        trainingSession.typingMessage == null;
+    final showStreamingMessage = trainingSession.typingMessage != null;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return CustomScrollView(
+          controller: _scrollController,
+          slivers: [
+            SliverPadding(
+              padding: const EdgeInsets.all(20),
+              sliver: SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final message = trainingSession.chatMessages[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: _buildMessageItem(message, index),
+                    );
+                  },
+                  childCount: trainingSession.chatMessages.length,
+                ),
+              ),
             ),
-        ],
-      ),
+            if (showStreamingMessage)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                sliver: SliverToBoxAdapter(
+                  child: _buildStreamingMessage(trainingSession.typingMessage!),
+                ),
+              ),
+            if (showTypingIndicator)
+              const SliverPadding(
+                padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+                sliver: SliverToBoxAdapter(child: TypingIndicator()),
+              ),
+            if (trainingSession.activeQuest != null)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                sliver: SliverToBoxAdapter(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Pfp(),
+                      const SizedBox(width: 8),
+                      Container(
+                        constraints: BoxConstraints(
+                          maxWidth: MediaQuery.of(context).size.width * 0.7,
+                        ),
+                        child: MessageBox(
+                          messageBoxType: MessageBoxType.talkLeft,
+                          content: RecordPanel(
+                            title: trainingSession.activeQuest!.title,
+                            reward: trainingSession.activeQuest!.reward,
+                            objectives: trainingSession.activeQuest!.objectives,
+                            onStartRecording: (fps) => ref
+                                .read(
+                                  trainingSessionNotifierProvider.notifier,
+                                )
+                                .startRecording(fps),
+                            onComplete: ref
+                                .read(
+                                  trainingSessionNotifierProvider.notifier,
+                                )
+                                .recordingComplete,
+                            onGiveUp: ref
+                                .read(
+                                  trainingSessionNotifierProvider.notifier,
+                                )
+                                .giveUp,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -296,87 +236,90 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
         return _buildUploadButton();
       }
       if (message.type == MessageType.loading) {
-        return const Center(child: CircularProgressIndicator());
+        return const Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 1,
+          ),
+        );
       }
       return Align(
         alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Card(
-          color: isUser ? Colors.blue[100] : Colors.grey[200],
+          color: isUser ? VMColors.primary : VMColors.secondary,
           child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Text(message.content),
+            padding: const EdgeInsets.all(20),
+            child: Text(
+              message.content,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
         ),
       );
     }
 
-    return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (!isUser) ...[const Pfp(), const SizedBox(width: 8)],
-          Flexible(
-            child: Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: AppCard(
-                variant:
-                    isUser ? AppCardVariant.primary : AppCardVariant.secondary,
-                padding: const EdgeInsets.all(12),
-                child: _buildMessageContent(message, index),
-              ),
-            ),
+    final messageBubble = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment:
+          isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isUser) ...[const Pfp(), const SizedBox(width: 8)],
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
           ),
-          if (isUser) ...[
-            const SizedBox(width: 8),
-            const CircleAvatar(child: Icon(LucideIcons.user)),
-          ],
-        ],
-      ),
+          child: MessageBox(
+            messageBoxType:
+                isUser ? MessageBoxType.talkRight : MessageBoxType.talkLeft,
+            content: _buildMessageContent(message, index),
+          ),
+        ),
+      ],
     );
+
+    return messageBubble;
   }
 
   Widget _buildMessageContent(Message message, int index) {
-    final trainingSession = ref.watch(trainingSessionNotifierProvider);
-    if (trainingSession.typingMessage != null &&
-        trainingSession.typingMessage!.messageIndex == index) {
-      return Text(
-        trainingSession.typingMessage!.content,
-        style: const TextStyle(fontWeight: FontWeight.w500),
-      );
-    }
     return Text(
       message.content,
-      style: const TextStyle(fontWeight: FontWeight.w500),
+      style: Theme.of(context).textTheme.bodyMedium,
     );
   }
 
-  Widget _buildTypingIndicator() {
-    return const Align(
-      alignment: Alignment.centerLeft,
-      child: Row(
-        children: [
-          Pfp(),
-          SizedBox(width: 8),
-          AppCard(
-            variant: AppCardVariant.secondary,
-            padding: EdgeInsets.all(12),
-            child: Text('...'), // Replace with your desired typing indicator
+  Widget _buildStreamingMessage(TypingMessage typingMessage) {
+    final messageBubble = Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Pfp(),
+        const SizedBox(width: 8),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
           ),
-        ],
-      ),
+          child: MessageBox(
+            messageBoxType: MessageBoxType.talkLeft,
+            content: Text(
+              typingMessage.content,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ),
+      ],
+    );
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [messageBubble],
     );
   }
 
   Widget _buildUploadButton() {
     final trainingSession = ref.watch(trainingSessionNotifierProvider);
-    return AppCard(
-      variant: AppCardVariant.secondary,
-      padding: const EdgeInsets.all(16),
-      child: Column(
+    return MessageBox(
+      messageBoxType: MessageBoxType.info,
+      content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(

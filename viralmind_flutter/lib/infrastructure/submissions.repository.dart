@@ -15,7 +15,6 @@ class SubmissionsRepositoryImpl {
         '/forge/submissions/$submissionId',
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) {
-          print(json);
           return SubmissionStatus.fromJson(json as Map<String, dynamic>);
         },
       );
@@ -49,7 +48,6 @@ class SubmissionsRepositoryImpl {
         '/forge/submissions/pool/$poolId',
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => (json as List).map((e) {
-          print(e);
           return PoolSubmission.fromJson(e as Map<String, dynamic>);
         }).toList(),
       );

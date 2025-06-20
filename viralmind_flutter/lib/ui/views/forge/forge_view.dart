@@ -9,7 +9,9 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/components/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/components/gym_status.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
@@ -145,19 +147,25 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text(
-                                              _selectedPool!.name,
-                                              style: const TextStyle(
-                                                fontSize: 32,
-                                                fontWeight: FontWeight.bold,
-                                                color: VMColors.primary,
-                                              ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  _selectedPool!.name,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge,
+                                                ),
+                                                const SizedBox(width: 10),
+                                                GymStatus(
+                                                  status: _selectedPool!.status,
+                                                ),
+                                              ],
                                             ),
                                             IconButton(
                                               icon: const Icon(
-                                                Icons.close_fullscreen,
+                                                Icons.close_rounded,
                                                 color: VMColors.secondary,
-                                                size: 32,
+                                                size: 20,
                                               ),
                                               tooltip: 'Close',
                                               onPressed: () => setState(
@@ -178,6 +186,29 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                                               () => _selectedPool = null,
                                             ),
                                           ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          top: 20,
+                                          right: 20,
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            BtnPrimary(
+                                              onTap: () {},
+                                              buttonText: 'Refresh Balance',
+                                              btnPrimaryType:
+                                                  BtnPrimaryType.outlinePrimary,
+                                            ),
+                                            const SizedBox(width: 16),
+                                            BtnPrimary(
+                                              onTap: () {},
+                                              buttonText: 'Save',
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -299,6 +330,7 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
     );
   }
 
+  // TODO(reddwarf03): hmm?
   /* Widget _buildPoolStats(TrainingPool pool) {
     final possibleDemos = pool.pricePerDemo != null && pool.pricePerDemo! > 0
         ? (pool.tokenBalance ?? 0 / pool.pricePerDemo!).floor()

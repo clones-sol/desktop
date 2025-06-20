@@ -26,12 +26,12 @@ final recordingRepositoryProvider =
 // ignore: unused_element
 typedef RecordingRepositoryRef
     = AutoDisposeProviderRef<RecordingRepositoryImpl>;
-String _$listRecordingsHash() => r'c23076bc7d6268f10ccb719d65d8f98518253f22';
+String _$listRecordingsHash() => r'c659fee8a33b22ff7772e1b395d0c072a05fe887';
 
 /// See also [listRecordings].
 @ProviderFor(listRecordings)
 final listRecordingsProvider =
-    AutoDisposeFutureProvider<List<RecordingMeta>>.internal(
+    AutoDisposeFutureProvider<List<rec_meta.RecordingMeta>>.internal(
   listRecordings,
   name: r'listRecordingsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -43,7 +43,8 @@ final listRecordingsProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ListRecordingsRef = AutoDisposeFutureProviderRef<List<RecordingMeta>>;
+typedef ListRecordingsRef
+    = AutoDisposeFutureProviderRef<List<rec_meta.RecordingMeta>>;
 String _$writeRecordingFileHash() =>
     r'cbb7f3f9671485df7779455c6f51df4a30cc2f9a';
 
@@ -782,5 +783,24 @@ class _DeleteRecordingProviderElement
   @override
   String get recordingId => (origin as DeleteRecordingProvider).recordingId;
 }
+
+String _$mergedRecordingsHash() => r'fc5f8537985770345056cdc4abf2607c9a7e8f34';
+
+/// See also [mergedRecordings].
+@ProviderFor(mergedRecordings)
+final mergedRecordingsProvider =
+    AutoDisposeFutureProvider<List<ApiRecording>>.internal(
+  mergedRecordings,
+  name: r'mergedRecordingsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$mergedRecordingsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef MergedRecordingsRef = AutoDisposeFutureProviderRef<List<ApiRecording>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

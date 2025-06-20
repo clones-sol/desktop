@@ -197,7 +197,7 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
                                     size: 14,
                                   ),
                                   onPressed: () {
-                                    // TODO: Remove item from queue
+                                    // TODO(reddwarf03): Remove item from queue
                                   },
                                   tooltip: 'Remove',
                                 ),
@@ -307,7 +307,7 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
               ),
               child: const Icon(Icons.upload, color: Colors.white, size: 16),
             ),

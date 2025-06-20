@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
-import 'package:viralmind_flutter/ui/utils/wallet.dart';
+import 'package:viralmind_flutter/utils/format_num.dart';
 
 class TopForges extends ConsumerWidget {
   const TopForges({
@@ -228,7 +228,7 @@ class TopForgesFullscreen extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: Container(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withValues(alpha: 0.3),
             ),
           ),
         ),
@@ -237,7 +237,7 @@ class TopForgesFullscreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.9,
             height: MediaQuery.of(context).size.height * 0.85,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.95),
+              color: Colors.black.withValues(alpha: 0.95),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Material(

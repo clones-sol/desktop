@@ -1,8 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:viralmind_flutter/application/submissions.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
-import 'package:viralmind_flutter/domain/models/recording/recording_meta.dart';
+import 'package:viralmind_flutter/domain/models/recording/api_recording.dart';
+import 'package:viralmind_flutter/domain/models/recording/monitor_info.dart';
+import 'package:viralmind_flutter/domain/models/recording/recording_meta.dart'
+    as rec_meta;
+import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
 import 'package:viralmind_flutter/infrastructure/recording.repository.dart';
 
 part 'recording.g.dart';
@@ -15,7 +20,7 @@ RecordingRepositoryImpl recordingRepository(
 }
 
 @riverpod
-Future<List<RecordingMeta>> listRecordings(Ref ref) async {
+Future<List<rec_meta.RecordingMeta>> listRecordings(Ref ref) async {
   final tauriApiClient = ref.read(tauriApiClientProvider);
   return tauriApiClient.listRecordings();
 }
@@ -36,11 +41,16 @@ Future<void> writeRecordingFile(
 }
 
 @riverpod
-Future<String> getRecordingFile(Ref ref,
-    {required String recordingId, required String filename}) async {
+Future<String> getRecordingFile(
+  Ref ref, {
+  required String recordingId,
+  required String filename,
+}) async {
   final tauriApiClient = ref.read(tauriApiClientProvider);
   return tauriApiClient.getRecordingFile(
-      recordingId: recordingId, filename: filename);
+    recordingId: recordingId,
+    filename: filename,
+  );
 }
 
 @riverpod
@@ -59,4 +69,76 @@ Future<String> stopRecording(Ref ref, {String? reason}) async {
 Future<void> deleteRecording(Ref ref, {required String recordingId}) async {
   final tauriApiClient = ref.read(tauriApiClientProvider);
   await tauriApiClient.deleteRecording(recordingId);
+}
+
+// TODO(reddwarf03): To test
+@riverpod
+Future<List<ApiRecording>> mergedRecordings(Ref ref) async {
+  final submissions = await ref.watch(listSubmissionsProvider.future);
+  final localRecordings = await ref.watch(listRecordingsProvider.future);
+
+  final result = <ApiRecording>[];
+
+  // 1. Add remote-only recordings
+  final remoteOnlySubmissions = submissions
+      .where((s) => !localRecordings.any((r) => r.id == s.meta.id))
+      .toList();
+
+  result
+    ..addAll(
+      remoteOnlySubmissions.map(
+        (s) {
+          final meta = s.meta;
+          return ApiRecording(
+            id: meta.id,
+            timestamp: meta.timestamp,
+            durationSeconds: meta.durationSeconds,
+            status: meta.status,
+            title: meta.title,
+            description: meta.description,
+            platform: meta.platform,
+            arch: meta.arch,
+            version: meta.version,
+            locale: meta.locale,
+            primaryMonitor: meta.primaryMonitor,
+            quest: meta.quest,
+            submission: s,
+            location: 'database',
+          );
+        },
+      ),
+    )
+
+    // 2. Add local recordings (and merge with remote if they exist)
+    ..addAll(
+      localRecordings.map(
+        (rec) {
+          SubmissionStatus? submission;
+          try {
+            submission = submissions.firstWhere((s) => s.meta.id == rec.id);
+          } catch (e) {
+            submission = null;
+          }
+
+          return ApiRecording(
+            id: rec.id,
+            timestamp: rec.timestamp,
+            durationSeconds: rec.durationSeconds,
+            status: submission?.meta.status ?? rec.status,
+            title: rec.title,
+            description: rec.description,
+            platform: rec.platform,
+            arch: rec.arch,
+            version: rec.version,
+            locale: rec.locale,
+            primaryMonitor: const MonitorInfo(width: 0, height: 0),
+            quest: rec.quest,
+            submission: submission,
+            location: 'local',
+          );
+        },
+      ),
+    );
+
+  return result;
 }

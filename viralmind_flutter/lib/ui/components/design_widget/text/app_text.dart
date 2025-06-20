@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:viralmind_flutter/assets.dart';
 
 class AppText extends StatelessWidget {
-  const AppText({super.key, required this.text});
+  const AppText({super.key, required this.text, required this.style});
   final String text;
+  final TextStyle? style;
 
   List<Part> parseText(String text) {
     final parts = <Part>[];
@@ -44,9 +46,11 @@ class AppText extends StatelessWidget {
       spacing: 4,
       children: parts.map((part) {
         if (part.type == PartType.text) {
-          return Text(part.content);
+          return Text(
+            part.content,
+            style: style,
+          );
         } else {
-          // App badge with favicon and text
           final domain = part.content.toLowerCase();
           final faviconUrl =
               'https://www.google.com/s2/favicons?domain=$domain.com';
@@ -65,15 +69,12 @@ class AppText extends StatelessWidget {
                   width: 16,
                   height: 16,
                   errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.apps, size: 16),
+                      Icon(Icons.apps, size: 16, color: VMColors.secondaryText),
                 ),
                 const SizedBox(width: 4),
                 Text(
                   part.content,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                  ),
+                  style: style,
                 ),
               ],
             ),

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:viralmind_flutter/ui/components/form/button.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 
 class CountdownButton extends StatefulWidget {
   const CountdownButton({
@@ -64,24 +64,18 @@ class _CountdownButtonState extends State<CountdownButton> {
   Widget build(BuildContext context) {
     final isDisabled = widget.disabled();
 
-    return CustomButton(
-      onPressed: isDisabled
+    return BtnPrimary(
+      onTap: isDisabled
           ? null
           : countingDown
               ? cancelCountdown
               : startCountdown,
-      variant: countingDown ? ButtonVariant.destroy : ButtonVariant.primary,
-      disabled: isDisabled,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.videocam, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            countingDown ? 'Cancel ($countdown s)' : 'Start Recording Quest',
-          ),
-        ],
-      ),
+      buttonText:
+          countingDown ? 'Cancel ($countdown s)' : 'Start Recording Quest',
+      btnPrimaryType:
+          countingDown ? BtnPrimaryType.dark : BtnPrimaryType.primary,
+      isLocked: isDisabled,
+      icon: Icons.videocam,
     );
   }
 }

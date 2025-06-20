@@ -2,14 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/components/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/stats_card.dart';
-import 'package:viralmind_flutter/ui/utils/wallet.dart';
+import 'package:viralmind_flutter/utils/format_num.dart';
 
-class ForgeGymOverviewTab extends StatelessWidget {
+class ForgeGymOverviewTab extends StatefulWidget {
   const ForgeGymOverviewTab({super.key, required this.pool});
   final TrainingPool pool;
+
+  @override
+  State<ForgeGymOverviewTab> createState() => _ForgeGymOverviewTabState();
+}
+
+class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
+  late TextEditingController _nameController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.pool.name);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +37,38 @@ class ForgeGymOverviewTab extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            '1. General Information',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Gym Name',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const SizedBox(height: 5),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                width: 0.5,
+              ),
+              gradient: VMColors.gradientInputFormBackground,
+            ),
+            child: TextField(
+              controller: _nameController,
+              style: const TextStyle(fontSize: 14, color: VMColors.primaryText),
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                hintText: 'Enter gym name',
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -26,16 +77,11 @@ class ForgeGymOverviewTab extends StatelessWidget {
                   children: [
                     Text(
                       'Deposit Address',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: VMColors.primaryText,
-                          ),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                     SelectableText(
-                      pool.depositAddress,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: VMColors.secondaryText,
-                      ),
+                      widget.pool.depositAddress,
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 ),
@@ -43,7 +89,8 @@ class ForgeGymOverviewTab extends StatelessWidget {
               BtnPrimary(
                 buttonText: 'Copy',
                 onTap: () {
-                  Clipboard.setData(ClipboardData(text: pool.depositAddress));
+                  Clipboard.setData(
+                      ClipboardData(text: widget.pool.depositAddress));
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Address copied!')),
                   );
@@ -55,7 +102,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
           MessageBox(
             messageBoxType: MessageBoxType.info,
             content: Text(
-              'Send ${pool.token.symbol} tokens to this address to fund your gym.',
+              'Send ${widget.pool.token.symbol} tokens to this address to fund your gym.',
               style: TextStyle(
                 color: VMColors.secondaryText,
               ),
@@ -137,13 +184,13 @@ class ForgeGymOverviewTab extends StatelessWidget {
               BtnPrimary(
                 buttonText: 'Save',
                 onTap: () {
-                  // TODO: Save email
+                  // TODO(reddwarf03): Save email
                 },
               ),
             ],
           ),
-          if (pool.status == TrainingPoolStatus.noGas ||
-              pool.status == TrainingPoolStatus.noFunds)
+          if (widget.pool.status == TrainingPoolStatus.noGas ||
+              widget.pool.status == TrainingPoolStatus.noFunds)
             _buildNoFundsMessageBox(),
           const SizedBox(height: 10),
           _buildGlobalStats(),
@@ -161,7 +208,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              pool.status == TrainingPoolStatus.noGas
+              widget.pool.status == TrainingPoolStatus.noGas
                   ? 'Insufficient SOL for Gas'
                   : 'Insufficient VIRAL Tokens',
               style: const TextStyle(
@@ -170,7 +217,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
               ),
             ),
             Text(
-              pool.status == TrainingPoolStatus.noGas
+              widget.pool.status == TrainingPoolStatus.noGas
                   ? 'Your gym needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
                   : "Your gym needs VIRAL tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
               style: TextStyle(
@@ -178,7 +225,7 @@ class ForgeGymOverviewTab extends StatelessWidget {
               ),
             ),
             Text(
-              'Deposit ${pool.status == TrainingPoolStatus.noGas ? 'SOL' : 'VIRAL'} to the address above to activate your gym and start collecting data.',
+              'Deposit ${widget.pool.status == TrainingPoolStatus.noGas ? 'SOL' : 'VIRAL'} to the address above to activate your gym and start collecting data.',
               style: TextStyle(
                 color: VMColors.secondaryText,
               ),
@@ -206,22 +253,19 @@ class ForgeGymOverviewTab extends StatelessWidget {
             children: [
               StatCard(
                 label: 'Total Demonstrations',
-                value: pool.demonstrations.toString(),
+                value: widget.pool.demonstrations.toString(),
               ),
               StatCard(
                 label: 'Reward Per Demo',
-                value:
-                    '${formatNumberWithSeparator(pool.pricePerDemo ?? 1)}\n\$${pool.token.symbol}',
+                value: formatNumberWithSeparator(widget.pool.pricePerDemo),
               ),
               StatCard(
                 label: 'Pool Balance',
-                value:
-                    '${formatNumberWithSeparator(pool.funds)}\n\$${pool.token.symbol}',
+                value: formatNumberWithSeparator(widget.pool.funds),
               ),
               StatCard(
                 label: 'Gas Balance',
-                value:
-                    '${formatNumberWithSeparator(pool.solBalance ?? 0)}\n\$SOL',
+                value: formatNumberWithSeparator(widget.pool.solBalance ?? 0),
               ),
             ],
           ),

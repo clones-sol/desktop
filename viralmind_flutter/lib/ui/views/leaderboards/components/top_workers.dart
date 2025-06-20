@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/worker_leader_board.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
-import 'package:viralmind_flutter/ui/utils/wallet.dart';
+import 'package:viralmind_flutter/utils/format_num.dart';
 
 class TopWorkers extends ConsumerWidget {
   const TopWorkers({

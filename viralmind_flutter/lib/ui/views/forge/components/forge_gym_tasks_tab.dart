@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
-import 'package:viralmind_flutter/ui/components/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/views/training_session/training_session_view.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
   const ForgeGymTasksTab({
@@ -179,13 +179,16 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Top bar: mode switch, refresh, add app
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Text('Tasks', style: Theme.of(context).textTheme.titleLarge),
+                Text(
+                  '2. Tasks',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 20),
                 const SizedBox(width: 16),
                 ToggleButtons(
                   isSelected: [viewMode == 'edit', viewMode == 'preview'],
@@ -493,15 +496,13 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                         jsonEncode(appInfo.toJson()),
                                       );
 
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              TrainingSessionView(
-                                            prompt: task.prompt,
-                                            appParam: appParam,
-                                            poolId: widget.pool.id,
-                                          ),
-                                        ),
+                                      context.go(
+                                        '/app/chat',
+                                        extra: {
+                                          'prompt': task.prompt,
+                                          'appParam': appParam,
+                                          'poolId': widget.pool.id,
+                                        },
                                       );
                                     },
                                   ),

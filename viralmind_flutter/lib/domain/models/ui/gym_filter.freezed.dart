@@ -20,7 +20,17 @@ GymFilter _$GymFilterFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$GymFilter {
-  String get poolId => throw _privateConstructorUsedError;
+  String? get poolId => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  int? get minReward => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  int? get maxReward => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  String? get query => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  List<String>? get categories => throw _privateConstructorUsedError;
+  @JsonKey(includeIfNull: false)
+  bool? get hideAdult => throw _privateConstructorUsedError;
 
   /// Serializes this GymFilter to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +47,13 @@ abstract class $GymFilterCopyWith<$Res> {
   factory $GymFilterCopyWith(GymFilter value, $Res Function(GymFilter) then) =
       _$GymFilterCopyWithImpl<$Res, GymFilter>;
   @useResult
-  $Res call({String poolId});
+  $Res call(
+      {String? poolId,
+      @JsonKey(includeIfNull: false) int? minReward,
+      @JsonKey(includeIfNull: false) int? maxReward,
+      @JsonKey(includeIfNull: false) String? query,
+      @JsonKey(includeIfNull: false) List<String>? categories,
+      @JsonKey(includeIfNull: false) bool? hideAdult});
 }
 
 /// @nodoc
@@ -55,13 +71,38 @@ class _$GymFilterCopyWithImpl<$Res, $Val extends GymFilter>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? poolId = null,
+    Object? poolId = freezed,
+    Object? minReward = freezed,
+    Object? maxReward = freezed,
+    Object? query = freezed,
+    Object? categories = freezed,
+    Object? hideAdult = freezed,
   }) {
     return _then(_value.copyWith(
-      poolId: null == poolId
+      poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      minReward: freezed == minReward
+          ? _value.minReward
+          : minReward // ignore: cast_nullable_to_non_nullable
+              as int?,
+      maxReward: freezed == maxReward
+          ? _value.maxReward
+          : maxReward // ignore: cast_nullable_to_non_nullable
+              as int?,
+      query: freezed == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String?,
+      categories: freezed == categories
+          ? _value.categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      hideAdult: freezed == hideAdult
+          ? _value.hideAdult
+          : hideAdult // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ) as $Val);
   }
 }
@@ -74,7 +115,13 @@ abstract class _$$GymFilterImplCopyWith<$Res>
       __$$GymFilterImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String poolId});
+  $Res call(
+      {String? poolId,
+      @JsonKey(includeIfNull: false) int? minReward,
+      @JsonKey(includeIfNull: false) int? maxReward,
+      @JsonKey(includeIfNull: false) String? query,
+      @JsonKey(includeIfNull: false) List<String>? categories,
+      @JsonKey(includeIfNull: false) bool? hideAdult});
 }
 
 /// @nodoc
@@ -90,13 +137,38 @@ class __$$GymFilterImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? poolId = null,
+    Object? poolId = freezed,
+    Object? minReward = freezed,
+    Object? maxReward = freezed,
+    Object? query = freezed,
+    Object? categories = freezed,
+    Object? hideAdult = freezed,
   }) {
     return _then(_$GymFilterImpl(
-      poolId: null == poolId
+      poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      minReward: freezed == minReward
+          ? _value.minReward
+          : minReward // ignore: cast_nullable_to_non_nullable
+              as int?,
+      maxReward: freezed == maxReward
+          ? _value.maxReward
+          : maxReward // ignore: cast_nullable_to_non_nullable
+              as int?,
+      query: freezed == query
+          ? _value.query
+          : query // ignore: cast_nullable_to_non_nullable
+              as String?,
+      categories: freezed == categories
+          ? _value._categories
+          : categories // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      hideAdult: freezed == hideAdult
+          ? _value.hideAdult
+          : hideAdult // ignore: cast_nullable_to_non_nullable
+              as bool?,
     ));
   }
 }
@@ -104,17 +176,47 @@ class __$$GymFilterImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$GymFilterImpl implements _GymFilter {
-  const _$GymFilterImpl({required this.poolId});
+  const _$GymFilterImpl(
+      {this.poolId,
+      @JsonKey(includeIfNull: false) this.minReward,
+      @JsonKey(includeIfNull: false) this.maxReward,
+      @JsonKey(includeIfNull: false) this.query,
+      @JsonKey(includeIfNull: false) final List<String>? categories,
+      @JsonKey(includeIfNull: false) this.hideAdult})
+      : _categories = categories;
 
   factory _$GymFilterImpl.fromJson(Map<String, dynamic> json) =>
       _$$GymFilterImplFromJson(json);
 
   @override
-  final String poolId;
+  final String? poolId;
+  @override
+  @JsonKey(includeIfNull: false)
+  final int? minReward;
+  @override
+  @JsonKey(includeIfNull: false)
+  final int? maxReward;
+  @override
+  @JsonKey(includeIfNull: false)
+  final String? query;
+  final List<String>? _categories;
+  @override
+  @JsonKey(includeIfNull: false)
+  List<String>? get categories {
+    final value = _categories;
+    if (value == null) return null;
+    if (_categories is EqualUnmodifiableListView) return _categories;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  @JsonKey(includeIfNull: false)
+  final bool? hideAdult;
 
   @override
   String toString() {
-    return 'GymFilter(poolId: $poolId)';
+    return 'GymFilter(poolId: $poolId, minReward: $minReward, maxReward: $maxReward, query: $query, categories: $categories, hideAdult: $hideAdult)';
   }
 
   @override
@@ -122,12 +224,22 @@ class _$GymFilterImpl implements _GymFilter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GymFilterImpl &&
-            (identical(other.poolId, poolId) || other.poolId == poolId));
+            (identical(other.poolId, poolId) || other.poolId == poolId) &&
+            (identical(other.minReward, minReward) ||
+                other.minReward == minReward) &&
+            (identical(other.maxReward, maxReward) ||
+                other.maxReward == maxReward) &&
+            (identical(other.query, query) || other.query == query) &&
+            const DeepCollectionEquality()
+                .equals(other._categories, _categories) &&
+            (identical(other.hideAdult, hideAdult) ||
+                other.hideAdult == hideAdult));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, poolId);
+  int get hashCode => Object.hash(runtimeType, poolId, minReward, maxReward,
+      query, const DeepCollectionEquality().hash(_categories), hideAdult);
 
   /// Create a copy of GymFilter
   /// with the given fields replaced by the non-null parameter values.
@@ -146,13 +258,34 @@ class _$GymFilterImpl implements _GymFilter {
 }
 
 abstract class _GymFilter implements GymFilter {
-  const factory _GymFilter({required final String poolId}) = _$GymFilterImpl;
+  const factory _GymFilter(
+      {final String? poolId,
+      @JsonKey(includeIfNull: false) final int? minReward,
+      @JsonKey(includeIfNull: false) final int? maxReward,
+      @JsonKey(includeIfNull: false) final String? query,
+      @JsonKey(includeIfNull: false) final List<String>? categories,
+      @JsonKey(includeIfNull: false) final bool? hideAdult}) = _$GymFilterImpl;
 
   factory _GymFilter.fromJson(Map<String, dynamic> json) =
       _$GymFilterImpl.fromJson;
 
   @override
-  String get poolId;
+  String? get poolId;
+  @override
+  @JsonKey(includeIfNull: false)
+  int? get minReward;
+  @override
+  @JsonKey(includeIfNull: false)
+  int? get maxReward;
+  @override
+  @JsonKey(includeIfNull: false)
+  String? get query;
+  @override
+  @JsonKey(includeIfNull: false)
+  List<String>? get categories;
+  @override
+  @JsonKey(includeIfNull: false)
+  bool? get hideAdult;
 
   /// Create a copy of GymFilter
   /// with the given fields replaced by the non-null parameter values.
