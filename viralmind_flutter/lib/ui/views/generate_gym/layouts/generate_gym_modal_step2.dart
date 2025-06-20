@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:viralmind_flutter/assets.dart';
 
 class GenerateGymModalStep2 extends StatelessWidget {
   const GenerateGymModalStep2({super.key});
@@ -9,19 +8,19 @@ class GenerateGymModalStep2 extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Center(child: CircularProgressIndicator()),
+        const Center(child: CircularProgressIndicator(strokeWidth: 1)),
         const SizedBox(height: 20),
-        const Center(
+        Center(
           child: Text(
             'Generating your gym...',
-            style: TextStyle(color: VMColors.primaryText, fontSize: 16),
+            style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
         const SizedBox(height: 8),
         Center(
           child: Text(
             'Creating tasks based on your requirements...',
-            style: TextStyle(color: VMColors.secondaryText),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
       ],

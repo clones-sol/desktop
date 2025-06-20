@@ -4,10 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/pool.dart';
-import 'package:viralmind_flutter/application/wallet.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
-import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
@@ -15,8 +12,7 @@ import 'package:viralmind_flutter/ui/components/gym_status.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal.dart';
-import 'package:viralmind_flutter/utils/env.dart';
+import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
 class ForgeView extends ConsumerStatefulWidget {
   const ForgeView({super.key});
@@ -28,45 +24,7 @@ class ForgeView extends ConsumerStatefulWidget {
 class _ForgeViewState extends ConsumerState<ForgeView> {
   bool _showGenerateGymModal = false;
   String? _error;
-  String _skills = '';
   TrainingPool? _selectedPool;
-
-  Future<void> _handleSave(Map<String, dynamic> generatedResponse) async {
-    try {
-      final walletAddress = ref.watch(walletAddressProvider).valueOrNull;
-      if (walletAddress == null) return;
-      final content = generatedResponse['content'];
-      if (content != null) {
-        final poolName = content['name'] ?? 'Unnamed Gym';
-        final apps =
-            (content['apps'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-        final skills = _skills;
-        final token = Token(
-          type: TokenType.viral,
-          symbol: 'VIRAL',
-          address: Env.viralTokenAddress,
-        );
-        await ref.read(
-          createPoolWithAppsProvider(
-            poolName: poolName,
-            skills: skills,
-            token: token,
-            apps: apps.map(ForgeApp.fromJson).toList(),
-            ownerAddress: walletAddress,
-          ).future,
-        );
-        ref.invalidate(listPoolsProvider);
-        setState(() {
-          _showGenerateGymModal = false;
-          _skills = '';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _error = e.toString();
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,16 +51,9 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
             ),
             if (_showGenerateGymModal)
               GenerateGymModal(
-                skills: _skills,
-                onSkillsChange: (skills) {
-                  setState(() {
-                    _skills = skills;
-                  });
-                },
                 onClose: () {
                   setState(() => _showGenerateGymModal = false);
                 },
-                onSave: _handleSave,
               ),
             if (_selectedPool != null)
               AnimatedPositioned(
@@ -316,7 +267,6 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
       children: [
         ForgeNewGymCard(
           onTap: () => setState(() {
-            _skills = '';
             _showGenerateGymModal = true;
           }),
         ),

@@ -4,7 +4,7 @@ import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_overview_t
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_settings_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_tasks_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_uploads_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/generate_gym_modal.dart';
+import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
 class ForgeGymDetail extends StatefulWidget {
   const ForgeGymDetail({super.key, required this.pool, this.onBack});
@@ -31,12 +31,6 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
 
   void _handleCloseGenerateGymModal() {
     setState(() => _showGenerateGymModal = false);
-  }
-
-  void _handleSaveGenerateGymModal(Map<String, dynamic> generatedResponse) {
-    // TODO(reddwarf03): Update the pool with the generated response
-    setState(() => _showGenerateGymModal = false);
-    // TODO(reddwarf03): Refresh the list of apps in ForgeGymTasksTab if needed
   }
 
   @override
@@ -82,10 +76,7 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
         if (_showGenerateGymModal)
           GenerateGymModal(
             skills: widget.pool.skills,
-            onSkillsChange:
-                (skills) {}, // TODO(reddwarf03): Update the skills of the pool
             onClose: _handleCloseGenerateGymModal,
-            onSave: _handleSaveGenerateGymModal,
           ),
       ],
     );
