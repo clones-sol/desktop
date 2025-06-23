@@ -17,6 +17,8 @@ import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_mod
 class ForgeView extends ConsumerStatefulWidget {
   const ForgeView({super.key});
 
+  static const String routeName = '/forge';
+
   @override
   ConsumerState<ForgeView> createState() => _ForgeViewState();
 }
@@ -35,19 +37,48 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
         final overlayHeight = constraints.maxHeight;
         return Stack(
           children: [
-            poolsAsync.when(
-              data: _buildPools,
-              error: (error, stack) => Padding(
-                padding: const EdgeInsets.all(20),
-                child: MessageBox(
-                  messageBoxType: MessageBoxType.warning,
-                  content: Text(
-                    error.toString(),
-                    style: const TextStyle(color: Color(0xFFFF8400)),
-                  ),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Forge',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0.5,
+                            color: VMColors.secondaryText,
+                          ),
+                        ),
+                      ],
+                    ),
+                    poolsAsync.when(
+                      data: _buildPools,
+                      loading: () => const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 100),
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        )),
+                      ),
+                      error: (error, stack) => Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: MessageBox(
+                          messageBoxType: MessageBoxType.warning,
+                          content: Text(
+                            error.toString(),
+                            style: const TextStyle(color: Color(0xFFFF8400)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              loading: () => const Center(child: CircularProgressIndicator()),
             ),
             if (_selectedPool != null)
               AnimatedPositioned(
@@ -183,66 +214,44 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
   }
 
   Widget _buildPools(List<TrainingPool> pools) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Forge',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    letterSpacing: 0.5,
-                    color: VMColors.secondaryText,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: AutoSizeText(
-                    'Collect crowd-powered demonstrations, perfect for training AI agents.',
-                    maxLines: 2,
-                    textAlign: TextAlign.center,
-                    minFontSize: 14,
-                    style: TextStyle(
-                      fontSize: 24,
-                      color: VMColors.primaryText,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            if (_error != null)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border:
-                        Border.all(color: Colors.red.withValues(alpha: 0.1)),
-                  ),
-                  child: Text(
-                    _error!,
-                    style: const TextStyle(color: Colors.red),
-                  ),
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: AutoSizeText(
+                  'Collect crowd-powered demonstrations, perfect for training AI agents.',
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  minFontSize: 14,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-            _buildPoolsGrid(pools),
-          ],
-        ),
+            ],
+          ),
+          const SizedBox(height: 32),
+          if (_error != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.red.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.withValues(alpha: 0.1)),
+                ),
+                child: Text(
+                  _error!,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ),
+          _buildPoolsGrid(pools),
+        ],
       ),
     );
   }

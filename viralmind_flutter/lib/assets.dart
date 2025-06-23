@@ -5,8 +5,10 @@ class Assets {
   static const String background = 'assets/main-background.png';
   static const String forgeIcon = 'assets/forge_icon.png';
   static const String gymIcon = 'assets/gym_icon.png';
+  static const String gymHistoryIcon = 'assets/gym_history_icon.png';
   static const String gymAddIcon = 'assets/add_gym_icon.png';
   static const String statsIcon = 'assets/stats_icon.png';
+  static const String skillsTreeIcon = 'assets/skills_tree_icon.png';
 }
 
 class VMColors {

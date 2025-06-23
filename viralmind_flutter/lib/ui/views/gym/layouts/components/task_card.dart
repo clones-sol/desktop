@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/assets.dart';
@@ -7,6 +8,9 @@ import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_task_item.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
+import 'package:viralmind_flutter/utils/fav_tools.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({
@@ -17,14 +21,10 @@ class TaskCard extends StatelessWidget {
   final ForgeApp app;
   final ForgeTaskItem task;
 
-  // TODO(reddwarf03): move to utils
-  String getFaviconUrl(String domain) {
-    return 'https://s2.googleusercontent.com/s2/favicons?domain=$domain&sz=64';
-  }
-
   @override
   Widget build(BuildContext context) {
     return CardWidget(
+      padding: CardPadding.small,
       variant: CardVariant.secondary,
       child: InkWell(
         onTap: () async {
@@ -37,7 +37,7 @@ class TaskCard extends StatelessWidget {
           final appParam = Uri.encodeComponent(jsonEncode(appInfo.toJson()));
 
           context.go(
-            '/app/chat',
+            TrainingSessionView.routeName,
             extra: {
               'prompt': task.prompt,
               'appParam': appParam,
@@ -74,28 +74,13 @@ class TaskCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: VMColors.primary,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      'Task',
-                      style: TextStyle(
-                        color: VMColors.primaryText,
-                        fontSize: 10,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(12),
-                child: Text(
+                child: AutoSizeText(
                   task.prompt,
                   style: TextStyle(
                     fontSize: 14,
@@ -106,28 +91,53 @@ class TaskCard extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Text(
-                  'Click to begin',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
-                  ),
-                ),
-                Text(
-                  '${task.rewardLimit ?? app.poolId?.pricePerDemo ?? 0} VIRAL',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: VMColors.primary,
+                Padding(
+                  padding: const EdgeInsets.only(right: 12),
+                  child: Text(
+                    '${task.rewardLimit ?? app.poolId?.pricePerDemo ?? 0} \$VIRAL',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: VMColors.primary,
+                    ),
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            _startTrainingButton(context),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _startTrainingButton(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: BtnPrimary(
+        widthExpanded: true,
+        onTap: () async {
+          final appInfo = AppInfo(
+            type: 'website',
+            name: app.name,
+            url: 'https://${app.domain}',
+            taskId: task.id,
+          );
+          final appParam = Uri.encodeComponent(jsonEncode(appInfo.toJson()));
+
+          context.go(
+            TrainingSessionView.routeName,
+            extra: {
+              'prompt': task.prompt,
+              'appParam': appParam,
+              'poolId': app.poolId?.id,
+            },
+          );
+        },
+        buttonText: 'Start Training',
       ),
     );
   }

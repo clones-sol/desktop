@@ -652,11 +652,10 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
   }
 
   Future<void> deleteRecording() async {
-    final trainingSession = ref.read(trainingSessionNotifierProvider);
-    if (trainingSession.currentRecordingId != null) {
+    if (state.currentRecordingId != null) {
       final deleted = await ref
           .read(tauriApiClientProvider)
-          .deleteRecording(trainingSession.currentRecordingId!);
+          .deleteRecording(state.currentRecordingId!);
       if (deleted.isNotEmpty) {
         // TODO(reddwarf03): /app/gym
         //Navigator.of(context).pop();

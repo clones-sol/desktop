@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/components/design_widget/checkbox/checkbox_confirm.dart';
 
 class ForgeGymSettingsTab extends StatefulWidget {
   const ForgeGymSettingsTab({super.key, required this.pool});
@@ -327,14 +326,18 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
             style: Theme.of(context).textTheme.titleSmall,
           ),
           const SizedBox(height: 6),
-          CheckboxConfirm(
+          Checkbox(
+            checkColor: VMColors.primaryText,
             value: _enableUploadLimit,
-            onChanged: (val) => setState(() => _enableUploadLimit = val),
-            text: Text(
-              'Enable gym-wide upload limits',
-              style: Theme.of(context).textTheme.bodyMedium,
+            onChanged: (val) => setState(
+              () => _enableUploadLimit = val ?? false,
             ),
           ),
+          Text(
+            'Enable gym-wide upload limits',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+
           if (_enableUploadLimit) ...[
             const SizedBox(height: 10),
             Padding(

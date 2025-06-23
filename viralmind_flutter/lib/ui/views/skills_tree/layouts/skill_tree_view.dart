@@ -45,14 +45,16 @@ class SkillTreeTaskNode extends SkillTreeNodeData {
   final String parentIconUrl;
 }
 
-class SkillTree extends ConsumerStatefulWidget {
-  const SkillTree({super.key});
+class SkillTreeView extends ConsumerStatefulWidget {
+  const SkillTreeView({super.key});
+
+  static const routeName = '/skills-tree';
 
   @override
-  ConsumerState<SkillTree> createState() => _SkillTreeState();
+  ConsumerState<SkillTreeView> createState() => _SkillTreeViewState();
 }
 
-class _SkillTreeState extends ConsumerState<SkillTree> {
+class _SkillTreeViewState extends ConsumerState<SkillTreeView> {
   final Graph _graph = Graph();
   late Algorithm _algorithm;
 

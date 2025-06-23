@@ -6,6 +6,11 @@ import 'package:viralmind_flutter/application/wallet.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
 import 'package:viralmind_flutter/ui/components/wallet_button.dart';
+import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
+import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.dart';
 
 class Sidebar extends ConsumerWidget {
   const Sidebar({
@@ -32,24 +37,33 @@ class Sidebar extends ConsumerWidget {
 
     final buttons = [
       SidebarButtonData(
-        path: '/app/gym',
+        path: GymView.routeName,
         imagePath: Assets.gymIcon,
         label: 'Gym',
       ),
       SidebarButtonData(
-        path: '/app/leaderboards',
+        path: GymHistoryView.routeName,
+        imagePath: Assets.gymHistoryIcon,
+        label: 'Gym History',
+      ),
+      SidebarButtonData(
+        path: SkillTreeView.routeName,
+        imagePath: Assets.skillsTreeIcon,
+        label: 'Skills tree',
+      ),
+      SidebarButtonData(
+        path: LeaderboardsView.routeName,
         imagePath: Assets.statsIcon,
         label: 'Leaderboards',
       ),
       SidebarButtonData(
-        path: '/app/forge',
+        path: ForgeView.routeName,
         imagePath: Assets.forgeIcon,
         label: 'Forge',
       ),
     ];
 
-    var activeIndex =
-        buttons.indexWhere((b) => currentRoute.startsWith(b.path));
+    var activeIndex = buttons.indexWhere((b) => currentRoute == b.path);
     if (activeIndex == -1) activeIndex = 0;
 
     return Container(
