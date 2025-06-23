@@ -11,6 +11,8 @@ import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
+import 'package:viralmind_flutter/utils/fav_tools.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
   const ForgeGymTasksTab({
@@ -167,13 +169,6 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
     setState(() {
       localApps[appIdx]['tasks'].removeAt(taskIdx);
     });
-  }
-
-  String getFaviconUrl(String? domain) {
-    if (domain == null || domain.isEmpty) return '';
-    final cleanDomain =
-        domain.replaceAll(RegExp(r'^(https?:\/\/)?(www\.)?'), '');
-    return 'https://www.google.com/s2/favicons?domain=$cleanDomain&sz=32';
   }
 
   @override
@@ -507,7 +502,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                       );
 
                                       context.go(
-                                        '/app/chat',
+                                        TrainingSessionView.routeName,
                                         extra: {
                                           'prompt': task.prompt,
                                           'appParam': appParam,

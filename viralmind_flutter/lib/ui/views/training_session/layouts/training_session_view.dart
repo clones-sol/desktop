@@ -3,11 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/message/message.dart';
 import 'package:viralmind_flutter/domain/models/message/typing_message.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/pfp.dart';
 import 'package:viralmind_flutter/ui/components/recording_panel.dart';
@@ -15,7 +15,6 @@ import 'package:viralmind_flutter/ui/views/training_session/bloc/provider.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/record_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/typing_indicator.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/upload_confirm_modal.dart';
-import 'package:viralmind_flutter/utils/widgets/buttons.dart';
 
 class TrainingSessionView extends ConsumerStatefulWidget {
   const TrainingSessionView({
@@ -27,6 +26,8 @@ class TrainingSessionView extends ConsumerStatefulWidget {
   final String? prompt;
   final String? appParam;
   final String? poolId;
+
+  static const String routeName = '/training_session';
 
   @override
   ConsumerState<TrainingSessionView> createState() =>
@@ -140,6 +141,9 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       builder: (context, constraints) {
         return CustomScrollView(
           controller: _scrollController,
+          physics: const ClampingScrollPhysics(
+            parent: RangeMaintainingScrollPhysics(),
+          ),
           slivers: [
             SliverPadding(
               padding: const EdgeInsets.all(20),
@@ -227,6 +231,22 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
             child: Image.memory(base64Decode(base64), gaplessPlayback: true),
           ),
         );
+      }
+      if (message.type == MessageType.delete) {
+        // TODO(reddwarf03): Add delete message
+        return const Text('Deleted');
+      }
+      if (message.type == MessageType.start) {
+        // TODO(reddwarf03): Add start message
+        return const Text('Start');
+      }
+      if (message.type == MessageType.end) {
+        // TODO(reddwarf03): Add end message
+        return const Text('End');
+      }
+      if (message.type == MessageType.action) {
+        // TODO(reddwarf03): Add action message
+        return Text(message.content);
       }
       if (message.type == MessageType.recording) {
         final id = message.content;
@@ -317,55 +337,62 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
 
   Widget _buildUploadButton() {
     final trainingSession = ref.watch(trainingSessionNotifierProvider);
-    return MessageBox(
-      messageBoxType: MessageBoxType.info,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Ready to submit your demonstration?',
-            style: TextStyle(fontWeight: FontWeight.bold),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Pfp(),
+        const SizedBox(width: 8),
+        Container(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.7,
           ),
-          const SizedBox(height: 8),
-          PrimaryButton(
-            onPressed: trainingSession.isUploading
-                ? null
-                : () {
-                    ref
-                        .read(trainingSessionNotifierProvider.notifier)
-                        .uploadRecording(trainingSession.currentRecordingId!);
-                  },
-            child: trainingSession.isUploading
-                ? const Text('Uploading...')
-                : const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(LucideIcons.upload, size: 16),
-                      SizedBox(width: 8),
-                      Text('Upload Demonstration'),
-                    ],
-                  ),
-          ),
-          const SizedBox(height: 8),
-          Center(
-            child: Text(
-              r'Get scored and earn $VIRAL tokens',
-              style: Theme.of(context).textTheme.bodySmall,
+          child: MessageBox(
+            messageBoxType: MessageBoxType.talkLeft,
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Ready to submit your demonstration?',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(width: 16),
+                    BtnPrimary(
+                      onTap: trainingSession.isUploading
+                          ? null
+                          : () {
+                              ref
+                                  .read(
+                                      trainingSessionNotifierProvider.notifier)
+                                  .uploadRecording(
+                                      trainingSession.currentRecordingId!);
+                            },
+                      buttonText: trainingSession.isUploading
+                          ? 'Uploading...'
+                          : 'Upload Demonstration',
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  r'Get scored and earn $VIRAL tokens',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 10),
+                BtnPrimary(
+                  onTap: ref
+                      .read(trainingSessionNotifierProvider.notifier)
+                      .deleteRecording,
+                  buttonText: "Don't like your recording? Click to delete it.",
+                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                ),
+              ],
             ),
           ),
-          Center(
-            child: TextButton(
-              onPressed: ref
-                  .read(trainingSessionNotifierProvider.notifier)
-                  .deleteRecording,
-              child: const Text(
-                "Don't like your recording? Click to delete it.",
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

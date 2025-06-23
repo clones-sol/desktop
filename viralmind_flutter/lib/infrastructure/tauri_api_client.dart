@@ -224,6 +224,14 @@ class TauriApiClient {
     }
   }
 
+  Future<void> openRecordingsFolder() async {
+    final response =
+        await _client.post(Uri.parse('$_baseUrl/recordings//open'));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to open recording folder: ${response.body}');
+    }
+  }
+
   Future<void> openRecordingFolder(String recordingId) async {
     final response =
         await _client.post(Uri.parse('$_baseUrl/recordings/$recordingId/open'));

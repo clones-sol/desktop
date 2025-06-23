@@ -6,11 +6,13 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
+import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 
 final _router = GoRouter(
-  initialLocation: '/app/forge',
+  initialLocation: GymView.routeName,
   routes: [
     ShellRoute(
       builder: (context, state, child) {
@@ -21,28 +23,50 @@ final _router = GoRouter(
       },
       routes: [
         GoRoute(
-          path: '/app/gym',
+          path: GymView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: GymView(),
           ),
         ),
         GoRoute(
-          path: '/app/forge',
+          path: GymHistoryView.routeName,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: GymHistoryView(),
+          ),
+        ),
+        GoRoute(
+          path: ForgeView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ForgeView(),
           ),
         ),
         GoRoute(
-          path: '/app/leaderboards',
+          path: LeaderboardsView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: LeaderboardsView(),
           ),
         ),
         GoRoute(
-          path: '/app/chat',
+          path: SkillTreeView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: TrainingSessionView(),
+            child: SkillTreeView(),
           ),
+        ),
+        GoRoute(
+          path: TrainingSessionView.routeName,
+          pageBuilder: (context, state) {
+            final extraData = state.extra as Map<String, dynamic>?;
+            final appParam = extraData?['appParam'];
+            final poolId = extraData?['poolId'];
+            final prompt = extraData?['prompt'];
+            return NoTransitionPage(
+              child: TrainingSessionView(
+                appParam: appParam,
+                poolId: poolId,
+                prompt: prompt,
+              ),
+            );
+          },
         ),
       ],
     ),

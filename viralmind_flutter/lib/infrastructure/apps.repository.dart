@@ -168,7 +168,7 @@ class AppsRepositoryImpl {
           params['max_reward'] = filter['maxReward'];
         }
         if (filter['categories'] != null) {
-          params['categories'] = filter['categories'];
+          params['categories'] = filter['categories'].join(',');
         }
         if (filter['query'] != null) params['query'] = filter['query'];
       }

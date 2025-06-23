@@ -16,6 +16,8 @@ import 'package:viralmind_flutter/utils/format_num.dart';
 class LeaderboardsView extends ConsumerStatefulWidget {
   const LeaderboardsView({super.key});
 
+  static const String routeName = '/leaderboards';
+
   @override
   ConsumerState<LeaderboardsView> createState() => _LeaderboardsViewState();
 }
