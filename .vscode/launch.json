@@ -4,35 +4,28 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
-    /* {
-      "type": "lldb",
-      "request": "launch",
-      "name": "Tauri Development Debug",
-      "cargo": {
-        "args": [
-          "build",
-          "--manifest-path=./src-tauri/Cargo.toml",
-          "--no-default-features"
-        ]
-      },
-      // task for the `beforeDevCommand` if used, must be configured in `.vscode/tasks.json`
-      "preLaunchTask": "ui:dev"
-    },
     {
-      "type": "lldb",
+      "name": "[viralmind-native] Run IPC Server",
+      "type": "node-terminal",
       "request": "launch",
-      "name": "Tauri Production Debug",
-      "cargo": {
-        "args": ["build", "--release", "--manifest-path=./src-tauri/Cargo.toml"]
-      },
-      // task for the `beforeBuildCommand` if used, must be configured in `.vscode/tasks.json`
-      "preLaunchTask": "ui:build"
-    }*/
+      "command": "cargo run --bin ipc-server-only",
+      "cwd": "${workspaceFolder}/viralmind_flutter/native/src-tauri"
+    },
     {
       "name": "viralmind-flutter",
       "request": "launch",
       "type": "dart",
       "program": "viralmind_flutter/lib/main.dart"
-    },
+    }
+  ],
+  "compounds": [
+    {
+      "name": "[COMPOUND] Flutter with IPC",
+      "configurations": [
+        "[viralmind-native] Run IPC Server",
+        "viralmind-flutter"
+      ],
+      "stopAll": true
+    }
   ]
 }
