@@ -19,6 +19,15 @@ class VMColors {
   static const Color secondary = Color(0xFF9050FF);
   static const Color tertiary = Color(0xFF5C51FF);
 
+  static const Color rewardInfo = Color(0xFF10B981);
+
+  static Gradient gradientBtnPrimary = const LinearGradient(
+    colors: [
+      Color(0xFFA855F6),
+      Color(0xFFEB489A),
+    ],
+  );
+
   static Gradient gradientInputFormBackground = LinearGradient(
     colors: [
       const HSLColor.fromAHSL(1, 0, 0, 0.10).toColor().withValues(alpha: 1),

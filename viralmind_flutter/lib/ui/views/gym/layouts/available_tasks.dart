@@ -196,10 +196,10 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                 return GridView.builder(
                   padding: const EdgeInsets.all(16),
                   gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 300,
+                    maxCrossAxisExtent: 310,
                     childAspectRatio: 3 / 2.5,
-                    crossAxisSpacing: 16,
-                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {

@@ -66,6 +66,7 @@ class FilterPanel extends ConsumerWidget {
                       ),
                       child: TextField(
                         controller: searchController,
+                        onSubmitted: (_) => onApplyFilters(),
                         style: Theme.of(context).textTheme.bodyMedium,
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -107,6 +108,7 @@ class FilterPanel extends ConsumerWidget {
                             ),
                             child: TextField(
                               controller: minPriceController,
+                              onSubmitted: (_) => onApplyFilters(),
                               style: Theme.of(context).textTheme.bodyMedium,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
@@ -125,7 +127,13 @@ class FilterPanel extends ConsumerWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    const Text('to'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: Text(
+                        'to',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
@@ -149,6 +157,7 @@ class FilterPanel extends ConsumerWidget {
                             ),
                             child: TextField(
                               controller: maxPriceController,
+                              onSubmitted: (_) => onApplyFilters(),
                               style: Theme.of(context).textTheme.bodyMedium,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(

@@ -23,94 +23,108 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CardWidget(
-      padding: CardPadding.small,
-      variant: CardVariant.secondary,
-      child: InkWell(
-        onTap: () async {
-          final appInfo = AppInfo(
-            type: 'website',
-            name: app.name,
-            url: 'https://${app.domain}',
-            taskId: task.id,
-          );
-          final appParam = Uri.encodeComponent(jsonEncode(appInfo.toJson()));
+    return Stack(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: CardWidget(
+            padding: CardPadding.small,
+            variant: CardVariant.secondary,
+            child: InkWell(
+              onTap: () async {
+                final appInfo = AppInfo(
+                  type: 'website',
+                  name: app.name,
+                  url: 'https://${app.domain}',
+                  taskId: task.id,
+                );
+                final appParam =
+                    Uri.encodeComponent(jsonEncode(appInfo.toJson()));
 
-          context.go(
-            TrainingSessionView.routeName,
-            extra: {
-              'prompt': task.prompt,
-              'appParam': appParam,
-              'poolId': app.poolId?.id,
-            },
-          );
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: Row(
+                context.go(
+                  TrainingSessionView.routeName,
+                  extra: {
+                    'prompt': task.prompt,
+                    'appParam': appParam,
+                    'poolId': app.poolId?.id,
+                  },
+                );
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Image.network(
-                    getFaviconUrl(app.domain),
-                    width: 20,
-                    height: 20,
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.web,
-                      size: 20,
-                      color: VMColors.primaryText,
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Row(
+                      children: [
+                        Image.network(
+                          getFaviconUrl(app.domain),
+                          width: 20,
+                          height: 20,
+                          errorBuilder: (context, error, stackTrace) =>
+                              const Icon(
+                            Icons.web,
+                            size: 20,
+                            color: VMColors.primaryText,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            app.name,
+                            style: Theme.of(context).textTheme.titleMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(width: 8),
                   Expanded(
-                    child: Text(
-                      app.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300,
-                        color: VMColors.primaryText,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: AutoSizeText(
+                        task.prompt,
+                        maxLines: 3,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
+                  const SizedBox(height: 12),
+                  _startTrainingButton(context),
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: AutoSizeText(
-                  task.prompt,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    color: VMColors.secondaryText,
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 12),
-                  child: Text(
-                    '${task.rewardLimit ?? app.poolId?.pricePerDemo ?? 0} \$VIRAL',
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: VMColors.primary,
-                    ),
+          ),
+        ),
+        Positioned(
+          top: 0,
+          right: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: VMColors.rewardInfo.withValues(alpha: 0.3),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF000000).withAlpha(60),
+                  blurRadius: 6,
+                  offset: const Offset(
+                    0,
+                    3,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
-            _startTrainingButton(context),
-          ],
+            child: Text(
+              '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} VIRAL',
+              style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                    color: VMColors.rewardInfo,
+                  ),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 
