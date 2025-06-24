@@ -5,6 +5,7 @@ import 'package:graphview/GraphView.dart';
 import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 
 // Base class for node data
 abstract class SkillTreeNodeData {
@@ -169,11 +170,21 @@ class _SkillTreeViewState extends ConsumerState<SkillTreeView> {
             );
           },
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(
-            child: Text(
-              'Error: $error',
-              style: const TextStyle(color: VMColors.primaryText),
-            ),
+          error: (error, stack) => Column(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: MessageBox(
+                    messageBoxType: MessageBoxType.warning,
+                    content: Text(
+                      error.toString(),
+                      style: const TextStyle(color: Color(0xFFFF8400)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },

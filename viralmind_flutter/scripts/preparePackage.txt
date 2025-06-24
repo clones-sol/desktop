@@ -20,3 +20,8 @@ List unused files (https://pub.dev/packages/daunused)
 dart pub add --dev daunused
 flutter pub run daunused:daunused.dart .
 dart pub remove daunused
+
+Kill pipeline thread
+docker exec -it 2c0cb516cd4d /bin/bash
+ps aux | grep pipeline
+kill 56

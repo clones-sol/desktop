@@ -1,17 +1,24 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:viralmind_flutter/application/recording.dart';
+import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/recording/api_recording.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/dialog/dialog.dart';
 import 'package:viralmind_flutter/utils/format_time.dart';
 
-class RecordingCard extends StatelessWidget {
+class RecordingCard extends ConsumerWidget {
   const RecordingCard({super.key, required this.recording});
 
   final ApiRecording recording;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final status = recording.submission?.meta.status ?? recording.status;
     final statusColor = _getStatusColor(status);
     final theme = Theme.of(context);
@@ -185,22 +192,76 @@ class RecordingCard extends StatelessWidget {
                   Row(
                     children: [
                       PopupMenuButton<String>(
+                        color: Colors.black.withValues(alpha: 0.9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        shadowColor: Colors.black.withValues(alpha: 0.9),
                         icon: Icon(
                           Icons.more_vert,
                           color: VMColors.secondaryText,
+                          size: 20,
                         ),
                         onSelected: (value) {
                           //TODO(reddwarf03): add actions
                         },
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<String>>[
-                          const PopupMenuItem<String>(
+                          PopupMenuItem<String>(
                             value: 'upload',
-                            child: Text('Upload'),
+                            child: Text(
+                              'Upload',
+                              style: theme.textTheme.bodySmall,
+                            ),
                           ),
-                          const PopupMenuItem<String>(
+                          PopupMenuItem<String>(
+                            value: 'Export Zip',
+                            child: Text(
+                              'Export Zip',
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            onTap: () async {
+                              try {
+                                final zipData = await ref
+                                    .read(tauriApiClientProvider)
+                                    .getRecordingZip(recording.id);
+                                final String? outputFile =
+                                    await FilePicker.platform.saveFile(
+                                  dialogTitle: 'Please select an output file:',
+                                  fileName: 'recording_${recording.id}.zip',
+                                );
+
+                                if (outputFile != null) {
+                                  final file = File(outputFile);
+                                  await file.writeAsBytes(zipData);
+                                }
+                                // TODO(kenzii): maybe add a toast
+                              } catch (e) {
+                                // TODO(kenzii): maybe add a toast
+                              }
+                            },
+                          ),
+                          PopupMenuItem<String>(
                             value: 'delete',
-                            child: Text('Delete'),
+                            child: Text(
+                              'Delete',
+                              style: theme.textTheme.bodySmall,
+                            ),
+                            onTap: () async {
+                              await AppDialogs.showConfirmDialog(
+                                context,
+                                ref,
+                                'Confirm Deletion',
+                                'Are you sure you want to delete this recording?',
+                                'Delete',
+                                () async {
+                                  await ref
+                                      .read(tauriApiClientProvider)
+                                      .deleteRecording(recording.id);
+                                  ref.invalidate(mergedRecordingsProvider);
+                                },
+                              );
+                            },
                           ),
                         ],
                       ),

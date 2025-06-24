@@ -98,6 +98,8 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           if (next) {
             showDialog<void>(
               context: context,
+              barrierDismissible: false,
+              useRootNavigator: false,
               builder: (BuildContext context) {
                 return UploadConfirmModal(
                   onConfirm: () {
@@ -225,13 +227,28 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     if (message.type != MessageType.text) {
       if (message.type == MessageType.image) {
         final base64 = message.content;
-        return Align(
-          alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-          child: Card(
-            child: Image.memory(base64Decode(base64), gaplessPlayback: true),
-          ),
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Pfp(),
+            const SizedBox(width: 8),
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: MessageBox(
+                messageBoxType: MessageBoxType.talkLeft,
+                content: Image.memory(
+                  base64Decode(base64),
+                  gaplessPlayback: true,
+                ),
+              ),
+            ),
+          ],
         );
       }
+
       if (message.type == MessageType.delete) {
         // TODO(reddwarf03): Add delete message
         return const Text('Deleted');
@@ -365,13 +382,17 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                           : () {
                               ref
                                   .read(
-                                      trainingSessionNotifierProvider.notifier)
+                                    trainingSessionNotifierProvider.notifier,
+                                  )
                                   .uploadRecording(
-                                      trainingSession.currentRecordingId!);
+                                    trainingSession.currentRecordingId!,
+                                  );
                             },
                       buttonText: trainingSession.isUploading
                           ? 'Uploading...'
                           : 'Upload Demonstration',
+                      isLoading: trainingSession.isUploading,
+                      isLocked: trainingSession.isUploading,
                     ),
                   ],
                 ),

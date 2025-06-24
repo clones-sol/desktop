@@ -93,31 +93,21 @@ class BtnPrimary extends StatelessWidget {
     switch (btnPrimaryType) {
       case BtnPrimaryType.primary:
         return BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              VMColors.secondary,
-              VMColors.tertiary,
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
+          gradient: VMColors.gradientBtnPrimary,
+          borderRadius: BorderRadius.circular(8),
         );
       case BtnPrimaryType.outlinePrimary:
         return BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: const GradientBoxBorder(
-            gradient: LinearGradient(
-              colors: [
-                VMColors.secondary,
-                VMColors.tertiary,
-              ],
-            ),
+          borderRadius: BorderRadius.circular(8),
+          border: GradientBoxBorder(
+            gradient: VMColors.gradientBtnPrimary,
             width: 2,
           ),
         );
       case BtnPrimaryType.dark:
         return BoxDecoration(
           color: Colors.black,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(8),
         );
     }
   }

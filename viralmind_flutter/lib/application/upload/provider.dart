@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,7 +53,8 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         uploadStatus: UploadStatus.zipping,
       ),
     );
-
+    print(
+        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
     final zipBytes =
         await ref.read(getRecordingZipProvider(recordingId).future);
 
@@ -69,7 +71,8 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         totalBytes: totalBytes,
       ),
     );
-
+    print(
+        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
     final initResult = await ref.read(
       initUploadProvider(
         UploadMetadata(
@@ -93,6 +96,8 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         totalBytes: totalBytes,
       ),
     );
+    print(
+        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
 
     var uploadedBytes = 0;
     for (var i = 0; i < chunks.length; i++) {
@@ -120,30 +125,46 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         ),
       );
     }
+    print(
+        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
+
     final completeResult =
         await ref.read(completeUploadProvider(uploadId).future);
     final submissionId = completeResult['submissionId'] as String;
 
     _updateTaskState(
       recordingId,
-      state[recordingId]!.copyWith(
-        uploadStatus: UploadStatus.processing,
+      UploadTaskState(
+        recordingId: recordingId,
+        name: name,
         submissionId: submissionId,
+        uploadStatus: UploadStatus.processing,
       ),
     );
+    print(
+        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
 
     _pollSubmissionStatus(recordingId, submissionId);
-
-    _updateTaskState(
-      recordingId,
-      state[recordingId]!.copyWith(
-        uploadStatus: UploadStatus.done,
-      ),
-    );
   }
 
   void _pollSubmissionStatus(String recordingId, String submissionId) {
-    Timer.periodic(const Duration(seconds: 5), (timer) async {
+    const pollInterval = Duration(seconds: 5);
+    const timeoutDuration = Duration(minutes: 5);
+    final stopwatch = Stopwatch()..start();
+
+    Timer.periodic(pollInterval, (timer) async {
+      if (stopwatch.elapsed > timeoutDuration) {
+        timer.cancel();
+        _updateTaskState(
+          recordingId,
+          state[recordingId]!.copyWith(
+            uploadStatus: UploadStatus.error,
+            error: 'Processing timed out.',
+          ),
+        );
+        return;
+      }
+
       try {
         final submissionStatus = await ref.read(
           getSubmissionStatusProvider(
@@ -151,6 +172,7 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
           ).future,
         );
 
+        print('submissionStatus: $submissionStatus');
         if (submissionStatus.status == 'completed') {
           timer.cancel();
           _updateTaskState(
@@ -163,6 +185,11 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
             recordingId,
             state[recordingId]!
                 .copyWith(uploadStatus: UploadStatus.error, error: 'Failed'),
+          );
+        } else if (submissionStatus.status == 'processing') {
+          _updateTaskState(
+            recordingId,
+            state[recordingId]!.copyWith(uploadStatus: UploadStatus.processing),
           );
         }
       } catch (error) {
@@ -177,6 +204,10 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         );
       }
     });
+  }
+
+  void removeTask(String recordingId) {
+    state = Map.from(state)..remove(recordingId);
   }
 
   List<Uint8List> _splitIntoChunks(Uint8List data, int chunkSize) {

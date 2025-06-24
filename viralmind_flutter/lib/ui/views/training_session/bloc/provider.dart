@@ -3,11 +3,14 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/application/pool.dart';
+import 'package:viralmind_flutter/application/submissions.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/application/upload/provider.dart';
+import 'package:viralmind_flutter/application/upload/state.dart';
 import 'package:viralmind_flutter/domain/models/message/deleted_range.dart';
 import 'package:viralmind_flutter/domain/models/message/message.dart';
 import 'package:viralmind_flutter/domain/models/message/sft_message.dart';
@@ -673,15 +676,73 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     try {
       final questTitle =
           state.activeQuest?.title ?? state.currentQuest?.title ?? 'Unknown';
-      await ref
-          .read(uploadQueueProvider.notifier)
-          .upload(recordingId, questTitle);
 
       await addMessage(
         generateAssistantMessage(
           'Your demonstration is being processed. This may take a while. Feel free to complete more tasks or come back later when it is done processing!',
         ),
       );
+
+      late ProviderSubscription<Map<String, UploadTaskState>> sub;
+      sub = ref.listen<Map<String, UploadTaskState>>(uploadQueueProvider,
+          (previous, next) async {
+        print('uploadState: $next');
+        final uploadState = next[recordingId];
+        if (uploadState == null) return;
+
+        if (uploadState.uploadStatus == UploadStatus.done) {
+          sub.close();
+          setIsUploading(false);
+          await addMessage(
+            generateAssistantMessage(
+              'Your demonstration was successfully uploaded!',
+            ),
+          );
+
+          if (uploadState.submissionId != null) {
+            try {
+              final submissionDetails = await ref.read(
+                getSubmissionStatusProvider(
+                  submissionId: uploadState.submissionId!,
+                ).future,
+              );
+              await addMessage(
+                generateAssistantMessage(
+                  'You scored ${submissionDetails.clampedScore}% on this task.',
+                ),
+              );
+
+              if (submissionDetails.gradeResult != null) {
+                await addMessage(
+                  generateAssistantMessage(
+                    'Feedback:\n${submissionDetails.gradeResult!.summary}',
+                  ),
+                );
+              }
+            } catch (e) {
+              debugPrint('Failed to get submission details: $e');
+            }
+          }
+          Future.delayed(const Duration(seconds: 10), () {
+            ref.read(uploadQueueProvider.notifier).removeTask(recordingId);
+          });
+        } else if (uploadState.uploadStatus == UploadStatus.error) {
+          sub.close();
+          setIsUploading(false);
+          await addMessage(
+            generateAssistantMessage(
+              'There was an error processing your demonstration: ${uploadState.error ?? 'Unknown error'}',
+            ),
+          );
+          Future.delayed(const Duration(seconds: 10), () {
+            ref.read(uploadQueueProvider.notifier).removeTask(recordingId);
+          });
+        }
+      });
+
+      await ref
+          .read(uploadQueueProvider.notifier)
+          .upload(recordingId, questTitle);
     } on Exception catch (e) {
       if (e.toString().contains('Upload data is not allowed')) {
         setShowUploadConfirmModal(true);

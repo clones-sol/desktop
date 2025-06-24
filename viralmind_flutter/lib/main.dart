@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
@@ -74,7 +75,6 @@ final _router = GoRouter(
 );
 
 Future<void> main() async {
-  // Ensure flutter is initialized.
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
   runApp(const ProviderScope(child: ViralmindApp()));
@@ -85,32 +85,25 @@ class ViralmindApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = GoogleFonts.interTextTheme(
+      ThemeData.light().textTheme,
+    ).copyWith(
+      bodySmall: TextStyle(color: VMColors.secondaryText),
+      bodyMedium: TextStyle(color: VMColors.secondaryText),
+      bodyLarge: TextStyle(color: VMColors.secondaryText),
+      titleLarge: const TextStyle(color: VMColors.primaryText),
+      titleMedium: const TextStyle(color: VMColors.primaryText),
+      titleSmall: const TextStyle(color: VMColors.primaryText),
+    );
+
     return MaterialApp.router(
       title: 'Viralmind Desktop',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFbb4eff)),
-        fontFamily: 'Open Sans',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFFbb4eff),
+        ),
+        textTheme: textTheme,
         useMaterial3: true,
-        textTheme: ThemeData.light().textTheme.copyWith(
-              bodySmall: TextStyle(
-                color: VMColors.secondaryText,
-              ),
-              bodyMedium: TextStyle(
-                color: VMColors.secondaryText,
-              ),
-              bodyLarge: TextStyle(
-                color: VMColors.secondaryText,
-              ),
-              titleLarge: const TextStyle(
-                color: VMColors.primaryText,
-              ),
-              titleMedium: const TextStyle(
-                color: VMColors.primaryText,
-              ),
-              titleSmall: const TextStyle(
-                color: VMColors.primaryText,
-              ),
-            ),
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,

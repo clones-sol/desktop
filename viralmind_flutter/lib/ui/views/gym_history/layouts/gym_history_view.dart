@@ -23,7 +23,7 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
 
   @override
   Widget build(BuildContext context) {
-    final mergedRecordingsAsync = ref.watch(mergedRecordingsProvider);
+    final mergedRecordings = ref.watch(mergedRecordingsProvider).valueOrNull;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -45,20 +45,7 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
           ),
           const SizedBox(height: 30),
           _buildToolbar(),
-          mergedRecordingsAsync.when(
-            loading: () => const Center(child: CircularProgressIndicator()),
-            error: (error, stack) => Padding(
-              padding: const EdgeInsets.all(20),
-              child: MessageBox(
-                messageBoxType: MessageBoxType.warning,
-                content: Text(
-                  error.toString(),
-                  style: const TextStyle(color: Color(0xFFFF8400)),
-                ),
-              ),
-            ),
-            data: _builList,
-          ),
+          _builList(mergedRecordings ?? []),
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -71,12 +58,13 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
               ),
               const SizedBox(width: 10),
               // TODO(reddwarf03): Bugs with Tauri: thread 'tokio-runtime-worker' has overflowed its stack
-              BtnPrimary(
-                onTap: () =>
-                    ref.read(tauriApiClientProvider).exportRecordings(),
-                buttonText: 'Export Recordings',
-                btnPrimaryType: BtnPrimaryType.outlinePrimary,
-              ),
+              if (mergedRecordings != null && mergedRecordings.isNotEmpty)
+                BtnPrimary(
+                  onTap: () =>
+                      ref.read(tauriApiClientProvider).exportRecordings(),
+                  buttonText: 'Export Recordings',
+                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                ),
             ],
           ),
         ],
