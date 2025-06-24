@@ -29,12 +29,9 @@ use crate::commands::settings::{
 };
 use crate::commands::tools::{check_tools, init_tools};
 
-/// Runs the Tauri application, setting up plugins, state, and command handlers.
-///
-/// This function initializes the Tauri runtime, registers all plugins, manages state, and exposes command handlers for frontend invocation.
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
-pub fn run() {
-    let _app = tauri::Builder::default()
+/// Creates a Tauri builder with all plugins, state, and command handlers.
+pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
+    tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_deep_link::init())
         .plugin(
@@ -92,6 +89,14 @@ pub fn run() {
             get_recording_state,
             get_current_quest,
         ])
+}
+
+/// Runs the Tauri application, setting up plugins, state, and command handlers.
+///
+/// This function initializes the Tauri runtime, registers all plugins, manages state, and exposes command handlers for frontend invocation.
+#[cfg_attr(mobile, tauri::mobile_entry_point)]
+pub fn run() {
+    let _app = setup_builder()
         .setup(|app| {
             let app_handle = app.handle().clone();
             tauri::async_runtime::spawn(async move {
