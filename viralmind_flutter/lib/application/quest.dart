@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 import 'package:viralmind_flutter/infrastructure/quest.repository.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 part 'quest.g.dart';
 

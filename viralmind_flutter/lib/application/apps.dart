@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/application/recording.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/infrastructure/apps.repository.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 part 'apps.g.dart';
 

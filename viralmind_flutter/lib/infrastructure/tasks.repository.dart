@@ -1,5 +1,5 @@
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_task.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 class TasksRepositoryImpl {
   TasksRepositoryImpl(this._client);

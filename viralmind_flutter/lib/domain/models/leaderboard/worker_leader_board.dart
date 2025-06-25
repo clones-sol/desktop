@@ -8,7 +8,6 @@ class WorkerLeaderboard with _$WorkerLeaderboard {
   const factory WorkerLeaderboard({
     required int rank,
     required String address,
-    String? nickname,
     required int tasks,
     required double rewards,
     required double avgScore,

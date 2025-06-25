@@ -4,14 +4,15 @@
 
 use tauri::Manager;
 #[cfg(any(target_os = "macos"))]
-use window_vibrancy::*;
 mod commands;
 mod core;
 mod tools;
 mod utils;
 pub mod ipc_server;
+use std::sync::{Arc, Mutex};
+use tauri::Listener;
 
-use core::record::{set_rec_state, QuestState};
+use core::record::{QuestState};
 #[cfg(target_os = "macos")]
 use utils::permissions::{has_ax_perms, has_record_perms, request_ax_perms, request_record_perms};
 
@@ -28,6 +29,9 @@ use crate::commands::settings::{
     set_upload_data_allowed,
 };
 use crate::commands::tools::{check_tools, init_tools};
+
+// State to hold the latest deep link URL
+pub struct DeepLinkState(pub Arc<Mutex<Option<String>>>);
 
 /// Creates a Tauri builder with all plugins, state, and command handlers.
 pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
@@ -54,6 +58,7 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
         .manage(QuestState::default())
+        .manage(DeepLinkState(Arc::new(Mutex::new(None))))
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
             greet,
@@ -96,39 +101,34 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
 /// This function initializes the Tauri runtime, registers all plugins, manages state, and exposes command handlers for frontend invocation.
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let _app = setup_builder()
-        .setup(|app| {
-            let app_handle = app.handle().clone();
-            tauri::async_runtime::spawn(async move {
+    let app = setup_builder()
+    .setup(|app| {
+        let app_handle = app.handle();
+        let listen_handle = app_handle.clone();
+    
+        tauri::async_runtime::spawn({
+            let app_handle = app_handle.clone();
+            async move {
                 ipc_server::init(app_handle).await;
-            });
-
-            #[cfg(any(windows, target_os = "linux"))]
-            {
-                use tauri_plugin_deep_link::DeepLinkExt;
-                app.deep_link().register_all()?;
-            };
-
-            let window = app.get_webview_window("main").unwrap();
-
-            #[cfg(target_os = "macos")]
-            apply_vibrancy(&window, NSVisualEffectMaterial::HudWindow, None, None)
-                .expect("Unsupported platform! 'apply_vibrancy' is only supported on macOS");
-
-            // Emit initial recording status
-            set_rec_state(&app.handle(), "off".to_string(), None)?;
-
-            // Set up window close handler after all other operations
-            let window_handle = window.clone();
-            window.on_window_event(move |event| {
-                if let tauri::WindowEvent::Destroyed = event {
-                    window_handle.app_handle().exit(0);
-                }
-            });
-
-            Ok(())
-        })
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
+            }
+        });
+    
+        listen_handle.clone().listen("deep-link", move |event| {
+            let url = event.payload();
+            println!("[Deep Link] Received: {}", url);
+            let state = listen_handle.state::<DeepLinkState>();
+            let mut lock = state.0.lock().unwrap();
+            *lock = Some(url.to_string().trim_matches('"').to_string());
+        });
+    
+        Ok(())  
+    })
+    .build(tauri::generate_context!())
+    .expect("error while building tauri application");
+    
+    app.run(|_app_handle, event| {
+        if let tauri::RunEvent::ExitRequested { api, .. } = event {
+            api.prevent_exit();
+        }
+    });
 }
-// remember to call `.manage(MyState::default())`

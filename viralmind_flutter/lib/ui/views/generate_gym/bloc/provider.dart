@@ -1,7 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/application/pool.dart';
-import 'package:viralmind_flutter/application/wallet.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/ui/views/generate_gym/bloc/setters.dart';
@@ -59,8 +59,8 @@ class GenerateGymNotifier extends _$GenerateGymNotifier
 
   Future<void> save() async {
     try {
-      final walletAddress = ref.read(walletAddressProvider).valueOrNull;
-      if (walletAddress == null) return;
+      final session = ref.watch(sessionNotifierProvider);
+      if (session.address == null) return;
 
       final token = Token(
         type: TokenType.viral,
@@ -73,7 +73,7 @@ class GenerateGymNotifier extends _$GenerateGymNotifier
           skills: state.skills!,
           token: token,
           apps: state.apps ?? [],
-          ownerAddress: walletAddress,
+          ownerAddress: session.address!,
         ).future,
       );
       ref.invalidate(listPoolsProvider);

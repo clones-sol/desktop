@@ -94,7 +94,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
         final variation = baseDelay * (0.8 + Random().nextDouble() * 0.4);
 
-        // TODO: To fix
+        // TODO(reddwarf03): To fix
         /* 
          final isBlip = i % 4 == 0 || (i > 0 && content[i - 1] == ' ');
         if (isBlip) {

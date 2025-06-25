@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:viralmind_flutter/application/deeplink_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
@@ -80,11 +81,40 @@ Future<void> main() async {
   runApp(const ProviderScope(child: ViralmindApp()));
 }
 
-class ViralmindApp extends StatelessWidget {
+class ViralmindApp extends ConsumerWidget {
   const ViralmindApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Listen for deep link events and navigate accordingly.
+    ref.listen(deepLinkProvider, (previous, next) {
+      final url = next.value;
+      if (url != null && url.isNotEmpty) {
+        final uri = Uri.parse(url);
+
+        // Handle `viralmind://open` by navigating to the main view.
+        if (uri.host == 'open') {
+          _router.go(GymView.routeName);
+          return;
+        }
+
+        // Example deeplink: viralmind://training-session?poolId=some-id
+        // You can expand this logic to handle different routes.
+        if (uri.host == 'training-session') {
+          _router.go(
+            TrainingSessionView.routeName,
+            extra: {
+              'poolId': uri.queryParameters['poolId'],
+              'prompt': uri.queryParameters['prompt'],
+            },
+          );
+        } else {
+          // Fallback or navigate to other routes based on the host
+          _router.go('/${uri.host}');
+        }
+      }
+    });
+
     final textTheme = GoogleFonts.interTextTheme(
       ThemeData.light().textTheme,
     ).copyWith(

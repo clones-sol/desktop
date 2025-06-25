@@ -22,7 +22,6 @@ WorkerLeaderboard _$WorkerLeaderboardFromJson(Map<String, dynamic> json) {
 mixin _$WorkerLeaderboard {
   int get rank => throw _privateConstructorUsedError;
   String get address => throw _privateConstructorUsedError;
-  String? get nickname => throw _privateConstructorUsedError;
   int get tasks => throw _privateConstructorUsedError;
   double get rewards => throw _privateConstructorUsedError;
   double get avgScore => throw _privateConstructorUsedError;
@@ -44,12 +43,7 @@ abstract class $WorkerLeaderboardCopyWith<$Res> {
       _$WorkerLeaderboardCopyWithImpl<$Res, WorkerLeaderboard>;
   @useResult
   $Res call(
-      {int rank,
-      String address,
-      String? nickname,
-      int tasks,
-      double rewards,
-      double avgScore});
+      {int rank, String address, int tasks, double rewards, double avgScore});
 }
 
 /// @nodoc
@@ -69,7 +63,6 @@ class _$WorkerLeaderboardCopyWithImpl<$Res, $Val extends WorkerLeaderboard>
   $Res call({
     Object? rank = null,
     Object? address = null,
-    Object? nickname = freezed,
     Object? tasks = null,
     Object? rewards = null,
     Object? avgScore = null,
@@ -83,10 +76,6 @@ class _$WorkerLeaderboardCopyWithImpl<$Res, $Val extends WorkerLeaderboard>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: freezed == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String?,
       tasks: null == tasks
           ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
@@ -112,12 +101,7 @@ abstract class _$$WorkerLeaderboardImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int rank,
-      String address,
-      String? nickname,
-      int tasks,
-      double rewards,
-      double avgScore});
+      {int rank, String address, int tasks, double rewards, double avgScore});
 }
 
 /// @nodoc
@@ -135,7 +119,6 @@ class __$$WorkerLeaderboardImplCopyWithImpl<$Res>
   $Res call({
     Object? rank = null,
     Object? address = null,
-    Object? nickname = freezed,
     Object? tasks = null,
     Object? rewards = null,
     Object? avgScore = null,
@@ -149,10 +132,6 @@ class __$$WorkerLeaderboardImplCopyWithImpl<$Res>
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
               as String,
-      nickname: freezed == nickname
-          ? _value.nickname
-          : nickname // ignore: cast_nullable_to_non_nullable
-              as String?,
       tasks: null == tasks
           ? _value.tasks
           : tasks // ignore: cast_nullable_to_non_nullable
@@ -175,7 +154,6 @@ class _$WorkerLeaderboardImpl implements _WorkerLeaderboard {
   const _$WorkerLeaderboardImpl(
       {required this.rank,
       required this.address,
-      this.nickname,
       required this.tasks,
       required this.rewards,
       required this.avgScore});
@@ -188,8 +166,6 @@ class _$WorkerLeaderboardImpl implements _WorkerLeaderboard {
   @override
   final String address;
   @override
-  final String? nickname;
-  @override
   final int tasks;
   @override
   final double rewards;
@@ -198,7 +174,7 @@ class _$WorkerLeaderboardImpl implements _WorkerLeaderboard {
 
   @override
   String toString() {
-    return 'WorkerLeaderboard(rank: $rank, address: $address, nickname: $nickname, tasks: $tasks, rewards: $rewards, avgScore: $avgScore)';
+    return 'WorkerLeaderboard(rank: $rank, address: $address, tasks: $tasks, rewards: $rewards, avgScore: $avgScore)';
   }
 
   @override
@@ -208,8 +184,6 @@ class _$WorkerLeaderboardImpl implements _WorkerLeaderboard {
             other is _$WorkerLeaderboardImpl &&
             (identical(other.rank, rank) || other.rank == rank) &&
             (identical(other.address, address) || other.address == address) &&
-            (identical(other.nickname, nickname) ||
-                other.nickname == nickname) &&
             (identical(other.tasks, tasks) || other.tasks == tasks) &&
             (identical(other.rewards, rewards) || other.rewards == rewards) &&
             (identical(other.avgScore, avgScore) ||
@@ -218,8 +192,8 @@ class _$WorkerLeaderboardImpl implements _WorkerLeaderboard {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, rank, address, nickname, tasks, rewards, avgScore);
+  int get hashCode =>
+      Object.hash(runtimeType, rank, address, tasks, rewards, avgScore);
 
   /// Create a copy of WorkerLeaderboard
   /// with the given fields replaced by the non-null parameter values.
@@ -242,7 +216,6 @@ abstract class _WorkerLeaderboard implements WorkerLeaderboard {
   const factory _WorkerLeaderboard(
       {required final int rank,
       required final String address,
-      final String? nickname,
       required final int tasks,
       required final double rewards,
       required final double avgScore}) = _$WorkerLeaderboardImpl;
@@ -254,8 +227,6 @@ abstract class _WorkerLeaderboard implements WorkerLeaderboard {
   int get rank;
   @override
   String get address;
-  @override
-  String? get nickname;
   @override
   int get tasks;
   @override

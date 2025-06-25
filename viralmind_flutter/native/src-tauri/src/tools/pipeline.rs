@@ -3,10 +3,8 @@
 //! This module manages the download, initialization, and execution of the pipeline binary for processing recorded data.
 
 use crate::tools::ffmpeg::{get_ffmpeg_dir, get_ffprobe_dir};
-use crate::utils::github_release;
 use log::info;
 #[cfg(unix)]
-use rlimit::{setrlimit, Resource};
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::OnceLock;
@@ -71,15 +69,6 @@ pub fn init_pipeline() -> Result<(), String> {
     // Fetch latest metadata from GitHub
     let latest_metadata =
         crate::utils::github_release::fetch_latest_release_metadata(repo_owner, repo_name)?;
-
-    // Use the github_release module to get the latest release
-    let pipeline_path = github_release::get_latest_release(
-        repo_owner,
-        repo_name,
-        &get_pipeline_url(),
-        &temp_dir,
-        true, // Make executable on Linux/macOS
-    )?;
 
     let needs_download = match &local_metadata {
         Some(meta) => {

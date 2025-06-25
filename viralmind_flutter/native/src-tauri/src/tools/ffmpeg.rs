@@ -788,10 +788,6 @@ impl FFmpegRecorder {
         }
         Ok(())
     }
-
-    pub fn input_format(&self) -> Option<&String> {
-        self.input_format.as_ref()
-    }
 }
 
 fn get_ffmpeg_url_windows() -> String {

@@ -4,7 +4,6 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use gym_desktop_lib::{ipc_server, setup_builder};
-use tauri::Manager;
 
 fn main() {
     // Load .env files for configuration

@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/submission/pool_submission.dart';
 import 'package:viralmind_flutter/domain/models/submission/submission_status.dart';
 import 'package:viralmind_flutter/infrastructure/submissions.repository.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 part 'submissions.g.dart';
 

@@ -3,7 +3,6 @@
 //! This module manages the download, initialization, and polling of the dump-tree binary for accessibility tree extraction.
 
 use crate::tools::helpers::lock_with_timeout;
-use crate::utils::github_release;
 use log::info;
 use serde_json::{json, Value};
 use std::io::{BufRead, BufReader};
@@ -74,15 +73,6 @@ pub fn init_dump_tree() -> Result<(), String> {
     // Fetch latest metadata from GitHub
     let latest_metadata =
         crate::utils::github_release::fetch_latest_release_metadata(repo_owner, repo_name)?;
-
-    // Use the github_release module to get the latest release
-    let dump_tree_path = github_release::get_latest_release(
-        repo_owner,
-        repo_name,
-        &get_dump_tree_url(),
-        &temp_dir,
-        true, // Make executable on Linux/macOS
-    )?;
 
     let needs_download = match &local_metadata {
         Some(meta) => {

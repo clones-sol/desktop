@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_task.dart';
 import 'package:viralmind_flutter/infrastructure/tasks.repository.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 part 'tasks.g.dart';
 

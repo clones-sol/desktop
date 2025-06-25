@@ -258,4 +258,16 @@ class TauriApiClient {
       throw Exception('Failed to get recording zip: ${response.body}');
     }
   }
+
+  // --- Deep Link ---
+
+  Future<String?> getDeepLink() async {
+    final response = await _client.get(Uri.parse('$_baseUrl/deeplink'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return data['url'];
+    } else {
+      throw Exception('Failed to get deep link: ${response.body}');
+    }
+  }
 }

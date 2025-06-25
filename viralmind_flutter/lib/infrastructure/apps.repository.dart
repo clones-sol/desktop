@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_task_item.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/pool_id.dart';
 import 'package:viralmind_flutter/domain/models/recording/recording_meta.dart';
 import 'package:viralmind_flutter/infrastructure/submissions.repository.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 class AppsRepositoryImpl {
   AppsRepositoryImpl(this._client);

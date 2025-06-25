@@ -162,7 +162,9 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 12),
+                        horizontal: 10,
+                        vertical: 12,
+                      ),
                       hintText: 'Gym name',
                       hintStyle: Theme.of(context).textTheme.bodyMedium,
                     ),
@@ -200,11 +202,12 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                       style: Theme.of(context).textTheme.bodyMedium,
                       items: [
                         DropdownMenuItem(
-                            value: 'newest',
-                            child: Text(
-                              'Newest First',
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            )),
+                          value: 'newest',
+                          child: Text(
+                            'Newest First',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
                         DropdownMenuItem(
                           value: 'oldest',
                           child: Text(

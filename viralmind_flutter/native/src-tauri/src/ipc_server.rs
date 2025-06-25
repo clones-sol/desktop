@@ -28,6 +28,8 @@ use crate::core::record::{open_recording_folder, process_recording};
 use crate::utils::permissions::{has_record_perms, request_record_perms};
 // Import functions from `commands/settings`
 use crate::commands::settings::{get_onboarding_complete, set_onboarding_complete};
+// Import our new DeepLinkState
+use crate::DeepLinkState;
 
 // Helper to wrap AppHandle in the server state
 #[derive(Clone)]
@@ -145,6 +147,8 @@ pub async fn init(app_handle: AppHandle) {
         // POST /recordings/export: Trigger an export of all recordings.
         // Action that creates a file for the user to download.
         .route("/recordings/export", post(export_recordings_handler))
+        // GET /deeplink: Retrieve the latest deep link URL received by the application.
+        .route("/deeplink", get(get_deeplink_handler))
         .with_state(state)
         .layer(cors);
 
@@ -402,5 +406,21 @@ async fn export_recordings_handler(State(state): State<AppState>) -> Result<impl
     match export_recordings(state.app_handle).await {
         Ok(path) => Ok((StatusCode::OK, path)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+// --- Handler for deep links ---
+
+async fn get_deeplink_handler(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    let deeplink_state = state.app_handle.state::<DeepLinkState>();
+    let mut url = deeplink_state.0.lock().unwrap();
+    
+    // Take the URL from the state, leaving `None` in its place.
+    if let Some(url_str) = url.take() {
+        Ok((StatusCode::OK, Json(serde_json::json!({ "url": url_str }))))
+    } else {
+        Ok((StatusCode::OK, Json(serde_json::json!({ "url": null }))))
     }
 } 

@@ -203,7 +203,7 @@ class RecordingCard extends ConsumerWidget {
                           size: 20,
                         ),
                         onSelected: (value) {
-                          //TODO(reddwarf03): add actions
+                          // TODO(reddwarf03): add actions
                         },
                         itemBuilder: (BuildContext context) =>
                             <PopupMenuEntry<String>>[
@@ -225,7 +225,7 @@ class RecordingCard extends ConsumerWidget {
                                 final zipData = await ref
                                     .read(tauriApiClientProvider)
                                     .getRecordingZip(recording.id);
-                                final String? outputFile =
+                                final outputFile =
                                     await FilePicker.platform.saveFile(
                                   dialogTitle: 'Please select an output file:',
                                   fileName: 'recording_${recording.id}.zip',
@@ -235,9 +235,9 @@ class RecordingCard extends ConsumerWidget {
                                   final file = File(outputFile);
                                   await file.writeAsBytes(zipData);
                                 }
-                                // TODO(kenzii): maybe add a toast
+                                // TODO(reddwarf03): maybe add a toast
                               } catch (e) {
-                                // TODO(kenzii): maybe add a toast
+                                // TODO(reddwarf03): maybe add a toast
                               }
                             },
                           ),
