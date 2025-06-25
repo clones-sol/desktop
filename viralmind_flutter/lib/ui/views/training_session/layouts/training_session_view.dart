@@ -12,6 +12,7 @@ import 'package:viralmind_flutter/ui/components/design_widget/message_box/messag
 import 'package:viralmind_flutter/ui/components/pfp.dart';
 import 'package:viralmind_flutter/ui/components/recording_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/components/base64_image_message.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/record_panel.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/typing_indicator.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/components/upload_confirm_modal.dart';
@@ -227,26 +228,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     if (message.type != MessageType.text) {
       if (message.type == MessageType.image) {
         final base64 = message.content;
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Pfp(),
-            const SizedBox(width: 8),
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
-              ),
-              child: MessageBox(
-                messageBoxType: MessageBoxType.talkLeft,
-                content: Image.memory(
-                  base64Decode(base64),
-                  gaplessPlayback: true,
-                ),
-              ),
-            ),
-          ],
-        );
+        return Base64ImageMessage(base64: base64);
       }
 
       if (message.type == MessageType.delete) {
@@ -262,8 +244,42 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
         return const Text('End');
       }
       if (message.type == MessageType.action) {
-        // TODO(reddwarf03): Add action message
-        return Text(message.content);
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.7,
+              ),
+              child: MessageBox(
+                messageBoxType: MessageBoxType.talkRight,
+                content: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      message.content,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      message.content.toLowerCase().contains('click')
+                          ? Icons.ads_click
+                          : message.content.toLowerCase().contains('scroll')
+                              ? Icons.swap_vert
+                              : Icons.keyboard,
+                      color: VMColors.tertiary,
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
       }
       if (message.type == MessageType.recording) {
         final id = message.content;
@@ -308,7 +324,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           child: MessageBox(
             messageBoxType:
                 isUser ? MessageBoxType.talkRight : MessageBoxType.talkLeft,
-            content: _buildMessageContent(message, index),
+            content: _buildMessageContent(message),
           ),
         ),
       ],
@@ -317,7 +333,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     return messageBubble;
   }
 
-  Widget _buildMessageContent(Message message, int index) {
+  Widget _buildMessageContent(Message message) {
     return Text(
       message.content,
       style: Theme.of(context).textTheme.bodyMedium,

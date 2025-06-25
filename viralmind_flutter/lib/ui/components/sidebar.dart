@@ -61,7 +61,6 @@ class Sidebar extends ConsumerWidget {
       color: Colors.transparent,
       child: Column(
         children: [
-          const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Image.asset(
@@ -80,47 +79,50 @@ class Sidebar extends ConsumerWidget {
               },
             ),
           ),
-          const Spacer(),
-          if (isRecording)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: IconButton(
-                icon: const Icon(Icons.stop, color: Colors.white, size: 32),
-                onPressed: onStopRecording,
-                tooltip: 'Stop Recording',
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: const CircleBorder(),
-                ),
-              ),
-            )
-          else if (isRecordingLoading)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: IconButton(
-                icon: const SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: CircularProgressIndicator(
-                    color: Colors.red,
-                    strokeWidth: 3,
+          Column(
+            children: [
+              if (isRecording)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: IconButton(
+                    icon: const Icon(Icons.stop, color: Colors.white, size: 32),
+                    onPressed: onStopRecording,
+                    tooltip: 'Stop Recording',
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: const CircleBorder(),
+                    ),
+                  ),
+                )
+              else if (isRecordingLoading)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: IconButton(
+                    icon: const SizedBox(
+                      width: 32,
+                      height: 32,
+                      child: CircularProgressIndicator(
+                        color: Colors.red,
+                        strokeWidth: 3,
+                      ),
+                    ),
+                    onPressed: null,
+                    tooltip: 'Stop Recording',
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: const CircleBorder(),
+                    ),
                   ),
                 ),
-                onPressed: null,
-                tooltip: 'Stop Recording',
-                style: IconButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: const CircleBorder(),
-                ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8),
+                child: UploadManagerWidget(),
               ),
-            ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: UploadManagerWidget(),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: WalletButton(),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: WalletButton(),
+              ),
+            ],
           ),
         ],
       ),
@@ -150,7 +152,7 @@ class AnimatedSidebarSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableHeight = constraints.maxHeight;
-        final topOffset = availableHeight - totalHeight;
+        final topOffset = (availableHeight - totalHeight) / 2;
         return Stack(
           children: [
             AnimatedPositioned(
