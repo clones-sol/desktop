@@ -11,7 +11,6 @@ _$WorkerLeaderboardImpl _$$WorkerLeaderboardImplFromJson(
     _$WorkerLeaderboardImpl(
       rank: (json['rank'] as num).toInt(),
       address: json['address'] as String,
-      nickname: json['nickname'] as String?,
       tasks: (json['tasks'] as num).toInt(),
       rewards: (json['rewards'] as num).toDouble(),
       avgScore: (json['avgScore'] as num).toDouble(),
@@ -22,7 +21,6 @@ Map<String, dynamic> _$$WorkerLeaderboardImplToJson(
     <String, dynamic>{
       'rank': instance.rank,
       'address': instance.address,
-      'nickname': instance.nickname,
       'tasks': instance.tasks,
       'rewards': instance.rewards,
       'avgScore': instance.avgScore,

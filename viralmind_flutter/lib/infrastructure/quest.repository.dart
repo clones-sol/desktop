@@ -1,8 +1,8 @@
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest.dart';
 import 'package:viralmind_flutter/domain/models/quest/quest_reward.dart';
 import 'package:viralmind_flutter/infrastructure/pool.repository.dart';
 import 'package:viralmind_flutter/infrastructure/tauri_api_client.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 class QuestRepositoryImpl {
   QuestRepositoryImpl(this._client, this._tauriClient);

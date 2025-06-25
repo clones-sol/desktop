@@ -2,7 +2,6 @@
 //!
 //! This module provides a `Settings` struct and methods to persist and recover user preferences, such as onboarding and upload confirmation state.
 
-use crate::tools::sanitize_and_check_path;
 use log::{error, info};
 use serde::{Deserialize, Serialize};
 use std::{

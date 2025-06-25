@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/assets.dart';
+import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/available_tasks.dart';
 
-class GymView extends StatelessWidget {
+class GymView extends ConsumerWidget {
   const GymView({super.key});
 
   static const String routeName = '/gym';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final session = ref.watch(sessionNotifierProvider);
+    if (session.isConnected == false) {
+      return const WalletNotConnected();
+    }
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(

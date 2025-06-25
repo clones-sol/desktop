@@ -90,7 +90,8 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
                 buttonText: 'Copy',
                 onTap: () {
                   Clipboard.setData(
-                      ClipboardData(text: widget.pool.depositAddress));
+                    ClipboardData(text: widget.pool.depositAddress),
+                  );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Address copied!')),
                   );

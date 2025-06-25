@@ -4,11 +4,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/pool.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/gym_status.dart';
+import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
@@ -30,6 +32,10 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
 
   @override
   Widget build(BuildContext context) {
+    final session = ref.watch(sessionNotifierProvider);
+    if (session.isConnected == false) {
+      return const WalletNotConnected();
+    }
     final poolsAsync = ref.watch(listPoolsProvider);
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -61,9 +67,10 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
                       loading: () => const Padding(
                         padding: EdgeInsets.symmetric(vertical: 100),
                         child: Center(
-                            child: CircularProgressIndicator(
-                          strokeWidth: 1,
-                        )),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 1,
+                          ),
+                        ),
                       ),
                       error: (error, stack) => Padding(
                         padding: const EdgeInsets.all(20),

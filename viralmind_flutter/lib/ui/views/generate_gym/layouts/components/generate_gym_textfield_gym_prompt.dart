@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/views/generate_gym/bloc/provider.dart';
@@ -29,7 +28,8 @@ class GenerateGymTextFieldGymPromptState
     super.initState();
     final generateGym = ref.read(generateGymNotifierProvider);
     controller = TextEditingController(
-        text: generateGym.apps?[widget.appIdx].tasks[widget.taskIdx].prompt);
+      text: generateGym.apps?[widget.appIdx].tasks[widget.taskIdx].prompt,
+    );
     focusNode = FocusNode();
   }
 

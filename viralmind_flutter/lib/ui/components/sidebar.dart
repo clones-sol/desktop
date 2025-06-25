@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:viralmind_flutter/application/connection_token.dart';
-import 'package:viralmind_flutter/application/wallet.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
 import 'package:viralmind_flutter/ui/components/wallet_button.dart';
@@ -27,14 +25,6 @@ class Sidebar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final walletAddress = ref.watch(walletAddressProvider).valueOrNull;
-    final connectionNotifier =
-        ref.watch(connectionTokenNotifierProvider.notifier);
-    final isConnecting = connectionNotifier.isConnecting;
-    final viralBalance = walletAddress != null
-        ? ref.watch(getBalanceProvider(address: walletAddress))
-        : null;
-
     final buttons = [
       SidebarButtonData(
         path: GymView.routeName,
@@ -128,18 +118,9 @@ class Sidebar extends ConsumerWidget {
             padding: EdgeInsets.symmetric(vertical: 8),
             child: UploadManagerWidget(),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: WalletButton(
-              isConnected: walletAddress != null,
-              walletAddress: walletAddress,
-              viralBalance: viralBalance,
-              isConnecting: isConnecting,
-              onDisconnect: connectionNotifier.disconnectWallet,
-              onEditNickname: () {
-                // TODO(reddwarf03): Implement nickname editing
-              },
-            ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 20),
+            child: WalletButton(),
           ),
         ],
       ),
@@ -228,11 +209,23 @@ class AnimatedSidebarSection extends StatelessWidget {
                             ).createShader(bounds);
                           },
                           blendMode: BlendMode.dstIn,
-                          child: Image.asset(
-                            button.imagePath,
-                            width: 40,
-                            height: 40,
-                          ),
+                          child: activeIndex == i
+                              ? ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    VMColors.tertiary.withValues(alpha: 1),
+                                    BlendMode.srcATop,
+                                  ),
+                                  child: Image.asset(
+                                    button.imagePath,
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                )
+                              : Image.asset(
+                                  button.imagePath,
+                                  width: 40,
+                                  height: 40,
+                                ),
                         ),
                       ),
                     ),

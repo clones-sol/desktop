@@ -9,6 +9,7 @@ class Assets {
   static const String gymAddIcon = 'assets/add_gym_icon.png';
   static const String statsIcon = 'assets/stats_icon.png';
   static const String skillsTreeIcon = 'assets/skills_tree_icon.png';
+  static const String walletIcon = 'assets/wallet_icon.png';
 }
 
 class VMColors {

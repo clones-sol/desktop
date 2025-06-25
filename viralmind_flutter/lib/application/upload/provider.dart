@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/application/submissions.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/application/upload.dart';
 import 'package:viralmind_flutter/application/upload/state.dart';
-import 'package:viralmind_flutter/application/wallet.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_metadata.dart';
 
 final uploadQueueProvider =
@@ -35,8 +34,8 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
   }
 
   Future<void> upload(String recordingId, String name) async {
-    final walletAddress = await ref.read(walletAddressProvider.future);
-    if (walletAddress == null) {
+    final address = ref.watch(sessionNotifierProvider).address;
+    if (address == null) {
       throw Exception('Wallet address is null');
     }
 
@@ -53,8 +52,7 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         uploadStatus: UploadStatus.zipping,
       ),
     );
-    print(
-        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
+
     final zipBytes =
         await ref.read(getRecordingZipProvider(recordingId).future);
 
@@ -71,8 +69,7 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         totalBytes: totalBytes,
       ),
     );
-    print(
-        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
+
     final initResult = await ref.read(
       initUploadProvider(
         UploadMetadata(
@@ -96,8 +93,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         totalBytes: totalBytes,
       ),
     );
-    print(
-        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
 
     var uploadedBytes = 0;
     for (var i = 0; i < chunks.length; i++) {
@@ -125,8 +120,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         ),
       );
     }
-    print(
-        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
 
     final completeResult =
         await ref.read(completeUploadProvider(uploadId).future);
@@ -141,8 +134,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
         uploadStatus: UploadStatus.processing,
       ),
     );
-    print(
-        'uploading, $recordingId, status: ${state[recordingId]?.uploadStatus}');
 
     _pollSubmissionStatus(recordingId, submissionId);
   }
@@ -172,7 +163,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
           ).future,
         );
 
-        print('submissionStatus: $submissionStatus');
         if (submissionStatus.status == 'completed') {
           timer.cancel();
           _updateTaskState(

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphview/GraphView.dart';
 import 'package:viralmind_flutter/application/apps.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
 
 // Base class for node data
 abstract class SkillTreeNodeData {
@@ -124,6 +126,11 @@ class _SkillTreeViewState extends ConsumerState<SkillTreeView> {
 
   @override
   Widget build(BuildContext context) {
+    final session = ref.watch(sessionNotifierProvider);
+    if (session.isConnected == false) {
+      return const WalletNotConnected();
+    }
+
     final appsAsync = ref.watch(getAppsForSkillsProvider);
 
     return LayoutBuilder(

@@ -197,12 +197,9 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                                 color: VMColors.primaryText,
                               ),
                             ),
-                            TextSpan(
-                              text: worker.nickname == null ||
-                                      worker.nickname!.isEmpty
-                                  ? ''
-                                  : '\n${worker.nickname}',
-                              style: const TextStyle(
+                            const TextSpan(
+                              text: '',
+                              style: TextStyle(
                                 color: VMColors.secondary,
                               ),
                             ),

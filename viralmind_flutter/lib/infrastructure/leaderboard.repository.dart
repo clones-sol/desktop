@@ -1,8 +1,8 @@
-import 'package:viralmind_flutter/api/core/client.dart';
 import 'package:viralmind_flutter/domain/models/api/request_options.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/stats_leader_board.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/worker_leader_board.dart';
+import 'package:viralmind_flutter/utils/api_client.dart';
 
 class LeaderboardRepositoryImpl {
   LeaderboardRepositoryImpl(this._client);
@@ -22,7 +22,6 @@ class LeaderboardRepositoryImpl {
               (worker) => WorkerLeaderboard(
                 rank: worker['rank'],
                 address: worker['address'],
-                nickname: worker['nickname'],
                 tasks: worker['tasks'],
                 rewards: worker['rewards'].toDouble(),
                 avgScore: worker['avgScore'].toDouble(),
