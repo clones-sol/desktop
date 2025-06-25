@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:viralmind_flutter/application/session/provider.dart';
+import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 
 class WalletNotConnected extends ConsumerWidget {
@@ -11,17 +12,30 @@ class WalletNotConnected extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      alignment: Alignment.center,
       children: [
-        Text(
-          'Please, connect your Solana wallet to start using the app',
-          style: Theme.of(context).textTheme.bodyMedium,
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Please, connect your Solana wallet to start using the app',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 20),
+            BtnPrimary(
+              onTap: () => _handleConnect(ref),
+              buttonText: 'Connect',
+            ),
+          ],
         ),
-        const SizedBox(height: 20),
-        BtnPrimary(
-          onTap: () => _handleConnect(ref),
-          buttonText: 'Connect',
+        Opacity(
+          opacity: 0.05,
+          child: Image.asset(
+            Assets.walletToConnectIconWB,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
         ),
       ],
     );

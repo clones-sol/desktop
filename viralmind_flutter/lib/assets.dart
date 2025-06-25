@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 
 class Assets {
-  static const String logoIcon = 'assets/Logo_Icon.png';
-  static const String background = 'assets/main-background.png';
-  static const String forgeIcon = 'assets/forge_icon.png';
-  static const String gymIcon = 'assets/gym_icon.png';
-  static const String gymHistoryIcon = 'assets/gym_history_icon.png';
-  static const String gymAddIcon = 'assets/add_gym_icon.png';
-  static const String statsIcon = 'assets/stats_icon.png';
-  static const String skillsTreeIcon = 'assets/skills_tree_icon.png';
-  static const String walletIcon = 'assets/wallet_icon.png';
+  static const String assetFolder = 'assets/';
+  static const String assetIconsFolder = '${assetFolder}icons/';
+
+  static const String logoIcon = '${assetFolder}Logo_Icon.png';
+  static const String background = '${assetFolder}main-background.png';
+
+  // Icons
+  static const String forgeIcon = '${assetIconsFolder}forge_icon.png';
+  static const String gymIcon = '${assetIconsFolder}gym_icon.png';
+  static const String gymHistoryIcon =
+      '${assetIconsFolder}gym_history_icon.png';
+  static const String gymAddIcon = '${assetIconsFolder}add_gym_icon.png';
+  static const String statsIcon = '${assetIconsFolder}stats_icon.png';
+  static const String skillsTreeIcon =
+      '${assetIconsFolder}skills_tree_icon.png';
+  static const String walletToConnectIcon =
+      '${assetIconsFolder}wallet_to_connect_icon.png';
+  static const String walletToConnectIconWB =
+      '${assetIconsFolder}wallet_to_connect_wb_icon.png';
+  static const String walletConnectedIcon =
+      '${assetIconsFolder}wallet_connected_icon.png';
 }
 
 class VMColors {

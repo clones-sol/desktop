@@ -142,7 +142,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                 ),
                               ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -221,16 +221,10 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                   ).createShader(bounds);
                 },
                 blendMode: BlendMode.dstIn,
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(
-                    VMColors.secondary.withValues(alpha: 0.4),
-                    BlendMode.srcATop,
-                  ),
-                  child: Image.asset(
-                    Assets.walletIcon,
-                    width: 40,
-                    height: 40,
-                  ),
+                child: Image.asset(
+                  Assets.walletConnectedIcon,
+                  width: 50,
+                  height: 50,
                 ),
               ),
             );
@@ -255,16 +249,10 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
           child: Stack(
             alignment: Alignment.topRight,
             children: [
-              ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  Colors.red.withValues(alpha: 0.4),
-                  BlendMode.srcATop,
-                ),
-                child: Image.asset(
-                  Assets.walletIcon,
-                  width: 40,
-                  height: 40,
-                ),
+              Image.asset(
+                Assets.walletToConnectIcon,
+                width: 50,
+                height: 50,
               ),
             ],
           ),

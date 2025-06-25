@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/recording.dart';
+import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/recording/api_recording.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/components/recording_card.dart';
 
 class GymHistoryView extends ConsumerStatefulWidget {
@@ -23,6 +25,11 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
 
   @override
   Widget build(BuildContext context) {
+    final session = ref.watch(sessionNotifierProvider);
+    if (session.isConnected == false) {
+      return const WalletNotConnected();
+    }
+
     final mergedRecordings = ref.watch(mergedRecordingsProvider).valueOrNull;
 
     return Padding(
