@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_overview_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_settings_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_tasks_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_uploads_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_gym_overview_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_gym_settings_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_gym_tasks_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_gym_uploads_tab.dart';
 
-class ForgeGymDetail extends StatefulWidget {
+class ForgeGymDetail extends ConsumerStatefulWidget {
   const ForgeGymDetail({
     super.key,
     required this.pool,
@@ -17,15 +19,18 @@ class ForgeGymDetail extends StatefulWidget {
   final VoidCallback onRegenerateTasks;
 
   @override
-  State<ForgeGymDetail> createState() => _ForgeGymDetailState();
+  ConsumerState<ForgeGymDetail> createState() => _ForgeGymDetailState();
 }
 
-class _ForgeGymDetailState extends State<ForgeGymDetail>
+class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
   void initState() {
+    Future(() async {
+      ref.read(forgeNotifierProvider.notifier).setPool(widget.pool);
+    });
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
   }
@@ -45,13 +50,12 @@ class _ForgeGymDetailState extends State<ForgeGymDetail>
             TabBarView(
               controller: _tabController,
               children: [
-                ForgeGymOverviewTab(pool: widget.pool),
-                ForgeGymSettingsTab(pool: widget.pool),
+                const ForgeGymOverviewTab(),
+                const ForgeGymSettingsTab(),
                 ForgeGymTasksTab(
-                  pool: widget.pool,
                   onRegenerateTasks: widget.onRegenerateTasks,
                 ),
-                ForgeGymUploadsTab(pool: widget.pool),
+                const ForgeGymUploadsTab(),
               ],
             ),
           ],

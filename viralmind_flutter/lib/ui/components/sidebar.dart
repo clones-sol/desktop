@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
 import 'package:viralmind_flutter/ui/components/wallet_button.dart';
-import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';

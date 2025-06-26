@@ -12,7 +12,7 @@ class TreasuryTransfer with _$TreasuryTransfer {
     required String treasuryWallet,
     required int amount,
     required int timestamp,
-    required String txHash,
+    String? txHash,
     @JsonKey(name: '_id') required String id,
   }) = _TreasuryTransfer;
 

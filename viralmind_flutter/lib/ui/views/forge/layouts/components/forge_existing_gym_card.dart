@@ -31,11 +31,7 @@ class ForgeExistingGymCard extends StatelessWidget {
             ),
             Text(
               pool.name,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w300,
-                color: VMColors.primaryText,
-              ),
+              style: Theme.of(context).textTheme.titleMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

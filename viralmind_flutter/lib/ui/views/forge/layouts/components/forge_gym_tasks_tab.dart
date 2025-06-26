@@ -7,20 +7,18 @@ import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/app_info.dart';
 import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
-import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:viralmind_flutter/utils/fav_tools.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
   const ForgeGymTasksTab({
     super.key,
-    required this.pool,
     required this.onRegenerateTasks,
   });
-  final TrainingPool pool;
   final VoidCallback onRegenerateTasks;
 
   @override
@@ -47,8 +45,12 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
   List<dynamic> localApps = [];
 
   Future<void> loadApps() async {
+    final pool = ref.read(forgeNotifierProvider).pool;
+    if (pool == null) return;
+
     setState(() => loadingApps = true);
-    final filter = GymFilter(poolId: widget.pool.id);
+
+    final filter = GymFilter(poolId: pool.id);
     final appsAsync = ref.read(getAppsForGymProvider(filter: filter).future);
     try {
       final apps = await appsAsync;
@@ -67,7 +69,9 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
   @override
   void initState() {
     super.initState();
-    loadApps();
+    Future(() async {
+      await loadApps();
+    });
   }
 
   void startEditingApp(int idx, String field) {
@@ -173,6 +177,9 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
 
   @override
   Widget build(BuildContext context) {
+    final pool = ref.watch(forgeNotifierProvider).pool;
+    if (pool == null) return const SizedBox.shrink();
+
     return Column(
       children: [
         Row(
@@ -506,7 +513,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                         extra: {
                                           'prompt': task.prompt,
                                           'appParam': appParam,
-                                          'poolId': widget.pool.id,
+                                          'poolId': pool.id,
                                         },
                                       );
                                     },

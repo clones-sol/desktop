@@ -11,9 +11,9 @@ import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primar
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/gym_status.dart';
 import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_existing_gym_card.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_gym_detail.dart';
-import 'package:viralmind_flutter/ui/views/forge/components/forge_new_gym_card.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_existing_gym_card.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_new_gym_card.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/forge_gym_detail.dart';
 import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
 class ForgeView extends ConsumerStatefulWidget {

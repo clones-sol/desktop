@@ -6,22 +6,21 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trainingSessionNotifierHash() =>
-    r'3c05b391475e823c799d32895735bfd09c99ef9c';
+String _$forgeNotifierHash() => r'25389fffaf121dfce0af2d0f58a1b9c153538bac';
 
-/// See also [TrainingSessionNotifier].
-@ProviderFor(TrainingSessionNotifier)
-final trainingSessionNotifierProvider = AutoDisposeNotifierProvider<
-    TrainingSessionNotifier, TrainingSessionState>.internal(
-  TrainingSessionNotifier.new,
-  name: r'trainingSessionNotifierProvider',
+/// See also [ForgeNotifier].
+@ProviderFor(ForgeNotifier)
+final forgeNotifierProvider =
+    AutoDisposeNotifierProvider<ForgeNotifier, ForgeState>.internal(
+  ForgeNotifier.new,
+  name: r'forgeNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$trainingSessionNotifierHash,
+      : _$forgeNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TrainingSessionNotifier = AutoDisposeNotifier<TrainingSessionState>;
+typedef _$ForgeNotifier = AutoDisposeNotifier<ForgeState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

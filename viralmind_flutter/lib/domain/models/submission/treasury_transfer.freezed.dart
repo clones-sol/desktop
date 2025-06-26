@@ -24,7 +24,7 @@ mixin _$TreasuryTransfer {
   String get treasuryWallet => throw _privateConstructorUsedError;
   int get amount => throw _privateConstructorUsedError;
   int get timestamp => throw _privateConstructorUsedError;
-  String get txHash => throw _privateConstructorUsedError;
+  String? get txHash => throw _privateConstructorUsedError;
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
 
@@ -49,7 +49,7 @@ abstract class $TreasuryTransferCopyWith<$Res> {
       String treasuryWallet,
       int amount,
       int timestamp,
-      String txHash,
+      String? txHash,
       @JsonKey(name: '_id') String id});
 }
 
@@ -72,7 +72,7 @@ class _$TreasuryTransferCopyWithImpl<$Res, $Val extends TreasuryTransfer>
     Object? treasuryWallet = null,
     Object? amount = null,
     Object? timestamp = null,
-    Object? txHash = null,
+    Object? txHash = freezed,
     Object? id = null,
   }) {
     return _then(_value.copyWith(
@@ -92,10 +92,10 @@ class _$TreasuryTransferCopyWithImpl<$Res, $Val extends TreasuryTransfer>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      txHash: null == txHash
+      txHash: freezed == txHash
           ? _value.txHash
           : txHash // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -117,7 +117,7 @@ abstract class _$$TreasuryTransferImplCopyWith<$Res>
       String treasuryWallet,
       int amount,
       int timestamp,
-      String txHash,
+      String? txHash,
       @JsonKey(name: '_id') String id});
 }
 
@@ -138,7 +138,7 @@ class __$$TreasuryTransferImplCopyWithImpl<$Res>
     Object? treasuryWallet = null,
     Object? amount = null,
     Object? timestamp = null,
-    Object? txHash = null,
+    Object? txHash = freezed,
     Object? id = null,
   }) {
     return _then(_$TreasuryTransferImpl(
@@ -158,10 +158,10 @@ class __$$TreasuryTransferImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      txHash: null == txHash
+      txHash: freezed == txHash
           ? _value.txHash
           : txHash // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -178,7 +178,7 @@ class _$TreasuryTransferImpl implements _TreasuryTransfer {
       required this.treasuryWallet,
       required this.amount,
       required this.timestamp,
-      required this.txHash,
+      this.txHash,
       @JsonKey(name: '_id') required this.id});
 
   factory _$TreasuryTransferImpl.fromJson(Map<String, dynamic> json) =>
@@ -193,7 +193,7 @@ class _$TreasuryTransferImpl implements _TreasuryTransfer {
   @override
   final int timestamp;
   @override
-  final String txHash;
+  final String? txHash;
   @override
   @JsonKey(name: '_id')
   final String id;
@@ -247,7 +247,7 @@ abstract class _TreasuryTransfer implements TreasuryTransfer {
       required final String treasuryWallet,
       required final int amount,
       required final int timestamp,
-      required final String txHash,
+      final String? txHash,
       @JsonKey(name: '_id') required final String id}) = _$TreasuryTransferImpl;
 
   factory _TreasuryTransfer.fromJson(Map<String, dynamic> json) =
@@ -262,7 +262,7 @@ abstract class _TreasuryTransfer implements TreasuryTransfer {
   @override
   int get timestamp;
   @override
-  String get txHash;
+  String? get txHash;
   @override
   @JsonKey(name: '_id')
   String get id;
