@@ -6,7 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:viralmind_flutter/application/deeplink_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
-import 'package:viralmind_flutter/ui/views/forge/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';

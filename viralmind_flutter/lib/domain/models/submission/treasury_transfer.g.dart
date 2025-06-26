@@ -13,7 +13,7 @@ _$TreasuryTransferImpl _$$TreasuryTransferImplFromJson(
       treasuryWallet: json['treasuryWallet'] as String,
       amount: (json['amount'] as num).toInt(),
       timestamp: (json['timestamp'] as num).toInt(),
-      txHash: json['txHash'] as String,
+      txHash: json['txHash'] as String?,
       id: json['_id'] as String,
     );
 

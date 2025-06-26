@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
 
-class ForgeGymSettingsTab extends StatefulWidget {
-  const ForgeGymSettingsTab({super.key, required this.pool});
-  final TrainingPool pool;
+class ForgeGymSettingsTab extends ConsumerStatefulWidget {
+  const ForgeGymSettingsTab({super.key});
 
   @override
-  State<ForgeGymSettingsTab> createState() => _ForgeGymSettingsTabState();
+  ConsumerState<ForgeGymSettingsTab> createState() =>
+      _ForgeGymSettingsTabState();
 }
 
-class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
-  late TextEditingController _nameController;
-  late TextEditingController _priceController;
+class _ForgeGymSettingsTabState extends ConsumerState<ForgeGymSettingsTab> {
+  late final TextEditingController _nameController;
+  late final TextEditingController _priceController;
   bool _enableUploadLimit = false;
   int _uploadLimit = 10;
   String _limitType = 'per-task';
@@ -22,13 +24,15 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.pool.name);
-    _priceController = TextEditingController(
-      text: widget.pool.pricePerDemo?.toString() ?? '1',
-    );
-    _enableUploadLimit = widget.pool.uploadLimit != null;
-    _uploadLimit = widget.pool.uploadLimit?.type ?? 10;
-    _limitType = (widget.pool.uploadLimit?.limitType ?? 'per-task').toString();
+    final pool = ref.read(forgeNotifierProvider).pool;
+    _nameController = TextEditingController(text: pool?.name);
+    _priceController =
+        TextEditingController(text: pool?.pricePerDemo?.toString() ?? '1');
+    if (pool != null) {
+      _enableUploadLimit = pool.uploadLimit != null;
+      _uploadLimit = pool.uploadLimit?.type ?? 10;
+      _limitType = (pool.uploadLimit?.limitType ?? 'per-task').toString();
+    }
   }
 
   @override
@@ -40,8 +44,28 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final tokenSymbol = widget.pool.token.symbol;
-    final funds = widget.pool.funds;
+    ref.listen(forgeNotifierProvider.select((value) => value.pool),
+        (previous, next) {
+      if (previous == next || next == null) return;
+      if (_nameController.text != next.name) {
+        _nameController.text = next.name;
+      }
+      final price = next.pricePerDemo?.toString() ?? '1';
+      if (_priceController.text != price) {
+        _priceController.text = price;
+      }
+
+      setState(() {
+        _enableUploadLimit = next.uploadLimit != null;
+        _uploadLimit = next.uploadLimit?.type ?? 10;
+        _limitType = (next.uploadLimit?.limitType ?? 'per-task').toString();
+      });
+    });
+    final pool = ref.watch(forgeNotifierProvider).pool;
+    if (pool == null) return const SizedBox.shrink();
+
+    final tokenSymbol = pool.token.symbol;
+    final funds = pool.funds;
     final pricePerDemo = double.tryParse(_priceController.text) ?? 1;
     final possibleDemos = pricePerDemo > 0 ? (funds / pricePerDemo).floor() : 0;
     return SingleChildScrollView(
@@ -110,7 +134,7 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
                       vertical: 12,
                     ),
                     child: SelectableText(
-                      widget.pool.depositAddress,
+                      pool.depositAddress,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ),
@@ -121,7 +145,7 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
                 buttonText: 'Copy',
                 onTap: () {
                   Clipboard.setData(
-                    ClipboardData(text: widget.pool.depositAddress),
+                    ClipboardData(text: pool.depositAddress),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Address copied!')),
@@ -498,6 +522,23 @@ class _ForgeGymSettingsTabState extends State<ForgeGymSettingsTab> {
               BtnPrimary(
                 onTap: () {},
                 buttonText: 'Save',
+              ),
+              const SizedBox(width: 16),
+              BtnPrimary(
+                onTap: () {
+                  ref.read(forgeNotifierProvider.notifier)
+                    ..setPool(
+                      pool.copyWith(
+                        status: pool.status == TrainingPoolStatus.live
+                            ? TrainingPoolStatus.paused
+                            : TrainingPoolStatus.live,
+                      ),
+                    )
+                    ..save();
+                },
+                buttonText: pool.status == TrainingPoolStatus.live
+                    ? 'Pause Gym'
+                    : 'Activate Gym',
               ),
             ],
           ),

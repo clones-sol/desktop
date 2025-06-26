@@ -686,7 +686,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       late ProviderSubscription<Map<String, UploadTaskState>> sub;
       sub = ref.listen<Map<String, UploadTaskState>>(uploadQueueProvider,
           (previous, next) async {
-        print('uploadState: $next');
         final uploadState = next[recordingId];
         if (uploadState == null) return;
 

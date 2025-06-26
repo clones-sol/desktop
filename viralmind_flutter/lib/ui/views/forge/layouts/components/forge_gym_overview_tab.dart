@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/stats_card.dart';
+import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
 import 'package:viralmind_flutter/utils/format_num.dart';
 
-class ForgeGymOverviewTab extends StatefulWidget {
-  const ForgeGymOverviewTab({super.key, required this.pool});
-  final TrainingPool pool;
+class ForgeGymOverviewTab extends ConsumerStatefulWidget {
+  const ForgeGymOverviewTab({super.key});
 
   @override
-  State<ForgeGymOverviewTab> createState() => _ForgeGymOverviewTabState();
+  ConsumerState<ForgeGymOverviewTab> createState() =>
+      _ForgeGymOverviewTabState();
 }
 
-class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
+class _ForgeGymOverviewTabState extends ConsumerState<ForgeGymOverviewTab> {
   late TextEditingController _nameController;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.pool.name);
+    Future(() async {
+      final pool = ref.read(forgeNotifierProvider).pool;
+      if (pool != null) {
+        _nameController = TextEditingController(text: pool.name);
+      }
+    });
   }
 
   @override
@@ -32,6 +39,10 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
 
   @override
   Widget build(BuildContext context) {
+    final pool = ref.watch(forgeNotifierProvider).pool;
+    if (pool == null) {
+      return const SizedBox.shrink();
+    }
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -80,7 +91,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
                     SelectableText(
-                      widget.pool.depositAddress,
+                      pool.depositAddress,
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -90,7 +101,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
                 buttonText: 'Copy',
                 onTap: () {
                   Clipboard.setData(
-                    ClipboardData(text: widget.pool.depositAddress),
+                    ClipboardData(text: pool.depositAddress),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Address copied!')),
@@ -103,7 +114,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
           MessageBox(
             messageBoxType: MessageBoxType.info,
             content: Text(
-              'Send ${widget.pool.token.symbol} tokens to this address to fund your gym.',
+              'Send ${pool.token.symbol} tokens to this address to fund your gym.',
               style: TextStyle(
                 color: VMColors.secondaryText,
               ),
@@ -190,8 +201,8 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
               ),
             ],
           ),
-          if (widget.pool.status == TrainingPoolStatus.noGas ||
-              widget.pool.status == TrainingPoolStatus.noFunds)
+          if (pool.status == TrainingPoolStatus.noGas ||
+              pool.status == TrainingPoolStatus.noFunds)
             _buildNoFundsMessageBox(),
           const SizedBox(height: 10),
           _buildGlobalStats(),
@@ -201,6 +212,10 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
   }
 
   Widget _buildNoFundsMessageBox() {
+    final pool = ref.watch(forgeNotifierProvider).pool;
+    if (pool == null) {
+      return const SizedBox.shrink();
+    }
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: MessageBox(
@@ -209,7 +224,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.pool.status == TrainingPoolStatus.noGas
+              pool.status == TrainingPoolStatus.noGas
                   ? 'Insufficient SOL for Gas'
                   : 'Insufficient VIRAL Tokens',
               style: const TextStyle(
@@ -218,7 +233,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
               ),
             ),
             Text(
-              widget.pool.status == TrainingPoolStatus.noGas
+              pool.status == TrainingPoolStatus.noGas
                   ? 'Your gym needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
                   : "Your gym needs VIRAL tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
               style: TextStyle(
@@ -226,7 +241,7 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
               ),
             ),
             Text(
-              'Deposit ${widget.pool.status == TrainingPoolStatus.noGas ? 'SOL' : 'VIRAL'} to the address above to activate your gym and start collecting data.',
+              'Deposit ${pool.status == TrainingPoolStatus.noGas ? 'SOL' : 'VIRAL'} to the address above to activate your gym and start collecting data.',
               style: TextStyle(
                 color: VMColors.secondaryText,
               ),
@@ -238,6 +253,10 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
   }
 
   Widget _buildGlobalStats() {
+    final pool = ref.watch(forgeNotifierProvider).pool;
+    if (pool == null) {
+      return const SizedBox.shrink();
+    }
     return SizedBox(
       width: double.infinity,
       child: Column(
@@ -254,19 +273,19 @@ class _ForgeGymOverviewTabState extends State<ForgeGymOverviewTab> {
             children: [
               StatCard(
                 label: 'Total Demonstrations',
-                value: widget.pool.demonstrations.toString(),
+                value: pool.demonstrations.toString(),
               ),
               StatCard(
                 label: 'Reward Per Demo',
-                value: formatNumberWithSeparator(widget.pool.pricePerDemo),
+                value: formatNumberWithSeparator(pool.pricePerDemo),
               ),
               StatCard(
                 label: 'Pool Balance',
-                value: formatNumberWithSeparator(widget.pool.funds),
+                value: formatNumberWithSeparator(pool.funds),
               ),
               StatCard(
                 label: 'Gas Balance',
-                value: formatNumberWithSeparator(widget.pool.solBalance ?? 0),
+                value: formatNumberWithSeparator(pool.solBalance ?? 0),
               ),
             ],
           ),

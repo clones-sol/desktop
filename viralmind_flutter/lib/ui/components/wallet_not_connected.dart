@@ -15,6 +15,14 @@ class WalletNotConnected extends ConsumerWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
+        Opacity(
+          opacity: 0.05,
+          child: Image.asset(
+            Assets.walletToConnectIconWB,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+          ),
+        ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -28,14 +36,6 @@ class WalletNotConnected extends ConsumerWidget {
               buttonText: 'Connect',
             ),
           ],
-        ),
-        Opacity(
-          opacity: 0.05,
-          child: Image.asset(
-            Assets.walletToConnectIconWB,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-          ),
         ),
       ],
     );
