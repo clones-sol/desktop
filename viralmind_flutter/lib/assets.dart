@@ -22,6 +22,10 @@ class Assets {
       '${assetIconsFolder}wallet_to_connect_wb_icon.png';
   static const String walletConnectedIcon =
       '${assetIconsFolder}wallet_connected_icon.png';
+  static const String deleteIcon = '${assetIconsFolder}delete_icon.png';
+  static const String editIcon = '${assetIconsFolder}edit_icon.png';
+  static const String hubIcon = '${assetIconsFolder}hub_icon.png';
+  static const String recordIcon = '${assetIconsFolder}record_icon.png';
 }
 
 class VMColors {
@@ -48,4 +52,11 @@ class VMColors {
     ],
     stops: const [0, 1],
   );
+
+  static const Color containerIcon1 = Color(0xFFF472B6);
+  static const Color containerIcon2 = Color(0xFF22D3EE);
+  static const Color containerIcon3 = Color(0xFFFB923C);
+  static const Color containerIcon4 = Color(0xFF4ADE80);
+  static const Color containerIcon5 = Color(0xFF8B5CF6);
+  static const Color containerIcon6 = Color(0xFFEC4899);
 }

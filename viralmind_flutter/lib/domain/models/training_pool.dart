@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:viralmind_flutter/domain/models/agent_deployment_info.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_limit.dart';
 
@@ -42,6 +43,7 @@ class TrainingPool with _$TrainingPool {
     @Default(false) bool unsavedUploadLimit,
     double? tokenBalance,
     DateTime? createdAt,
+    AgentDeploymentInfo? agentDeploymentInfo,
   }) = _TrainingPool;
 
   factory TrainingPool.fromJson(Map<String, dynamic> json) =>

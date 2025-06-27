@@ -40,6 +40,8 @@ mixin _$TrainingPool {
   bool get unsavedUploadLimit => throw _privateConstructorUsedError;
   double? get tokenBalance => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  AgentDeploymentInfo? get agentDeploymentInfo =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this TrainingPool to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -76,10 +78,12 @@ abstract class $TrainingPoolCopyWith<$Res> {
       UploadLimit? uploadLimit,
       bool unsavedUploadLimit,
       double? tokenBalance,
-      DateTime? createdAt});
+      DateTime? createdAt,
+      AgentDeploymentInfo? agentDeploymentInfo});
 
   $TokenCopyWith<$Res> get token;
   $UploadLimitCopyWith<$Res>? get uploadLimit;
+  $AgentDeploymentInfoCopyWith<$Res>? get agentDeploymentInfo;
 }
 
 /// @nodoc
@@ -116,6 +120,7 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
     Object? unsavedUploadLimit = null,
     Object? tokenBalance = freezed,
     Object? createdAt = freezed,
+    Object? agentDeploymentInfo = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -194,6 +199,10 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      agentDeploymentInfo: freezed == agentDeploymentInfo
+          ? _value.agentDeploymentInfo
+          : agentDeploymentInfo // ignore: cast_nullable_to_non_nullable
+              as AgentDeploymentInfo?,
     ) as $Val);
   }
 
@@ -218,6 +227,21 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
 
     return $UploadLimitCopyWith<$Res>(_value.uploadLimit!, (value) {
       return _then(_value.copyWith(uploadLimit: value) as $Val);
+    });
+  }
+
+  /// Create a copy of TrainingPool
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $AgentDeploymentInfoCopyWith<$Res>? get agentDeploymentInfo {
+    if (_value.agentDeploymentInfo == null) {
+      return null;
+    }
+
+    return $AgentDeploymentInfoCopyWith<$Res>(_value.agentDeploymentInfo!,
+        (value) {
+      return _then(_value.copyWith(agentDeploymentInfo: value) as $Val);
     });
   }
 }
@@ -249,12 +273,15 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       UploadLimit? uploadLimit,
       bool unsavedUploadLimit,
       double? tokenBalance,
-      DateTime? createdAt});
+      DateTime? createdAt,
+      AgentDeploymentInfo? agentDeploymentInfo});
 
   @override
   $TokenCopyWith<$Res> get token;
   @override
   $UploadLimitCopyWith<$Res>? get uploadLimit;
+  @override
+  $AgentDeploymentInfoCopyWith<$Res>? get agentDeploymentInfo;
 }
 
 /// @nodoc
@@ -289,6 +316,7 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
     Object? unsavedUploadLimit = null,
     Object? tokenBalance = freezed,
     Object? createdAt = freezed,
+    Object? agentDeploymentInfo = freezed,
   }) {
     return _then(_$TrainingPoolImpl(
       id: null == id
@@ -367,6 +395,10 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      agentDeploymentInfo: freezed == agentDeploymentInfo
+          ? _value.agentDeploymentInfo
+          : agentDeploymentInfo // ignore: cast_nullable_to_non_nullable
+              as AgentDeploymentInfo?,
     ));
   }
 }
@@ -393,7 +425,8 @@ class _$TrainingPoolImpl implements _TrainingPool {
       this.uploadLimit,
       this.unsavedUploadLimit = false,
       this.tokenBalance,
-      this.createdAt});
+      this.createdAt,
+      this.agentDeploymentInfo});
 
   factory _$TrainingPoolImpl.fromJson(Map<String, dynamic> json) =>
       _$$TrainingPoolImplFromJson(json);
@@ -441,10 +474,12 @@ class _$TrainingPoolImpl implements _TrainingPool {
   final double? tokenBalance;
   @override
   final DateTime? createdAt;
+  @override
+  final AgentDeploymentInfo? agentDeploymentInfo;
 
   @override
   String toString() {
-    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, tokenBalance: $tokenBalance, createdAt: $createdAt)';
+    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, tokenBalance: $tokenBalance, createdAt: $createdAt, agentDeploymentInfo: $agentDeploymentInfo)';
   }
 
   @override
@@ -483,7 +518,9 @@ class _$TrainingPoolImpl implements _TrainingPool {
             (identical(other.tokenBalance, tokenBalance) ||
                 other.tokenBalance == tokenBalance) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.agentDeploymentInfo, agentDeploymentInfo) ||
+                other.agentDeploymentInfo == agentDeploymentInfo));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -508,7 +545,8 @@ class _$TrainingPoolImpl implements _TrainingPool {
         uploadLimit,
         unsavedUploadLimit,
         tokenBalance,
-        createdAt
+        createdAt,
+        agentDeploymentInfo
       ]);
 
   /// Create a copy of TrainingPool
@@ -547,7 +585,8 @@ abstract class _TrainingPool implements TrainingPool {
       final UploadLimit? uploadLimit,
       final bool unsavedUploadLimit,
       final double? tokenBalance,
-      final DateTime? createdAt}) = _$TrainingPoolImpl;
+      final DateTime? createdAt,
+      final AgentDeploymentInfo? agentDeploymentInfo}) = _$TrainingPoolImpl;
 
   factory _TrainingPool.fromJson(Map<String, dynamic> json) =
       _$TrainingPoolImpl.fromJson;
@@ -591,6 +630,8 @@ abstract class _TrainingPool implements TrainingPool {
   double? get tokenBalance;
   @override
   DateTime? get createdAt;
+  @override
+  AgentDeploymentInfo? get agentDeploymentInfo;
 
   /// Create a copy of TrainingPool
   /// with the given fields replaced by the non-null parameter values.

@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ForgeState {
-  TrainingPool? get pool => throw _privateConstructorUsedError;
+  bool get showGymDetail => throw _privateConstructorUsedError;
+  TrainingPool? get selectedPool => throw _privateConstructorUsedError;
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,9 +32,9 @@ abstract class $ForgeStateCopyWith<$Res> {
           ForgeState value, $Res Function(ForgeState) then) =
       _$ForgeStateCopyWithImpl<$Res, ForgeState>;
   @useResult
-  $Res call({TrainingPool? pool});
+  $Res call({bool showGymDetail, TrainingPool? selectedPool});
 
-  $TrainingPoolCopyWith<$Res>? get pool;
+  $TrainingPoolCopyWith<$Res>? get selectedPool;
 }
 
 /// @nodoc
@@ -51,12 +52,17 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pool = freezed,
+    Object? showGymDetail = null,
+    Object? selectedPool = freezed,
   }) {
     return _then(_value.copyWith(
-      pool: freezed == pool
-          ? _value.pool
-          : pool // ignore: cast_nullable_to_non_nullable
+      showGymDetail: null == showGymDetail
+          ? _value.showGymDetail
+          : showGymDetail // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedPool: freezed == selectedPool
+          ? _value.selectedPool
+          : selectedPool // ignore: cast_nullable_to_non_nullable
               as TrainingPool?,
     ) as $Val);
   }
@@ -65,13 +71,13 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TrainingPoolCopyWith<$Res>? get pool {
-    if (_value.pool == null) {
+  $TrainingPoolCopyWith<$Res>? get selectedPool {
+    if (_value.selectedPool == null) {
       return null;
     }
 
-    return $TrainingPoolCopyWith<$Res>(_value.pool!, (value) {
-      return _then(_value.copyWith(pool: value) as $Val);
+    return $TrainingPoolCopyWith<$Res>(_value.selectedPool!, (value) {
+      return _then(_value.copyWith(selectedPool: value) as $Val);
     });
   }
 }
@@ -84,10 +90,10 @@ abstract class _$$ForgeStateImplCopyWith<$Res>
       __$$ForgeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TrainingPool? pool});
+  $Res call({bool showGymDetail, TrainingPool? selectedPool});
 
   @override
-  $TrainingPoolCopyWith<$Res>? get pool;
+  $TrainingPoolCopyWith<$Res>? get selectedPool;
 }
 
 /// @nodoc
@@ -103,12 +109,17 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? pool = freezed,
+    Object? showGymDetail = null,
+    Object? selectedPool = freezed,
   }) {
     return _then(_$ForgeStateImpl(
-      pool: freezed == pool
-          ? _value.pool
-          : pool // ignore: cast_nullable_to_non_nullable
+      showGymDetail: null == showGymDetail
+          ? _value.showGymDetail
+          : showGymDetail // ignore: cast_nullable_to_non_nullable
+              as bool,
+      selectedPool: freezed == selectedPool
+          ? _value.selectedPool
+          : selectedPool // ignore: cast_nullable_to_non_nullable
               as TrainingPool?,
     ));
   }
@@ -117,14 +128,18 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ForgeStateImpl extends _ForgeState {
-  const _$ForgeStateImpl({this.pool}) : super._();
+  const _$ForgeStateImpl({this.showGymDetail = false, this.selectedPool})
+      : super._();
 
   @override
-  final TrainingPool? pool;
+  @JsonKey()
+  final bool showGymDetail;
+  @override
+  final TrainingPool? selectedPool;
 
   @override
   String toString() {
-    return 'ForgeState(pool: $pool)';
+    return 'ForgeState(showGymDetail: $showGymDetail, selectedPool: $selectedPool)';
   }
 
   @override
@@ -132,11 +147,14 @@ class _$ForgeStateImpl extends _ForgeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ForgeStateImpl &&
-            (identical(other.pool, pool) || other.pool == pool));
+            (identical(other.showGymDetail, showGymDetail) ||
+                other.showGymDetail == showGymDetail) &&
+            (identical(other.selectedPool, selectedPool) ||
+                other.selectedPool == selectedPool));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pool);
+  int get hashCode => Object.hash(runtimeType, showGymDetail, selectedPool);
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.
@@ -148,11 +166,15 @@ class _$ForgeStateImpl extends _ForgeState {
 }
 
 abstract class _ForgeState extends ForgeState {
-  const factory _ForgeState({final TrainingPool? pool}) = _$ForgeStateImpl;
+  const factory _ForgeState(
+      {final bool showGymDetail,
+      final TrainingPool? selectedPool}) = _$ForgeStateImpl;
   const _ForgeState._() : super._();
 
   @override
-  TrainingPool? get pool;
+  bool get showGymDetail;
+  @override
+  TrainingPool? get selectedPool;
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.

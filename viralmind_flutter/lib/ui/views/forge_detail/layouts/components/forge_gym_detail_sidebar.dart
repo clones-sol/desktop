@@ -1,136 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:viralmind_flutter/application/route_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/ui/components/upload_manager.dart';
-import 'package:viralmind_flutter/ui/components/wallet_button.dart';
-import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
-import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
-import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
-import 'package:viralmind_flutter/ui/views/hub/layouts/hub_view.dart';
-import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
-import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.dart';
 
-class Sidebar extends ConsumerWidget {
-  const Sidebar({
+final forgeDetailTabProvider = StateProvider<String>((ref) => 'settings');
+
+class ForgeGymDetailSidebar extends ConsumerWidget {
+  const ForgeGymDetailSidebar({
     super.key,
-    this.isRecording = false,
-    this.isRecordingLoading = false,
-    this.onStopRecording,
+    required this.poolId,
   });
 
-  final bool isRecording;
-  final bool isRecordingLoading;
-  final VoidCallback? onStopRecording;
+  final String poolId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentRoute = ref.watch(currentRouteProvider);
+    final currentTab = ref.watch(forgeDetailTabProvider);
     final buttons = [
       SidebarButtonData(
-        path: HubView.routeName,
-        imagePath: Assets.hubIcon,
-        label: 'Hub',
+        path: '/forge/$poolId/settings',
+        icon: Icons.info,
+        label: 'General',
+        key: 'settings',
       ),
       SidebarButtonData(
-        path: GymView.routeName,
-        imagePath: Assets.gymIcon,
-        label: 'Gym',
+        path: '/forge/$poolId/tasks',
+        icon: Icons.list,
+        label: 'Tasks',
+        key: 'tasks',
       ),
       SidebarButtonData(
-        path: GymHistoryView.routeName,
-        imagePath: Assets.gymHistoryIcon,
-        label: 'Gym History',
+        path: '/forge/$poolId/uploads',
+        icon: Icons.upload,
+        label: 'Uploads',
+        key: 'uploads',
       ),
       SidebarButtonData(
-        path: SkillTreeView.routeName,
-        imagePath: Assets.skillsTreeIcon,
-        label: 'Skills tree',
-      ),
-      SidebarButtonData(
-        path: LeaderboardsView.routeName,
-        imagePath: Assets.statsIcon,
-        label: 'Leaderboards',
-      ),
-      SidebarButtonData(
-        path: ForgeView.routeName,
-        imagePath: Assets.forgeIcon,
-        label: 'Forge',
+        path: '/forge/$poolId/deploy',
+        icon: Icons.cloud_upload,
+        label: 'Deploy',
+        key: 'deploy',
       ),
     ];
 
-    var activeIndex =
-        buttons.indexWhere((b) => currentRoute.startsWith(b.path));
+    var activeIndex = buttons.indexWhere((b) => b.key == currentTab);
     if (activeIndex == -1) activeIndex = 0;
 
     return Container(
-      width: 64,
+      width: 100,
       color: Colors.transparent,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Image.asset(
-              Assets.logoIcon,
-              height: 32,
-              width: 32,
-              fit: BoxFit.contain,
-            ),
-          ),
           Expanded(
             child: AnimatedSidebarSection(
               buttons: buttons,
               activeIndex: activeIndex,
               onTap: (i) {
+                ref.read(forgeDetailTabProvider.notifier).state =
+                    buttons[i].key;
                 context.go(buttons[i].path);
               },
             ),
-          ),
-          Column(
-            children: [
-              if (isRecording)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: IconButton(
-                    icon: const Icon(Icons.stop, color: Colors.white, size: 32),
-                    onPressed: onStopRecording,
-                    tooltip: 'Stop Recording',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: const CircleBorder(),
-                    ),
-                  ),
-                )
-              else if (isRecordingLoading)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: IconButton(
-                    icon: const SizedBox(
-                      width: 32,
-                      height: 32,
-                      child: CircularProgressIndicator(
-                        color: Colors.red,
-                        strokeWidth: 3,
-                      ),
-                    ),
-                    onPressed: null,
-                    tooltip: 'Stop Recording',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: const CircleBorder(),
-                    ),
-                  ),
-                ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: UploadManagerWidget(),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: WalletButton(),
-              ),
-            ],
           ),
         ],
       ),
@@ -225,16 +155,37 @@ class AnimatedSidebarSection extends StatelessWidget {
                                     VMColors.tertiary.withValues(alpha: 1),
                                     BlendMode.srcATop,
                                   ),
-                                  child: Image.asset(
-                                    button.imagePath,
-                                    width: 40,
-                                    height: 40,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        button.icon,
+                                        size: 30,
+                                        color: VMColors.secondaryText,
+                                      ),
+                                      Text(
+                                        button.label,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall,
+                                      ),
+                                    ],
                                   ),
                                 )
-                              : Image.asset(
-                                  button.imagePath,
-                                  width: 40,
-                                  height: 40,
+                              : Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      button.icon,
+                                      color: VMColors.secondaryText,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      button.label,
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
                                 ),
                         ),
                       ),
@@ -253,10 +204,12 @@ class AnimatedSidebarSection extends StatelessWidget {
 class SidebarButtonData {
   SidebarButtonData({
     required this.path,
-    required this.imagePath,
+    required this.icon,
     required this.label,
+    required this.key,
   });
   final String path;
-  final String imagePath;
+  final IconData icon;
   final String label;
+  final String key;
 }
