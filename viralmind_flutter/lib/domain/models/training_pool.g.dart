@@ -31,6 +31,10 @@ _$TrainingPoolImpl _$$TrainingPoolImplFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
+      agentDeploymentInfo: json['agentDeploymentInfo'] == null
+          ? null
+          : AgentDeploymentInfo.fromJson(
+              json['agentDeploymentInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
@@ -54,6 +58,7 @@ Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
       'unsavedUploadLimit': instance.unsavedUploadLimit,
       'tokenBalance': instance.tokenBalance,
       'createdAt': instance.createdAt?.toIso8601String(),
+      'agentDeploymentInfo': instance.agentDeploymentInfo,
     };
 
 const _$TrainingPoolStatusEnumMap = {

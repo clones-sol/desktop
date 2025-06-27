@@ -10,10 +10,8 @@ class MainLayout extends ConsumerStatefulWidget {
   const MainLayout({
     super.key,
     required this.child,
-    required this.currentRoute,
   });
   final Widget child;
-  final String currentRoute;
 
   @override
   ConsumerState<MainLayout> createState() => _MainLayoutState();
@@ -90,7 +88,6 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: LayoutBackground(
-        currentRoute: widget.currentRoute,
         child: widget.child,
       ),
     );

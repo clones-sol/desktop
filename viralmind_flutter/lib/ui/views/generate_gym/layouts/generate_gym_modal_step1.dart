@@ -77,7 +77,11 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
                 contentPadding: const EdgeInsets.only(left: 10),
                 hintText: 'List the skills to train (one per line)...',
                 hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: VMColors.secondaryText.withValues(alpha: 0.3),
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.color!
+                          .withValues(alpha: 0.2),
                     ),
               ),
             ),

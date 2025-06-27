@@ -13,9 +13,11 @@ class ForgeNotifier extends _$ForgeNotifier {
     return const ForgeState();
   }
 
-  void setPool(TrainingPool pool) {
-    state = state.copyWith(pool: pool);
+  void setShowGymDetail(bool show) {
+    state = state.copyWith(showGymDetail: show);
   }
 
-  Future<void> save() async {}
+  void setSelectedPool(TrainingPool? pool) {
+    state = state.copyWith(selectedPool: pool);
+  }
 }

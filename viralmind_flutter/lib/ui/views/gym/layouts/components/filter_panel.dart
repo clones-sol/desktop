@@ -74,7 +74,14 @@ class FilterPanel extends ConsumerWidget {
                             horizontal: 10,
                             vertical: 12,
                           ),
-                          hintStyle: Theme.of(context).textTheme.bodyMedium,
+                          hintStyle:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color!
+                                        .withValues(alpha: 0.2),
+                                  ),
                         ),
                       ),
                     ),
@@ -118,8 +125,16 @@ class FilterPanel extends ConsumerWidget {
                                   vertical: 12,
                                 ),
                                 hintText: 'Gym name',
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodyMedium,
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color!
+                                          .withValues(alpha: 0.2),
+                                    ),
                               ),
                             ),
                           ),
@@ -167,8 +182,16 @@ class FilterPanel extends ConsumerWidget {
                                   vertical: 12,
                                 ),
                                 hintText: 'Gym name',
-                                hintStyle:
-                                    Theme.of(context).textTheme.bodyMedium,
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium
+                                          ?.color!
+                                          .withValues(alpha: 0.2),
+                                    ),
                               ),
                             ),
                           ),

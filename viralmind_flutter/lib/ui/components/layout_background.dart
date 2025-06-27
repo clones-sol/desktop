@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/sidebar.dart';
 
-class LayoutBackground extends StatelessWidget {
+class LayoutBackground extends ConsumerWidget {
   const LayoutBackground({
     super.key,
     required this.child,
-    required this.currentRoute,
     this.actions,
   });
   final Widget child;
-  final String currentRoute;
+
   final Widget? actions;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenHeight = constraints.maxHeight;
@@ -55,9 +55,9 @@ class LayoutBackground extends StatelessWidget {
             Positioned.fill(
               child: Row(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     width: 100,
-                    child: Sidebar(currentRoute: currentRoute),
+                    child: Sidebar(),
                   ),
                   Container(
                     width: 1,

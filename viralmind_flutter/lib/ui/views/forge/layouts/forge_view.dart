@@ -1,20 +1,12 @@
-import 'dart:ui';
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/application/pool.dart';
 import 'package:viralmind_flutter/application/session/provider.dart';
-import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/domain/models/training_pool.dart';
-import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
-import 'package:viralmind_flutter/ui/components/gym_status.dart';
 import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_existing_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_new_gym_card.dart';
-import 'package:viralmind_flutter/ui/views/forge/layouts/forge_gym_detail.dart';
-import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
 class ForgeView extends ConsumerStatefulWidget {
   const ForgeView({super.key});
@@ -26,10 +18,6 @@ class ForgeView extends ConsumerStatefulWidget {
 }
 
 class _ForgeViewState extends ConsumerState<ForgeView> {
-  bool _showGenerateGymModal = false;
-  String? _error;
-  TrainingPool? _selectedPool;
-
   @override
   Widget build(BuildContext context) {
     final session = ref.watch(sessionNotifierProvider);
@@ -37,398 +25,79 @@ class _ForgeViewState extends ConsumerState<ForgeView> {
       return const WalletNotConnected();
     }
     final poolsAsync = ref.watch(listPoolsProvider);
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final overlayWidth = constraints.maxWidth;
-        final overlayHeight = constraints.maxHeight;
-        return Stack(
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: SingleChildScrollView(
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(24),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Forge',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: 0.5,
-                            color: VMColors.secondaryText,
-                          ),
-                        ),
-                      ],
-                    ),
-                    poolsAsync.when(
-                      data: _buildPools,
-                      loading: () => const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 100),
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            strokeWidth: 1,
-                          ),
-                        ),
-                      ),
-                      error: (error, stack) => Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: MessageBox(
-                          messageBoxType: MessageBoxType.warning,
-                          content: Text(
-                            error.toString(),
-                            style: const TextStyle(color: Color(0xFFFF8400)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Forge',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-              ),
+              ],
             ),
-            if (_selectedPool != null)
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 400),
-                curve: Curves.easeInOutCubic,
-                left: _selectedPool != null ? 0 : overlayWidth,
-                top: 0,
-                width: overlayWidth,
-                height: overlayHeight,
-                child: IgnorePointer(
-                  ignoring: _selectedPool == null,
-                  child: AnimatedOpacity(
-                    duration: const Duration(milliseconds: 300),
-                    opacity: _selectedPool != null ? 1.0 : 0.0,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: Stack(
-                        children: [
-                          BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-                            child: Container(
-                              color: Colors.black.withValues(alpha: 0.3),
-                            ),
-                          ),
-                          AnimatedContainer(
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOutCubic,
-                            width: _selectedPool != null ? overlayWidth : 0,
-                            height: _selectedPool != null
-                                ? overlayHeight * 0.92
-                                : 0,
-                            child: _selectedPool != null
-                                ? Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 32,
-                                          right: 32,
-                                          top: 32,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  _selectedPool!.name,
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .titleLarge,
-                                                ),
-                                                const SizedBox(width: 10),
-                                                GymStatus(
-                                                  status: _selectedPool!.status,
-                                                ),
-                                              ],
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(
-                                                Icons.close_rounded,
-                                                color: VMColors.secondary,
-                                                size: 20,
-                                              ),
-                                              tooltip: 'Close',
-                                              onPressed: () => setState(
-                                                () => _selectedPool = null,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 32,
-                                          ),
-                                          child: ForgeGymDetail(
-                                            pool: _selectedPool!,
-                                            onBack: () => setState(
-                                              () => _selectedPool = null,
-                                            ),
-                                            onRegenerateTasks: () =>
-                                                setState(() {
-                                              _showGenerateGymModal = true;
-                                            }),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 20,
-                                          right: 20,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            BtnPrimary(
-                                              onTap: () {},
-                                              buttonText: 'Refresh Balance',
-                                              btnPrimaryType:
-                                                  BtnPrimaryType.outlinePrimary,
-                                            ),
-                                            const SizedBox(width: 16),
-                                            BtnPrimary(
-                                              onTap: () {},
-                                              buttonText: 'Save',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : null,
-                          ),
-                        ],
-                      ),
-                    ),
+            poolsAsync.when(
+              data: (pools) {
+                final allPools = [null, ...pools];
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 300,
+                    crossAxisSpacing: 20,
+                    mainAxisSpacing: 20,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemCount: allPools.length,
+                  itemBuilder: (context, index) {
+                    final pool = allPools[index];
+                    if (pool == null) {
+                      return ForgeNewGymCard(
+                        onTap: () {
+                          // TODO(reddwarf03): implement
+                        },
+                      );
+                    }
+                    return ForgeExistingGymCard(
+                      pool: pool,
+                      onTap: () {
+                        context.go(
+                          '/forge/${pool.id}/settings',
+                          extra: pool,
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: 100),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 1,
                   ),
                 ),
               ),
-            if (_showGenerateGymModal)
-              GenerateGymModal(
-                onClose: () {
-                  setState(() => _showGenerateGymModal = false);
-                },
-              ),
-          ],
-        );
-      },
-    );
-  }
-
-  Widget _buildPools(List<TrainingPool> pools) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: AutoSizeText(
-                  'Collect crowd-powered demonstrations, perfect for training AI agents.',
-                  maxLines: 2,
-                  textAlign: TextAlign.center,
-                  minFontSize: 14,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          if (_error != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.red.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.red.withValues(alpha: 0.1)),
-                ),
-                child: Text(
-                  _error!,
-                  style: const TextStyle(color: Colors.red),
+              error: (error, stack) => Padding(
+                padding: const EdgeInsets.all(20),
+                child: MessageBox(
+                  messageBoxType: MessageBoxType.warning,
+                  content: Text(
+                    error.toString(),
+                  ),
                 ),
               ),
             ),
-          _buildPoolsGrid(pools),
-        ],
+          ],
+        ),
       ),
     );
   }
-
-  Widget _buildPoolsGrid(List<TrainingPool> pools) {
-    final sortedPools = List<TrainingPool>.from(pools)
-      ..sort((a, b) {
-        if (a.status == TrainingPoolStatus.live &&
-            b.status != TrainingPoolStatus.live) {
-          return -1;
-        }
-        if (a.status != TrainingPoolStatus.live &&
-            b.status == TrainingPoolStatus.live) {
-          return 1;
-        }
-        return b.createdAt!.compareTo(a.createdAt!);
-      });
-
-    return GridView.extent(
-      maxCrossAxisExtent: 350,
-      childAspectRatio: 0.95,
-      crossAxisSpacing: 20,
-      mainAxisSpacing: 20,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      children: [
-        ForgeNewGymCard(
-          onTap: () => setState(() {
-            _showGenerateGymModal = true;
-          }),
-        ),
-        ...sortedPools.map(
-          (pool) => ForgeExistingGymCard(
-            pool: pool,
-            onTap: () => setState(() => _selectedPool = pool),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // TODO(reddwarf03): hmm?
-  /* Widget _buildPoolStats(TrainingPool pool) {
-    final possibleDemos = pool.pricePerDemo != null && pool.pricePerDemo! > 0
-        ? (pool.tokenBalance ?? 0 / pool.pricePerDemo!).floor()
-        : 0;
-    final totalDemos = pool.base.demonstrations + possibleDemos;
-    final demoPercentage = totalDemos > 0
-        ? (pool.base.demonstrations / totalDemos * 100).clamp(0, 100)
-        : 0;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '${(pool.tokenBalance ?? 0).toStringAsFixed(0)} ${pool.base.token.symbol}',
-              style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .secondary
-                    .withValues(alpha: 0.8),
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-            Text(
-              'Pool Balance',
-              style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurface
-                    .withValues(alpha: 0.6),
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ],
-        ),
-        if (pool.base.pricePerDemo != null && pool.base.pricePerDemo! > 0) ...[
-          const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Uploads / Remaining Demos',
-                style: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.6),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-              Text(
-                '${pool.base.demonstrations} / $possibleDemos',
-                style: TextStyle(
-                  color: Theme.of(
-                    context,
-                  ).colorScheme.onSurface.withValues(alpha: 0.6),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          Stack(
-            children: [
-              Container(
-                height: 6,
-                decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surface
-                      .withValues(alpha: 0.3),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
-              Container(
-                height: 6,
-                width: MediaQuery.of(context).size.width * demoPercentage / 100,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withValues(alpha: 0.8),
-                      Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withValues(alpha: 0.6),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(3),
-                ),
-              ),
-            ],
-          ),
-        ],
-        const SizedBox(height: 8),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton.icon(
-            onPressed: () => _navigateToGymDetail(pool.base),
-            icon: Icon(
-              FontAwesomeIcons.chevronRight,
-              size: 16,
-              color: Theme.of(context)
-                  .colorScheme
-                  .secondary
-                  .withValues(alpha: 0.8),
-            ),
-            label: Text(
-              'View Details',
-              style: TextStyle(
-                color: Theme.of(context)
-                    .colorScheme
-                    .secondary
-                    .withValues(alpha: 0.8),
-                fontSize: 14,
-                fontWeight: FontWeight.w300,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
 }

@@ -4,11 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:viralmind_flutter/application/deeplink_provider.dart';
+import 'package:viralmind_flutter/application/route_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_deploy_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_settings_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_tasks_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_uploads_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_detail_shell.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
+import 'package:viralmind_flutter/ui/views/hub/layouts/hub_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
@@ -19,11 +26,16 @@ final _router = GoRouter(
     ShellRoute(
       builder: (context, state, child) {
         return MainLayout(
-          currentRoute: state.uri.path,
           child: child,
         );
       },
       routes: [
+        GoRoute(
+          path: HubView.routeName,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: HubView(),
+          ),
+        ),
         GoRoute(
           path: GymView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
@@ -41,6 +53,43 @@ final _router = GoRouter(
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ForgeView(),
           ),
+        ),
+        ShellRoute(
+          pageBuilder: (context, state, child) {
+            final poolId = state.pathParameters['id']!;
+            return NoTransitionPage(
+              child: ForgeGymDetailShell(
+                poolId: poolId,
+                child: child,
+              ),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: '/forge/:id/settings',
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(child: ForgeGymSettingsTab());
+              },
+            ),
+            GoRoute(
+              path: '/forge/:id/tasks',
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(child: ForgeGymTasksTab());
+              },
+            ),
+            GoRoute(
+              path: '/forge/:id/uploads',
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(child: ForgeGymUploadsTab());
+              },
+            ),
+            GoRoute(
+              path: '/forge/:id/deploy',
+              pageBuilder: (context, state) {
+                return const NoTransitionPage(child: ForgeGymDeployTab());
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: LeaderboardsView.routeName,
@@ -81,11 +130,43 @@ Future<void> main() async {
   runApp(const ProviderScope(child: ViralmindApp()));
 }
 
-class ViralmindApp extends ConsumerWidget {
+class ViralmindApp extends ConsumerStatefulWidget {
   const ViralmindApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ViralmindApp> createState() => _ViralmindAppState();
+}
+
+class _ViralmindAppState extends ConsumerState<ViralmindApp> {
+  @override
+  void initState() {
+    super.initState();
+    _router.routeInformationProvider.addListener(_updateRoute);
+    // Set initial route
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateRoute();
+    });
+  }
+
+  void _updateRoute() {
+    if (!mounted) return;
+    final location = _router.routeInformationProvider.value.uri.toString();
+    // The router location can be empty at the very beginning.
+    if (location.isEmpty) return;
+    final current = ref.read(currentRouteProvider);
+    if (current != location) {
+      ref.read(currentRouteProvider.notifier).state = location;
+    }
+  }
+
+  @override
+  void dispose() {
+    _router.routeInformationProvider.removeListener(_updateRoute);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // Listen for deep link events and navigate accordingly.
     ref.listen(deepLinkProvider, (previous, next) {
       final url = next.value;

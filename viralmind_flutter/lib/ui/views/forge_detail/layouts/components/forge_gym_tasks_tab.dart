@@ -10,16 +10,16 @@ import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/bloc/provider.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:viralmind_flutter/utils/fav_tools.dart';
 
 class ForgeGymTasksTab extends ConsumerStatefulWidget {
   const ForgeGymTasksTab({
     super.key,
-    required this.onRegenerateTasks,
   });
-  final VoidCallback onRegenerateTasks;
+
+  static const String routeName = '/forge/gym/tasks';
 
   @override
   ConsumerState<ForgeGymTasksTab> createState() => _ForgeGymTasksTabState();
@@ -45,7 +45,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
   List<dynamic> localApps = [];
 
   Future<void> loadApps() async {
-    final pool = ref.read(forgeNotifierProvider).pool;
+    final pool = ref.read(forgeDetailNotifierProvider).pool;
     if (pool == null) return;
 
     setState(() => loadingApps = true);
@@ -177,7 +177,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
 
   @override
   Widget build(BuildContext context) {
-    final pool = ref.watch(forgeNotifierProvider).pool;
+    final pool = ref.watch(forgeDetailNotifierProvider).pool;
     if (pool == null) return const SizedBox.shrink();
 
     return Column(
@@ -222,8 +222,9 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                   btnPrimaryType: BtnPrimaryType.outlinePrimary,
                 ),
                 const SizedBox(width: 8),
+                // TODO(reddwarf03): Add regenerate tasks
                 BtnPrimary(
-                  onTap: widget.onRegenerateTasks,
+                  onTap: () {},
                   buttonText: 'Regenerate Tasks',
                   icon: Icons.auto_awesome,
                 ),

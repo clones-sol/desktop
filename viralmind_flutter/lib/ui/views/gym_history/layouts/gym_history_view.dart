@@ -13,7 +13,7 @@ import 'package:viralmind_flutter/ui/views/gym_history/layouts/components/record
 class GymHistoryView extends ConsumerStatefulWidget {
   const GymHistoryView({super.key});
 
-  static const String routeName = '/gym_history';
+  static const String routeName = '/history-gym';
 
   @override
   ConsumerState<GymHistoryView> createState() => _GymHistoryViewState();
@@ -173,7 +173,14 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                         vertical: 12,
                       ),
                       hintText: 'Gym name',
-                      hintStyle: Theme.of(context).textTheme.bodyMedium,
+                      hintStyle:
+                          Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color!
+                                    .withValues(alpha: 0.2),
+                              ),
                     ),
                   ),
                 ),

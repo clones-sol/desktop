@@ -6,13 +6,15 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/submission/pool_submission.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/modals/download_scripts_modal.dart';
-import 'package:viralmind_flutter/ui/views/forge/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/bloc/provider.dart';
 
 final _selectedSubmissionsProvider =
     StateProvider.autoDispose<Set<String>>((ref) => {});
 
 class ForgeGymUploadsTab extends ConsumerWidget {
   const ForgeGymUploadsTab({super.key});
+
+  static const String routeName = '/forge/gym/uploads';
 
   String _formatDate(String dateStr) {
     try {
@@ -168,7 +170,7 @@ class ForgeGymUploadsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pool = ref.watch(forgeNotifierProvider).pool;
+    final pool = ref.watch(forgeDetailNotifierProvider).pool;
     if (pool == null) return const SizedBox.shrink();
 
     final submissionsAsync = ref.watch(getPoolSubmissionsProvider(pool.id));

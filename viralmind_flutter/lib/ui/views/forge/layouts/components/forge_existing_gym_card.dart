@@ -82,9 +82,9 @@ class ForgeExistingGymCard extends StatelessWidget {
             .toDouble()
             .floor()
         : 0;
-    final totalDemos = pool.demonstrations + possibleDemos;
-    final demoPercentage = totalDemos > 0
-        ? (pool.demonstrations / totalDemos * 100).clamp(0, 100)
+
+    final demoPercentage = possibleDemos > 0
+        ? (pool.demonstrations / possibleDemos * 100).clamp(0, 100)
         : 0;
 
     if (pricePerDemo == null || pricePerDemo == 0) {
@@ -136,21 +136,38 @@ class ForgeExistingGymCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            FractionallySizedBox(
-              widthFactor: demoPercentage / 100,
-              child: Container(
-                height: 5,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      VMColors.secondary.withValues(alpha: 0.3),
-                      VMColors.secondary,
-                    ],
+            if (pool.demonstrations >= possibleDemos)
+              FractionallySizedBox(
+                widthFactor: demoPercentage / 100,
+                child: Container(
+                  height: 5,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        VMColors.rewardInfo.withValues(alpha: 0.3),
+                        VMColors.rewardInfo,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(3),
                   ),
-                  borderRadius: BorderRadius.circular(3),
+                ),
+              )
+            else
+              FractionallySizedBox(
+                widthFactor: demoPercentage / 100,
+                child: Container(
+                  height: 5,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        VMColors.secondary.withValues(alpha: 0.3),
+                        VMColors.secondary,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(3),
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ],
