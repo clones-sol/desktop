@@ -11,6 +11,8 @@ import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/bloc/state.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_header.dart';
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:viralmind_flutter/utils/fav_tools.dart';
 
@@ -26,7 +28,6 @@ class ForgeGymTasksTab extends ConsumerStatefulWidget {
 }
 
 class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
-  String viewMode = 'edit'; // 'edit' or 'preview'
   bool showNewAppForm = false;
   String newAppName = '';
   String newAppDomain = '';
@@ -180,72 +181,93 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
     final pool = ref.watch(forgeDetailNotifierProvider).pool;
     if (pool == null) return const SizedBox.shrink();
 
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const ForgeGymHeader(),
+          Row(
+            children: [
+              Text(
+                '2. Tasks',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  '2. Tasks',
-                  style: Theme.of(context).textTheme.titleMedium,
+                Row(
+                  children: [
+                    BtnPrimary(
+                      buttonText: 'Edit',
+                      onTap: () => ref
+                                  .watch(forgeDetailNotifierProvider)
+                                  .viewModeTasks ==
+                              ViewModeTasks.edit
+                          ? ref
+                              .read(forgeDetailNotifierProvider.notifier)
+                              .setViewModeTasks(ViewModeTasks.edit)
+                          : null,
+                      btnPrimaryType: ref
+                                  .watch(forgeDetailNotifierProvider)
+                                  .viewModeTasks ==
+                              ViewModeTasks.edit
+                          ? BtnPrimaryType.primary
+                          : BtnPrimaryType.dark,
+                    ),
+                    const SizedBox(width: 10),
+                    BtnPrimary(
+                      buttonText: 'Preview',
+                      onTap: () => ref
+                                  .watch(forgeDetailNotifierProvider)
+                                  .viewModeTasks ==
+                              ViewModeTasks.preview
+                          ? ref
+                              .read(forgeDetailNotifierProvider.notifier)
+                              .setViewModeTasks(ViewModeTasks.preview)
+                          : null,
+                      btnPrimaryType: ref
+                                  .watch(forgeDetailNotifierProvider)
+                                  .viewModeTasks ==
+                              ViewModeTasks.preview
+                          ? BtnPrimaryType.primary
+                          : BtnPrimaryType.dark,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
-                const SizedBox(width: 16),
-                ToggleButtons(
-                  isSelected: [viewMode == 'edit', viewMode == 'preview'],
-                  onPressed: (idx) {
-                    setState(() {
-                      viewMode = idx == 0 ? 'edit' : 'preview';
-                    });
-                  },
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Edit'),
+                Row(
+                  children: [
+                    BtnPrimary(
+                      onTap: loadApps,
+                      buttonText: 'Refresh',
+                      btnPrimaryType: BtnPrimaryType.outlinePrimary,
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: Text('Preview'),
+                    const SizedBox(width: 8),
+                    // TODO(reddwarf03): Add regenerate tasks
+                    BtnPrimary(
+                      onTap: () {},
+                      buttonText: 'Regenerate Tasks',
+                      icon: Icons.auto_awesome,
                     ),
+                    if (!showNewAppForm)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: BtnPrimary(
+                          onTap: () => setState(() => showNewAppForm = true),
+                          buttonText: 'New App',
+                        ),
+                      ),
                   ],
                 ),
               ],
             ),
-            Row(
-              children: [
-                BtnPrimary(
-                  onTap: loadApps,
-                  buttonText: 'Refresh',
-                  icon: Icons.refresh,
-                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                ),
-                const SizedBox(width: 8),
-                // TODO(reddwarf03): Add regenerate tasks
-                BtnPrimary(
-                  onTap: () {},
-                  buttonText: 'Regenerate Tasks',
-                  icon: Icons.auto_awesome,
-                ),
-                if (!showNewAppForm)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: BtnPrimary(
-                      onTap: () => setState(() => showNewAppForm = true),
-                      buttonText: 'New App',
-                      icon: Icons.add,
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        if (showNewAppForm)
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(12),
+          ),
+          if (showNewAppForm)
+            Card(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -278,353 +300,419 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                 ],
               ),
             ),
-          ),
-        const SizedBox(height: 8),
-        if (loadingApps) const Center(child: CircularProgressIndicator()),
-        if (!loadingApps && localApps.isEmpty)
-          Center(
-            child: Text(
-              'No apps available.',
-              style: TextStyle(color: VMColors.secondaryText),
-            ),
-          ),
-        if (!loadingApps && localApps.isNotEmpty)
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(16),
-              itemCount: localApps.length,
-              itemBuilder: (context, appIdx) {
-                final ForgeApp app = localApps[appIdx];
-                return CardWidget(
-                  padding: CardPadding.large,
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            if (app.domain.isNotEmpty)
-                              Padding(
-                                padding: const EdgeInsets.only(right: 8),
-                                child: Image.network(
-                                  getFaviconUrl(app.domain),
-                                  width: 24,
-                                  height: 24,
-                                  errorBuilder: (_, __, ___) =>
-                                      const Icon(Icons.language, size: 24),
-                                ),
-                              ),
-                            if (editingAppIdx == appIdx &&
-                                editingAppField == 'name')
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 120,
-                                    child: TextField(
-                                      autofocus: true,
-                                      controller: TextEditingController(
-                                        text: editValue,
-                                      ),
-                                      onChanged: (v) =>
-                                          setState(() => editValue = v),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.check),
-                                    onPressed: saveEditingApp,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: cancelEditingApp,
-                                  ),
-                                ],
-                              )
-                            else
-                              GestureDetector(
-                                onTap: () => startEditingApp(appIdx, 'name'),
-                                child: Text(
-                                  app.name,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                              ),
-                            const SizedBox(width: 8),
-                            if (editingAppIdx == appIdx &&
-                                editingAppField == 'domain')
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 120,
-                                    child: TextField(
-                                      autofocus: true,
-                                      controller: TextEditingController(
-                                        text: editValue,
-                                      ),
-                                      onChanged: (v) =>
-                                          setState(() => editValue = v),
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.check,
-                                      color: VMColors.primaryText,
-                                    ),
-                                    onPressed: saveEditingApp,
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.close),
-                                    onPressed: cancelEditingApp,
-                                  ),
-                                ],
-                              )
-                            else
-                              GestureDetector(
-                                onTap: () => startEditingApp(appIdx, 'domain'),
-                                child: Text(
-                                  app.domain,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                              ),
-                            const Spacer(),
-                            IconButton(
-                              icon: const Icon(Icons.delete_outline),
-                              onPressed: () => removeApp(appIdx),
-                              tooltip: 'Delete app',
-                            ),
-                          ],
-                        ),
-                        if (app.description.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Text(
-                              app.description,
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                          ),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Tasks',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            TextButton.icon(
-                              icon: const Icon(Icons.add),
-                              label: const Text('Add a task'),
-                              onPressed: () => openTaskModal(appIdx),
-                            ),
-                          ],
-                        ),
-                        if ((app.tasks as List).isEmpty)
-                          Text(
-                            'No tasks for this app.',
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        if ((app.tasks as List).isNotEmpty)
-                          ...List.generate(app.tasks.length, (taskIdx) {
-                            final task = app.tasks[taskIdx];
-                            return ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(
-                                task.prompt,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (task.uploadLimit != null)
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 2,
-                                        right: 4,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue[50],
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        'Upload limit: ${task.uploadLimit}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    ),
-                                  if (task.rewardLimit != null)
-                                    Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 2,
-                                        right: 4,
-                                      ),
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green[50],
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        'Reward limit: ${task.rewardLimit}',
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.green,
-                                        ),
-                                      ),
-                                    ),
-                                  if (task.limitReason != null &&
-                                      task.limitReason!.isNotEmpty)
-                                    Text(
-                                      'Limit reason: ${task.limitReason}',
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.videocam,
-                                      color: VMColors.secondaryText,
-                                    ),
-                                    tooltip: 'Record Task',
-                                    onPressed: () {
-                                      final appInfo = AppInfo(
-                                        type: 'website',
-                                        name: app.name,
-                                        url: 'https://${app.domain}',
-                                        taskId: task.id,
-                                      );
-                                      final appParam = Uri.encodeComponent(
-                                        jsonEncode(appInfo.toJson()),
-                                      );
-
-                                      context.go(
-                                        TrainingSessionView.routeName,
-                                        extra: {
-                                          'prompt': task.prompt,
-                                          'appParam': appParam,
-                                          'poolId': pool.id,
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.edit,
-                                      color: VMColors.secondaryText,
-                                    ),
-                                    onPressed: () =>
-                                        openTaskModal(appIdx, taskIdx),
-                                    tooltip: 'Edit task',
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Icons.delete_outline,
-                                      color: VMColors.secondaryText,
-                                    ),
-                                    onPressed: () =>
-                                        removeTask(appIdx, taskIdx),
-                                    tooltip: 'Delete task',
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        if (showTaskModal)
-          Dialog(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Prompt'),
-                    onChanged: (v) => setState(() => editTaskPrompt = v),
-                    controller: TextEditingController(text: editTaskPrompt),
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: enableUploadLimit,
-                        onChanged: (v) =>
-                            setState(() => enableUploadLimit = v ?? false),
-                      ),
-                      const Text('Upload limit'),
-                      if (enableUploadLimit)
-                        SizedBox(
-                          width: 60,
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            onChanged: (v) => setState(
-                              () => uploadLimitValue = int.tryParse(v) ?? 10,
-                            ),
-                            controller: TextEditingController(
-                              text: uploadLimitValue.toString(),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: enableRewardLimit,
-                        onChanged: (v) =>
-                            setState(() => enableRewardLimit = v ?? false),
-                      ),
-                      const Text('Reward limit'),
-                      if (enableRewardLimit)
-                        SizedBox(
-                          width: 60,
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            onChanged: (v) => setState(
-                              () => rewardLimitValue = int.tryParse(v) ?? 10,
-                            ),
-                            controller: TextEditingController(
-                              text: rewardLimitValue.toString(),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () => setState(() => showTaskModal = false),
-                        child: const Text('Annuler'),
-                      ),
-                      ElevatedButton(
-                        onPressed:
-                            editTaskPrompt.isEmpty ? null : saveTaskModal,
-                        child: const Text('Enregistrer'),
-                      ),
-                    ],
-                  ),
-                ],
+          const SizedBox(height: 8),
+          if (loadingApps) const Center(child: CircularProgressIndicator()),
+          if (!loadingApps && localApps.isEmpty)
+            Center(
+              child: Text(
+                'No apps available.',
+                style: TextStyle(color: VMColors.secondaryText),
               ),
             ),
-          ),
-      ],
+          if (!loadingApps && localApps.isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                itemCount: localApps.length,
+                itemBuilder: (context, appIdx) {
+                  final ForgeApp app = localApps[appIdx];
+                  return CardWidget(
+                    padding: CardPadding.small,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              if (app.domain.isNotEmpty)
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: VMColors.containerIcon5
+                                        .withValues(alpha: 0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Image.network(
+                                    getFaviconUrl(app.domain),
+                                    width: 24,
+                                    height: 24,
+                                    errorBuilder: (_, __, ___) =>
+                                        const Icon(Icons.language, size: 24),
+                                  ),
+                                ),
+                              const SizedBox(width: 10),
+                              if (editingAppIdx == appIdx &&
+                                  editingAppField == 'name')
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      child: TextField(
+                                        autofocus: true,
+                                        controller: TextEditingController(
+                                          text: editValue,
+                                        ),
+                                        onChanged: (v) =>
+                                            setState(() => editValue = v),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.check),
+                                      onPressed: saveEditingApp,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.close),
+                                      onPressed: cancelEditingApp,
+                                    ),
+                                  ],
+                                )
+                              else
+                                GestureDetector(
+                                  onTap: () => startEditingApp(appIdx, 'name'),
+                                  child: Text(
+                                    app.name,
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ),
+                              const SizedBox(width: 8),
+                              if (editingAppIdx == appIdx &&
+                                  editingAppField == 'domain')
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 120,
+                                      child: TextField(
+                                        autofocus: true,
+                                        controller: TextEditingController(
+                                          text: editValue,
+                                        ),
+                                        onChanged: (v) =>
+                                            setState(() => editValue = v),
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.check,
+                                        color: VMColors.primaryText,
+                                      ),
+                                      onPressed: saveEditingApp,
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.close),
+                                      onPressed: cancelEditingApp,
+                                    ),
+                                  ],
+                                )
+                              else
+                                GestureDetector(
+                                  onTap: () =>
+                                      startEditingApp(appIdx, 'domain'),
+                                  child: Text(
+                                    app.domain,
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  removeApp(appIdx);
+                                },
+                                child: ColorFiltered(
+                                  colorFilter: ColorFilter.mode(
+                                    Colors.red.withValues(alpha: 0.8),
+                                    BlendMode.srcATop,
+                                  ),
+                                  child: Image.asset(
+                                    Assets.deleteIcon,
+                                    width: 30,
+                                    height: 30,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (app.description.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                app.description,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          const SizedBox(height: 20),
+                          if ((app.tasks as List).isEmpty)
+                            Text(
+                              'No tasks for this app.',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          if ((app.tasks as List).isNotEmpty)
+                            ...List.generate(app.tasks.length, (taskIdx) {
+                              final task = app.tasks[taskIdx];
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: SizedBox(
+                                  height: 50,
+                                  child: CardWidget(
+                                    padding: CardPadding.small,
+                                    variant: CardVariant.secondary,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          task.prompt,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            if (task.uploadLimit != null)
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                  top: 2,
+                                                  right: 4,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 6,
+                                                  vertical: 2,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.blue[50],
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  'Upload limit: ${task.uploadLimit}',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                              ),
+                                            if (task.rewardLimit != null)
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                  top: 2,
+                                                  right: 4,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 6,
+                                                  vertical: 2,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.green[50],
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: Text(
+                                                  'Reward limit: ${task.rewardLimit}',
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                              ),
+                                            if (task.limitReason != null &&
+                                                task.limitReason!.isNotEmpty)
+                                              Text(
+                                                'Limit reason: ${task.limitReason}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                final appInfo = AppInfo(
+                                                  type: 'website',
+                                                  name: app.name,
+                                                  url: 'https://${app.domain}',
+                                                  taskId: task.id,
+                                                );
+                                                final appParam =
+                                                    Uri.encodeComponent(
+                                                  jsonEncode(appInfo.toJson()),
+                                                );
+
+                                                context.go(
+                                                  TrainingSessionView.routeName,
+                                                  extra: {
+                                                    'prompt': task.prompt,
+                                                    'appParam': appParam,
+                                                    'poolId': pool.id,
+                                                  },
+                                                );
+                                              },
+                                              child: ColorFiltered(
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.blue
+                                                      .withValues(alpha: 0.8),
+                                                  BlendMode.srcATop,
+                                                ),
+                                                child: Image.asset(
+                                                  Assets.recordIcon,
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 20),
+                                            InkWell(
+                                              onTap: () {
+                                                openTaskModal(appIdx, taskIdx);
+                                              },
+                                              child: Image.asset(
+                                                Assets.editIcon,
+                                                width: 24,
+                                                height: 24,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 20),
+                                            InkWell(
+                                              onTap: () {
+                                                removeTask(appIdx, taskIdx);
+                                              },
+                                              child: ColorFiltered(
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.red
+                                                      .withValues(alpha: 0.8),
+                                                  BlendMode.srcATop,
+                                                ),
+                                                child: Image.asset(
+                                                  Assets.deleteIcon,
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
+                          const SizedBox(height: 10),
+                          InkWell(
+                            onTap: () => openTaskModal(appIdx),
+                            child: SizedBox(
+                              height: 50,
+                              child: CardWidget(
+                                padding: CardPadding.small,
+                                variant: CardVariant.transparent,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '+ Add a task',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          if (showTaskModal)
+            Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(labelText: 'Prompt'),
+                      onChanged: (v) => setState(() => editTaskPrompt = v),
+                      controller: TextEditingController(text: editTaskPrompt),
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: enableUploadLimit,
+                          onChanged: (v) =>
+                              setState(() => enableUploadLimit = v ?? false),
+                        ),
+                        const Text('Upload limit'),
+                        if (enableUploadLimit)
+                          SizedBox(
+                            width: 60,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              onChanged: (v) => setState(
+                                () => uploadLimitValue = int.tryParse(v) ?? 10,
+                              ),
+                              controller: TextEditingController(
+                                text: uploadLimitValue.toString(),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: enableRewardLimit,
+                          onChanged: (v) =>
+                              setState(() => enableRewardLimit = v ?? false),
+                        ),
+                        const Text('Reward limit'),
+                        if (enableRewardLimit)
+                          SizedBox(
+                            width: 60,
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              onChanged: (v) => setState(
+                                () => rewardLimitValue = int.tryParse(v) ?? 10,
+                              ),
+                              controller: TextEditingController(
+                                text: rewardLimitValue.toString(),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () =>
+                              setState(() => showTaskModal = false),
+                          child: const Text('Annuler'),
+                        ),
+                        ElevatedButton(
+                          onPressed:
+                              editTaskPrompt.isEmpty ? null : saveTaskModal,
+                          child: const Text('Enregistrer'),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

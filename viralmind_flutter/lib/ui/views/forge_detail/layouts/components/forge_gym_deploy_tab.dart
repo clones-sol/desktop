@@ -1,14 +1,10 @@
-import 'package:decimal/decimal.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
-import 'package:viralmind_flutter/ui/views/forge_detail/bloc/provider.dart';
-import 'package:viralmind_flutter/utils/format_num.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_header.dart';
 
 class ForgeGymDeployTab extends ConsumerStatefulWidget {
   const ForgeGymDeployTab({super.key});
@@ -20,976 +16,671 @@ class ForgeGymDeployTab extends ConsumerStatefulWidget {
 }
 
 class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
-  late final TextEditingController _nameController;
-  late final TextEditingController _priceController;
-  bool _enableUploadLimit = false;
-  int _uploadLimit = 10;
-  String _limitType = 'per-task';
+  final _nameController = TextEditingController();
+  final _tickerController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _supplyPresetController = TextEditingController();
+  final _minLiquidityController = TextEditingController();
+
+  double _tokenGatedPercentage = 10;
+  bool _autoGenerateTerms = false;
+  bool _advancedOptionsExpanded = false;
 
   @override
   void initState() {
     super.initState();
-    final pool = ref.read(forgeDetailNotifierProvider).pool;
-    _nameController = TextEditingController(text: pool?.name);
-    _priceController =
-        TextEditingController(text: pool?.pricePerDemo?.toString() ?? '1');
-    if (pool != null) {
-      _enableUploadLimit = pool.uploadLimit != null;
-      _uploadLimit = pool.uploadLimit?.type ?? 10;
-      _limitType = (pool.uploadLimit?.limitType ?? 'per-task').toString();
-    }
+    _nameController.addListener(() => setState(() {}));
+    _tickerController.addListener(() => setState(() {}));
+    _descriptionController.addListener(() => setState(() {}));
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _priceController.dispose();
+    _tickerController.dispose();
+    _descriptionController.dispose();
+    _supplyPresetController.dispose();
+    _minLiquidityController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(forgeDetailNotifierProvider.select((value) => value.pool),
-        (previous, next) {
-      if (previous == next || next == null) return;
-      if (_nameController.text != next.name) {
-        _nameController.text = next.name;
-      }
-      final price = next.pricePerDemo?.toString() ?? '1';
-      if (_priceController.text != price) {
-        _priceController.text = price;
-      }
-
-      setState(() {
-        _enableUploadLimit = next.uploadLimit != null;
-        _uploadLimit = next.uploadLimit?.type ?? 10;
-        _limitType = (next.uploadLimit?.limitType ?? 'per-task').toString();
-      });
-    });
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) return const SizedBox.shrink();
-
-    final tokenSymbol = pool.token.symbol;
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
+        children: [
+          const ForgeGymHeader(),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              if (constraints.maxWidth > 1200) {
+                return Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: _buildMainForm(),
+                    ),
+                    const SizedBox(width: 24),
+                    Expanded(
+                      child: _buildSidebarInfo(),
+                    ),
+                  ],
+                );
+              } else {
+                return Column(
+                  children: [
+                    _buildMainForm(),
+                    const SizedBox(height: 24),
+                    _buildSidebarInfo(),
+                  ],
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMainForm() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildGeneralInfoSection(),
+        const SizedBox(height: 24),
+        _buildTokenSetupSection(),
+        const SizedBox(height: 24),
+        _buildLegalSection(),
+        const SizedBox(height: 24),
+        _buildAdvancedOptionsSection(),
+      ],
+    );
+  }
+
+  Widget _buildSidebarInfo() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _DeploymentStatusCard(),
+        const SizedBox(height: 24),
+        _CostBreakdownCard(),
+        const SizedBox(height: 24),
+        _AgentPreviewCard(
+          name: _nameController.text,
+          ticker: _tickerController.text,
+          description: _descriptionController.text,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader({
+    required IconData icon,
+    required String title,
+    required Color color,
+  }) {
+    return Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Icon(icon, color: color.withValues(alpha: 0.7), size: 20),
+        ),
+        const SizedBox(width: 10),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGeneralInfoSection() {
+    return CardWidget(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '1. General Information',
-            style: Theme.of(context).textTheme.titleMedium,
+          _buildSectionHeader(
+            icon: Icons.info_outline,
+            title: 'General Information',
+            color: VMColors.containerIcon2,
           ),
-          if (pool.status == TrainingPoolStatus.noGas ||
-              pool.status == TrainingPoolStatus.noFunds)
-            _buildNoFundsMessageBox(),
-          const SizedBox(height: 20),
-          _buildGlobalStats(),
-          const SizedBox(height: 20),
-          SizedBox(
-            child: SizedBox(
-              height: 160,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CardWidget(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: VMColors.containerIcon4
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: VMColors.containerIcon4
-                                      .withValues(alpha: 0.7),
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Gym Name',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  Text(
-                                    'This name will be visible to users.',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primaryContainer,
-                                      width: 0.5,
-                                    ),
-                                    gradient:
-                                        VMColors.gradientInputFormBackground,
-                                  ),
-                                  child: TextField(
-                                    controller: _nameController,
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                        horizontal: 10,
-                                        vertical: 12,
-                                      ),
-                                      hintText: 'Enter gym name',
-                                      hintStyle: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.copyWith(
-                                            color: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.color!
-                                                .withValues(alpha: 0.2),
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CardWidget(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: VMColors.containerIcon1
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Icon(
-                                  Icons.price_check_outlined,
-                                  color: VMColors.containerIcon3
-                                      .withValues(alpha: 0.7),
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Price per demonstration',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  Text(
-                                    'Set the price for each demonstration. Minimum price: 1 $tokenSymbol',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Stack(
-                                  alignment: Alignment.centerRight,
-                                  children: [
-                                    DecoratedBox(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        border: Border.all(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primaryContainer,
-                                          width: 0.5,
-                                        ),
-                                        gradient: VMColors
-                                            .gradientInputFormBackground,
-                                      ),
-                                      child: TextField(
-                                        controller: _priceController,
-                                        keyboardType: TextInputType.number,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                            horizontal: 10,
-                                            vertical: 12,
-                                          ),
-                                          hintText: 'Reward per demo',
-                                          hintStyle: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium
-                                                    ?.color!
-                                                    .withValues(alpha: 0.2),
-                                              ),
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 0,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Text(
-                                          tokenSymbol,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+          const SizedBox(height: 24),
+          ResponsiveTwoColumnLayout(
+            children: [
+              _FormTextField(
+                label: 'Agent Name',
+                hint: 'My AI Agent',
+                controller: _nameController,
               ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            child: SizedBox(
-              height: 160,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: CardWidget(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: VMColors.containerIcon2
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Icon(
-                                  Icons.call_received,
-                                  color: VMColors.containerIcon2
-                                      .withValues(alpha: 0.7),
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Deposit Address',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  Text(
-                                    'Send $tokenSymbol tokens to fund this gym',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    gradient:
-                                        VMColors.gradientInputFormBackground,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 12,
-                                    ),
-                                    child: SelectableText(
-                                      pool.depositAddress,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              BtnPrimary(
-                                buttonText: 'Copy',
-                                onTap: () {
-                                  Clipboard.setData(
-                                    ClipboardData(text: pool.depositAddress),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('Address copied!'),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CardWidget(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: VMColors.containerIcon1
-                                      .withValues(alpha: 0.2),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Icon(
-                                  Icons.email,
-                                  color: VMColors.containerIcon1
-                                      .withValues(alpha: 0.7),
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Receive alerts',
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  Text(
-                                    'Get an email when your gym runs out of $tokenSymbol or SOL for gas fees.',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: DecoratedBox(
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            border: Border.all(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primaryContainer,
-                                              width: 0.5,
-                                            ),
-                                            gradient: VMColors
-                                                .gradientInputFormBackground,
-                                          ),
-                                          child: TextField(
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              color: VMColors.primaryText,
-                                            ),
-                                            autocorrect: false,
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            keyboardType: TextInputType.text,
-                                            inputFormatters: <TextInputFormatter>[
-                                              LengthLimitingTextInputFormatter(
-                                                50,
-                                              ),
-                                            ],
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                left: 10,
-                                              ),
-                                              hintText: 'example@example.com',
-                                              hintStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    color: Theme.of(context)
-                                                        .textTheme
-                                                        .bodyMedium
-                                                        ?.color!
-                                                        .withValues(alpha: 0.2),
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+              _FormTextField(
+                label: 'Ticker',
+                hint: r'$ARTX',
+                controller: _tickerController,
               ),
-            ),
+            ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
+          _FormTextField(
+            label: 'Description',
+            hint: "Describe your AI agent's capabilities and purpose...",
+            controller: _descriptionController,
+            maxLines: 4,
+          ),
+          const SizedBox(height: 24),
+          const ResponsiveTwoColumnLayout(
+            children: [
+              _FileUploadBox(
+                label: 'Agent Logo',
+                icon: Icons.cloud_upload,
+                text: 'Click to upload image',
+              ),
+              SizedBox.shrink(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTokenSetupSection() {
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            icon: Icons.paid,
+            title: 'Token Setup',
+            color: VMColors.containerIcon1,
+          ),
+          const SizedBox(height: 24),
+          ResponsiveTwoColumnLayout(
+            children: [
+              _FormTextField(
+                label: 'Supply Preset',
+                hint: '1000000',
+                controller: _supplyPresetController,
+                keyboardType: TextInputType.number,
+              ),
+              _FormTextField(
+                label: 'Min Liquidity (SOL)',
+                hint: '5.0',
+                controller: _minLiquidityController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
           Text(
-            'Upload Limits',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          const SizedBox(height: 6),
-          Checkbox(
-            checkColor: VMColors.primaryText,
-            value: _enableUploadLimit,
-            onChanged: (val) => setState(
-              () => _enableUploadLimit = val ?? false,
-            ),
-          ),
-          Text(
-            'Enable gym-wide upload limits',
+            'Token Gated Percentage: ${_tokenGatedPercentage.toStringAsFixed(0)}%',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          if (_enableUploadLimit) ...[
-            const SizedBox(height: 10),
+          const SizedBox(height: 16),
+          Slider(
+            value: _tokenGatedPercentage,
+            max: 50,
+            onChanged: (val) => setState(() => _tokenGatedPercentage = val),
+            activeColor: VMColors.secondary,
+            inactiveColor: Colors.grey.withValues(alpha: 0.5),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('0%'),
+                Text('25%'),
+                Text('50%'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegalSection() {
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionHeader(
+            icon: Icons.gavel,
+            title: 'Legal',
+            color: VMColors.containerIcon3,
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Checkbox(
+                value: _autoGenerateTerms,
+                onChanged: (val) => setState(() => _autoGenerateTerms = val!),
+                activeColor: VMColors.primary,
+                checkColor: Colors.white,
+              ),
+              const Text('Auto-generate Terms & Conditions'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAdvancedOptionsSection() {
+    return CardWidget(
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          onExpansionChanged: (expanded) {
+            setState(() {
+              _advancedOptionsExpanded = expanded;
+            });
+          },
+          title: _buildSectionHeader(
+            icon: Icons.settings,
+            title: 'Advanced Options',
+            color: VMColors.containerIcon3,
+          ),
+          trailing: Icon(
+            _advancedOptionsExpanded
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down,
+          ),
+          children: const [
             Padding(
-              padding: const EdgeInsets.only(left: 30),
-              child: Row(
+              padding: EdgeInsets.only(top: 16),
+              child: ResponsiveTwoColumnLayout(
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Limit Type',
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 4),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
-                              width: 0.5,
-                            ),
-                            gradient: VMColors.gradientInputFormBackground,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: DropdownButton<String>(
-                              value: _limitType,
-                              isExpanded: true,
-                              underline: const SizedBox(),
-                              dropdownColor:
-                                  Colors.black.withValues(alpha: 0.9),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                              items: [
-                                DropdownMenuItem(
-                                  value: 'per-task',
-                                  child: Text(
-                                    'Per Task',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'per-day',
-                                  child: Text(
-                                    'Per Day',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ),
-                                DropdownMenuItem(
-                                  value: 'total',
-                                  child: Text(
-                                    'Total',
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                ),
-                              ],
-                              onChanged: (val) {
-                                setState(() => _limitType = val ?? 'per-task');
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  _FormTextField(
+                    label: 'HuggingFace API Key',
+                    hint: 'Optional API key',
+                    obscureText: true,
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Limit Value',
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                        const SizedBox(height: 4),
-                        DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
-                              width: 0.5,
-                            ),
-                            gradient: VMColors.gradientInputFormBackground,
-                          ),
-                          child: TextField(
-                            keyboardType: TextInputType.number,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: VMColors.primaryText,
-                            ),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                horizontal: 10,
-                                vertical: 12,
-                              ),
-                              hintText: 'Value',
-                            ),
-                            onChanged: (val) {
-                              setState(
-                                () => _uploadLimit = int.tryParse(val) ?? 10,
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                  _FormTextField(
+                    label: 'Custom URL',
+                    hint: 'https://myagent.com',
+                    keyboardType: TextInputType.url,
                   ),
                 ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 30, top: 5),
-              child: Builder(
-                builder: (context) {
-                  String explanation;
-                  switch (_limitType) {
-                    case 'per-task':
-                      explanation =
-                          'Limit the number of uploads per individual task.';
-                      break;
-                    case 'per-day':
-                      explanation =
-                          'Limit the number of uploads per day across all tasks.';
-                      break;
-                    case 'total':
-                      explanation =
-                          'Limit the total number of uploads across all tasks.';
-                      break;
-                    default:
-                      explanation = '';
-                  }
-                  return Text(
-                    explanation,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  );
-                },
               ),
             ),
           ],
-        ],
+        ),
       ),
     );
   }
+}
 
-  Widget _buildNoFundsMessageBox() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    return MessageBox(
-      messageBoxType: MessageBoxType.warning,
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            pool.status == TrainingPoolStatus.noGas
-                ? 'Insufficient SOL for Gas'
-                : 'Insufficient VIRAL Tokens',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: VMColors.primaryText,
-            ),
-          ),
-          Text(
-            pool.status == TrainingPoolStatus.noGas
-                ? 'Your gym needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
-                : "Your gym needs VIRAL tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
-            style: TextStyle(
-              color: VMColors.secondaryText,
-            ),
-          ),
-          Text(
-            'Deposit ${pool.status == TrainingPoolStatus.noGas ? 'SOL' : 'VIRAL'} to the address above to activate your gym and start collecting data.',
-            style: TextStyle(
-              color: VMColors.secondaryText,
-            ),
-          ),
-        ],
-      ),
+class ResponsiveTwoColumnLayout extends StatelessWidget {
+  const ResponsiveTwoColumnLayout({
+    super.key,
+    required this.children,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+  });
+  final List<Widget> children;
+  final CrossAxisAlignment crossAxisAlignment;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 600) {
+          return Row(
+            crossAxisAlignment: crossAxisAlignment,
+            children: [
+              Expanded(child: children[0]),
+              const SizedBox(width: 24),
+              Expanded(child: children[1]),
+            ],
+          );
+        } else {
+          return Column(
+            children: [
+              children[0],
+              const SizedBox(height: 24),
+              children[1],
+            ],
+          );
+        }
+      },
     );
   }
+}
 
-  Widget _buildGlobalStats() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    return SizedBox(
-      height: 150,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        spacing: 20,
-        children: [
-          Expanded(child: _buildStatsCardNbDemo()),
-          Expanded(child: _buildStatsCardDemoPrice()),
-          Expanded(child: _buildStatsCardPoolBalance()),
-          Expanded(child: _buildStatsCardGasBalance()),
-        ],
-      ),
+class _FormTextField extends StatelessWidget {
+  const _FormTextField({
+    required this.label,
+    required this.hint,
+    this.controller,
+    this.maxLines = 1,
+    this.obscureText = false,
+    this.keyboardType,
+  });
+  final String label;
+  final String hint;
+  final TextEditingController? controller;
+  final int maxLines;
+  final bool obscureText;
+  final TextInputType? keyboardType;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        const SizedBox(height: 8),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              width: 0.5,
+            ),
+            gradient: VMColors.gradientInputFormBackground,
+          ),
+          child: TextFormField(
+            controller: controller,
+            maxLines: maxLines,
+            obscureText: obscureText,
+            keyboardType: keyboardType,
+            style: Theme.of(context).textTheme.bodyMedium,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 12,
+              ),
+              hintText: hint,
+              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color!
+                        .withValues(alpha: 0.2),
+                  ),
+            ),
+          ),
+        ),
+      ],
     );
   }
+}
 
-  Widget _buildStatsCardNbDemo() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    final pricePerDemo = pool.pricePerDemo;
-    final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
-        ? (Decimal.parse(
-                  pool.tokenBalance == null
-                      ? '0'
-                      : pool.tokenBalance.toString(),
-                ) /
-                Decimal.parse(pricePerDemo.toString()))
-            .toDouble()
-            .floor()
-        : 0;
+// A widget for uploading files with a dashed border.
+class _FileUploadBox extends StatelessWidget {
+  const _FileUploadBox({
+    required this.label,
+    required this.icon,
+    required this.text,
+  });
+  final String label;
+  final IconData icon;
+  final String text;
 
-    final demoPercentage = possibleDemos > 0
-        ? (pool.demonstrations / possibleDemos * 100).clamp(0, 100)
-        : 0;
-
-    if (pricePerDemo == null || pricePerDemo == 0) {
-      return const SizedBox.shrink();
-    }
-
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              label,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        DottedBorder(
+          options: RectDottedBorderOptions(
+            dashPattern: const [10, 5],
+            color: Colors.grey.withValues(alpha: 0.5),
+            padding: const EdgeInsets.all(16),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: VMColors.containerIcon5.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(
-              Icons.lightbulb_outline,
-              color: VMColors.containerIcon5.withValues(alpha: 0.7),
-              size: 20,
+            child: Center(
+              child: Column(
+                children: [
+                  Icon(icon, size: 32, color: Colors.grey),
+                  const SizedBox(height: 8),
+                  Text(
+                    text,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
             ),
           ),
-          const SizedBox(height: 10),
+        ),
+      ],
+    );
+  }
+}
+
+class _DeploymentStatusCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(
-            '${pool.demonstrations} / $possibleDemos',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            'Deployment Status',
+            style: Theme.of(context).textTheme.titleSmall,
           ),
-          const SizedBox(height: 5),
-          Text(
-            'Sessions completed',
-            style: Theme.of(context).textTheme.bodySmall,
+          const SizedBox(height: 16),
+          _buildStatusItem(
+            context: context,
+            step: '1',
+            label: 'Deploy SPL Token',
+            buttonText: 'Sign Tx',
+            onPressed: () {},
           ),
-          const SizedBox(height: 10),
-          Stack(
+          const SizedBox(height: 16),
+          _buildStatusItem(
+            context: context,
+            step: '2',
+            label: 'Create Raydium Pool',
+            buttonText: 'Pending',
+            onPressed: null,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatusItem({
+    required BuildContext context,
+    required String step,
+    required String label,
+    required String buttonText,
+    required VoidCallback? onPressed,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context)
+            .colorScheme
+            .primaryContainer
+            .withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
             children: [
-              Container(
-                height: 4,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      VMColors.primary.withValues(alpha: 0.3),
-                      VMColors.secondary.withValues(alpha: 0.3),
-                      VMColors.tertiary.withValues(alpha: 0.3),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(3),
-                ),
+              CircleAvatar(
+                radius: 14,
+                backgroundColor: Colors.grey,
+                child: Text(step, style: const TextStyle(color: Colors.white)),
               ),
-              if (pool.demonstrations >= possibleDemos)
-                FractionallySizedBox(
-                  widthFactor: demoPercentage / 100,
-                  child: Container(
-                    height: 5,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          VMColors.rewardInfo.withValues(alpha: 0.3),
-                          VMColors.rewardInfo,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(3),
+              const SizedBox(width: 12),
+              Text(
+                label,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+          if (onPressed != null)
+            BtnPrimary(buttonText: buttonText, onTap: onPressed),
+          if (onPressed == null)
+            BtnPrimary(
+              buttonText: buttonText,
+              onTap: null,
+              btnPrimaryType: BtnPrimaryType.dark,
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CostBreakdownCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Cost Breakdown',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const SizedBox(height: 16),
+          const _CostRow(label: 'Token Creation', cost: '0.1 SOL'),
+          const SizedBox(height: 12),
+          const _CostRow(label: 'Liquidity Pool', cost: '5.0 SOL'),
+          const SizedBox(height: 12),
+          const _CostRow(label: 'Platform Fee', cost: '0.05 SOL'),
+          const SizedBox(height: 12),
+          Divider(color: Colors.grey.withValues(alpha: 0.5)),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Total',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '5.15 SOL',
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: VMColors.primary,
+                      fontWeight: FontWeight.bold,
                     ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _CostRow extends StatelessWidget {
+  const _CostRow({required this.label, required this.cost});
+  final String label;
+  final String cost;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        Text(
+          cost,
+          style: Theme.of(context)
+              .textTheme
+              .bodyMedium
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
+class _AgentPreviewCard extends StatelessWidget {
+  const _AgentPreviewCard({
+    required this.name,
+    required this.ticker,
+    required this.description,
+  });
+  final String name;
+  final String ticker;
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Agent Preview',
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: Column(
+              children: [
+                Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: VMColors.gradientBtnPrimary,
                   ),
-                )
-              else
-                FractionallySizedBox(
-                  widthFactor: demoPercentage / 100,
-                  child: Container(
-                    height: 5,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          VMColors.secondary.withValues(alpha: 0.3),
-                          VMColors.secondary,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(3),
-                    ),
+                  child: const Icon(Icons.adb, color: Colors.white, size: 32),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  name.isEmpty ? 'My AI Agent' : name,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  ticker.isEmpty ? r'$ARTX' : ticker,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .primaryContainer
+                        .withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    description.isEmpty
+                        ? 'Description will appear here...'
+                        : description,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatsCardDemoPrice() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: VMColors.containerIcon1.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.card_giftcard,
-                  color: VMColors.containerIcon1.withValues(alpha: 0.7),
-                  size: 20,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: VMColors.containerIcon1.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  pool.token.symbol,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: VMColors.containerIcon1.withValues(alpha: 0.7),
-                        fontSize: 10,
-                      ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${formatNumberWithSeparator(pool.pricePerDemo)} ${pool.token.symbol}',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'per demonstration',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatsCardPoolBalance() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: VMColors.containerIcon4.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.account_balance_wallet_outlined,
-                  color: VMColors.containerIcon4.withValues(alpha: 0.7),
-                  size: 20,
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: VMColors.containerIcon4.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'POOL',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: VMColors.containerIcon4.withValues(alpha: 0.7),
-                        fontSize: 10,
-                      ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${formatNumberWithSeparator(pool.funds)} ${pool.token.symbol}',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'available',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatsCardGasBalance() {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
-      return const SizedBox.shrink();
-    }
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: VMColors.containerIcon3.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  Icons.local_gas_station,
-                  color: VMColors.containerIcon3.withValues(alpha: 0.7),
-                  size: 20,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${formatNumberWithSeparator(pool.solBalance)} \$SOL',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            'available for gas',
-            style: Theme.of(context).textTheme.bodySmall,
+              ],
+            ),
           ),
         ],
       ),

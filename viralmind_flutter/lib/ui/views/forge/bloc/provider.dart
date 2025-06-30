@@ -20,4 +20,8 @@ class ForgeNotifier extends _$ForgeNotifier {
   void setSelectedPool(TrainingPool? pool) {
     state = state.copyWith(selectedPool: pool);
   }
+
+  void setShowGenerateGymModal(bool show) {
+    state = state.copyWith(showGenerateGymModal: show);
+  }
 }

@@ -18,10 +18,10 @@ class ForgeGymDetailSidebar extends ConsumerWidget {
     final currentTab = ref.watch(forgeDetailTabProvider);
     final buttons = [
       SidebarButtonData(
-        path: '/forge/$poolId/settings',
+        path: '/forge/$poolId/general',
         icon: Icons.info,
         label: 'General',
-        key: 'settings',
+        key: 'general',
       ),
       SidebarButtonData(
         path: '/forge/$poolId/tasks',

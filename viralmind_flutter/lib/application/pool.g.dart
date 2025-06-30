@@ -514,6 +514,233 @@ class _CreatePoolProviderElement extends AutoDisposeFutureProviderElement<void>
   String get ownerAddress => (origin as CreatePoolProvider).ownerAddress;
 }
 
+String _$updatePoolHash() => r'77ca953e5c565a9bb79395e43fc64298553b0fba';
+
+/// See also [updatePool].
+@ProviderFor(updatePool)
+const updatePoolProvider = UpdatePoolFamily();
+
+/// See also [updatePool].
+class UpdatePoolFamily extends Family<AsyncValue<void>> {
+  /// See also [updatePool].
+  const UpdatePoolFamily();
+
+  /// See also [updatePool].
+  UpdatePoolProvider call({
+    required String poolId,
+    String? poolName,
+    TrainingPoolStatus? status,
+    String? skills,
+    double? pricePerDemo,
+    UploadLimit? uploadLimit,
+    List<ForgeApp>? apps,
+  }) {
+    return UpdatePoolProvider(
+      poolId: poolId,
+      poolName: poolName,
+      status: status,
+      skills: skills,
+      pricePerDemo: pricePerDemo,
+      uploadLimit: uploadLimit,
+      apps: apps,
+    );
+  }
+
+  @override
+  UpdatePoolProvider getProviderOverride(
+    covariant UpdatePoolProvider provider,
+  ) {
+    return call(
+      poolId: provider.poolId,
+      poolName: provider.poolName,
+      status: provider.status,
+      skills: provider.skills,
+      pricePerDemo: provider.pricePerDemo,
+      uploadLimit: provider.uploadLimit,
+      apps: provider.apps,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updatePoolProvider';
+}
+
+/// See also [updatePool].
+class UpdatePoolProvider extends AutoDisposeFutureProvider<void> {
+  /// See also [updatePool].
+  UpdatePoolProvider({
+    required String poolId,
+    String? poolName,
+    TrainingPoolStatus? status,
+    String? skills,
+    double? pricePerDemo,
+    UploadLimit? uploadLimit,
+    List<ForgeApp>? apps,
+  }) : this._internal(
+          (ref) => updatePool(
+            ref as UpdatePoolRef,
+            poolId: poolId,
+            poolName: poolName,
+            status: status,
+            skills: skills,
+            pricePerDemo: pricePerDemo,
+            uploadLimit: uploadLimit,
+            apps: apps,
+          ),
+          from: updatePoolProvider,
+          name: r'updatePoolProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updatePoolHash,
+          dependencies: UpdatePoolFamily._dependencies,
+          allTransitiveDependencies:
+              UpdatePoolFamily._allTransitiveDependencies,
+          poolId: poolId,
+          poolName: poolName,
+          status: status,
+          skills: skills,
+          pricePerDemo: pricePerDemo,
+          uploadLimit: uploadLimit,
+          apps: apps,
+        );
+
+  UpdatePoolProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolId,
+    required this.poolName,
+    required this.status,
+    required this.skills,
+    required this.pricePerDemo,
+    required this.uploadLimit,
+    required this.apps,
+  }) : super.internal();
+
+  final String poolId;
+  final String? poolName;
+  final TrainingPoolStatus? status;
+  final String? skills;
+  final double? pricePerDemo;
+  final UploadLimit? uploadLimit;
+  final List<ForgeApp>? apps;
+
+  @override
+  Override overrideWith(
+    FutureOr<void> Function(UpdatePoolRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdatePoolProvider._internal(
+        (ref) => create(ref as UpdatePoolRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolId: poolId,
+        poolName: poolName,
+        status: status,
+        skills: skills,
+        pricePerDemo: pricePerDemo,
+        uploadLimit: uploadLimit,
+        apps: apps,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<void> createElement() {
+    return _UpdatePoolProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdatePoolProvider &&
+        other.poolId == poolId &&
+        other.poolName == poolName &&
+        other.status == status &&
+        other.skills == skills &&
+        other.pricePerDemo == pricePerDemo &&
+        other.uploadLimit == uploadLimit &&
+        other.apps == apps;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolId.hashCode);
+    hash = _SystemHash.combine(hash, poolName.hashCode);
+    hash = _SystemHash.combine(hash, status.hashCode);
+    hash = _SystemHash.combine(hash, skills.hashCode);
+    hash = _SystemHash.combine(hash, pricePerDemo.hashCode);
+    hash = _SystemHash.combine(hash, uploadLimit.hashCode);
+    hash = _SystemHash.combine(hash, apps.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdatePoolRef on AutoDisposeFutureProviderRef<void> {
+  /// The parameter `poolId` of this provider.
+  String get poolId;
+
+  /// The parameter `poolName` of this provider.
+  String? get poolName;
+
+  /// The parameter `status` of this provider.
+  TrainingPoolStatus? get status;
+
+  /// The parameter `skills` of this provider.
+  String? get skills;
+
+  /// The parameter `pricePerDemo` of this provider.
+  double? get pricePerDemo;
+
+  /// The parameter `uploadLimit` of this provider.
+  UploadLimit? get uploadLimit;
+
+  /// The parameter `apps` of this provider.
+  List<ForgeApp>? get apps;
+}
+
+class _UpdatePoolProviderElement extends AutoDisposeFutureProviderElement<void>
+    with UpdatePoolRef {
+  _UpdatePoolProviderElement(super.provider);
+
+  @override
+  String get poolId => (origin as UpdatePoolProvider).poolId;
+  @override
+  String? get poolName => (origin as UpdatePoolProvider).poolName;
+  @override
+  TrainingPoolStatus? get status => (origin as UpdatePoolProvider).status;
+  @override
+  String? get skills => (origin as UpdatePoolProvider).skills;
+  @override
+  double? get pricePerDemo => (origin as UpdatePoolProvider).pricePerDemo;
+  @override
+  UploadLimit? get uploadLimit => (origin as UpdatePoolProvider).uploadLimit;
+  @override
+  List<ForgeApp>? get apps => (origin as UpdatePoolProvider).apps;
+}
+
 String _$getRewardHash() => r'18f5597f8226a9a413c75586098ba4dd8ee061ec';
 
 /// See also [getReward].
@@ -859,7 +1086,7 @@ class _CreatePoolWithAppsProviderElement
       (origin as CreatePoolWithAppsProvider).ownerAddress;
 }
 
-String _$updatePoolEmailHash() => r'70f98c6e0a98c5cb0b1a05a1b18d5510cd6ad7ac';
+String _$updatePoolEmailHash() => r'90e732ec521bcab00e0fc959f2d55302c92897bf';
 
 /// See also [updatePoolEmail].
 @ProviderFor(updatePoolEmail)

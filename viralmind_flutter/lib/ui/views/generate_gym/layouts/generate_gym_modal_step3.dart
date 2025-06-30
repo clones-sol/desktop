@@ -157,7 +157,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
         BtnPrimary(
           buttonText: 'Continue',
           onTap: () async {
-            await generateGymNotifier.save();
+            await generateGymNotifier.createPool();
             onClose();
           },
         ),
