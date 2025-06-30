@@ -4,6 +4,7 @@ import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/domain/models/upload/upload_limit.dart';
 import 'package:viralmind_flutter/infrastructure/pool.repository.dart';
 import 'package:viralmind_flutter/utils/api_client.dart';
 
@@ -58,6 +59,29 @@ Future<void> createPool(
 }
 
 @riverpod
+Future<void> updatePool(
+  Ref ref, {
+  required String poolId,
+  String? poolName,
+  TrainingPoolStatus? status,
+  String? skills,
+  double? pricePerDemo,
+  UploadLimit? uploadLimit,
+  List<ForgeApp>? apps,
+}) async {
+  final poolsRepository = ref.read(poolsRepositoryProvider);
+  return poolsRepository.updatePool(
+    poolId: poolId,
+    name: poolName,
+    status: status,
+    skills: skills,
+    pricePerDemo: pricePerDemo,
+    uploadLimit: uploadLimit,
+    apps: apps,
+  );
+}
+
+@riverpod
 Future<RewardInfo> getReward(
   Ref ref, {
   required String poolId,
@@ -97,7 +121,7 @@ Future<void> updatePoolEmail(
 }) async {
   final poolsRepository = ref.read(poolsRepositoryProvider);
   return poolsRepository.updatePoolEmail(
-    poolID: poolId,
+    poolId: poolId,
     email: email,
   );
 }

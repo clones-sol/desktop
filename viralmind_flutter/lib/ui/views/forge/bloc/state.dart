@@ -7,6 +7,7 @@ part 'state.freezed.dart';
 class ForgeState with _$ForgeState {
   const factory ForgeState({
     @Default(false) bool showGymDetail,
+    @Default(false) bool showGenerateGymModal,
     TrainingPool? selectedPool,
   }) = _ForgeState;
   const ForgeState._();

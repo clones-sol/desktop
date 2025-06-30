@@ -22,3 +22,19 @@ class UploadLimit with _$UploadLimit {
   factory UploadLimit.fromJson(Map<String, dynamic> json) =>
       _$UploadLimitFromJson(json);
 }
+
+extension UploadLimitTypeExtension on UploadLimitType {
+  static UploadLimitType? parse(String value) {
+    switch (value) {
+      case 'pertask':
+        return UploadLimitType.perTask;
+      case 'perday':
+        return UploadLimitType.perDay;
+      case 'total':
+        return UploadLimitType.total;
+      case 'none':
+      default:
+        return null;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:viralmind_flutter/assets.dart';
 
-enum CardVariant { primary, secondary, black }
+enum CardVariant { primary, secondary, black, transparent }
 
 enum CardPadding { none, small, medium, large }
 
@@ -40,7 +40,9 @@ class CardWidget extends StatelessWidget {
             ? VMColors.primary.withValues(alpha: 0.1)
             : variant == CardVariant.secondary
                 ? VMColors.secondary.withValues(alpha: 0.1)
-                : Colors.black.withValues(alpha: 0.5),
+                : variant == CardVariant.black
+                    ? Colors.black.withValues(alpha: 0.5)
+                    : Colors.transparent,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: variant == CardVariant.primary

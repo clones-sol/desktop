@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ForgeState {
   bool get showGymDetail => throw _privateConstructorUsedError;
+  bool get showGenerateGymModal => throw _privateConstructorUsedError;
   TrainingPool? get selectedPool => throw _privateConstructorUsedError;
 
   /// Create a copy of ForgeState
@@ -32,7 +33,10 @@ abstract class $ForgeStateCopyWith<$Res> {
           ForgeState value, $Res Function(ForgeState) then) =
       _$ForgeStateCopyWithImpl<$Res, ForgeState>;
   @useResult
-  $Res call({bool showGymDetail, TrainingPool? selectedPool});
+  $Res call(
+      {bool showGymDetail,
+      bool showGenerateGymModal,
+      TrainingPool? selectedPool});
 
   $TrainingPoolCopyWith<$Res>? get selectedPool;
 }
@@ -53,12 +57,17 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
   @override
   $Res call({
     Object? showGymDetail = null,
+    Object? showGenerateGymModal = null,
     Object? selectedPool = freezed,
   }) {
     return _then(_value.copyWith(
       showGymDetail: null == showGymDetail
           ? _value.showGymDetail
           : showGymDetail // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showGenerateGymModal: null == showGenerateGymModal
+          ? _value.showGenerateGymModal
+          : showGenerateGymModal // ignore: cast_nullable_to_non_nullable
               as bool,
       selectedPool: freezed == selectedPool
           ? _value.selectedPool
@@ -90,7 +99,10 @@ abstract class _$$ForgeStateImplCopyWith<$Res>
       __$$ForgeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool showGymDetail, TrainingPool? selectedPool});
+  $Res call(
+      {bool showGymDetail,
+      bool showGenerateGymModal,
+      TrainingPool? selectedPool});
 
   @override
   $TrainingPoolCopyWith<$Res>? get selectedPool;
@@ -110,12 +122,17 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? showGymDetail = null,
+    Object? showGenerateGymModal = null,
     Object? selectedPool = freezed,
   }) {
     return _then(_$ForgeStateImpl(
       showGymDetail: null == showGymDetail
           ? _value.showGymDetail
           : showGymDetail // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showGenerateGymModal: null == showGenerateGymModal
+          ? _value.showGenerateGymModal
+          : showGenerateGymModal // ignore: cast_nullable_to_non_nullable
               as bool,
       selectedPool: freezed == selectedPool
           ? _value.selectedPool
@@ -128,18 +145,24 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ForgeStateImpl extends _ForgeState {
-  const _$ForgeStateImpl({this.showGymDetail = false, this.selectedPool})
+  const _$ForgeStateImpl(
+      {this.showGymDetail = false,
+      this.showGenerateGymModal = false,
+      this.selectedPool})
       : super._();
 
   @override
   @JsonKey()
   final bool showGymDetail;
   @override
+  @JsonKey()
+  final bool showGenerateGymModal;
+  @override
   final TrainingPool? selectedPool;
 
   @override
   String toString() {
-    return 'ForgeState(showGymDetail: $showGymDetail, selectedPool: $selectedPool)';
+    return 'ForgeState(showGymDetail: $showGymDetail, showGenerateGymModal: $showGenerateGymModal, selectedPool: $selectedPool)';
   }
 
   @override
@@ -149,12 +172,15 @@ class _$ForgeStateImpl extends _ForgeState {
             other is _$ForgeStateImpl &&
             (identical(other.showGymDetail, showGymDetail) ||
                 other.showGymDetail == showGymDetail) &&
+            (identical(other.showGenerateGymModal, showGenerateGymModal) ||
+                other.showGenerateGymModal == showGenerateGymModal) &&
             (identical(other.selectedPool, selectedPool) ||
                 other.selectedPool == selectedPool));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, showGymDetail, selectedPool);
+  int get hashCode => Object.hash(
+      runtimeType, showGymDetail, showGenerateGymModal, selectedPool);
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.
@@ -168,11 +194,14 @@ class _$ForgeStateImpl extends _ForgeState {
 abstract class _ForgeState extends ForgeState {
   const factory _ForgeState(
       {final bool showGymDetail,
+      final bool showGenerateGymModal,
       final TrainingPool? selectedPool}) = _$ForgeStateImpl;
   const _ForgeState._() : super._();
 
   @override
   bool get showGymDetail;
+  @override
+  bool get showGenerateGymModal;
   @override
   TrainingPool? get selectedPool;
 

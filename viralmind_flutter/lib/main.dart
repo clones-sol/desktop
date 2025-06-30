@@ -9,7 +9,7 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_deploy_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_settings_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_general_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_tasks_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_uploads_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_detail_shell.dart';
@@ -21,7 +21,7 @@ import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.d
 import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 
 final _router = GoRouter(
-  initialLocation: GymView.routeName,
+  initialLocation: HubView.routeName,
   routes: [
     ShellRoute(
       builder: (context, state, child) {
@@ -66,9 +66,9 @@ final _router = GoRouter(
           },
           routes: [
             GoRoute(
-              path: '/forge/:id/settings',
+              path: '/forge/:id/general',
               pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeGymSettingsTab());
+                return const NoTransitionPage(child: ForgeGymGeneralTab());
               },
             ),
             GoRoute(
@@ -214,6 +214,22 @@ class _ViralmindAppState extends ConsumerState<ViralmindApp> {
           seedColor: const Color(0xFFbb4eff),
         ),
         textTheme: textTheme,
+        snackBarTheme: SnackBarThemeData(
+          width: MediaQuery.of(context).size.width * 0.5,
+          backgroundColor: VMColors.tertiary.withValues(alpha: 0.7),
+          elevation: 2,
+          contentTextStyle: textTheme.bodyMedium,
+          insetPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: VMColors.tertiary,
+            ),
+          ),
+          closeIconColor: VMColors.primaryText,
+        ),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

@@ -40,7 +40,7 @@ class ForgeExistingGymCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${pool.tokenBalance ?? 0.toStringAsFixed(0)} ${pool.token.symbol}',
+                  '${pool.funds} ${pool.token.symbol}',
                   style: TextStyle(
                     color: VMColors.secondaryText,
                     fontSize: 14,
@@ -74,9 +74,7 @@ class ForgeExistingGymCard extends StatelessWidget {
     final pricePerDemo = pool.pricePerDemo;
     final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
         ? (Decimal.parse(
-                  pool.tokenBalance == null
-                      ? '0'
-                      : pool.tokenBalance.toString(),
+                  pool.funds.toString(),
                 ) /
                 Decimal.parse(pricePerDemo.toString()))
             .toDouble()

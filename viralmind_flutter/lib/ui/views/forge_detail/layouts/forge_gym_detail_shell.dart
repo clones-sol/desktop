@@ -17,6 +17,8 @@ class ForgeGymDetailShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final poolAsync = ref.watch(poolProvider(poolId));
     return poolAsync.when(
+      skipLoadingOnRefresh: true,
+      skipLoadingOnReload: true,
       data: (pool) {
         return ForgeGymDetail(
           pool: pool,

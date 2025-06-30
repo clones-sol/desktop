@@ -21,6 +21,21 @@ enum TrainingPoolStatus {
   noGas,
 }
 
+extension TrainingPoolStatusExtension on TrainingPoolStatus {
+  String get jsonValue {
+    switch (this) {
+      case TrainingPoolStatus.live:
+        return 'live';
+      case TrainingPoolStatus.paused:
+        return 'paused';
+      case TrainingPoolStatus.noFunds:
+        return 'no-funds';
+      case TrainingPoolStatus.noGas:
+        return 'no-gas';
+    }
+  }
+}
+
 @freezed
 class TrainingPool with _$TrainingPool {
   const factory TrainingPool({
@@ -41,7 +56,6 @@ class TrainingPool with _$TrainingPool {
     @Default(false) bool unsavedPrice,
     UploadLimit? uploadLimit,
     @Default(false) bool unsavedUploadLimit,
-    double? tokenBalance,
     DateTime? createdAt,
     AgentDeploymentInfo? agentDeploymentInfo,
   }) = _TrainingPool;

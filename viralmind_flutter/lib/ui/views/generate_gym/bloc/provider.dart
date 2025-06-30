@@ -57,7 +57,7 @@ class GenerateGymNotifier extends _$GenerateGymNotifier
     setApps(newApps);
   }
 
-  Future<void> save() async {
+  Future<void> createPool() async {
     try {
       final session = ref.watch(sessionNotifierProvider);
       if (session.address == null) return;

@@ -3,6 +3,7 @@ import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/quest/reward_info.dart';
 import 'package:viralmind_flutter/domain/models/token.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/domain/models/upload/upload_limit.dart';
 import 'package:viralmind_flutter/utils/api_client.dart';
 
 class PoolsRepositoryImpl {
@@ -25,18 +26,23 @@ class PoolsRepositoryImpl {
               skills: pool['skills'],
               status: _parseStatus(pool['status']),
               demonstrations: pool['demonstrations'],
-              tokenBalance: pool['tokenBalance'].toDouble(),
               pricePerDemo: pool['pricePerDemo'].toDouble(),
               createdAt: DateTime.parse(pool['createdAt']),
+              funds: pool['funds']?.toDouble() ?? 0,
+              solBalance: pool['solBalance']?.toDouble() ?? 0,
+              ownerAddress: pool['ownerAddress'],
+              depositAddress: pool['depositAddress'],
               token: Token(
                 type: Token.parseTokenType(pool['token']['type']),
                 symbol: pool['token']['symbol'],
                 address: pool['token']['address'],
               ),
-              funds: pool['funds']?.toDouble() ?? 0,
-              solBalance: pool['solBalance']?.toDouble() ?? 0,
-              ownerAddress: pool['ownerAddress'],
-              depositAddress: pool['depositAddress'],
+              uploadLimit: pool['uploadLimit'] == null
+                  ? null
+                  : UploadLimit.fromJson(
+                      pool['uploadLimit'] as Map<String, dynamic>,
+                    ),
+              ownerEmail: pool['ownerEmail'],
             ),
           )
           .toList();
@@ -48,7 +54,8 @@ class PoolsRepositoryImpl {
   Future<TrainingPool> refreshPool(String poolId) async {
     try {
       final data = await _client.post<Map<String, dynamic>>(
-        '/forge/pools/$poolId/refresh',
+        '/forge/pools/refresh',
+        data: {'id': poolId},
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => json as Map<String, dynamic>,
       );
@@ -59,18 +66,23 @@ class PoolsRepositoryImpl {
         skills: data['skills'],
         status: _parseStatus(data['status']),
         demonstrations: data['demonstrations'],
-        tokenBalance: data['tokenBalance'].toDouble(),
         pricePerDemo: data['pricePerDemo'].toDouble(),
         createdAt: DateTime.parse(data['createdAt']),
-        funds: data['funds'],
+        funds: data['funds'].toDouble(),
         solBalance: data['solBalance'],
         ownerAddress: data['ownerAddress'],
         depositAddress: data['depositAddress'],
         token: Token(
-          type: data['token']['type'],
+          type: Token.parseTokenType(data['token']['type']),
           symbol: data['token']['symbol'],
           address: data['token']['address'],
         ),
+        uploadLimit: data['uploadLimit'] == null
+            ? null
+            : UploadLimit.fromJson(
+                data['uploadLimit'] as Map<String, dynamic>,
+              ),
+        ownerEmail: data['ownerEmail'],
       );
     } catch (e) {
       throw Exception('Failed to refresh pool: $e');
@@ -103,6 +115,45 @@ class PoolsRepositoryImpl {
     } catch (e) {
       throw Exception('Failed to create pool: $e');
     }
+  }
+
+  Future<void> updatePool({
+    required String poolId,
+    String? name,
+    TrainingPoolStatus? status,
+    String? skills,
+    double? pricePerDemo,
+    UploadLimit? uploadLimit,
+    List<ForgeApp>? apps,
+  }) async {
+    final data = <String, dynamic>{
+      'id': poolId,
+    };
+
+    if (name != null) {
+      data['name'] = name;
+    }
+    if (status != null) {
+      data['status'] = status.jsonValue;
+    }
+    if (skills != null) {
+      data['skills'] = skills;
+    }
+    if (pricePerDemo != null) {
+      data['pricePerDemo'] = pricePerDemo;
+    }
+    if (uploadLimit != null) {
+      data['uploadLimit'] = uploadLimit.toJson();
+    }
+    if (apps != null) {
+      data['apps'] = apps.map((a) => a.toJson()).toList();
+    }
+
+    await _client.put(
+      '/forge/pools',
+      data: data,
+      options: const RequestOptions(requiresAuth: true),
+    );
   }
 
   TrainingPoolStatus _parseStatus(String status) {
@@ -165,13 +216,13 @@ class PoolsRepositoryImpl {
   }
 
   Future<void> updatePoolEmail({
-    required String poolID,
+    required String poolId,
     required String email,
   }) async {
     try {
       await _client.put<void>(
         '/forge/pools/email',
-        data: {'id': poolID, 'email': email},
+        data: {'id': poolId, 'email': email},
         options: const RequestOptions(requiresAuth: true),
       );
     } catch (e) {

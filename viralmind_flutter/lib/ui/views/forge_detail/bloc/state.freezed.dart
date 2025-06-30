@@ -16,7 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ForgeDetailState {
+  String get gymName => throw _privateConstructorUsedError;
+  double get pricePerDemo => throw _privateConstructorUsedError;
+  int get uploadLimitValue => throw _privateConstructorUsedError;
+  String get uploadLimitType => throw _privateConstructorUsedError;
+  String get alertEmail => throw _privateConstructorUsedError;
+  TrainingPoolStatus? get gymStatus => throw _privateConstructorUsedError;
   TrainingPool? get pool => throw _privateConstructorUsedError;
+  ViewModeTasks get viewModeTasks => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
+  bool get isUpdateGymStatusSuccess => throw _privateConstructorUsedError;
+  bool get isUpdatePoolSuccess => throw _privateConstructorUsedError;
+  bool get isRefreshBalanceSuccess => throw _privateConstructorUsedError;
+  bool get hasUnsavedChanges => throw _privateConstructorUsedError;
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +43,20 @@ abstract class $ForgeDetailStateCopyWith<$Res> {
           ForgeDetailState value, $Res Function(ForgeDetailState) then) =
       _$ForgeDetailStateCopyWithImpl<$Res, ForgeDetailState>;
   @useResult
-  $Res call({TrainingPool? pool});
+  $Res call(
+      {String gymName,
+      double pricePerDemo,
+      int uploadLimitValue,
+      String uploadLimitType,
+      String alertEmail,
+      TrainingPoolStatus? gymStatus,
+      TrainingPool? pool,
+      ViewModeTasks viewModeTasks,
+      String? error,
+      bool isUpdateGymStatusSuccess,
+      bool isUpdatePoolSuccess,
+      bool isRefreshBalanceSuccess,
+      bool hasUnsavedChanges});
 
   $TrainingPoolCopyWith<$Res>? get pool;
 }
@@ -51,13 +76,73 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? gymName = null,
+    Object? pricePerDemo = null,
+    Object? uploadLimitValue = null,
+    Object? uploadLimitType = null,
+    Object? alertEmail = null,
+    Object? gymStatus = freezed,
     Object? pool = freezed,
+    Object? viewModeTasks = null,
+    Object? error = freezed,
+    Object? isUpdateGymStatusSuccess = null,
+    Object? isUpdatePoolSuccess = null,
+    Object? isRefreshBalanceSuccess = null,
+    Object? hasUnsavedChanges = null,
   }) {
     return _then(_value.copyWith(
+      gymName: null == gymName
+          ? _value.gymName
+          : gymName // ignore: cast_nullable_to_non_nullable
+              as String,
+      pricePerDemo: null == pricePerDemo
+          ? _value.pricePerDemo
+          : pricePerDemo // ignore: cast_nullable_to_non_nullable
+              as double,
+      uploadLimitValue: null == uploadLimitValue
+          ? _value.uploadLimitValue
+          : uploadLimitValue // ignore: cast_nullable_to_non_nullable
+              as int,
+      uploadLimitType: null == uploadLimitType
+          ? _value.uploadLimitType
+          : uploadLimitType // ignore: cast_nullable_to_non_nullable
+              as String,
+      alertEmail: null == alertEmail
+          ? _value.alertEmail
+          : alertEmail // ignore: cast_nullable_to_non_nullable
+              as String,
+      gymStatus: freezed == gymStatus
+          ? _value.gymStatus
+          : gymStatus // ignore: cast_nullable_to_non_nullable
+              as TrainingPoolStatus?,
       pool: freezed == pool
           ? _value.pool
           : pool // ignore: cast_nullable_to_non_nullable
               as TrainingPool?,
+      viewModeTasks: null == viewModeTasks
+          ? _value.viewModeTasks
+          : viewModeTasks // ignore: cast_nullable_to_non_nullable
+              as ViewModeTasks,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
+          ? _value.isUpdateGymStatusSuccess
+          : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUpdatePoolSuccess: null == isUpdatePoolSuccess
+          ? _value.isUpdatePoolSuccess
+          : isUpdatePoolSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isRefreshBalanceSuccess: null == isRefreshBalanceSuccess
+          ? _value.isRefreshBalanceSuccess
+          : isRefreshBalanceSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasUnsavedChanges: null == hasUnsavedChanges
+          ? _value.hasUnsavedChanges
+          : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 
@@ -84,7 +169,20 @@ abstract class _$$ForgeDetailStateImplCopyWith<$Res>
       __$$ForgeDetailStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TrainingPool? pool});
+  $Res call(
+      {String gymName,
+      double pricePerDemo,
+      int uploadLimitValue,
+      String uploadLimitType,
+      String alertEmail,
+      TrainingPoolStatus? gymStatus,
+      TrainingPool? pool,
+      ViewModeTasks viewModeTasks,
+      String? error,
+      bool isUpdateGymStatusSuccess,
+      bool isUpdatePoolSuccess,
+      bool isRefreshBalanceSuccess,
+      bool hasUnsavedChanges});
 
   @override
   $TrainingPoolCopyWith<$Res>? get pool;
@@ -103,13 +201,73 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? gymName = null,
+    Object? pricePerDemo = null,
+    Object? uploadLimitValue = null,
+    Object? uploadLimitType = null,
+    Object? alertEmail = null,
+    Object? gymStatus = freezed,
     Object? pool = freezed,
+    Object? viewModeTasks = null,
+    Object? error = freezed,
+    Object? isUpdateGymStatusSuccess = null,
+    Object? isUpdatePoolSuccess = null,
+    Object? isRefreshBalanceSuccess = null,
+    Object? hasUnsavedChanges = null,
   }) {
     return _then(_$ForgeDetailStateImpl(
+      gymName: null == gymName
+          ? _value.gymName
+          : gymName // ignore: cast_nullable_to_non_nullable
+              as String,
+      pricePerDemo: null == pricePerDemo
+          ? _value.pricePerDemo
+          : pricePerDemo // ignore: cast_nullable_to_non_nullable
+              as double,
+      uploadLimitValue: null == uploadLimitValue
+          ? _value.uploadLimitValue
+          : uploadLimitValue // ignore: cast_nullable_to_non_nullable
+              as int,
+      uploadLimitType: null == uploadLimitType
+          ? _value.uploadLimitType
+          : uploadLimitType // ignore: cast_nullable_to_non_nullable
+              as String,
+      alertEmail: null == alertEmail
+          ? _value.alertEmail
+          : alertEmail // ignore: cast_nullable_to_non_nullable
+              as String,
+      gymStatus: freezed == gymStatus
+          ? _value.gymStatus
+          : gymStatus // ignore: cast_nullable_to_non_nullable
+              as TrainingPoolStatus?,
       pool: freezed == pool
           ? _value.pool
           : pool // ignore: cast_nullable_to_non_nullable
               as TrainingPool?,
+      viewModeTasks: null == viewModeTasks
+          ? _value.viewModeTasks
+          : viewModeTasks // ignore: cast_nullable_to_non_nullable
+              as ViewModeTasks,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
+          ? _value.isUpdateGymStatusSuccess
+          : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isUpdatePoolSuccess: null == isUpdatePoolSuccess
+          ? _value.isUpdatePoolSuccess
+          : isUpdatePoolSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isRefreshBalanceSuccess: null == isRefreshBalanceSuccess
+          ? _value.isRefreshBalanceSuccess
+          : isRefreshBalanceSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
+      hasUnsavedChanges: null == hasUnsavedChanges
+          ? _value.hasUnsavedChanges
+          : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -117,14 +275,63 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$ForgeDetailStateImpl extends _ForgeDetailState {
-  const _$ForgeDetailStateImpl({this.pool}) : super._();
+  const _$ForgeDetailStateImpl(
+      {this.gymName = '',
+      this.pricePerDemo = 1,
+      this.uploadLimitValue = 10,
+      this.uploadLimitType = 'none',
+      this.alertEmail = '',
+      this.gymStatus = TrainingPoolStatus.noFunds,
+      this.pool,
+      this.viewModeTasks = ViewModeTasks.edit,
+      this.error,
+      this.isUpdateGymStatusSuccess = false,
+      this.isUpdatePoolSuccess = false,
+      this.isRefreshBalanceSuccess = false,
+      this.hasUnsavedChanges = false})
+      : super._();
 
   @override
+  @JsonKey()
+  final String gymName;
+  @override
+  @JsonKey()
+  final double pricePerDemo;
+  @override
+  @JsonKey()
+  final int uploadLimitValue;
+  @override
+  @JsonKey()
+  final String uploadLimitType;
+  @override
+  @JsonKey()
+  final String alertEmail;
+  @override
+  @JsonKey()
+  final TrainingPoolStatus? gymStatus;
+  @override
   final TrainingPool? pool;
+  @override
+  @JsonKey()
+  final ViewModeTasks viewModeTasks;
+  @override
+  final String? error;
+  @override
+  @JsonKey()
+  final bool isUpdateGymStatusSuccess;
+  @override
+  @JsonKey()
+  final bool isUpdatePoolSuccess;
+  @override
+  @JsonKey()
+  final bool isRefreshBalanceSuccess;
+  @override
+  @JsonKey()
+  final bool hasUnsavedChanges;
 
   @override
   String toString() {
-    return 'ForgeDetailState(pool: $pool)';
+    return 'ForgeDetailState(gymName: $gymName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, alertEmail: $alertEmail, gymStatus: $gymStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, isUpdateGymStatusSuccess: $isUpdateGymStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges)';
   }
 
   @override
@@ -132,11 +339,49 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ForgeDetailStateImpl &&
-            (identical(other.pool, pool) || other.pool == pool));
+            (identical(other.gymName, gymName) || other.gymName == gymName) &&
+            (identical(other.pricePerDemo, pricePerDemo) ||
+                other.pricePerDemo == pricePerDemo) &&
+            (identical(other.uploadLimitValue, uploadLimitValue) ||
+                other.uploadLimitValue == uploadLimitValue) &&
+            (identical(other.uploadLimitType, uploadLimitType) ||
+                other.uploadLimitType == uploadLimitType) &&
+            (identical(other.alertEmail, alertEmail) ||
+                other.alertEmail == alertEmail) &&
+            (identical(other.gymStatus, gymStatus) ||
+                other.gymStatus == gymStatus) &&
+            (identical(other.pool, pool) || other.pool == pool) &&
+            (identical(other.viewModeTasks, viewModeTasks) ||
+                other.viewModeTasks == viewModeTasks) &&
+            (identical(other.error, error) || other.error == error) &&
+            (identical(
+                    other.isUpdateGymStatusSuccess, isUpdateGymStatusSuccess) ||
+                other.isUpdateGymStatusSuccess == isUpdateGymStatusSuccess) &&
+            (identical(other.isUpdatePoolSuccess, isUpdatePoolSuccess) ||
+                other.isUpdatePoolSuccess == isUpdatePoolSuccess) &&
+            (identical(
+                    other.isRefreshBalanceSuccess, isRefreshBalanceSuccess) ||
+                other.isRefreshBalanceSuccess == isRefreshBalanceSuccess) &&
+            (identical(other.hasUnsavedChanges, hasUnsavedChanges) ||
+                other.hasUnsavedChanges == hasUnsavedChanges));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, pool);
+  int get hashCode => Object.hash(
+      runtimeType,
+      gymName,
+      pricePerDemo,
+      uploadLimitValue,
+      uploadLimitType,
+      alertEmail,
+      gymStatus,
+      pool,
+      viewModeTasks,
+      error,
+      isUpdateGymStatusSuccess,
+      isUpdatePoolSuccess,
+      isRefreshBalanceSuccess,
+      hasUnsavedChanges);
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -149,12 +394,48 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 }
 
 abstract class _ForgeDetailState extends ForgeDetailState {
-  const factory _ForgeDetailState({final TrainingPool? pool}) =
-      _$ForgeDetailStateImpl;
+  const factory _ForgeDetailState(
+      {final String gymName,
+      final double pricePerDemo,
+      final int uploadLimitValue,
+      final String uploadLimitType,
+      final String alertEmail,
+      final TrainingPoolStatus? gymStatus,
+      final TrainingPool? pool,
+      final ViewModeTasks viewModeTasks,
+      final String? error,
+      final bool isUpdateGymStatusSuccess,
+      final bool isUpdatePoolSuccess,
+      final bool isRefreshBalanceSuccess,
+      final bool hasUnsavedChanges}) = _$ForgeDetailStateImpl;
   const _ForgeDetailState._() : super._();
 
   @override
+  String get gymName;
+  @override
+  double get pricePerDemo;
+  @override
+  int get uploadLimitValue;
+  @override
+  String get uploadLimitType;
+  @override
+  String get alertEmail;
+  @override
+  TrainingPoolStatus? get gymStatus;
+  @override
   TrainingPool? get pool;
+  @override
+  ViewModeTasks get viewModeTasks;
+  @override
+  String? get error;
+  @override
+  bool get isUpdateGymStatusSuccess;
+  @override
+  bool get isUpdatePoolSuccess;
+  @override
+  bool get isRefreshBalanceSuccess;
+  @override
+  bool get hasUnsavedChanges;
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.
