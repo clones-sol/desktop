@@ -38,7 +38,6 @@ mixin _$TrainingPool {
   bool get unsavedPrice => throw _privateConstructorUsedError;
   UploadLimit? get uploadLimit => throw _privateConstructorUsedError;
   bool get unsavedUploadLimit => throw _privateConstructorUsedError;
-  double? get tokenBalance => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   AgentDeploymentInfo? get agentDeploymentInfo =>
       throw _privateConstructorUsedError;
@@ -77,7 +76,6 @@ abstract class $TrainingPoolCopyWith<$Res> {
       bool unsavedPrice,
       UploadLimit? uploadLimit,
       bool unsavedUploadLimit,
-      double? tokenBalance,
       DateTime? createdAt,
       AgentDeploymentInfo? agentDeploymentInfo});
 
@@ -118,7 +116,6 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
     Object? unsavedPrice = null,
     Object? uploadLimit = freezed,
     Object? unsavedUploadLimit = null,
-    Object? tokenBalance = freezed,
     Object? createdAt = freezed,
     Object? agentDeploymentInfo = freezed,
   }) {
@@ -191,10 +188,6 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
           ? _value.unsavedUploadLimit
           : unsavedUploadLimit // ignore: cast_nullable_to_non_nullable
               as bool,
-      tokenBalance: freezed == tokenBalance
-          ? _value.tokenBalance
-          : tokenBalance // ignore: cast_nullable_to_non_nullable
-              as double?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -272,7 +265,6 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       bool unsavedPrice,
       UploadLimit? uploadLimit,
       bool unsavedUploadLimit,
-      double? tokenBalance,
       DateTime? createdAt,
       AgentDeploymentInfo? agentDeploymentInfo});
 
@@ -314,7 +306,6 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
     Object? unsavedPrice = null,
     Object? uploadLimit = freezed,
     Object? unsavedUploadLimit = null,
-    Object? tokenBalance = freezed,
     Object? createdAt = freezed,
     Object? agentDeploymentInfo = freezed,
   }) {
@@ -387,10 +378,6 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
           ? _value.unsavedUploadLimit
           : unsavedUploadLimit // ignore: cast_nullable_to_non_nullable
               as bool,
-      tokenBalance: freezed == tokenBalance
-          ? _value.tokenBalance
-          : tokenBalance // ignore: cast_nullable_to_non_nullable
-              as double?,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -424,7 +411,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
       this.unsavedPrice = false,
       this.uploadLimit,
       this.unsavedUploadLimit = false,
-      this.tokenBalance,
       this.createdAt,
       this.agentDeploymentInfo});
 
@@ -471,15 +457,13 @@ class _$TrainingPoolImpl implements _TrainingPool {
   @JsonKey()
   final bool unsavedUploadLimit;
   @override
-  final double? tokenBalance;
-  @override
   final DateTime? createdAt;
   @override
   final AgentDeploymentInfo? agentDeploymentInfo;
 
   @override
   String toString() {
-    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, tokenBalance: $tokenBalance, createdAt: $createdAt, agentDeploymentInfo: $agentDeploymentInfo)';
+    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, solBalance: $solBalance, token: $token, skills: $skills, ownerEmail: $ownerEmail, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, createdAt: $createdAt, agentDeploymentInfo: $agentDeploymentInfo)';
   }
 
   @override
@@ -515,8 +499,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
                 other.uploadLimit == uploadLimit) &&
             (identical(other.unsavedUploadLimit, unsavedUploadLimit) ||
                 other.unsavedUploadLimit == unsavedUploadLimit) &&
-            (identical(other.tokenBalance, tokenBalance) ||
-                other.tokenBalance == tokenBalance) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.agentDeploymentInfo, agentDeploymentInfo) ||
@@ -544,7 +526,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
         unsavedPrice,
         uploadLimit,
         unsavedUploadLimit,
-        tokenBalance,
         createdAt,
         agentDeploymentInfo
       ]);
@@ -584,7 +565,6 @@ abstract class _TrainingPool implements TrainingPool {
       final bool unsavedPrice,
       final UploadLimit? uploadLimit,
       final bool unsavedUploadLimit,
-      final double? tokenBalance,
       final DateTime? createdAt,
       final AgentDeploymentInfo? agentDeploymentInfo}) = _$TrainingPoolImpl;
 
@@ -626,8 +606,6 @@ abstract class _TrainingPool implements TrainingPool {
   UploadLimit? get uploadLimit;
   @override
   bool get unsavedUploadLimit;
-  @override
-  double? get tokenBalance;
   @override
   DateTime? get createdAt;
   @override

@@ -1,6 +1,8 @@
 import 'package:riverpod/riverpod.dart';
+import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/bloc/state.dart';
+import 'package:viralmind_flutter/ui/views/manage_task/bloc/state.dart';
 
 mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
   void setPool(TrainingPool pool) {
@@ -63,5 +65,37 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
   void setIsRefreshBalanceSuccess(bool isRefreshBalanceSuccess) {
     if (state.isRefreshBalanceSuccess == isRefreshBalanceSuccess) return;
     state = state.copyWith(isRefreshBalanceSuccess: isRefreshBalanceSuccess);
+  }
+
+  void setApps(List<ForgeApp> apps) {
+    state = state.copyWith(apps: apps);
+  }
+
+  void setShowNewAppForm(bool showNewAppForm) {
+    state = state.copyWith(showNewAppForm: showNewAppForm);
+  }
+
+  void setNewAppName(String newAppName) {
+    state = state.copyWith(newAppName: newAppName);
+  }
+
+  void setNewAppDomain(String newAppDomain) {
+    state = state.copyWith(newAppDomain: newAppDomain);
+  }
+
+  void setShowManageTaskModal(bool showManageTaskModal) {
+    state = state.copyWith(showManageTaskModal: showManageTaskModal);
+  }
+
+  void setManageTaskModalType(ManageTaskModalType manageTaskModalType) {
+    state = state.copyWith(manageTaskModalType: manageTaskModalType);
+  }
+
+  void setEditingTaskAppIdx(int? editingTaskAppIdx) {
+    state = state.copyWith(editingTaskAppIdx: editingTaskAppIdx);
+  }
+
+  void setEditingTaskIdx(int? editingTaskIdx) {
+    state = state.copyWith(editingTaskIdx: editingTaskIdx);
   }
 }

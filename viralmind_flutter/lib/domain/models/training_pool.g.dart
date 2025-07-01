@@ -27,7 +27,6 @@ _$TrainingPoolImpl _$$TrainingPoolImplFromJson(Map<String, dynamic> json) =>
           ? null
           : UploadLimit.fromJson(json['uploadLimit'] as Map<String, dynamic>),
       unsavedUploadLimit: json['unsavedUploadLimit'] as bool? ?? false,
-      tokenBalance: (json['tokenBalance'] as num?)?.toDouble(),
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
@@ -56,7 +55,6 @@ Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
       'unsavedPrice': instance.unsavedPrice,
       'uploadLimit': instance.uploadLimit,
       'unsavedUploadLimit': instance.unsavedUploadLimit,
-      'tokenBalance': instance.tokenBalance,
       'createdAt': instance.createdAt?.toIso8601String(),
       'agentDeploymentInfo': instance.agentDeploymentInfo,
     };

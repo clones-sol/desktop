@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:viralmind_flutter/assets.dart';
 
-final forgeDetailTabProvider = StateProvider<String>((ref) => 'settings');
+final forgeDetailTabProvider = StateProvider<String>((ref) => 'general');
 
 class ForgeGymDetailSidebar extends ConsumerWidget {
   const ForgeGymDetailSidebar({

@@ -25,10 +25,20 @@ mixin _$ForgeDetailState {
   TrainingPool? get pool => throw _privateConstructorUsedError;
   ViewModeTasks get viewModeTasks => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
+  List<ForgeApp> get apps => throw _privateConstructorUsedError;
   bool get isUpdateGymStatusSuccess => throw _privateConstructorUsedError;
   bool get isUpdatePoolSuccess => throw _privateConstructorUsedError;
   bool get isRefreshBalanceSuccess => throw _privateConstructorUsedError;
-  bool get hasUnsavedChanges => throw _privateConstructorUsedError;
+  bool get hasUnsavedChanges =>
+      throw _privateConstructorUsedError; // New App Form
+  bool get showNewAppForm => throw _privateConstructorUsedError;
+  bool get showManageTaskModal => throw _privateConstructorUsedError;
+  ManageTaskModalType get manageTaskModalType =>
+      throw _privateConstructorUsedError;
+  String? get newAppName => throw _privateConstructorUsedError;
+  String? get newAppDomain => throw _privateConstructorUsedError;
+  int? get editingTaskAppIdx => throw _privateConstructorUsedError;
+  int? get editingTaskIdx => throw _privateConstructorUsedError;
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -53,10 +63,18 @@ abstract class $ForgeDetailStateCopyWith<$Res> {
       TrainingPool? pool,
       ViewModeTasks viewModeTasks,
       String? error,
+      List<ForgeApp> apps,
       bool isUpdateGymStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
-      bool hasUnsavedChanges});
+      bool hasUnsavedChanges,
+      bool showNewAppForm,
+      bool showManageTaskModal,
+      ManageTaskModalType manageTaskModalType,
+      String? newAppName,
+      String? newAppDomain,
+      int? editingTaskAppIdx,
+      int? editingTaskIdx});
 
   $TrainingPoolCopyWith<$Res>? get pool;
 }
@@ -85,10 +103,18 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
     Object? pool = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
+    Object? apps = null,
     Object? isUpdateGymStatusSuccess = null,
     Object? isUpdatePoolSuccess = null,
     Object? isRefreshBalanceSuccess = null,
     Object? hasUnsavedChanges = null,
+    Object? showNewAppForm = null,
+    Object? showManageTaskModal = null,
+    Object? manageTaskModalType = null,
+    Object? newAppName = freezed,
+    Object? newAppDomain = freezed,
+    Object? editingTaskAppIdx = freezed,
+    Object? editingTaskIdx = freezed,
   }) {
     return _then(_value.copyWith(
       gymName: null == gymName
@@ -127,6 +153,10 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      apps: null == apps
+          ? _value.apps
+          : apps // ignore: cast_nullable_to_non_nullable
+              as List<ForgeApp>,
       isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
           ? _value.isUpdateGymStatusSuccess
           : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
@@ -143,6 +173,34 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
           ? _value.hasUnsavedChanges
           : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
               as bool,
+      showNewAppForm: null == showNewAppForm
+          ? _value.showNewAppForm
+          : showNewAppForm // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showManageTaskModal: null == showManageTaskModal
+          ? _value.showManageTaskModal
+          : showManageTaskModal // ignore: cast_nullable_to_non_nullable
+              as bool,
+      manageTaskModalType: null == manageTaskModalType
+          ? _value.manageTaskModalType
+          : manageTaskModalType // ignore: cast_nullable_to_non_nullable
+              as ManageTaskModalType,
+      newAppName: freezed == newAppName
+          ? _value.newAppName
+          : newAppName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      newAppDomain: freezed == newAppDomain
+          ? _value.newAppDomain
+          : newAppDomain // ignore: cast_nullable_to_non_nullable
+              as String?,
+      editingTaskAppIdx: freezed == editingTaskAppIdx
+          ? _value.editingTaskAppIdx
+          : editingTaskAppIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      editingTaskIdx: freezed == editingTaskIdx
+          ? _value.editingTaskIdx
+          : editingTaskIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -179,10 +237,18 @@ abstract class _$$ForgeDetailStateImplCopyWith<$Res>
       TrainingPool? pool,
       ViewModeTasks viewModeTasks,
       String? error,
+      List<ForgeApp> apps,
       bool isUpdateGymStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
-      bool hasUnsavedChanges});
+      bool hasUnsavedChanges,
+      bool showNewAppForm,
+      bool showManageTaskModal,
+      ManageTaskModalType manageTaskModalType,
+      String? newAppName,
+      String? newAppDomain,
+      int? editingTaskAppIdx,
+      int? editingTaskIdx});
 
   @override
   $TrainingPoolCopyWith<$Res>? get pool;
@@ -210,10 +276,18 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
     Object? pool = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
+    Object? apps = null,
     Object? isUpdateGymStatusSuccess = null,
     Object? isUpdatePoolSuccess = null,
     Object? isRefreshBalanceSuccess = null,
     Object? hasUnsavedChanges = null,
+    Object? showNewAppForm = null,
+    Object? showManageTaskModal = null,
+    Object? manageTaskModalType = null,
+    Object? newAppName = freezed,
+    Object? newAppDomain = freezed,
+    Object? editingTaskAppIdx = freezed,
+    Object? editingTaskIdx = freezed,
   }) {
     return _then(_$ForgeDetailStateImpl(
       gymName: null == gymName
@@ -252,6 +326,10 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
               as String?,
+      apps: null == apps
+          ? _value._apps
+          : apps // ignore: cast_nullable_to_non_nullable
+              as List<ForgeApp>,
       isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
           ? _value.isUpdateGymStatusSuccess
           : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
@@ -268,6 +346,34 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
           ? _value.hasUnsavedChanges
           : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
               as bool,
+      showNewAppForm: null == showNewAppForm
+          ? _value.showNewAppForm
+          : showNewAppForm // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showManageTaskModal: null == showManageTaskModal
+          ? _value.showManageTaskModal
+          : showManageTaskModal // ignore: cast_nullable_to_non_nullable
+              as bool,
+      manageTaskModalType: null == manageTaskModalType
+          ? _value.manageTaskModalType
+          : manageTaskModalType // ignore: cast_nullable_to_non_nullable
+              as ManageTaskModalType,
+      newAppName: freezed == newAppName
+          ? _value.newAppName
+          : newAppName // ignore: cast_nullable_to_non_nullable
+              as String?,
+      newAppDomain: freezed == newAppDomain
+          ? _value.newAppDomain
+          : newAppDomain // ignore: cast_nullable_to_non_nullable
+              as String?,
+      editingTaskAppIdx: freezed == editingTaskAppIdx
+          ? _value.editingTaskAppIdx
+          : editingTaskAppIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
+      editingTaskIdx: freezed == editingTaskIdx
+          ? _value.editingTaskIdx
+          : editingTaskIdx // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -285,11 +391,20 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
       this.pool,
       this.viewModeTasks = ViewModeTasks.edit,
       this.error,
+      final List<ForgeApp> apps = const [],
       this.isUpdateGymStatusSuccess = false,
       this.isUpdatePoolSuccess = false,
       this.isRefreshBalanceSuccess = false,
-      this.hasUnsavedChanges = false})
-      : super._();
+      this.hasUnsavedChanges = false,
+      this.showNewAppForm = false,
+      this.showManageTaskModal = false,
+      this.manageTaskModalType = ManageTaskModalType.create,
+      this.newAppName,
+      this.newAppDomain,
+      this.editingTaskAppIdx,
+      this.editingTaskIdx})
+      : _apps = apps,
+        super._();
 
   @override
   @JsonKey()
@@ -316,6 +431,15 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
   final ViewModeTasks viewModeTasks;
   @override
   final String? error;
+  final List<ForgeApp> _apps;
+  @override
+  @JsonKey()
+  List<ForgeApp> get apps {
+    if (_apps is EqualUnmodifiableListView) return _apps;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_apps);
+  }
+
   @override
   @JsonKey()
   final bool isUpdateGymStatusSuccess;
@@ -328,10 +452,28 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
   @override
   @JsonKey()
   final bool hasUnsavedChanges;
+// New App Form
+  @override
+  @JsonKey()
+  final bool showNewAppForm;
+  @override
+  @JsonKey()
+  final bool showManageTaskModal;
+  @override
+  @JsonKey()
+  final ManageTaskModalType manageTaskModalType;
+  @override
+  final String? newAppName;
+  @override
+  final String? newAppDomain;
+  @override
+  final int? editingTaskAppIdx;
+  @override
+  final int? editingTaskIdx;
 
   @override
   String toString() {
-    return 'ForgeDetailState(gymName: $gymName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, alertEmail: $alertEmail, gymStatus: $gymStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, isUpdateGymStatusSuccess: $isUpdateGymStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges)';
+    return 'ForgeDetailState(gymName: $gymName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, alertEmail: $alertEmail, gymStatus: $gymStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, apps: $apps, isUpdateGymStatusSuccess: $isUpdateGymStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges, showNewAppForm: $showNewAppForm, showManageTaskModal: $showManageTaskModal, manageTaskModalType: $manageTaskModalType, newAppName: $newAppName, newAppDomain: $newAppDomain, editingTaskAppIdx: $editingTaskAppIdx, editingTaskIdx: $editingTaskIdx)';
   }
 
   @override
@@ -354,6 +496,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
             (identical(other.viewModeTasks, viewModeTasks) ||
                 other.viewModeTasks == viewModeTasks) &&
             (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(other._apps, _apps) &&
             (identical(
                     other.isUpdateGymStatusSuccess, isUpdateGymStatusSuccess) ||
                 other.isUpdateGymStatusSuccess == isUpdateGymStatusSuccess) &&
@@ -363,25 +506,48 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
                     other.isRefreshBalanceSuccess, isRefreshBalanceSuccess) ||
                 other.isRefreshBalanceSuccess == isRefreshBalanceSuccess) &&
             (identical(other.hasUnsavedChanges, hasUnsavedChanges) ||
-                other.hasUnsavedChanges == hasUnsavedChanges));
+                other.hasUnsavedChanges == hasUnsavedChanges) &&
+            (identical(other.showNewAppForm, showNewAppForm) ||
+                other.showNewAppForm == showNewAppForm) &&
+            (identical(other.showManageTaskModal, showManageTaskModal) ||
+                other.showManageTaskModal == showManageTaskModal) &&
+            (identical(other.manageTaskModalType, manageTaskModalType) ||
+                other.manageTaskModalType == manageTaskModalType) &&
+            (identical(other.newAppName, newAppName) ||
+                other.newAppName == newAppName) &&
+            (identical(other.newAppDomain, newAppDomain) ||
+                other.newAppDomain == newAppDomain) &&
+            (identical(other.editingTaskAppIdx, editingTaskAppIdx) ||
+                other.editingTaskAppIdx == editingTaskAppIdx) &&
+            (identical(other.editingTaskIdx, editingTaskIdx) ||
+                other.editingTaskIdx == editingTaskIdx));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      gymName,
-      pricePerDemo,
-      uploadLimitValue,
-      uploadLimitType,
-      alertEmail,
-      gymStatus,
-      pool,
-      viewModeTasks,
-      error,
-      isUpdateGymStatusSuccess,
-      isUpdatePoolSuccess,
-      isRefreshBalanceSuccess,
-      hasUnsavedChanges);
+  int get hashCode => Object.hashAll([
+        runtimeType,
+        gymName,
+        pricePerDemo,
+        uploadLimitValue,
+        uploadLimitType,
+        alertEmail,
+        gymStatus,
+        pool,
+        viewModeTasks,
+        error,
+        const DeepCollectionEquality().hash(_apps),
+        isUpdateGymStatusSuccess,
+        isUpdatePoolSuccess,
+        isRefreshBalanceSuccess,
+        hasUnsavedChanges,
+        showNewAppForm,
+        showManageTaskModal,
+        manageTaskModalType,
+        newAppName,
+        newAppDomain,
+        editingTaskAppIdx,
+        editingTaskIdx
+      ]);
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.
@@ -404,10 +570,18 @@ abstract class _ForgeDetailState extends ForgeDetailState {
       final TrainingPool? pool,
       final ViewModeTasks viewModeTasks,
       final String? error,
+      final List<ForgeApp> apps,
       final bool isUpdateGymStatusSuccess,
       final bool isUpdatePoolSuccess,
       final bool isRefreshBalanceSuccess,
-      final bool hasUnsavedChanges}) = _$ForgeDetailStateImpl;
+      final bool hasUnsavedChanges,
+      final bool showNewAppForm,
+      final bool showManageTaskModal,
+      final ManageTaskModalType manageTaskModalType,
+      final String? newAppName,
+      final String? newAppDomain,
+      final int? editingTaskAppIdx,
+      final int? editingTaskIdx}) = _$ForgeDetailStateImpl;
   const _ForgeDetailState._() : super._();
 
   @override
@@ -429,13 +603,29 @@ abstract class _ForgeDetailState extends ForgeDetailState {
   @override
   String? get error;
   @override
+  List<ForgeApp> get apps;
+  @override
   bool get isUpdateGymStatusSuccess;
   @override
   bool get isUpdatePoolSuccess;
   @override
   bool get isRefreshBalanceSuccess;
   @override
-  bool get hasUnsavedChanges;
+  bool get hasUnsavedChanges; // New App Form
+  @override
+  bool get showNewAppForm;
+  @override
+  bool get showManageTaskModal;
+  @override
+  ManageTaskModalType get manageTaskModalType;
+  @override
+  String? get newAppName;
+  @override
+  String? get newAppDomain;
+  @override
+  int? get editingTaskAppIdx;
+  @override
+  int? get editingTaskIdx;
 
   /// Create a copy of ForgeDetailState
   /// with the given fields replaced by the non-null parameter values.

@@ -26,7 +26,7 @@ mixin _$ForgeTaskItem {
   @JsonKey(includeIfNull: false)
   int? get uploadLimit => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
-  int? get rewardLimit => throw _privateConstructorUsedError;
+  double? get rewardLimit => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
   bool? get completed => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
@@ -60,7 +60,7 @@ abstract class $ForgeTaskItemCopyWith<$Res> {
       {@JsonKey(name: '_id', includeIfNull: false) String? id,
       String prompt,
       @JsonKey(includeIfNull: false) int? uploadLimit,
-      @JsonKey(includeIfNull: false) int? rewardLimit,
+      @JsonKey(includeIfNull: false) double? rewardLimit,
       @JsonKey(includeIfNull: false) bool? completed,
       @JsonKey(includeIfNull: false) String? recordingId,
       @JsonKey(includeIfNull: false) int? score,
@@ -111,7 +111,7 @@ class _$ForgeTaskItemCopyWithImpl<$Res, $Val extends ForgeTaskItem>
       rewardLimit: freezed == rewardLimit
           ? _value.rewardLimit
           : rewardLimit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       completed: freezed == completed
           ? _value.completed
           : completed // ignore: cast_nullable_to_non_nullable
@@ -152,7 +152,7 @@ abstract class _$$ForgeTaskItemImplCopyWith<$Res>
       {@JsonKey(name: '_id', includeIfNull: false) String? id,
       String prompt,
       @JsonKey(includeIfNull: false) int? uploadLimit,
-      @JsonKey(includeIfNull: false) int? rewardLimit,
+      @JsonKey(includeIfNull: false) double? rewardLimit,
       @JsonKey(includeIfNull: false) bool? completed,
       @JsonKey(includeIfNull: false) String? recordingId,
       @JsonKey(includeIfNull: false) int? score,
@@ -201,7 +201,7 @@ class __$$ForgeTaskItemImplCopyWithImpl<$Res>
       rewardLimit: freezed == rewardLimit
           ? _value.rewardLimit
           : rewardLimit // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       completed: freezed == completed
           ? _value.completed
           : completed // ignore: cast_nullable_to_non_nullable
@@ -258,7 +258,7 @@ class _$ForgeTaskItemImpl implements _ForgeTaskItem {
   final int? uploadLimit;
   @override
   @JsonKey(includeIfNull: false)
-  final int? rewardLimit;
+  final double? rewardLimit;
   @override
   @JsonKey(includeIfNull: false)
   final bool? completed;
@@ -343,7 +343,7 @@ abstract class _ForgeTaskItem implements ForgeTaskItem {
           {@JsonKey(name: '_id', includeIfNull: false) final String? id,
           required final String prompt,
           @JsonKey(includeIfNull: false) final int? uploadLimit,
-          @JsonKey(includeIfNull: false) final int? rewardLimit,
+          @JsonKey(includeIfNull: false) final double? rewardLimit,
           @JsonKey(includeIfNull: false) final bool? completed,
           @JsonKey(includeIfNull: false) final String? recordingId,
           @JsonKey(includeIfNull: false) final int? score,
@@ -365,7 +365,7 @@ abstract class _ForgeTaskItem implements ForgeTaskItem {
   int? get uploadLimit;
   @override
   @JsonKey(includeIfNull: false)
-  int? get rewardLimit;
+  double? get rewardLimit;
   @override
   @JsonKey(includeIfNull: false)
   bool? get completed;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:viralmind_flutter/application/apps.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/domain/models/ui/gym_filter.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/bloc/provider.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_detail_sidebar.dart';
@@ -23,11 +25,16 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () async {
+      final apps = await ref.read(
+        getAppsForGymProvider(filter: GymFilter(poolId: widget.pool.id)).future,
+      );
+
       ref.read(forgeDetailNotifierProvider.notifier)
         ..setIsUpdateGymStatusSuccess(false)
         ..setIsUpdatePoolSuccess(false)
         ..setIsRefreshBalanceSuccess(false)
         ..setError(null)
+        ..setApps(apps)
         ..setGymName(widget.pool.name)
         ..setGymStatus(widget.pool.status)
         ..setAlertEmail(widget.pool.ownerEmail ?? '')

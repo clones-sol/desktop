@@ -78,8 +78,8 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
     });
   }
 
-  int _getReward(ForgeApp app, ForgeTaskItem task) {
-    return task.rewardLimit ?? app.poolId?.pricePerDemo.toInt() ?? 0;
+  double _getReward(ForgeApp app, ForgeTaskItem task) {
+    return task.rewardLimit ?? app.poolId?.pricePerDemo ?? 0.0;
   }
 
   @override
