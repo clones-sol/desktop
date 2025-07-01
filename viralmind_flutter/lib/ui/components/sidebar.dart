@@ -11,6 +11,7 @@ import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.
 import 'package:viralmind_flutter/ui/views/hub/layouts/hub_view.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:viralmind_flutter/ui/views/skills_tree/layouts/skill_tree_view.dart';
+import 'package:viralmind_flutter/ui/views/training_session/layouts/training_session_view.dart';
 
 class Sidebar extends ConsumerWidget {
   const Sidebar({
@@ -60,9 +61,13 @@ class Sidebar extends ConsumerWidget {
       ),
     ];
 
-    var activeIndex =
-        buttons.indexWhere((b) => currentRoute.startsWith(b.path));
-    if (activeIndex == -1) activeIndex = 0;
+    var activeIndex = 0;
+    if (currentRoute.startsWith(TrainingSessionView.routeName)) {
+      activeIndex = 1;
+    } else {
+      activeIndex = buttons.indexWhere((b) => currentRoute.startsWith(b.path));
+      if (activeIndex == -1) activeIndex = 0;
+    }
 
     return Container(
       width: 64,

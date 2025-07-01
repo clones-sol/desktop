@@ -8,10 +8,12 @@ import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/stats_leader_board.dart';
 import 'package:viralmind_flutter/domain/models/leaderboard/worker_leader_board.dart';
-import 'package:viralmind_flutter/ui/components/stats_card.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/leaderboards_stat_active_forges.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/leaderboards_stat_total_demos.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/leaderboards_stat_total_paid_out.dart';
+import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/leaderboards_stat_total_tasks.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/top_forges.dart';
 import 'package:viralmind_flutter/ui/views/leaderboards/layouts/components/top_workers.dart';
-import 'package:viralmind_flutter/utils/format_num.dart';
 
 class LeaderboardsView extends ConsumerStatefulWidget {
   const LeaderboardsView({super.key});
@@ -88,7 +90,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   if (_loading)
                     const Center(child: CircularProgressIndicator())
                   else if (_error != null)
@@ -138,7 +140,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                                     setState(() => _forgesFullscreen = true),
                               ),
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
                             Expanded(
                               child: TopWorkers(
                                 workers: _topWorkers,
@@ -327,38 +329,16 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
     if (_stats == null) return const SizedBox.shrink();
 
     return SizedBox(
-      width: double.infinity,
-      child: Column(
+      height: 150,
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        spacing: 20,
         children: [
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 4,
-            crossAxisSpacing: 24,
-            mainAxisSpacing: 24,
-            childAspectRatio: 1.8,
-            children: [
-              StatCard(
-                label: 'Total Demonstrators',
-                value: _stats!.totalWorkers.toString(),
-              ),
-              StatCard(
-                label: 'Total Tasks Completed',
-                value: _stats!.tasksCompleted.toString(),
-              ),
-              StatCard(
-                label: 'Total Paid Out',
-                value:
-                    '${formatNumberWithSeparator(_stats!.totalRewards)}\n\$VIRAL',
-              ),
-              StatCard(
-                label: 'Active Forges',
-                value: _stats!.activeForges.toString(),
-              ),
-            ],
-          ),
+          LeaderboardsStatTotalDemos(stat: _stats!),
+          LeaderboardsStatTotalTasks(stat: _stats!),
+          LeaderboardsStatTotalPaidOut(stat: _stats!),
+          LeaderboardsStatActiveForges(stat: _stats!),
         ],
       ),
     );
