@@ -137,7 +137,10 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
   }
 
   void removeApp(int idx) {
-    state.apps.removeAt(idx);
+    final apps = List<ForgeApp>.from(state.apps);
+    final newApps = List<ForgeApp>.from(apps)..removeAt(idx);
+    setApps(newApps);
+    setHasUnsavedChanges(true);
   }
 
   void removeTask(int appIdx, int taskIdx) {

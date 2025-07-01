@@ -49,86 +49,70 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
 
   @override
   Widget build(BuildContext context) {
-    ref
-      ..listen(forgeDetailNotifierProvider.select((value) => value),
-          (previous, next) {
-        if (next.isUpdatePoolSuccess == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Gym updated successfully!',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+    ref.listen(forgeDetailNotifierProvider, (previous, next) {
+      if (previous == null) {
+        return;
+      }
+      // Pool update success
+      if (next.isUpdatePoolSuccess && !previous.isUpdatePoolSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Gym updated successfully!',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          );
-        } else if (next.isUpdatePoolSuccess == false && next.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Failed to update gym: ${next.error}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+          ),
+        );
+        ref
+            .read(forgeDetailNotifierProvider.notifier)
+            .setIsUpdatePoolSuccess(false);
+      }
+
+      // Gym status update success
+      if (next.isUpdateGymStatusSuccess && !previous.isUpdateGymStatusSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Gym status updated successfully!',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          );
-        }
-        ref.read(forgeDetailNotifierProvider.notifier)
-          ..setIsUpdatePoolSuccess(false)
-          ..setError(null);
-      })
-      ..listen(forgeDetailNotifierProvider.select((value) => value),
-          (previous, next) {
-        if (next.isUpdateGymStatusSuccess == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Gym status updated successfully!',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width * 0.5,
+          ),
+        );
+        ref
+            .read(forgeDetailNotifierProvider.notifier)
+            .setIsUpdateGymStatusSuccess(false);
+      }
+
+      // Balance refresh success
+      if (next.isRefreshBalanceSuccess && !previous.isRefreshBalanceSuccess) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Balance refreshed successfully!',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          );
-        } else if (next.isUpdateGymStatusSuccess == false &&
-            next.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Failed to update gym status: ${next.error}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+            width: MediaQuery.of(context).size.width * 0.5,
+          ),
+        );
+        ref
+            .read(forgeDetailNotifierProvider.notifier)
+            .setIsRefreshBalanceSuccess(false);
+      }
+
+      // Error handling
+      if (next.error != null && previous.error == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'An error occurred: ${next.error}',
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
-          );
-        }
-        ref.read(forgeDetailNotifierProvider.notifier)
-          ..setIsUpdateGymStatusSuccess(false)
-          ..setError(null);
-      })
-      ..listen(forgeDetailNotifierProvider.select((value) => value),
-          (previous, next) {
-        if (next.isRefreshBalanceSuccess == true) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Balance refreshed successfully!',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              width: MediaQuery.of(context).size.width * 0.5,
-            ),
-          );
-        } else if (next.isRefreshBalanceSuccess == false &&
-            next.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'Failed to refresh balance: ${next.error}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          );
-        }
-        ref.read(forgeDetailNotifierProvider.notifier)
-          ..setIsRefreshBalanceSuccess(false)
-          ..setError(null);
-      });
+          ),
+        );
+        ref.read(forgeDetailNotifierProvider.notifier).setError(null);
+      }
+    });
 
     final pool = ref.watch(forgeDetailNotifierProvider).pool;
     if (pool == null) return const SizedBox.shrink();
