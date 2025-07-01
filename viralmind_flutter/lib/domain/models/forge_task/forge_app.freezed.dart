@@ -280,8 +280,8 @@ class _$ForgeAppImpl implements _ForgeApp {
       required this.name,
       required this.domain,
       required this.description,
-      required final List<String> categories,
-      required final List<ForgeTaskItem> tasks,
+      final List<String> categories = const [],
+      final List<ForgeTaskItem> tasks = const [],
       @JsonKey(name: 'pool_id', includeIfNull: false) this.poolId,
       @JsonKey(includeIfNull: false) this.seen,
       @JsonKey(includeIfNull: false) this.gymLimitReached,
@@ -305,6 +305,7 @@ class _$ForgeAppImpl implements _ForgeApp {
   final String description;
   final List<String> _categories;
   @override
+  @JsonKey()
   List<String> get categories {
     if (_categories is EqualUnmodifiableListView) return _categories;
     // ignore: implicit_dynamic_type
@@ -313,6 +314,7 @@ class _$ForgeAppImpl implements _ForgeApp {
 
   final List<ForgeTaskItem> _tasks;
   @override
+  @JsonKey()
   List<ForgeTaskItem> get tasks {
     if (_tasks is EqualUnmodifiableListView) return _tasks;
     // ignore: implicit_dynamic_type
@@ -407,8 +409,8 @@ abstract class _ForgeApp implements ForgeApp {
           required final String name,
           required final String domain,
           required final String description,
-          required final List<String> categories,
-          required final List<ForgeTaskItem> tasks,
+          final List<String> categories,
+          final List<ForgeTaskItem> tasks,
           @JsonKey(name: 'pool_id', includeIfNull: false) final PoolId? poolId,
           @JsonKey(includeIfNull: false) final bool? seen,
           @JsonKey(includeIfNull: false) final bool? gymLimitReached,

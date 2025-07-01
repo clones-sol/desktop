@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
 import 'package:viralmind_flutter/domain/models/training_pool.dart';
+import 'package:viralmind_flutter/ui/views/manage_task/bloc/state.dart';
 
 part 'state.freezed.dart';
 
@@ -20,10 +22,20 @@ class ForgeDetailState with _$ForgeDetailState {
     TrainingPool? pool,
     @Default(ViewModeTasks.edit) ViewModeTasks viewModeTasks,
     String? error,
+    @Default([]) List<ForgeApp> apps,
     @Default(false) bool isUpdateGymStatusSuccess,
     @Default(false) bool isUpdatePoolSuccess,
     @Default(false) bool isRefreshBalanceSuccess,
     @Default(false) bool hasUnsavedChanges,
+    // New App Form
+    @Default(false) bool showNewAppForm,
+    @Default(false) bool showManageTaskModal,
+    @Default(ManageTaskModalType.create)
+    ManageTaskModalType manageTaskModalType,
+    String? newAppName,
+    String? newAppDomain,
+    int? editingTaskAppIdx,
+    int? editingTaskIdx,
   }) = _ForgeDetailState;
   const ForgeDetailState._();
 }

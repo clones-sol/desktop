@@ -9,7 +9,7 @@ class ForgeTaskItem with _$ForgeTaskItem {
     @JsonKey(name: '_id', includeIfNull: false) String? id,
     required String prompt,
     @JsonKey(includeIfNull: false) int? uploadLimit,
-    @JsonKey(includeIfNull: false) int? rewardLimit,
+    @JsonKey(includeIfNull: false) double? rewardLimit,
     @JsonKey(includeIfNull: false) bool? completed,
     @JsonKey(includeIfNull: false) String? recordingId,
     @JsonKey(includeIfNull: false) int? score,

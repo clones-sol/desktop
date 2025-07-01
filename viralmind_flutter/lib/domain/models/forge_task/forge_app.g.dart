@@ -12,12 +12,14 @@ _$ForgeAppImpl _$$ForgeAppImplFromJson(Map<String, dynamic> json) =>
       name: json['name'] as String,
       domain: json['domain'] as String,
       description: json['description'] as String,
-      categories: (json['categories'] as List<dynamic>)
-          .map((e) => e as String)
-          .toList(),
-      tasks: (json['tasks'] as List<dynamic>)
-          .map((e) => ForgeTaskItem.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      categories: (json['categories'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          const [],
+      tasks: (json['tasks'] as List<dynamic>?)
+              ?.map((e) => ForgeTaskItem.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       poolId: json['pool_id'] == null
           ? null
           : PoolId.fromJson(json['pool_id'] as Map<String, dynamic>),

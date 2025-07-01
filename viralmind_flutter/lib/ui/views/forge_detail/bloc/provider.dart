@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:viralmind_flutter/application/pool.dart';
+import 'package:viralmind_flutter/domain/models/forge_task/forge_app.dart';
+import 'package:viralmind_flutter/domain/models/forge_task/forge_task_item.dart';
 import 'package:viralmind_flutter/domain/models/upload/upload_limit.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/bloc/setters.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/bloc/state.dart';
@@ -93,6 +95,7 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
         poolName: state.gymName,
         status: state.gymStatus,
         skills: pool.skills,
+        apps: state.apps,
         pricePerDemo: state.pricePerDemo,
         uploadLimit: state.uploadLimitType == 'none'
             ? null
@@ -111,5 +114,58 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
             pool.ownerEmail != state.alertEmail)) {
       await _updateAlertEmail();
     }
+  }
+
+  void createApp() {
+    setError(null);
+
+    if (state.newAppName == null || state.newAppName!.isEmpty) {
+      setError('Name is required');
+      return;
+    }
+
+    final newApp = ForgeApp(
+      name: state.newAppName!,
+      domain: state.newAppDomain!,
+      description: '',
+    );
+    state.apps.add(newApp);
+
+    setNewAppName('');
+    setNewAppDomain('');
+    setShowNewAppForm(false);
+  }
+
+  void removeApp(int idx) {
+    state.apps.removeAt(idx);
+  }
+
+  void removeTask(int appIdx, int taskIdx) {
+    final apps = List<ForgeApp>.from(state.apps);
+    final app = apps[appIdx];
+    final newTasks = List<ForgeTaskItem>.from(app.tasks)..removeAt(taskIdx);
+    apps[appIdx] = app.copyWith(tasks: newTasks);
+
+    setApps(apps);
+    setHasUnsavedChanges(true);
+  }
+
+  void createTask(int appIndex, ForgeTaskItem task) {
+    final apps = List<ForgeApp>.from(state.apps);
+    final app = apps[appIndex];
+    final newTasks = List<ForgeTaskItem>.from(app.tasks)..add(task);
+    apps[appIndex] = app.copyWith(tasks: newTasks);
+    setApps(apps);
+    setHasUnsavedChanges(true);
+  }
+
+  void updateTask(int appIndex, int taskIndex, ForgeTaskItem task) {
+    final apps = List<ForgeApp>.from(state.apps);
+    final app = apps[appIndex];
+    final newTasks = List<ForgeTaskItem>.from(app.tasks);
+    newTasks[taskIndex] = task;
+    apps[appIndex] = app.copyWith(tasks: newTasks);
+    setApps(apps);
+    setHasUnsavedChanges(true);
   }
 }

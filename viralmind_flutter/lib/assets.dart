@@ -37,6 +37,7 @@ class VMColors {
   static const Color tertiary = Color(0xFF5C51FF);
 
   static const Color rewardInfo = Color(0xFF10B981);
+  static const Color uploadLimit = Color.fromARGB(255, 203, 132, 46);
 
   static Gradient gradientBtnPrimary = const LinearGradient(
     colors: [
