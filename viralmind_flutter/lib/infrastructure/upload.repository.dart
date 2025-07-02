@@ -58,7 +58,6 @@ class UploadRepositoryImpl {
       data: formData,
       options: const RequestOptions(requiresAuth: true),
     );
-    debugPrint('uploadChunk response: $response');
     return UploadProgress.fromJson(response);
   }
 

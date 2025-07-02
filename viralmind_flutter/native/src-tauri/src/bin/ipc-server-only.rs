@@ -10,7 +10,7 @@ fn main() {
     dotenvy::from_filename(".env").ok();
     dotenvy::from_filename_override(".env.local").ok();
     if "production"
-        == std::env::var("VITE_ENV").unwrap_or_else(|_| "development".to_string())
+        == std::env::var("ENV").unwrap_or_else(|_| "development".to_string())
     {
         dotenvy::from_filename_override(".env.production").ok();
     }

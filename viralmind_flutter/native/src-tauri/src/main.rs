@@ -10,7 +10,7 @@ fn main() {
     // Load .env then .env.local (always), then .env.production if we are in production.
     dotenvy::from_filename(".env").ok();
     dotenvy::from_filename_override(".env.local").ok();
-    let env = std::env::var("VITE_ENV").unwrap_or_else(|_| "development".to_string());
+    let env = std::env::var("ENV").unwrap_or_else(|_| "development".to_string());
     if env == "production" {
         dotenvy::from_filename_override(".env.production").ok();
     }

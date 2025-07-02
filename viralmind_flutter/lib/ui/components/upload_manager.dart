@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/application/upload/provider.dart';
 import 'package:viralmind_flutter/application/upload/state.dart';
+import 'package:viralmind_flutter/assets.dart';
 
 String formatFileSize(int? bytes) {
   if (bytes == null) return '0 B';
@@ -60,7 +61,7 @@ class UploadManagerWidget extends ConsumerStatefulWidget {
 class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
   OverlayEntry? _overlayEntry;
   final LayerLink _layerLink = LayerLink();
-  bool _isOverlayVisible = false;
+  bool _isHovering = false;
 
   @override
   void dispose() {
@@ -79,173 +80,149 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
   }
 
   OverlayEntry _createOverlayEntry() {
+    final renderBox = context.findRenderObject()! as RenderBox;
+    final size = renderBox.size;
+
     final queueItems = ref.read(uploadQueueProvider).values.toList();
 
     return OverlayEntry(
       builder: (context) => Positioned(
+        width: 280,
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          targetAnchor: Alignment.bottomRight,
-          followerAnchor: Alignment.bottomLeft,
-          offset: const Offset(12, -40),
+          offset: Offset(size.width + 8, -150),
           child: MouseRegion(
             onEnter: (_) {
               setState(() {
-                _isOverlayVisible = true;
+                _isHovering = true;
               });
             },
             onExit: (_) {
               setState(() {
-                _isOverlayVisible = false;
+                _isHovering = false;
                 _hideOverlay();
               });
             },
             child: Material(
               elevation: 8,
               borderRadius: BorderRadius.circular(12),
-              color: Colors.grey[900],
+              color: Colors.transparent,
               child: Container(
-                width: 256,
-                constraints: const BoxConstraints(maxHeight: 240),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.8),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.5),
+                      blurRadius: 5,
+                      offset: const Offset(5, 5),
+                    ),
+                  ],
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[800],
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(12),
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            'Upload Manager',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Upload Manager',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
+                        ),
+                        Text(
+                          '(${queueItems.length})',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ...queueItems.map((item) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      getStatusIcon(item.uploadStatus),
+                                      color: getStatusColor(
+                                        item.uploadStatus,
+                                        context,
+                                      ),
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Flexible(
+                                      child: Text(
+                                        item.name ?? 'Unknown',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                  color: VMColors.secondaryText,
+                                  size: 14,
+                                ),
+                                onPressed: () {
+                                  // TODO(reddwarf03): Remove item from queue
+                                },
+                                tooltip: 'Remove',
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
                           Text(
-                            '(${queueItems.length})',
+                            item.uploadStatus.name,
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-
-                    // Liste des items
-                    ...queueItems.map((item) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 12,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey[700]!,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 4,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: LinearProgressIndicator(
+                                value: item.getProgress() / 100,
+                                backgroundColor: Colors.grey[700],
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  item.uploadStatus == UploadStatus.done
+                                      ? Colors.green
+                                      : Theme.of(context).colorScheme.secondary,
+                                ),
+                                minHeight: 6,
+                              ),
                             ),
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Ligne avec icône, nom et bouton fermer
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Flexible(
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        getStatusIcon(item.uploadStatus),
-                                        color: getStatusColor(
-                                          item.uploadStatus,
-                                          context,
-                                        ),
-                                        size: 16,
-                                      ),
-                                      const SizedBox(width: 8),
-                                      Flexible(
-                                        child: Text(
-                                          item.name ?? 'Unknown',
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(
-                                    Icons.close,
-                                    color: Colors.grey,
-                                    size: 14,
-                                  ),
-                                  onPressed: () {
-                                    // TODO(reddwarf03): Remove item from queue
-                                  },
-                                  tooltip: 'Remove',
-                                ),
-                              ],
-                            ),
-
-                            const SizedBox(height: 4),
-
-                            // Message de status
+                          if (item.uploadStatus == UploadStatus.uploading)
                             Text(
-                              item.uploadStatus.name,
+                              '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
                               style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 4,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: LinearProgressIndicator(
-                                  value: item.getProgress() / 100,
-                                  backgroundColor: Colors.grey[700],
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    item.uploadStatus == UploadStatus.done
-                                        ? Colors.green
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                  ),
-                                  minHeight: 6,
-                                ),
-                              ),
-                            ),
-
-                            // Texte taille uploadée
-                            if (item.uploadStatus == UploadStatus.uploading)
-                              Text(
-                                '${formatFileSize(item.uploadedBytes)} of ${formatFileSize(item.totalBytes)}',
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                ),
-                              ),
-                          ],
-                        ),
+                        ],
                       );
                     }),
                   ],
@@ -290,26 +267,39 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
       link: _layerLink,
       child: GestureDetector(
         onTap: () {
-          setState(() {
-            _isOverlayVisible = !_isOverlayVisible;
-            if (_isOverlayVisible) {
+          if (_isHovering == false) {
+            setState(() {
+              _isHovering = true;
               _showOverlay();
-            } else {
+            });
+          } else {
+            setState(() {
+              _isHovering = false;
               _hideOverlay();
-            }
-          });
+            });
+          }
         },
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.1),
+            ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  colors: [
+                    VMColors.primary.withValues(alpha: 0.5),
+                    VMColors.secondary.withValues(alpha: 0.9),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.dstIn,
+              child: Image.asset(
+                Assets.uploadIcon,
+                width: 40,
+                height: 40,
               ),
-              child: const Icon(Icons.upload, color: Colors.white, size: 16),
             ),
             Positioned(
               top: -4,

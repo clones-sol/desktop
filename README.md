@@ -30,10 +30,16 @@ Our recording system is designed specifically for training powerful computer-use
 
 ### Recording Format
 
-Recordings are two files and stored in `%LOCALAPPDATA%\ai.viralmind.desktop\recordings\` on Windows and `${HOME}/Library/Application Support/ai.viralmind.desktop/recordings/` on MacOS:
+Recordings are stored in the application data directory based on the app identifier (`ai.viralmind.desktop`). The default locations are:
+- Windows: `%LOCALAPPDATA%\ai.viralmind.desktop\recordings\`
+- MacOS: `${HOME}/Library/Application Support/ai.viralmind.desktop/recordings/`
 
+You can add a suffix to the app identifier using the `APP_IDENTIFIER_SUFFIX` environment variable to distinguish between development and production environments. For example:
+- Development: `APP_IDENTIFIER_SUFFIX=dev` will use `ai.viralmind.desktop-dev`
+- Production: Leave empty or unset to use the default `ai.viralmind.desktop`
+
+Each recording consists of two files:
 - .mp4 video capture
-
 - .jsonl event log capturing detailed interaction data
 
 Sample event log format:
@@ -161,19 +167,9 @@ bun install
 Create a `.env` file at the root of the project with the following content (adapt the values according to your environment):
 
 ```
-VITE_VIRAL_TOKEN_ADDRESS=HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump
-VITE_SOL_TOKEN_ADDRESS=So11111111111111111111111111111111111111112
-```
+# === Application Configuration ===
+APP_IDENTIFIER_SUFFIX=dev  # Optional: Add a suffix to the app identifier for development
 
-For production, create a `.env.production` file with the appropriate values.
-
-Don't forget to add `.env.local` to your `.gitignore` to avoid versioning local secrets.
-
-## Environment Variables Reference
-
-Below is a list of all environment variables used for configuration. Add these to your `.env` (and `.env.production` for production) at the root of your project:
-
-```
 # === Frontend (Vite/Svelte) ===
 VITE_API_URL=https://viralmind.ai
 VITE_S3_BASE_URL=https://training-gym.s3.us-east-2.amazonaws.com
@@ -200,11 +196,9 @@ PIPELINE_URL_LINUX=https://github.com/viralmind-ai/vm-pipeline/releases/latest/d
 PIPELINE_URL_MACOS=https://github.com/viralmind-ai/vm-pipeline/releases/latest/download/pipeline-macos-arm64
 ```
 
-**Notes:**
-- All variables starting with `VITE_` are used by the frontend (Svelte/Vite) and must be prefixed as such.
-- The backend (Rust/Tauri) uses the other variables for downloading and running platform-specific binaries.
-- You can override any of these in `.env.production` for production deployments.
-- Never commit secrets or sensitive keys to version control.
+For production, create a `.env.production` file with the appropriate values.
+
+Don't forget to add `.env.local` to your `.gitignore` to avoid versioning local secrets.
 
 ## How to run in each environment
 

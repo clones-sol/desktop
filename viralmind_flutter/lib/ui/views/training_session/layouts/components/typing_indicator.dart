@@ -36,18 +36,22 @@ class _TypingIndicatorState extends State<TypingIndicator> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+      child: Stack(
         children: [
-          const Pfp(),
-          const SizedBox(width: 8),
-          MessageBox(
-            messageBoxType: MessageBoxType.talkLeft,
-            content: Text(
-              '.' * _dotCount + ' ' * (3 - _dotCount),
-              style: Theme.of(context).textTheme.bodyMedium,
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 15),
+            child: MessageBox(
+              messageBoxType: MessageBoxType.talkLeft,
+              content: Text(
+                '.' * _dotCount + ' ' * (3 - _dotCount),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
             ),
+          ),
+          const Positioned(
+            left: 0,
+            top: 0,
+            child: Pfp(),
           ),
         ],
       ),

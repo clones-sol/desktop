@@ -39,35 +39,45 @@ class _Base64ImageMessageState extends State<Base64ImageMessage>
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Pfp(),
-        const SizedBox(width: 8),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
-          ),
-          child: MessageBox(
-            messageBoxType: MessageBoxType.talkLeft,
-            content: FutureBuilder<Uint8List>(
-              future: _decodedImageFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done &&
-                    snapshot.hasData) {
-                  return Image.memory(
-                    snapshot.data!,
-                    gaplessPlayback: true,
-                  );
-                } else {
-                  return const Center(
-                    child: SizedBox(
-                      height: 32,
-                      width: 32,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  );
-                }
-              },
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: MessageBox(
+                  messageBoxType: MessageBoxType.talkLeft,
+                  content: FutureBuilder<Uint8List>(
+                    future: _decodedImageFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return Image.memory(
+                          snapshot.data!,
+                          gaplessPlayback: true,
+                        );
+                      } else {
+                        return const Center(
+                          child: SizedBox(
+                            height: 32,
+                            width: 32,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
             ),
-          ),
+            const Positioned(
+              left: 0,
+              top: 0,
+              child: Pfp(),
+            ),
+          ],
         ),
       ],
     );
