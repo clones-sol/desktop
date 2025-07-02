@@ -126,7 +126,7 @@ class ForgeGymGeneralTab extends ConsumerWidget {
       return const SizedBox.shrink();
     }
     return const SizedBox(
-      height: 150,
+      height: 160,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,

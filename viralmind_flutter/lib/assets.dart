@@ -26,6 +26,8 @@ class Assets {
   static const String editIcon = '${assetIconsFolder}edit_icon.png';
   static const String hubIcon = '${assetIconsFolder}hub_icon.png';
   static const String recordIcon = '${assetIconsFolder}record_icon.png';
+  static const String uploadIcon = '${assetIconsFolder}upload_icon.png';
+  static const String robotIcon = '${assetIconsFolder}robot_icon.png';
 }
 
 class VMColors {

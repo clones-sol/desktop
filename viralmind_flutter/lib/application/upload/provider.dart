@@ -81,8 +81,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
 
     final uploadId = initResult['uploadId'] as String;
 
-    debugPrint('uploadId: $uploadId');
-
     _updateTaskState(
       recordingId,
       UploadTaskState(
@@ -107,7 +105,6 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
 
       uploadedBytes += chunks[i].length;
 
-      debugPrint('uploadId: ${uploadProgress.uploadId}');
       _updateTaskState(
         recordingId,
         UploadTaskState(

@@ -183,35 +183,50 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Pfp(),
-                      const SizedBox(width: 8),
-                      Container(
-                        constraints: BoxConstraints(
-                          maxWidth: MediaQuery.of(context).size.width * 0.7,
-                        ),
-                        child: MessageBox(
-                          messageBoxType: MessageBoxType.talkLeft,
-                          content: RecordPanel(
-                            title: trainingSession.activeQuest!.title,
-                            reward: trainingSession.activeQuest!.reward,
-                            objectives: trainingSession.activeQuest!.objectives,
-                            onStartRecording: (fps) => ref
-                                .read(
-                                  trainingSessionNotifierProvider.notifier,
-                                )
-                                .startRecording(fps),
-                            onComplete: ref
-                                .read(
-                                  trainingSessionNotifierProvider.notifier,
-                                )
-                                .recordingComplete,
-                            onGiveUp: ref
-                                .read(
-                                  trainingSessionNotifierProvider.notifier,
-                                )
-                                .giveUp,
+                      Stack(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, top: 15),
+                            child: Container(
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.7,
+                              ),
+                              child: MessageBox(
+                                messageBoxType: MessageBoxType.talkLeft,
+                                content: RecordPanel(
+                                  title: trainingSession.activeQuest!.title,
+                                  reward: trainingSession.activeQuest!.reward,
+                                  objectives:
+                                      trainingSession.activeQuest!.objectives,
+                                  onStartRecording: (fps) => ref
+                                      .read(
+                                        trainingSessionNotifierProvider
+                                            .notifier,
+                                      )
+                                      .startRecording(fps),
+                                  onComplete: ref
+                                      .read(
+                                        trainingSessionNotifierProvider
+                                            .notifier,
+                                      )
+                                      .recordingComplete,
+                                  onGiveUp: ref
+                                      .read(
+                                        trainingSessionNotifierProvider
+                                            .notifier,
+                                      )
+                                      .giveUp,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          const Positioned(
+                            left: 0,
+                            top: 0,
+                            child: Pfp(),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -316,16 +331,24 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (!isUser) ...[const Pfp(), const SizedBox(width: 8)],
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
-          ),
-          child: MessageBox(
-            messageBoxType:
-                isUser ? MessageBoxType.talkRight : MessageBoxType.talkLeft,
-            content: _buildMessageContent(message),
-          ),
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: MessageBox(
+                  messageBoxType: isUser
+                      ? MessageBoxType.talkRight
+                      : MessageBoxType.talkLeft,
+                  content: _buildMessageContent(message),
+                ),
+              ),
+            ),
+            if (!isUser) const Pfp(),
+          ],
         ),
       ],
     );
@@ -345,19 +368,29 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Pfp(),
-        const SizedBox(width: 8),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
-          ),
-          child: MessageBox(
-            messageBoxType: MessageBoxType.talkLeft,
-            content: Text(
-              typingMessage.content,
-              style: Theme.of(context).textTheme.bodyMedium,
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                ),
+                child: MessageBox(
+                  messageBoxType: MessageBoxType.talkLeft,
+                  content: Text(
+                    typingMessage.content,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
             ),
-          ),
+            const Positioned(
+              left: 0,
+              top: 0,
+              child: Pfp(),
+            ),
+          ],
         ),
       ],
     );
@@ -374,60 +407,72 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Pfp(),
-        const SizedBox(width: 8),
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
-          ),
-          child: MessageBox(
-            messageBoxType: MessageBoxType.talkLeft,
-            content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'Ready to submit your demonstration?',
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(width: 16),
-                    BtnPrimary(
-                      onTap: trainingSession.isUploading
-                          ? null
-                          : () {
-                              ref
-                                  .read(
-                                    trainingSessionNotifierProvider.notifier,
-                                  )
-                                  .uploadRecording(
-                                    trainingSession.currentRecordingId!,
-                                  );
-                            },
-                      buttonText: trainingSession.isUploading
-                          ? 'Uploading...'
-                          : 'Upload Demonstration',
-                      isLoading: trainingSession.isUploading,
-                      isLocked: trainingSession.isUploading,
-                    ),
-                  ],
+        Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 15, top: 15),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * 0.7,
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  r'Get scored and earn $VIRAL tokens',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                child: MessageBox(
+                  messageBoxType: MessageBoxType.talkLeft,
+                  content: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Ready to submit your demonstration?',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                          const SizedBox(width: 16),
+                          BtnPrimary(
+                            onTap: trainingSession.isUploading
+                                ? null
+                                : () {
+                                    ref
+                                        .read(
+                                          trainingSessionNotifierProvider
+                                              .notifier,
+                                        )
+                                        .uploadRecording(
+                                          trainingSession.currentRecordingId!,
+                                        );
+                                  },
+                            buttonText: trainingSession.isUploading
+                                ? 'Uploading...'
+                                : 'Upload Demonstration',
+                            isLoading: trainingSession.isUploading,
+                            isLocked: trainingSession.isUploading,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        r'Get scored and earn $VIRAL tokens',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 10),
+                      BtnPrimary(
+                        onTap: ref
+                            .read(trainingSessionNotifierProvider.notifier)
+                            .deleteRecording,
+                        buttonText:
+                            "Don't like your recording? Click to delete it.",
+                        btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 10),
-                BtnPrimary(
-                  onTap: ref
-                      .read(trainingSessionNotifierProvider.notifier)
-                      .deleteRecording,
-                  buttonText: "Don't like your recording? Click to delete it.",
-                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                ),
-              ],
+              ),
             ),
-          ),
+            const Positioned(
+              left: 0,
+              top: 0,
+              child: Pfp(),
+            ),
+          ],
         ),
       ],
     );

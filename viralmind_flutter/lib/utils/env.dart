@@ -1,17 +1,15 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Env {
-  static String get viteEnv => dotenv.env['VITE_ENV'] ?? 'dev';
+  static String get env => dotenv.env['ENV'] ?? 'dev';
   static String get viralTokenAddress =>
-      dotenv.env['VITE_VIRAL_TOKEN_ADDRESS'] ?? '';
-  static String get solTokenAddress =>
-      dotenv.env['VITE_SOL_TOKEN_ADDRESS'] ?? '';
-  static String get privacyPolicyUrl =>
-      dotenv.env['VITE_PRIVACY_POLICY_URL'] ?? '';
-  static String get s3BaseUrl => dotenv.env['VITE_S3_BASE_URL'] ?? '';
-  static String get solscanBaseUrl => dotenv.env['VITE_SOLSCAN_BASE_URL'] ?? '';
-  static String get apiUrl => dotenv.env['VITE_API_URL'] ?? '';
-  static String get jupiterApiUrl => dotenv.env['VITE_JUPITER_API_URL'] ?? '';
+      dotenv.env['VIRAL_TOKEN_ADDRESS'] ?? '';
+  static String get solTokenAddress => dotenv.env['SOL_TOKEN_ADDRESS'] ?? '';
+  static String get privacyPolicyUrl => dotenv.env['PRIVACY_POLICY_URL'] ?? '';
+  static String get s3BaseUrl => dotenv.env['S3_BASE_URL'] ?? '';
+  static String get solscanBaseUrl => dotenv.env['SOLSCAN_BASE_URL'] ?? '';
+  static String get apiUrl => dotenv.env['API_URL'] ?? '';
+  static String get jupiterApiUrl => dotenv.env['JUPITER_API_URL'] ?? '';
   static String get dumpTreeUrlWin => dotenv.env['DUMP_TREE_URL_WIN'] ?? '';
   static String get dumpTreeUrlLinux => dotenv.env['DUMP_TREE_URL_LINUX'] ?? '';
   static String get dumpTreeUrlMacos => dotenv.env['DUMP_TREE_URL_MACOS'] ?? '';
