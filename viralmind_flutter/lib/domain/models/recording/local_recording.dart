@@ -6,6 +6,7 @@ import 'package:viralmind_flutter/domain/models/submission/submission_status.dar
 part 'local_recording.freezed.dart';
 part 'local_recording.g.dart';
 
+// TODO: Remove this model and use ApiRecording instead?
 @freezed
 class LocalRecording with _$LocalRecording {
   const factory LocalRecording({

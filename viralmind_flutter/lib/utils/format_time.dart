@@ -11,3 +11,10 @@ String formatDuration(int seconds) {
   final remainingSeconds = duration.inSeconds % 60;
   return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
 }
+
+String formatTimeMs(int ms) {
+  final totalSeconds = ms / 1000;
+  final minutes = (totalSeconds / 60).floor();
+  final seconds = totalSeconds % 60;
+  return "${minutes.toString().padLeft(2, '0')}:${seconds.toStringAsFixed(3).padLeft(6, '0')}";
+}
