@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/responsive_two_column_layout.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/components/forge_gym_header.dart';
+import 'package:viralmind_flutter/utils/breakpoints.dart';
 
 class ForgeGymDeployTab extends ConsumerStatefulWidget {
   const ForgeGymDeployTab({super.key});
@@ -53,7 +55,7 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
           const ForgeGymHeader(),
           LayoutBuilder(
             builder: (context, constraints) {
-              if (constraints.maxWidth > 1200) {
+              if (constraints.maxWidth > Breakpoints.desktop) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -312,42 +314,6 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class ResponsiveTwoColumnLayout extends StatelessWidget {
-  const ResponsiveTwoColumnLayout({
-    super.key,
-    required this.children,
-    this.crossAxisAlignment = CrossAxisAlignment.center,
-  });
-  final List<Widget> children;
-  final CrossAxisAlignment crossAxisAlignment;
-
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth > 600) {
-          return Row(
-            crossAxisAlignment: crossAxisAlignment,
-            children: [
-              Expanded(child: children[0]),
-              const SizedBox(width: 24),
-              Expanded(child: children[1]),
-            ],
-          );
-        } else {
-          return Column(
-            children: [
-              children[0],
-              const SizedBox(height: 24),
-              children[1],
-            ],
-          );
-        }
-      },
     );
   }
 }

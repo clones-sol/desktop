@@ -62,4 +62,38 @@ class VMColors {
   static const Color containerIcon4 = Color(0xFF4ADE80);
   static const Color containerIcon5 = Color(0xFF8B5CF6);
   static const Color containerIcon6 = Color(0xFFEC4899);
+
+  static const Color lowScore = Color(0xFFFB923C);
+  static const Color mediumScore = Color(0xFF22D3EE);
+  static const Color highScore = Color(0xFF4ADE80);
+
+  static Color getScoreColor(int score) {
+    if (score < 50) {
+      return lowScore;
+    } else if (score < 80) {
+      return mediumScore;
+    } else {
+      return highScore;
+    }
+  }
+
+  static const Color eventTypeFFMPEGStderr = Colors.deepOrange;
+  static const Color eventTypeMouseMove = Colors.blue;
+  static const Color eventTypeMouseUp = Colors.purple;
+  static const Color eventTypeMouseDown = Colors.teal;
+
+  static Color getEventTypeColor(String eventType) {
+    switch (eventType) {
+      case 'ffmpeg_stderr':
+        return eventTypeFFMPEGStderr;
+      case 'mousemove':
+        return eventTypeMouseMove;
+      case 'onmouseup':
+        return eventTypeMouseUp;
+      case 'mousedown':
+        return eventTypeMouseDown;
+      default:
+        return Colors.white;
+    }
+  }
 }

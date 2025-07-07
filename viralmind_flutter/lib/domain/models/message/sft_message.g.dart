@@ -11,6 +11,7 @@ _$SftMessageImpl _$$SftMessageImplFromJson(Map<String, dynamic> json) =>
       role: json['role'] as String,
       content: json['content'],
       timestamp: (json['timestamp'] as num).toInt(),
+      masked: json['masked'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$SftMessageImplToJson(_$SftMessageImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$SftMessageImplToJson(_$SftMessageImpl instance) =>
       'role': instance.role,
       'content': instance.content,
       'timestamp': instance.timestamp,
+      'masked': instance.masked,
     };

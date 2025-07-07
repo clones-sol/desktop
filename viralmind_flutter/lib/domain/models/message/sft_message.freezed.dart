@@ -23,6 +23,7 @@ mixin _$SftMessage {
   String get role => throw _privateConstructorUsedError;
   dynamic get content => throw _privateConstructorUsedError;
   int get timestamp => throw _privateConstructorUsedError;
+  bool get masked => throw _privateConstructorUsedError;
 
   /// Serializes this SftMessage to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,7 +41,7 @@ abstract class $SftMessageCopyWith<$Res> {
           SftMessage value, $Res Function(SftMessage) then) =
       _$SftMessageCopyWithImpl<$Res, SftMessage>;
   @useResult
-  $Res call({String role, dynamic content, int timestamp});
+  $Res call({String role, dynamic content, int timestamp, bool masked});
 }
 
 /// @nodoc
@@ -61,6 +62,7 @@ class _$SftMessageCopyWithImpl<$Res, $Val extends SftMessage>
     Object? role = null,
     Object? content = freezed,
     Object? timestamp = null,
+    Object? masked = null,
   }) {
     return _then(_value.copyWith(
       role: null == role
@@ -75,6 +77,10 @@ class _$SftMessageCopyWithImpl<$Res, $Val extends SftMessage>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
+      masked: null == masked
+          ? _value.masked
+          : masked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -87,7 +93,7 @@ abstract class _$$SftMessageImplCopyWith<$Res>
       __$$SftMessageImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String role, dynamic content, int timestamp});
+  $Res call({String role, dynamic content, int timestamp, bool masked});
 }
 
 /// @nodoc
@@ -106,6 +112,7 @@ class __$$SftMessageImplCopyWithImpl<$Res>
     Object? role = null,
     Object? content = freezed,
     Object? timestamp = null,
+    Object? masked = null,
   }) {
     return _then(_$SftMessageImpl(
       role: null == role
@@ -120,6 +127,10 @@ class __$$SftMessageImplCopyWithImpl<$Res>
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
+      masked: null == masked
+          ? _value.masked
+          : masked // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -128,7 +139,10 @@ class __$$SftMessageImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SftMessageImpl implements _SftMessage {
   const _$SftMessageImpl(
-      {required this.role, required this.content, required this.timestamp});
+      {required this.role,
+      required this.content,
+      required this.timestamp,
+      this.masked = false});
 
   factory _$SftMessageImpl.fromJson(Map<String, dynamic> json) =>
       _$$SftMessageImplFromJson(json);
@@ -139,10 +153,13 @@ class _$SftMessageImpl implements _SftMessage {
   final dynamic content;
   @override
   final int timestamp;
+  @override
+  @JsonKey()
+  final bool masked;
 
   @override
   String toString() {
-    return 'SftMessage(role: $role, content: $content, timestamp: $timestamp)';
+    return 'SftMessage(role: $role, content: $content, timestamp: $timestamp, masked: $masked)';
   }
 
   @override
@@ -153,13 +170,14 @@ class _$SftMessageImpl implements _SftMessage {
             (identical(other.role, role) || other.role == role) &&
             const DeepCollectionEquality().equals(other.content, content) &&
             (identical(other.timestamp, timestamp) ||
-                other.timestamp == timestamp));
+                other.timestamp == timestamp) &&
+            (identical(other.masked, masked) || other.masked == masked));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, role,
-      const DeepCollectionEquality().hash(content), timestamp);
+      const DeepCollectionEquality().hash(content), timestamp, masked);
 
   /// Create a copy of SftMessage
   /// with the given fields replaced by the non-null parameter values.
@@ -181,7 +199,8 @@ abstract class _SftMessage implements SftMessage {
   const factory _SftMessage(
       {required final String role,
       required final dynamic content,
-      required final int timestamp}) = _$SftMessageImpl;
+      required final int timestamp,
+      final bool masked}) = _$SftMessageImpl;
 
   factory _SftMessage.fromJson(Map<String, dynamic> json) =
       _$SftMessageImpl.fromJson;
@@ -192,6 +211,8 @@ abstract class _SftMessage implements SftMessage {
   dynamic get content;
   @override
   int get timestamp;
+  @override
+  bool get masked;
 
   /// Create a copy of SftMessage
   /// with the given fields replaced by the non-null parameter values.

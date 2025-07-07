@@ -1,146 +1,105 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:viralmind_flutter/application/recording.dart';
 import 'package:viralmind_flutter/application/session/provider.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
 import 'package:viralmind_flutter/assets.dart';
-import 'package:viralmind_flutter/domain/models/recording/api_recording.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
 import 'package:viralmind_flutter/ui/components/wallet_not_connected.dart';
+import 'package:viralmind_flutter/ui/views/gym_history/bloc/provider.dart';
+import 'package:viralmind_flutter/ui/views/gym_history/bloc/state.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/components/recording_card.dart';
 
-class GymHistoryView extends ConsumerStatefulWidget {
+class GymHistoryView extends ConsumerWidget {
   const GymHistoryView({super.key});
 
   static const String routeName = '/history-gym';
 
   @override
-  ConsumerState<GymHistoryView> createState() => _GymHistoryViewState();
-}
-
-class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
-  String _searchQuery = '';
-  String _sortOrder = 'newest';
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionNotifierProvider);
     if (session.isConnected == false) {
       return const WalletNotConnected();
     }
 
-    final mergedRecordings = ref.watch(mergedRecordingsProvider).valueOrNull;
-
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Gym History',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w300,
-                  letterSpacing: 0.5,
-                  color: VMColors.secondaryText,
-                ),
-              ),
-            ],
-          ),
+          _buildHeader(),
           const SizedBox(height: 30),
-          _buildToolbar(),
-          _builList(mergedRecordings ?? []),
+          _buildToolbar(context, ref),
+          _buildList(context, ref),
           const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              BtnPrimary(
-                onTap: () =>
-                    ref.read(tauriApiClientProvider).openRecordingsFolder(),
-                buttonText: 'Open Recordings Folder',
-                btnPrimaryType: BtnPrimaryType.outlinePrimary,
-              ),
-              const SizedBox(width: 10),
-              // TODO(reddwarf03): Bugs with Tauri: thread 'tokio-runtime-worker' has overflowed its stack
-              if (mergedRecordings != null && mergedRecordings.isNotEmpty)
-                BtnPrimary(
-                  onTap: () =>
-                      ref.read(tauriApiClientProvider).exportRecordings(),
-                  buttonText: 'Export Recordings',
-                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                ),
-            ],
-          ),
+          _buildFooter(context, ref),
         ],
       ),
     );
   }
 
-  Widget _builList(List<ApiRecording> recordings) {
-    final filteredRecordings = _prepareRecordings(recordings);
-    if (filteredRecordings.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: MessageBox(
-                messageBoxType: MessageBoxType.info,
-                content: Text(
-                  'No recordings found.',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-          ],
+  Widget _buildHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Gym History',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
+            letterSpacing: 0.5,
+            color: VMColors.secondaryText,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter(BuildContext context, WidgetRef ref) {
+    final gymHistory = ref.watch(gymHistoryNotifierProvider);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        BtnPrimary(
+          onTap: () => ref.read(tauriApiClientProvider).openRecordingsFolder(),
+          buttonText: 'Open Recordings Folder',
+          btnPrimaryType: BtnPrimaryType.outlinePrimary,
+        ),
+        const SizedBox(width: 10),
+        if (gymHistory.recordings.isNotEmpty)
+          BtnPrimary(
+            onTap: () => ref.read(tauriApiClientProvider).exportRecordings(),
+            buttonText: 'Export Recordings',
+            btnPrimaryType: BtnPrimaryType.outlinePrimary,
+          ),
+      ],
+    );
+  }
+
+  Widget _buildList(BuildContext context, WidgetRef ref) {
+    final gymHistory = ref.watch(gymHistoryNotifierProvider);
+
+    if (gymHistory.recordings.isEmpty) {
+      return const Expanded(
+        child: Center(
+          child: MessageBox(
+            messageBoxType: MessageBoxType.info,
+            content: Text('No recordings found.'),
+          ),
         ),
       );
     }
     return Expanded(
       child: ListView.builder(
         padding: const EdgeInsets.all(10),
-        itemCount: filteredRecordings.length,
+        itemCount: gymHistory.recordings.length,
         itemBuilder: (context, index) {
-          return RecordingCard(recording: filteredRecordings[index]);
+          return RecordingCard(recording: gymHistory.recordings[index]);
         },
       ),
     );
   }
 
-  List<ApiRecording> _prepareRecordings(List<ApiRecording> recordings) {
-    var preparedRecordings = List<ApiRecording>.from(recordings);
-
-    if (_searchQuery.isNotEmpty) {
-      preparedRecordings = preparedRecordings
-          .where(
-            (r) =>
-                (r.title.toLowerCase().contains(_searchQuery.toLowerCase())) ||
-                (r.description
-                    .toLowerCase()
-                    .contains(_searchQuery.toLowerCase())),
-          )
-          .toList();
-    }
-
-    // Sort
-    preparedRecordings.sort((a, b) {
-      if (_sortOrder == 'newest') {
-        return DateTime.parse(b.timestamp)
-            .compareTo(DateTime.parse(a.timestamp));
-      } else {
-        return DateTime.parse(a.timestamp)
-            .compareTo(DateTime.parse(b.timestamp));
-      }
-    });
-
-    return preparedRecordings;
-  }
-
-  Widget _buildToolbar() {
+  Widget _buildToolbar(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -165,7 +124,9 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                   ),
                   child: TextField(
                     style: Theme.of(context).textTheme.bodyMedium,
-                    onChanged: (value) => setState(() => _searchQuery = value),
+                    onChanged: (value) => ref
+                        .read(gymHistoryNotifierProvider.notifier)
+                        .setSearchQuery(value),
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: const EdgeInsets.symmetric(
@@ -209,21 +170,22 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: DropdownButton<String>(
-                      value: _sortOrder,
+                      value:
+                          ref.watch(gymHistoryNotifierProvider).sortOrder.name,
                       isExpanded: true,
                       underline: const SizedBox(),
                       dropdownColor: Colors.black.withValues(alpha: 0.9),
                       style: Theme.of(context).textTheme.bodyMedium,
                       items: [
                         DropdownMenuItem(
-                          value: 'newest',
+                          value: GymHistorySortOrder.newest.name,
                           child: Text(
                             'Newest First',
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                         DropdownMenuItem(
-                          value: 'oldest',
+                          value: GymHistorySortOrder.oldest.name,
                           child: Text(
                             'Oldest First',
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -232,7 +194,11 @@ class _GymHistoryViewState extends ConsumerState<GymHistoryView> {
                       ],
                       onChanged: (val) {
                         if (val != null) {
-                          setState(() => _sortOrder = val);
+                          ref
+                              .read(gymHistoryNotifierProvider.notifier)
+                              .setSortOrder(
+                                GymHistorySortOrder.values.byName(val),
+                              );
                         }
                       },
                     ),

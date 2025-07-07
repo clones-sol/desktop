@@ -1,16 +1,18 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:viralmind_flutter/application/recording.dart';
 import 'package:viralmind_flutter/application/tauri_api.dart';
+import 'package:viralmind_flutter/application/upload/provider.dart';
+import 'package:viralmind_flutter/application/upload/state.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/domain/models/recording/api_recording.dart';
 import 'package:viralmind_flutter/ui/components/card.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:viralmind_flutter/ui/components/design_widget/dialog/dialog.dart';
 import 'package:viralmind_flutter/utils/format_time.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viralmind_flutter/ui/views/demo_detail/layouts/demo_detail_view.dart';
 
 class RecordingCard extends ConsumerWidget {
   const RecordingCard({super.key, required this.recording});
@@ -19,293 +21,329 @@ class RecordingCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = recording.submission?.meta.status ?? recording.status;
-    final statusColor = _getStatusColor(status);
-    final theme = Theme.of(context);
+    final uploadQueue = ref.watch(uploadQueueProvider);
+    final uploadItem = uploadQueue[recording.id];
 
-    final maxReward = recording.quest?.reward?.maxReward ?? 0;
+    final maxReward = recording.quest?.reward?.maxReward ??
+        recording.submission?.meta.quest.reward?.maxReward ??
+        0;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: CardWidget(
-        padding: CardPadding.none,
-        variant: CardVariant.secondary,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Image.network(
-                              recording.quest?.iconUrl ?? '',
-                              width: 20,
-                              height: 20,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(
-                                Icons.web,
-                                size: 20,
-                                color: VMColors.primaryText,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Text(
-                              recording.title,
-                              style: theme.textTheme.titleMedium
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          recording.description.isNotEmpty
-                              ? recording.description
-                              : 'No description',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: statusColor.withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: statusColor,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 6,
-                              decoration: BoxDecoration(
-                                color: statusColor,
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              status.toUpperCase(),
-                              style: TextStyle(
-                                color: statusColor,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.calendar_today,
-                        size: 14,
-                        color: VMColors.secondaryText,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        DateFormat.yMMMd()
-                            .format(DateTime.parse(recording.timestamp)),
-                        style: theme.textTheme.bodySmall,
-                      ),
-                      const SizedBox(width: 16),
-                      Icon(
-                        Icons.access_time,
-                        size: 14,
-                        color: VMColors.secondaryText,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        DateFormat.jm()
-                            .format(DateTime.parse(recording.timestamp)),
-                        style: theme.textTheme.bodySmall,
-                      ),
-                      const SizedBox(width: 16),
-                      if (recording.location == 'local')
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.folder_outlined,
-                              size: 14,
-                              color: VMColors.secondaryText,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Local',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        )
-                      else
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.cloud_outlined,
-                              size: 14,
-                              color: VMColors.secondaryText,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'Cloud',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      const SizedBox(width: 16),
-                      Icon(
-                        Icons.access_time,
-                        size: 14,
-                        color: VMColors.secondaryText,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        'Duration: ${formatDuration(recording.durationSeconds)}',
-                        style: theme.textTheme.bodySmall,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      PopupMenuButton<String>(
-                        color: Colors.black.withValues(alpha: 0.9),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        shadowColor: Colors.black.withValues(alpha: 0.9),
-                        icon: Icon(
-                          Icons.more_vert,
-                          color: VMColors.secondaryText,
-                          size: 20,
-                        ),
-                        onSelected: (value) {
-                          // TODO(reddwarf03): add actions
-                        },
-                        itemBuilder: (BuildContext context) =>
-                            <PopupMenuEntry<String>>[
-                          PopupMenuItem<String>(
-                            value: 'upload',
-                            child: Text(
-                              'Upload',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ),
-                          PopupMenuItem<String>(
-                            value: 'Export Zip',
-                            child: Text(
-                              'Export Zip',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            onTap: () async {
-                              try {
-                                final zipData = await ref
-                                    .read(tauriApiClientProvider)
-                                    .getRecordingZip(recording.id);
-                                final outputFile =
-                                    await FilePicker.platform.saveFile(
-                                  dialogTitle: 'Please select an output file:',
-                                  fileName: 'recording_${recording.id}.zip',
-                                );
-
-                                if (outputFile != null) {
-                                  final file = File(outputFile);
-                                  await file.writeAsBytes(zipData);
-                                }
-                                // TODO(reddwarf03): maybe add a toast
-                              } catch (e) {
-                                // TODO(reddwarf03): maybe add a toast
-                              }
-                            },
-                          ),
-                          PopupMenuItem<String>(
-                            value: 'delete',
-                            child: Text(
-                              'Delete',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                            onTap: () async {
-                              await AppDialogs.showConfirmDialog(
-                                context,
-                                ref,
-                                'Confirm Deletion',
-                                'Are you sure you want to delete this recording?',
-                                'Delete',
-                                () async {
-                                  await ref
-                                      .read(tauriApiClientProvider)
-                                      .deleteRecording(recording.id);
-                                  ref.invalidate(mergedRecordingsProvider);
-                                },
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  if (recording.submission?.reward != null &&
-                      recording.submission!.reward! > 0)
-                    Text(
-                      '${recording.submission!.reward!.toStringAsFixed(2)} \$VIRAL',
-                      style: theme.textTheme.bodySmall,
-                    )
-                  else if (maxReward > 0)
-                    Text(
-                      '${maxReward.toStringAsFixed(2)} \$VIRAL (unclaimed)',
-                      style: theme.textTheme.bodySmall,
-                    ),
-                ],
-              ),
-            ],
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: InkWell(
+        onTap: () {
+          context.push(DemoDetailView.routeName, extra: recording.id);
+        },
+        child: CardWidget(
+          padding: CardPadding.none,
+          variant: CardVariant.secondary,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                _buildIcon(context),
+                const SizedBox(width: 10),
+                Expanded(child: _buildTitleAndMeta(context)),
+                _buildStatus(context, uploadItem),
+                _buildActions(context, ref, uploadItem, maxReward.toDouble()),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return Colors.green;
-      case 'failed':
-      case 'error':
-        return Colors.red;
-      case 'processing':
-      case 'zipping':
-      case 'uploading':
-        return Colors.orange;
-      case 'pending':
-        return Colors.blue;
-      default:
-        return Colors.grey;
+  Widget _buildIcon(BuildContext context) {
+    final iconUrl =
+        recording.quest?.iconUrl ?? recording.submission?.meta.quest.iconUrl;
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child: iconUrl != null
+          ? Image.network(
+              iconUrl,
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.apps, color: VMColors.secondaryText),
+            )
+          : Icon(Icons.apps, color: VMColors.secondaryText),
+    );
+  }
+
+  Widget _buildTitleAndMeta(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          recording.title,
+          style: theme.textTheme.titleMedium,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Icon(Icons.schedule, size: 12, color: VMColors.secondaryText),
+            const SizedBox(width: 4),
+            Text(
+              formatDuration(recording.durationSeconds),
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.calendar_today, size: 12, color: VMColors.secondaryText),
+            const SizedBox(width: 4),
+            Text(
+              '${DateFormat.yMd().format(DateTime.parse(recording.timestamp))} ${DateFormat.jm().format(DateTime.parse(recording.timestamp))}',
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              recording.location == 'local'
+                  ? Icons.folder_outlined
+                  : Icons.cloud_outlined,
+              size: 12,
+              color: VMColors.secondaryText,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              recording.location == 'local' ? 'Local' : 'Cloud',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: VMColors.secondaryText,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatus(BuildContext context, UploadTaskState? uploadItem) {
+    final status = recording.submission?.status ?? recording.status;
+
+    if (uploadItem?.uploadStatus == UploadStatus.error || status == 'failed') {
+      return _statusChip(
+        context,
+        'Upload Failed',
+        Icons.error_outline,
+        Colors.red,
+      );
     }
+    if (status == 'processing' ||
+        status == 'pending' ||
+        uploadItem?.uploadStatus == UploadStatus.processing) {
+      return _statusChip(
+        context,
+        'Processing',
+        Icons.info_outline,
+        Colors.orange,
+      );
+    }
+    if (uploadItem?.uploadStatus == UploadStatus.uploading) {
+      return _statusChip(context, 'Uploading', Icons.upload_file, Colors.blue);
+    }
+
+    if (recording.submission?.clampedScore != null) {
+      return _ratingDisplay(
+        context,
+        recording.submission!.clampedScore!.toDouble(),
+      );
+    }
+    if ((recording.durationSeconds) < 1) {
+      return _statusChip(
+        context,
+        'Recording Error',
+        Icons.error_outline,
+        Colors.red,
+      );
+    }
+    if (recording.submission?.gradeResult?.score != null) {
+      return _ratingDisplay(
+        context,
+        recording.submission!.gradeResult!.score.toDouble(),
+      );
+    }
+    if (recording.submission != null) {
+      return _ratingDisplay(context, 0);
+    }
+
+    return const SizedBox.shrink();
+  }
+
+  Widget _statusChip(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: color.withValues(alpha: 0.8), size: 16),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: color.withValues(alpha: 0.8),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _ratingDisplay(BuildContext context, double score) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          Text(
+            '${score.toStringAsFixed(0)}%',
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: VMColors.secondary,
+            ),
+          ),
+          Text('Rating', style: theme.textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActions(
+    BuildContext context,
+    WidgetRef ref,
+    UploadTaskState? uploadItem,
+    double maxReward,
+  ) {
+    final isUploading = uploadItem?.uploadStatus == UploadStatus.processing ||
+        uploadItem?.uploadStatus == UploadStatus.uploading ||
+        uploadItem?.uploadStatus == UploadStatus.zipping;
+    final isCompleted = uploadItem?.uploadStatus == UploadStatus.done;
+    const isQueued = false; // Not in UploadStatus enum
+
+    return Row(
+      children: [
+        if (recording.status == 'completed' &&
+            recording.submission == null &&
+            !isCompleted)
+          BtnPrimary(
+            onTap: isUploading || isQueued
+                ? null
+                : () {
+                    ref
+                        .read(uploadQueueProvider.notifier)
+                        .upload(recording.id, recording.title);
+                  },
+            isLoading: isUploading,
+            icon: Icons.upload,
+            btnPrimaryType: BtnPrimaryType.outlinePrimary,
+            buttonText: isUploading
+                ? 'Uploading...'
+                : isQueued
+                    ? 'Queued'
+                    : maxReward > 0
+                        ? 'Upload for ${maxReward.toStringAsFixed(2)} VIRAL'
+                        : 'Upload Recording',
+          ),
+        if (recording.location == 'local')
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert, color: VMColors.secondaryText),
+            color: Colors.black.withValues(alpha: 0.9),
+            onSelected: (value) async {
+              switch (value) {
+                case 'open_folder':
+                  await ref
+                      .read(tauriApiClientProvider)
+                      .openRecordingFolder(recording.id);
+                  break;
+                case 'export_zip':
+                  try {
+                    // TODO: To fix: export recording
+                    await ref
+                        .read(tauriApiClientProvider)
+                        .exportRecording(recording.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Record exported successfully',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Failed to export recording',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    );
+                  }
+
+                  break;
+                case 'delete':
+                  await AppDialogs.showConfirmDialog(
+                    context,
+                    ref,
+                    'Confirm Deletion',
+                    'Are you sure you want to delete this record?',
+                    'Delete',
+                    () async {
+                      await ref
+                          .read(tauriApiClientProvider)
+                          .deleteRecording(recording.id);
+                      ref.invalidate(mergedRecordingsProvider);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Record deleted successfully',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'open_folder',
+                child: ListTile(
+                  leading: Icon(Icons.folder, color: VMColors.secondaryText),
+                  title: Text(
+                    'Open Folder',
+                    style: TextStyle(color: VMColors.secondaryText),
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'export_zip',
+                child: ListTile(
+                  leading: Icon(Icons.archive, color: VMColors.secondaryText),
+                  title: Text(
+                    'Export Zip',
+                    style: TextStyle(color: VMColors.secondaryText),
+                  ),
+                ),
+              ),
+              if (recording.submission == null)
+                const PopupMenuItem<String>(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+      ],
+    );
   }
 }

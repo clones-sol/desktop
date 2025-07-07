@@ -5,6 +5,7 @@ import 'package:viralmind_flutter/application/route_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/components/upload_manager.dart';
 import 'package:viralmind_flutter/ui/components/wallet_button.dart';
+import 'package:viralmind_flutter/ui/views/demo_detail/layouts/demo_detail_view.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
@@ -65,8 +66,13 @@ class Sidebar extends ConsumerWidget {
     if (currentRoute.startsWith(TrainingSessionView.routeName)) {
       activeIndex = 1;
     } else {
-      activeIndex = buttons.indexWhere((b) => currentRoute.startsWith(b.path));
-      if (activeIndex == -1) activeIndex = 0;
+      if (currentRoute.startsWith(DemoDetailView.routeName)) {
+        activeIndex = 1;
+      } else {
+        activeIndex =
+            buttons.indexWhere((b) => currentRoute.startsWith(b.path));
+        if (activeIndex == -1) activeIndex = 0;
+      }
     }
 
     return Container(

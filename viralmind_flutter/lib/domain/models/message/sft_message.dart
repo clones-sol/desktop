@@ -9,6 +9,7 @@ class SftMessage with _$SftMessage {
     required String role,
     required dynamic content,
     required int timestamp,
+    @Default(false) bool masked,
   }) = _SftMessage;
 
   factory SftMessage.fromJson(Map<String, dynamic> json) =>

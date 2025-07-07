@@ -7,12 +7,13 @@ import 'package:viralmind_flutter/application/deeplink_provider.dart';
 import 'package:viralmind_flutter/application/route_provider.dart';
 import 'package:viralmind_flutter/assets.dart';
 import 'package:viralmind_flutter/ui/main_layout.dart';
+import 'package:viralmind_flutter/ui/views/demo_detail/layouts/demo_detail_view.dart';
 import 'package:viralmind_flutter/ui/views/forge/layouts/forge_view.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_deploy_tab.dart';
+import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_detail_shell.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_general_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_tasks_tab.dart';
 import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_uploads_tab.dart';
-import 'package:viralmind_flutter/ui/views/forge_detail/layouts/forge_gym_detail_shell.dart';
 import 'package:viralmind_flutter/ui/views/gym/layouts/gym_view.dart';
 import 'package:viralmind_flutter/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:viralmind_flutter/ui/views/hub/layouts/hub_view.dart';
@@ -47,6 +48,17 @@ final _router = GoRouter(
           pageBuilder: (context, state) => const NoTransitionPage(
             child: GymHistoryView(),
           ),
+        ),
+        GoRoute(
+          path: DemoDetailView.routeName,
+          pageBuilder: (context, state) {
+            final recordingId = state.extra.toString();
+            return NoTransitionPage(
+              child: DemoDetailView(
+                recordingId: recordingId,
+              ),
+            );
+          },
         ),
         GoRoute(
           path: ForgeView.routeName,

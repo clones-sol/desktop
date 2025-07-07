@@ -43,9 +43,13 @@ class TauriApiClient {
   Future<String> getRecordingFile({
     required String recordingId,
     required String filename,
+    bool asPath = false,
+    bool asBase64 = false,
   }) async {
     final response = await _client.get(
-      Uri.parse('$_baseUrl/recordings/$recordingId/files?filename=$filename'),
+      Uri.parse(
+        '$_baseUrl/recordings/$recordingId/files?filename=$filename&asPath=$asPath&asBase64=$asBase64',
+      ),
     );
     if (response.statusCode == 200) {
       return utf8.decode(response.bodyBytes);
@@ -238,6 +242,15 @@ class TauriApiClient {
     if (response.statusCode != 200) {
       throw Exception('Failed to open recording folder: ${response.body}');
     }
+  }
+
+  Future<String> exportRecording(String recordingId) async {
+    final response = await _client
+        .post(Uri.parse('$_baseUrl/recordings/$recordingId/export'));
+    if (response.statusCode == 200) {
+      return response.body;
+    }
+    throw Exception('Failed to export recording: ${response.body}');
   }
 
   Future<String> exportRecordings() async {

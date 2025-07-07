@@ -23,7 +23,7 @@ use crate::commands::recordings::export_recordings;
 // Import functions from `commands/tools`
 use crate::commands::tools::{check_tools, init_tools};
 // Import functions from `core/record`
-use crate::core::record::{open_recording_folder, process_recording};
+use crate::core::record::{open_recording_folder, process_recording, export_recording_zip};
 // Import functions from `utils/permissions`
 use crate::utils::permissions::{has_record_perms, request_record_perms};
 // Import functions from `commands/settings`
@@ -48,6 +48,10 @@ pub struct WriteFilePayload {
 #[derive(Deserialize)]
 pub struct GetFileQuery {
     filename: String,
+    #[serde(rename = "asPath")]
+    as_path: Option<bool>,
+    #[serde(rename = "asBase64")]
+    as_base64: Option<bool>,
 }
 
 // Structure for the start_recording request
@@ -144,6 +148,9 @@ pub async fn init(app_handle: AppHandle) {
         // POST /recordings/:id/open: Trigger opening the folder of a specific recording.
         // Action performed on a specific resource.
         .route("/recordings/:id/open", post(open_recording_folder_handler))
+        // POST /recordings/:id/export: Trigger an export of a specific recording.
+        // Action that creates a file for the user to download.
+        .route("/recordings/:id/export", post(export_recording_handler))
         // POST /recordings/export: Trigger an export of all recordings.
         // Action that creates a file for the user to download.
         .route("/recordings/export", post(export_recordings_handler))
@@ -203,8 +210,8 @@ async fn get_recording_file_handler(
         state.app_handle,
         id,
         query.filename,
-        Some(false), // as_base64
-        Some(false), // as_path
+        query.as_base64,
+        query.as_path,
     )
     .await
     {
@@ -398,6 +405,16 @@ async fn open_recording_folder_handler(
 ) -> Result<StatusCode, (StatusCode, String)> {
     match open_recording_folder(state.app_handle, id).await {
         Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn export_recording_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match export_recording_zip(id, state.app_handle).await {
+        Ok(path) => Ok((StatusCode::OK, path)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 }

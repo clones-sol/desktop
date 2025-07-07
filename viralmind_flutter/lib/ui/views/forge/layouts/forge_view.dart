@@ -10,18 +10,13 @@ import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_existi
 import 'package:viralmind_flutter/ui/views/forge/layouts/components/forge_new_gym_card.dart';
 import 'package:viralmind_flutter/ui/views/generate_gym/layouts/generate_gym_modal.dart';
 
-class ForgeView extends ConsumerStatefulWidget {
+class ForgeView extends ConsumerWidget {
   const ForgeView({super.key});
 
   static const String routeName = '/forge';
 
   @override
-  ConsumerState<ForgeView> createState() => _ForgeViewState();
-}
-
-class _ForgeViewState extends ConsumerState<ForgeView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionNotifierProvider);
     if (session.isConnected == false) {
       return const WalletNotConnected();
