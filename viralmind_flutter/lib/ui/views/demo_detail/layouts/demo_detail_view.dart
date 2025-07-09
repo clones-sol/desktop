@@ -114,6 +114,8 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
     if (demoDetail.recording == null) {
       return const Center(child: Text('Recording not found'));
     }
+    final submission =
+        ref.watch(demoDetailNotifierProvider).recording?.submission;
 
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -126,32 +128,37 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                   return Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Expanded(
+                      Expanded(
                         flex: 9,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            DemoDetailInfos(),
-                            SizedBox(height: 20),
+                            const DemoDetailInfos(),
+                            const SizedBox(height: 20),
                             Expanded(
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Expanded(
+                                  const Expanded(
                                     flex: 5,
                                     child: DemoDetailVideoPreview(),
                                   ),
-                                  SizedBox(width: 20),
+                                  const SizedBox(width: 20),
                                   Expanded(
                                     flex: 4,
                                     child: SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          DemoDetailSteps(),
-                                          SizedBox(height: 20),
-                                          DemoDetailSubmissionResult(),
-                                          SizedBox(height: 20),
-                                          DemoDetailRewards(),
+                                          const DemoDetailSubmissionResult(),
+                                          const SizedBox(height: 20),
+                                          if (submission != null) ...[
+                                            const DemoDetailSteps(),
+                                            const SizedBox(height: 20),
+                                          ],
+                                          if (submission != null) ...[
+                                            const DemoDetailRewards(),
+                                            const SizedBox(height: 20),
+                                          ],
                                         ],
                                       ),
                                     ),

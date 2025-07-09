@@ -19,12 +19,7 @@ class DemoDetailSteps extends ConsumerWidget {
         ref.watch(demoDetailNotifierProvider).recording?.submission;
 
     if (submission == null) {
-      return const CardWidget(
-        child: SizedBox(
-          width: double.infinity,
-          child: Text('Submission data not available.'),
-        ),
-      );
+      return const SizedBox.shrink();
     }
 
     return Column(

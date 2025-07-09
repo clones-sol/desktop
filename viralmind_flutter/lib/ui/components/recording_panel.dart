@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:viralmind_flutter/ui/components/design_widget/message_box/message_box.dart';
+import 'package:viralmind_flutter/ui/views/demo_detail/layouts/demo_detail_view.dart';
 
 class RecordingPanel extends StatelessWidget {
   const RecordingPanel({
@@ -10,12 +14,34 @@ class RecordingPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.video_camera_back),
-        title: const Text('Recording'),
-        subtitle: Text(recordingId),
-      ),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 15, top: 15),
+          child: MessageBox(
+            messageBoxType: MessageBoxType.talkRight,
+            content: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  'Recording saved!',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(width: 20),
+                BtnPrimary(
+                  onTap: () {
+                    context.go(DemoDetailView.routeName, extra: recordingId);
+                  },
+                  buttonText: 'View details',
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
