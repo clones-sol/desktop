@@ -12,6 +12,7 @@ class GradeResult with _$GradeResult {
     required String summary,
     required int score,
     required String reasoning,
+    String? scratchpad,
     @JsonKey(name: '_id') required String id,
   }) = _GradeResult;
 

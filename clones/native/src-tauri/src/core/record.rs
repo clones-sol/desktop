@@ -158,6 +158,7 @@ impl Recorder {
                     });
                     let output =
                         Command::new(ffmpeg.unwrap_or(&PathBuf::from("ffmpeg")).as_os_str())
+                            .env("LANG", "en_US.UTF-8")
                             .args(["-f", "avfoundation", "-list_devices", "true", "-i", ""])
                             .output()
                             .map_err(|e| {
@@ -223,9 +224,12 @@ impl Recorder {
                 }
             };
 
+            let physical_width = (primary.width as f32 * primary.scale_factor).round() as u32;
+            let physical_height = (primary.height as f32 * primary.scale_factor).round() as u32;
+
             Ok(Recorder::FFmpeg(FFmpegRecorder::new_with_input(
-                primary.width,
-                primary.height,
+                physical_width,
+                physical_height,
                 fps,
                 video_path.to_path_buf(),
                 input_format.to_string(),
@@ -419,6 +423,17 @@ pub async fn start_recording(
         .or_else(|| displays.first())
         .ok_or_else(|| "No display found".to_string())?;
 
+    let physical_width = (primary.width as f32 * primary.scale_factor).round() as u32;
+    let physical_height = (primary.height as f32 * primary.scale_factor).round() as u32;
+    log::info!(
+        "[record] Display info: logical {}x{}, scale_factor: {}, physical {}x{}",
+        primary.width,
+        primary.height,
+        primary.scale_factor,
+        physical_width,
+        physical_height
+    );
+
     // Create and save initial meta file
     let meta = RecordingMeta {
         id: timestamp.clone(),
@@ -436,8 +451,8 @@ pub async fn start_recording(
         version: tauri_plugin_os::version().to_string(),
         locale: tauri_plugin_os::locale().unwrap_or_default(),
         primary_monitor: MonitorInfo {
-            width: primary.width,
-            height: primary.height,
+            width: physical_width,
+            height: physical_height,
         },
         reason: None,
         quest,
