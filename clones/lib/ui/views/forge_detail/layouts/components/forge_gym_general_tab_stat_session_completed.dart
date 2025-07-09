@@ -31,6 +31,7 @@ class ForgeGymGeneralTabStatSessionCompleted extends ConsumerWidget {
     if (pricePerDemo == null || pricePerDemo == 0) {
       return const SizedBox.shrink();
     }
+    final theme = Theme.of(context);
 
     return Expanded(
       child: CardWidget(
@@ -52,14 +53,14 @@ class ForgeGymGeneralTabStatSessionCompleted extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               '${forgeDetail.pool!.demonstrations} / $possibleDemos',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               'Sessions completed',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 10),
             Stack(

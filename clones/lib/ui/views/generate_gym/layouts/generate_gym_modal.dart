@@ -39,6 +39,8 @@ class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
   @override
   Widget build(BuildContext context) {
     final generateGym = ref.watch(generateGymNotifierProvider);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Stack(
       children: [
         Positioned.fill(
@@ -54,10 +56,10 @@ class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
             padding: CardPadding.large,
             child: SizedBox(
               width: generateGym.currentStep == GenerateGymStep.generating
-                  ? MediaQuery.of(context).size.width * 0.4
-                  : MediaQuery.of(context).size.width * 0.8,
+                  ? mediaQuery.size.width * 0.4
+                  : mediaQuery.size.width * 0.8,
               height: generateGym.currentStep == GenerateGymStep.preview
-                  ? MediaQuery.of(context).size.height * 0.8
+                  ? mediaQuery.size.height * 0.8
                   : null,
               child: Column(
                 mainAxisSize: generateGym.currentStep == GenerateGymStep.preview
@@ -70,7 +72,7 @@ class _GenerateGymModalState extends ConsumerState<GenerateGymModal> {
                     children: [
                       Text(
                         'Generate a gym',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: theme.textTheme.titleLarge,
                       ),
                       IconButton(
                         onPressed: widget.onClose,

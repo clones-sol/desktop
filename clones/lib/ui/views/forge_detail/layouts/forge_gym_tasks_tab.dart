@@ -43,7 +43,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
   @override
   Widget build(BuildContext context) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
-
+    final theme = Theme.of(context);
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
     return Stack(
@@ -58,7 +58,7 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                 children: [
                   Text(
                     '2. Tasks',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: theme.textTheme.titleMedium,
                   ),
                 ],
               ),
@@ -241,7 +241,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                       text: editValue,
                                                     ),
                                                     onChanged: (v) => setState(
-                                                        () => editValue = v,),
+                                                      () => editValue = v,
+                                                    ),
                                                   ),
                                                 ),
                                                 IconButton(
@@ -262,9 +263,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                               onTap: () {},
                                               child: Text(
                                                 app.name,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium,
+                                                style:
+                                                    theme.textTheme.titleMedium,
                                               ),
                                             ),
                                           const SizedBox(width: 8),
@@ -281,7 +281,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                       text: editValue,
                                                     ),
                                                     onChanged: (v) => setState(
-                                                        () => editValue = v,),
+                                                      () => editValue = v,
+                                                    ),
                                                   ),
                                                 ),
                                                 IconButton(
@@ -305,9 +306,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                               onTap: () {},
                                               child: Text(
                                                 app.domain,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyMedium,
+                                                style:
+                                                    theme.textTheme.bodyMedium,
                                               ),
                                             ),
                                           const Spacer(),
@@ -351,18 +351,14 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                               const EdgeInsets.only(top: 4),
                                           child: Text(
                                             app.description,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium,
+                                            style: theme.textTheme.bodyMedium,
                                           ),
                                         ),
                                       const SizedBox(height: 20),
                                       if (app.tasks.isEmpty)
                                         Text(
                                           'No tasks for this app.',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium,
+                                          style: theme.textTheme.bodyMedium,
                                         ),
                                       if (app.tasks.isNotEmpty)
                                         ...List.generate(app.tasks.length,
@@ -384,9 +380,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                   children: [
                                                     Text(
                                                       task.prompt,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .bodyMedium,
+                                                      style: theme
+                                                          .textTheme.bodyMedium,
                                                     ),
                                                     Row(
                                                       children: [
@@ -419,14 +414,13 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                                 ),
                                                                 child: Text(
                                                                   'Upload limit: ${task.uploadLimit}',
-                                                                  style: Theme.of(
-                                                                          context,)
+                                                                  style: theme
                                                                       .textTheme
                                                                       .bodyMedium
                                                                       ?.copyWith(
-                                                                        color: VMColors
-                                                                            .uploadLimit,
-                                                                      ),
+                                                                    color: VMColors
+                                                                        .uploadLimit,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             if (task.rewardLimit !=
@@ -454,14 +448,13 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                                 ),
                                                                 child: Text(
                                                                   'Reward limit: ${task.rewardLimit}',
-                                                                  style: Theme.of(
-                                                                          context,)
+                                                                  style: theme
                                                                       .textTheme
                                                                       .bodyMedium
                                                                       ?.copyWith(
-                                                                        color: VMColors
-                                                                            .rewardInfo,
-                                                                      ),
+                                                                    color: VMColors
+                                                                        .rewardInfo,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             if (task.limitReason !=
@@ -539,7 +532,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                               ),
                                                             ),
                                                             const SizedBox(
-                                                                width: 20,),
+                                                              width: 20,
+                                                            ),
                                                             InkWell(
                                                               onTap: () {
                                                                 ref.read(
@@ -568,7 +562,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                                               ),
                                                             ),
                                                             const SizedBox(
-                                                                width: 20,),
+                                                              width: 20,
+                                                            ),
                                                             InkWell(
                                                               onTap: () async {
                                                                 await AppDialogs
@@ -625,8 +620,10 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                       const SizedBox(height: 10),
                                       InkWell(
                                         onTap: () => {
-                                          ref.read(forgeDetailNotifierProvider
-                                              .notifier,)
+                                          ref.read(
+                                            forgeDetailNotifierProvider
+                                                .notifier,
+                                          )
                                             ..setManageTaskModalType(
                                               ManageTaskModalType.create,
                                             )
@@ -644,9 +641,8 @@ class _ForgeGymTasksTabState extends ConsumerState<ForgeGymTasksTab> {
                                               children: [
                                                 Text(
                                                   '+ Add a task',
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyMedium,
+                                                  style: theme
+                                                      .textTheme.bodyMedium,
                                                 ),
                                               ],
                                             ),

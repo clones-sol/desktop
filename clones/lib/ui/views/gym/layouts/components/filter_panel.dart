@@ -37,6 +37,7 @@ class FilterPanel extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: Column(
@@ -52,14 +53,14 @@ class FilterPanel extends ConsumerWidget {
                   children: [
                     Text(
                       'Search tasks',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     const SizedBox(height: 6),
                     DecoratedBox(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.primaryContainer,
+                          color: theme.colorScheme.primaryContainer,
                           width: 0.5,
                         ),
                         gradient: VMColors.gradientInputFormBackground,
@@ -67,7 +68,7 @@ class FilterPanel extends ConsumerWidget {
                       child: TextField(
                         controller: searchController,
                         onSubmitted: (_) => onApplyFilters(),
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(
@@ -99,7 +100,7 @@ class FilterPanel extends ConsumerWidget {
                         children: [
                           Text(
                             'Price (Min)',
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: theme.textTheme.titleSmall,
                           ),
                           const SizedBox(height: 6),
                           DecoratedBox(
@@ -116,7 +117,7 @@ class FilterPanel extends ConsumerWidget {
                             child: TextField(
                               controller: minPriceController,
                               onSubmitted: (_) => onApplyFilters(),
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -146,7 +147,7 @@ class FilterPanel extends ConsumerWidget {
                       padding: const EdgeInsets.only(top: 25),
                       child: Text(
                         'to',
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: theme.textTheme.titleSmall,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -156,7 +157,7 @@ class FilterPanel extends ConsumerWidget {
                         children: [
                           Text(
                             'Price (Max)',
-                            style: Theme.of(context).textTheme.titleSmall,
+                            style: theme.textTheme.titleSmall,
                           ),
                           const SizedBox(height: 6),
                           DecoratedBox(
@@ -173,7 +174,7 @@ class FilterPanel extends ConsumerWidget {
                             child: TextField(
                               controller: maxPriceController,
                               onSubmitted: (_) => onApplyFilters(),
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium,
                               keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -208,7 +209,7 @@ class FilterPanel extends ConsumerWidget {
                   children: [
                     Text(
                       'Sort by',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     const SizedBox(height: 6),
                     DecoratedBox(
@@ -227,20 +228,20 @@ class FilterPanel extends ConsumerWidget {
                           isExpanded: true,
                           underline: const SizedBox(),
                           dropdownColor: Colors.black.withValues(alpha: 0.9),
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: theme.textTheme.bodyMedium,
                           items: [
                             DropdownMenuItem(
                               value: 'htl',
                               child: Text(
                                 'High to Low',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: theme.textTheme.bodyMedium,
                               ),
                             ),
                             DropdownMenuItem(
                               value: 'lth',
                               child: Text(
                                 'Low to High',
-                                style: Theme.of(context).textTheme.bodyMedium,
+                                style: theme.textTheme.bodyMedium,
                               ),
                             ),
                           ],
@@ -256,7 +257,7 @@ class FilterPanel extends ConsumerWidget {
           const SizedBox(height: 10),
           Text(
             'Categories',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 10),
           Wrap(
@@ -280,7 +281,7 @@ class FilterPanel extends ConsumerWidget {
                 onPressed: onSelectAllCategories,
                 child: Text(
                   'All',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
               ...allCategories.map(
@@ -330,7 +331,7 @@ class FilterPanel extends ConsumerWidget {
               ),
               Text(
                 'Show adult content',
-                style: Theme.of(context).textTheme.titleSmall,
+                style: theme.textTheme.titleSmall,
               ),
               const Spacer(),
               BtnPrimary(

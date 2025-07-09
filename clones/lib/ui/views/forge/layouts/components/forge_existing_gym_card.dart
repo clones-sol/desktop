@@ -18,6 +18,7 @@ class ForgeExistingGymCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       padding: CardPadding.small,
       child: InkWell(
@@ -31,7 +32,7 @@ class ForgeExistingGymCard extends StatelessWidget {
             ),
             Text(
               pool.name,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: theme.textTheme.titleMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

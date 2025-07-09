@@ -20,7 +20,7 @@ class DemoDetailEvents extends ConsumerWidget {
     if (session.isConnected == false) {
       return const WalletNotConnected();
     }
-
+    final theme = Theme.of(context);
     final demoDetail = ref.watch(demoDetailNotifierProvider);
     final events = demoDetail.events;
     final eventTypes = demoDetail.eventTypes;
@@ -35,7 +35,7 @@ class DemoDetailEvents extends ConsumerWidget {
       return Center(
         child: Text(
           'No events to display.',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
         ),
       );
     }
@@ -70,7 +70,7 @@ class DemoDetailEvents extends ConsumerWidget {
                 },
                 child: Text(
                   type,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               );
             }).toList(),
@@ -108,9 +108,9 @@ class DemoDetailEvents extends ConsumerWidget {
                       ),
                       child: Text(
                         event.event,
-                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                              color: VMColors.rewardInfo,
-                            ),
+                        style: theme.textTheme.bodySmall!.copyWith(
+                          color: VMColors.rewardInfo,
+                        ),
                       ),
                     ),
                   ),
@@ -147,12 +147,9 @@ class DemoDetailEvents extends ConsumerWidget {
                         ),
                         child: Text(
                           formatTimeMs(event.time - startTime),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(
-                                color: VMColors.getEventTypeColor(event.event),
-                              ),
+                          style: theme.textTheme.bodySmall!.copyWith(
+                            color: VMColors.getEventTypeColor(event.event),
+                          ),
                         ),
                       ),
                     ),
@@ -172,12 +169,9 @@ class DemoDetailEvents extends ConsumerWidget {
                                 child: Text(
                                   const JsonEncoder.withIndent('  ')
                                       .convert(event.data),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall!
-                                      .copyWith(
-                                        fontFamily: 'monospace',
-                                      ),
+                                  style: theme.textTheme.bodySmall!.copyWith(
+                                    fontFamily: 'monospace',
+                                  ),
                                 ),
                               ),
                             ],

@@ -16,7 +16,7 @@ class ForgeGymGeneralTabDepositAddress extends ConsumerWidget {
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
     final tokenSymbol = forgeDetail.pool!.token.symbol;
-
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -43,11 +43,11 @@ class ForgeGymGeneralTabDepositAddress extends ConsumerWidget {
                   children: [
                     Text(
                       'Deposit Address',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     Text(
                       'Send $tokenSymbol tokens to fund this gym',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -69,7 +69,7 @@ class ForgeGymGeneralTabDepositAddress extends ConsumerWidget {
                       ),
                       child: SelectableText(
                         forgeDetail.pool!.depositAddress,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),

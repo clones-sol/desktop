@@ -14,6 +14,7 @@ class RecordingPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.end,
@@ -28,7 +29,7 @@ class RecordingPanel extends StatelessWidget {
               children: [
                 Text(
                   'Recording saved!',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(width: 20),
                 BtnPrimary(

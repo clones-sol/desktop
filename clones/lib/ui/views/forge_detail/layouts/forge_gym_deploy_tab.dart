@@ -122,6 +122,7 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
     required String title,
     required Color color,
   }) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Container(
@@ -135,7 +136,7 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
         const SizedBox(width: 10),
         Text(
           title,
-          style: Theme.of(context).textTheme.titleSmall,
+          style: theme.textTheme.titleSmall,
         ),
       ],
     );
@@ -190,6 +191,7 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
   }
 
   Widget _buildTokenSetupSection() {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,7 +222,7 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
           const SizedBox(height: 24),
           Text(
             'Token Gated Percentage: ${_tokenGatedPercentage.toStringAsFixed(0)}%',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           Slider(
@@ -274,9 +276,10 @@ class _ForgeGymDeployTabState extends ConsumerState<ForgeGymDeployTab> {
   }
 
   Widget _buildAdvancedOptionsSection() {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Theme(
-        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        data: theme.copyWith(dividerColor: Colors.transparent),
         child: ExpansionTile(
           onExpansionChanged: (expanded) {
             setState(() {
@@ -336,19 +339,20 @@ class _FormTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.titleSmall,
+          style: theme.textTheme.titleSmall,
         ),
         const SizedBox(height: 8),
         DecoratedBox(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
-              color: Theme.of(context).colorScheme.primaryContainer,
+              color: theme.colorScheme.primaryContainer,
               width: 0.5,
             ),
             gradient: VMColors.gradientInputFormBackground,
@@ -358,7 +362,7 @@ class _FormTextField extends StatelessWidget {
             maxLines: maxLines,
             obscureText: obscureText,
             keyboardType: keyboardType,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
@@ -366,13 +370,10 @@ class _FormTextField extends StatelessWidget {
                 vertical: 12,
               ),
               hintText: hint,
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.color!
-                        .withValues(alpha: 0.2),
-                  ),
+              hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                color:
+                    theme.textTheme.bodyMedium?.color!.withValues(alpha: 0.2),
+              ),
             ),
           ),
         ),
@@ -394,6 +395,7 @@ class _FileUploadBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -401,7 +403,7 @@ class _FileUploadBox extends StatelessWidget {
           children: [
             Text(
               label,
-              style: Theme.of(context).textTheme.titleSmall,
+              style: theme.textTheme.titleSmall,
             ),
           ],
         ),
@@ -424,7 +426,7 @@ class _FileUploadBox extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     text,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall,
                   ),
                 ],
               ),
@@ -439,13 +441,14 @@ class _FileUploadBox extends StatelessWidget {
 class _DeploymentStatusCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Deployment Status',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 16),
           _buildStatusItem(
@@ -475,13 +478,11 @@ class _DeploymentStatusCard extends StatelessWidget {
     required String buttonText,
     required VoidCallback? onPressed,
   }) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context)
-            .colorScheme
-            .primaryContainer
-            .withValues(alpha: 0.2),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -497,7 +498,7 @@ class _DeploymentStatusCard extends StatelessWidget {
               const SizedBox(width: 12),
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),
@@ -518,13 +519,14 @@ class _DeploymentStatusCard extends StatelessWidget {
 class _CostBreakdownCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Cost Breakdown',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 16),
           const _CostRow(label: 'Token Creation', cost: '0.1 SOL'),
@@ -540,17 +542,15 @@ class _CostBreakdownCard extends StatelessWidget {
             children: [
               Text(
                 'Total',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
+                style: theme.textTheme.titleSmall
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
               Text(
                 '5.15 SOL',
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: VMColors.primary,
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: VMColors.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ],
           ),
@@ -567,16 +567,15 @@ class _CostRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: Theme.of(context).textTheme.bodySmall),
+        Text(label, style: theme.textTheme.bodySmall),
         Text(
           cost,
-          style: Theme.of(context)
-              .textTheme
-              .bodyMedium
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style:
+              theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -595,13 +594,14 @@ class _AgentPreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Agent Preview',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: theme.textTheme.titleSmall,
           ),
           const SizedBox(height: 16),
           Center(
@@ -619,21 +619,19 @@ class _AgentPreviewCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(
                   name.isEmpty ? 'My AI Agent' : name,
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: theme.textTheme.titleSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
                   ticker.isEmpty ? r'$ARTX' : ticker,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .primaryContainer
+                    color: theme.colorScheme.primaryContainer
                         .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -642,7 +640,7 @@ class _AgentPreviewCard extends StatelessWidget {
                         ? 'Description will appear here...'
                         : description,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall,
                   ),
                 ),
               ],

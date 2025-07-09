@@ -86,7 +86,7 @@ class AnimatedSidebarSection extends StatelessWidget {
     const double sidebarWidth = 100;
     const double highlightSize = 70;
     final totalHeight = buttons.length * buttonHeight;
-
+    final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         final availableHeight = constraints.maxHeight;
@@ -165,9 +165,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                                       ),
                                       Text(
                                         button.label,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
+                                        style: theme.textTheme.bodySmall,
                                       ),
                                     ],
                                   ),
@@ -182,8 +180,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                                     ),
                                     Text(
                                       button.label,
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
+                                      style: theme.textTheme.bodySmall,
                                     ),
                                   ],
                                 ),

@@ -36,12 +36,13 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'You can generate a gym by describing your dream agent, or by sharing the skills you want a training dataset for.',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
         DecoratedBox(
@@ -71,18 +72,15 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
               onChanged: (v) =>
                   ref.read(generateGymNotifierProvider.notifier).setSkills(v),
               cursorColor: VMColors.secondaryText,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.only(left: 10),
                 hintText: 'List the skills to train (one per line)...',
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.color!
-                          .withValues(alpha: 0.2),
-                    ),
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color:
+                      theme.textTheme.bodyMedium?.color!.withValues(alpha: 0.2),
+                ),
               ),
             ),
           ),
@@ -97,12 +95,13 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
 
   Widget _examplePrompts(WidgetRef ref) {
     final generateGym = ref.watch(generateGymNotifierProvider);
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Example prompts:',
-          style: Theme.of(context).textTheme.bodySmall,
+          style: theme.textTheme.bodySmall,
         ),
         const SizedBox(height: 10),
         Wrap(
@@ -126,7 +125,7 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
               },
               child: Text(
                 prompt['label']!,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: theme.textTheme.bodySmall,
               ),
             );
           }).toList(),
@@ -139,7 +138,7 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
               children: [
                 Text(
                   generateGym.error!,
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: theme.textTheme.bodyMedium,
                 ),
               ],
             ),

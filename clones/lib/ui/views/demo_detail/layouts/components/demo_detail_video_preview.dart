@@ -26,6 +26,7 @@ class _DemoDetailVideoPreviewState
     final videoLoaded =
         videoController != null && videoController.value.isInitialized;
 
+    final theme = Theme.of(context);
     return IntrinsicHeight(
       child: CardWidget(
         child: Column(
@@ -33,7 +34,7 @@ class _DemoDetailVideoPreviewState
           children: [
             Text(
               'Video Preview',
-              style: Theme.of(context).textTheme.titleMedium,
+              style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 10),
             Stack(
@@ -92,6 +93,7 @@ class _DemoDetailVideoPreviewState
     WidgetRef ref,
     VideoPlayerController controller,
   ) {
+    final theme = Theme.of(context);
     final events =
         ref.watch(demoDetailNotifierProvider.select((s) => s.events));
     final startTime =
@@ -180,7 +182,7 @@ class _DemoDetailVideoPreviewState
                                   duration.inMilliseconds)
                               .toInt(),
                         ),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: theme.textTheme.bodySmall,
                       ),
                     ),
                   ),

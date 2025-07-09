@@ -11,6 +11,7 @@ class ForgeNewGymCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return CardWidget(
       variant: CardVariant.secondary,
       child: InkWell(
@@ -46,12 +47,12 @@ class ForgeNewGymCard extends ConsumerWidget {
               children: [
                 Text(
                   'Create New Gym',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                 ),
                 const SizedBox(height: 5),
                 Text(
                   'Start collecting demonstrations for your AI agent training',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                   textAlign: TextAlign.center,
                 ),
               ],

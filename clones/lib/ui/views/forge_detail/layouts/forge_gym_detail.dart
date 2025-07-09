@@ -49,6 +49,8 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     ref.listen(forgeDetailNotifierProvider, (previous, next) {
       if (previous == null) {
         return;
@@ -59,7 +61,7 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
           SnackBar(
             content: Text(
               'Gym updated successfully!',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         );
@@ -74,9 +76,9 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
           SnackBar(
             content: Text(
               'Gym status updated successfully!',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: mediaQuery.size.width * 0.5,
           ),
         );
         ref
@@ -90,9 +92,9 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
           SnackBar(
             content: Text(
               'Balance refreshed successfully!',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: mediaQuery.size.width * 0.5,
           ),
         );
         ref
@@ -106,7 +108,7 @@ class _ForgeGymDetailState extends ConsumerState<ForgeGymDetail> {
           SnackBar(
             content: Text(
               'An error occurred: ${next.error}',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         );

@@ -140,7 +140,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     final showTypingIndicator = trainingSession.isWaitingForResponse &&
         trainingSession.typingMessage == null;
     final showStreamingMessage = trainingSession.typingMessage != null;
-
+    final mediaQuery = MediaQuery.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         return CustomScrollView(
@@ -190,8 +190,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                             padding: const EdgeInsets.only(left: 15, top: 15),
                             child: Container(
                               constraints: BoxConstraints(
-                                maxWidth:
-                                    MediaQuery.of(context).size.width * 0.7,
+                                maxWidth: mediaQuery.size.width * 0.7,
                               ),
                               child: MessageBox(
                                 messageBoxType: MessageBoxType.talkLeft,
@@ -240,6 +239,8 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
   }
 
   Widget _buildMessageItem(Message message, int index) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     final isUser = message.role == 'user';
     if (message.type != MessageType.text) {
       if (message.type == MessageType.image) {
@@ -267,7 +268,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           children: [
             Container(
               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.7,
+                maxWidth: mediaQuery.size.width * 0.7,
               ),
               child: MessageBox(
                 messageBoxType: MessageBoxType.talkRight,
@@ -278,7 +279,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                   children: [
                     Text(
                       message.content,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium,
                     ),
                     const SizedBox(width: 8),
                     Icon(
@@ -319,7 +320,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
             padding: const EdgeInsets.all(20),
             child: Text(
               message.content,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
           ),
         ),
@@ -338,7 +339,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
               padding: const EdgeInsets.only(left: 15, top: 15),
               child: Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  maxWidth: mediaQuery.size.width * 0.7,
                 ),
                 child: MessageBox(
                   messageBoxType: isUser
@@ -358,13 +359,16 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
   }
 
   Widget _buildMessageContent(Message message) {
+    final theme = Theme.of(context);
     return Text(
       message.content,
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: theme.textTheme.bodyMedium,
     );
   }
 
   Widget _buildStreamingMessage(TypingMessage typingMessage) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     final messageBubble = Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,13 +379,13 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
               padding: const EdgeInsets.only(left: 15, top: 15),
               child: Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  maxWidth: mediaQuery.size.width * 0.7,
                 ),
                 child: MessageBox(
                   messageBoxType: MessageBoxType.talkLeft,
                   content: Text(
                     typingMessage.content,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ),
               ),
@@ -404,6 +408,8 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
 
   Widget _buildUploadButton() {
     final trainingSession = ref.watch(trainingSessionNotifierProvider);
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,7 +420,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
               padding: const EdgeInsets.only(left: 15, top: 15),
               child: Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  maxWidth: mediaQuery.size.width * 0.7,
                 ),
                 child: MessageBox(
                   messageBoxType: MessageBoxType.talkLeft,
@@ -425,7 +431,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                         children: [
                           Text(
                             'Ready to submit your demonstration?',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                           const SizedBox(width: 16),
                           BtnPrimary(
@@ -451,8 +457,8 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Get scored and earn \$${Token.getTokenType(TokenType.clones)} tokens',
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        'Get scored and earn \$${Token.getTokenType(TokenType.viral)} tokens',
+                        style: theme.textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 10),
                       BtnPrimary(

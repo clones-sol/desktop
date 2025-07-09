@@ -244,6 +244,7 @@ done
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     final filteredSubmissions =
         widget.submissions.where((s) => s.files.isNotEmpty).toList();
 
@@ -277,7 +278,7 @@ done
                       ),
                     ),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.8,
+                      width: mediaQuery.size.width * 0.8,
                       height: 600,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,

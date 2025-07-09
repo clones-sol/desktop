@@ -24,7 +24,7 @@ class ForgeGymGeneralTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
-
+    final theme = Theme.of(context);
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
     return SingleChildScrollView(
@@ -35,7 +35,7 @@ class ForgeGymGeneralTab extends ConsumerWidget {
           const ForgeGymHeader(),
           Text(
             '1. General Information',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: theme.textTheme.titleMedium,
           ),
           if (forgeDetail.pool!.status == TrainingPoolStatus.noGas ||
               forgeDetail.pool!.status == TrainingPoolStatus.noFunds)
@@ -82,10 +82,11 @@ class ForgeGymGeneralTab extends ConsumerWidget {
     if (forgeDetail.pool == null) {
       return const SizedBox.shrink();
     }
+    final mediaQuery = MediaQuery.of(context);
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: SizedBox(
-        width: MediaQuery.of(context).size.width,
+        width: mediaQuery.size.width,
         child: MessageBox(
           messageBoxType: MessageBoxType.warning,
           content: Column(
@@ -94,7 +95,7 @@ class ForgeGymGeneralTab extends ConsumerWidget {
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
                     ? 'Insufficient ${Token.getTokenType(TokenType.sol)} for Gas'
-                    : 'Insufficient ${Token.getTokenType(TokenType.clones)} Tokens',
+                    : 'Insufficient ${Token.getTokenType(TokenType.viral)} Tokens',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: VMColors.primaryText,
@@ -103,13 +104,13 @@ class ForgeGymGeneralTab extends ConsumerWidget {
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
                     ? 'Your gym needs min $kMinSolBalance ${Token.getTokenType(TokenType.sol)} to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
-                    : "Your gym needs ${Token.getTokenType(TokenType.clones)} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
+                    : "Your gym needs ${Token.getTokenType(TokenType.viral)} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
                 style: TextStyle(
                   color: VMColors.secondaryText,
                 ),
               ),
               Text(
-                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? Token.getTokenType(TokenType.sol) : Token.getTokenType(TokenType.clones)} to the address above to activate your gym and start collecting data.',
+                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? Token.getTokenType(TokenType.sol) : Token.getTokenType(TokenType.viral)} to the address above to activate your gym and start collecting data.',
                 style: TextStyle(
                   color: VMColors.secondaryText,
                 ),

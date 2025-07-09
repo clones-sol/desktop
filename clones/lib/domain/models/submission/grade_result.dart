@@ -31,5 +31,5 @@ extension GradeResultExtension on GradeResult {
       '';
 
   String get reasoningForUser =>
-      regexGradeResult.firstMatch(reasoning)?.group(2)?.trim() ?? '';
+      regexGradeResult.firstMatch(reasoning)?.group(2)?.trim() ?? reasoning;
 }

@@ -13,6 +13,7 @@ class LeaderboardsStatTotalPaidOut extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -32,15 +33,15 @@ class LeaderboardsStatTotalPaidOut extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${formatNumberWithSeparator(stat.totalRewards)} \$${Token.getTokenType(TokenType.clones)}',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              '${formatNumberWithSeparator(stat.totalRewards)} \$${Token.getTokenType(TokenType.viral)}',
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               'paid out',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: theme.textTheme.bodySmall,
             ),
           ],
         ),

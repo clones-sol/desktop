@@ -81,6 +81,9 @@ class VMColors {
   static const Color eventTypeMouseMove = Colors.blue;
   static const Color eventTypeMouseUp = Colors.purple;
   static const Color eventTypeMouseDown = Colors.teal;
+  static const Color eventTypeMouseWheel = Colors.indigoAccent;
+  static const Color eventTypeKeyDown = Colors.yellow;
+  static const Color eventTypeKeyUp = Colors.lightGreen;
 
   static Color getEventTypeColor(String eventType) {
     switch (eventType) {
@@ -88,10 +91,16 @@ class VMColors {
         return eventTypeFFMPEGStderr;
       case 'mousemove':
         return eventTypeMouseMove;
-      case 'onmouseup':
+      case 'mouseup':
         return eventTypeMouseUp;
       case 'mousedown':
         return eventTypeMouseDown;
+      case 'mousewheel':
+        return eventTypeMouseWheel;
+      case 'keydown':
+        return eventTypeKeyDown;
+      case 'keyup':
+        return eventTypeKeyUp;
       default:
         return Colors.white;
     }

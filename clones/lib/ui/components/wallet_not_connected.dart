@@ -12,6 +12,8 @@ class WalletNotConnected extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -19,8 +21,8 @@ class WalletNotConnected extends ConsumerWidget {
           opacity: 0.05,
           child: Image.asset(
             Assets.walletToConnectIconWB,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            width: mediaQuery.size.width,
+            height: mediaQuery.size.height,
           ),
         ),
         Column(
@@ -28,7 +30,7 @@ class WalletNotConnected extends ConsumerWidget {
           children: [
             Text(
               'Please, connect your Solana wallet to start using the app',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 20),
             BtnPrimary(

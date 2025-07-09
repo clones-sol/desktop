@@ -21,6 +21,6 @@ Map<String, dynamic> _$$TokenImplToJson(_$TokenImpl instance) =>
 
 const _$TokenTypeEnumMap = {
   TokenType.sol: 'SOL',
-  TokenType.clones: 'CLNS',
+  TokenType.viral: 'VIRAL',
   TokenType.custom: 'CUSTOM',
 };

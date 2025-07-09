@@ -6,8 +6,12 @@ import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones/ui/components/wallet_not_connected.dart';
 import 'package:clones/ui/views/demo_detail/bloc/provider.dart';
+import 'package:clones/utils/env.dart';
+import 'package:clones/utils/format_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DemoDetailRewards extends ConsumerWidget {
   const DemoDetailRewards({super.key});
@@ -26,6 +30,7 @@ class DemoDetailRewards extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final theme = Theme.of(context);
     final score = submission.gradeResult?.score ?? submission.clampedScore ?? 0;
     final maxReward = submission.maxReward ?? 0;
     final reward = submission.reward ?? 0;
@@ -38,7 +43,7 @@ class DemoDetailRewards extends ConsumerWidget {
             children: [
               Text(
                 'Rewards',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: theme.textTheme.titleMedium,
               ),
               const SizedBox(height: 10),
               Row(
@@ -46,13 +51,13 @@ class DemoDetailRewards extends ConsumerWidget {
                 children: [
                   Text(
                     'Earned:',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
                   Text(
-                    '$reward \$${Token.getTokenType(TokenType.clones)}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: VMColors.getScoreColor(score),
-                        ),
+                    '$reward \$${Token.getTokenType(TokenType.viral)}',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: VMColors.getScoreColor(score),
+                    ),
                   ),
                 ],
               ),
@@ -62,13 +67,13 @@ class DemoDetailRewards extends ConsumerWidget {
                 children: [
                   Text(
                     'Max Reward:',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
                   Text(
-                    '$maxReward \$${Token.getTokenType(TokenType.clones)}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: VMColors.getScoreColor(100),
-                        ),
+                    '$maxReward \$${Token.getTokenType(TokenType.viral)}',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: VMColors.getScoreColor(100),
+                    ),
                   ),
                 ],
               ),
@@ -89,10 +94,91 @@ class DemoDetailRewards extends ConsumerWidget {
                     messageBoxType: MessageBoxType.info,
                     content: Text(
                       submission.gradeResult?.reasoningSystem ?? '',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium,
                     ),
                   ),
                 ),
+              if (submission.treasuryTransfer != null)
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Treasury Transfer:',
+                            style: theme.textTheme.bodyMedium),
+                        InkWell(
+                          onTap: () {
+                            launchUrl(
+                              Uri.parse(
+                                '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
+                              ),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                submission.treasuryTransfer?.treasuryWallet
+                                        .shortAddress() ??
+                                    '',
+                                style: TextStyle(
+                                  fontFamily: 'monospace',
+                                  color: VMColors.secondaryText,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Icon(
+                                Icons.open_in_new,
+                                color: VMColors.secondaryText,
+                                size: 16,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Transaction hash:',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        Text(
+                          submission.treasuryTransfer?.txHash?.shortAddress() ??
+                              'NC',
+                          style: TextStyle(
+                            fontFamily: 'monospace',
+                            color: VMColors.secondaryText,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Transaction date:',
+                          style: theme.textTheme.bodyMedium,
+                        ),
+                        Text(
+                          submission.treasuryTransfer?.timestamp != null
+                              ? DateFormat.yMMMMd().add_Hms().format(
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      submission.treasuryTransfer!.timestamp,
+                                    ),
+                                  )
+                              : 'NC',
+                          style: TextStyle(
+                            color: VMColors.secondaryText,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                )
             ],
           ),
         ),

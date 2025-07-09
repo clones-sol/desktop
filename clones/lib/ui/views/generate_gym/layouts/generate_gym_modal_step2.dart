@@ -5,6 +5,7 @@ class GenerateGymModalStep2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -13,14 +14,14 @@ class GenerateGymModalStep2 extends StatelessWidget {
         Center(
           child: Text(
             'Generating your gym...',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: theme.textTheme.titleMedium,
           ),
         ),
         const SizedBox(height: 8),
         Center(
           child: Text(
             'Creating tasks based on your requirements...',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
       ],

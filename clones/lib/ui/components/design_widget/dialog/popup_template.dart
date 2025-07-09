@@ -23,6 +23,7 @@ class PopupTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ScaffoldMessenger(
       child: Builder(
         builder: (context) {
@@ -74,7 +75,7 @@ class PopupTemplate extends StatelessWidget {
                             child: SelectionArea(
                               child: Text(
                                 popupTitle,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: theme.textTheme.titleMedium,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

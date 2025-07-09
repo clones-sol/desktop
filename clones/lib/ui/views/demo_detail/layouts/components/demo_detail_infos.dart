@@ -17,6 +17,7 @@ class DemoDetailInfos extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +32,7 @@ class DemoDetailInfos extends ConsumerWidget {
                   children: [
                     Text(
                       recording.title,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: theme.textTheme.titleMedium,
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
@@ -48,7 +49,7 @@ class DemoDetailInfos extends ConsumerWidget {
                 messageBoxType: MessageBoxType.warning,
                 content: Text(
                   'Upload Error: ${demoDetail.uploadError}',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ),
@@ -59,7 +60,7 @@ class DemoDetailInfos extends ConsumerWidget {
                 messageBoxType: MessageBoxType.success,
                 content: Text(
                   'Zip successfully exported: ${demoDetail.exportPath}',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ),
@@ -70,7 +71,7 @@ class DemoDetailInfos extends ConsumerWidget {
                 messageBoxType: MessageBoxType.warning,
                 content: Text(
                   'Export Error: ${demoDetail.exportError}',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ),
@@ -131,20 +132,19 @@ class DemoDetailInfos extends ConsumerWidget {
     String value,
     BuildContext context,
   ) {
+    final theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           child: Text(
             label,
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall
+            style: theme.textTheme.bodySmall
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
         Expanded(
-          child: Text(value, style: Theme.of(context).textTheme.bodySmall),
+          child: Text(value, style: theme.textTheme.bodySmall),
         ),
       ],
     );

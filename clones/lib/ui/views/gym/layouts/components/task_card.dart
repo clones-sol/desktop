@@ -24,6 +24,7 @@ class TaskCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Stack(
       children: [
         Padding(
@@ -74,7 +75,7 @@ class TaskCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             app.name,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: theme.textTheme.titleMedium,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -87,7 +88,7 @@ class TaskCard extends StatelessWidget {
                       child: AutoSizeText(
                         task.prompt,
                         maxLines: 3,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),
@@ -118,10 +119,10 @@ class TaskCard extends StatelessWidget {
               ],
             ),
             child: Text(
-              '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} ${Token.getTokenType(TokenType.clones)}',
-              style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color: VMColors.rewardInfo,
-                  ),
+              '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} ${Token.getTokenType(TokenType.viral)}',
+              style: theme.textTheme.bodySmall!.copyWith(
+                color: VMColors.rewardInfo,
+              ),
             ),
           ),
         ),

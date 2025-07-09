@@ -100,6 +100,7 @@ class GymHistoryView extends ConsumerWidget {
   }
 
   Widget _buildToolbar(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Row(
@@ -110,7 +111,7 @@ class GymHistoryView extends ConsumerWidget {
               children: [
                 Text(
                   'Search recordings',
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: theme.textTheme.titleSmall,
                 ),
                 const SizedBox(height: 6),
                 DecoratedBox(
@@ -123,7 +124,7 @@ class GymHistoryView extends ConsumerWidget {
                     gradient: VMColors.gradientInputFormBackground,
                   ),
                   child: TextField(
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                     onChanged: (value) => ref
                         .read(gymHistoryNotifierProvider.notifier)
                         .setSearchQuery(value),
@@ -155,7 +156,7 @@ class GymHistoryView extends ConsumerWidget {
               children: [
                 Text(
                   'Sort by',
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: theme.textTheme.titleSmall,
                 ),
                 const SizedBox(height: 6),
                 DecoratedBox(
@@ -175,20 +176,20 @@ class GymHistoryView extends ConsumerWidget {
                       isExpanded: true,
                       underline: const SizedBox(),
                       dropdownColor: Colors.black.withValues(alpha: 0.9),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium,
                       items: [
                         DropdownMenuItem(
                           value: GymHistorySortOrder.newest.name,
                           child: Text(
                             'Newest First',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ),
                         DropdownMenuItem(
                           value: GymHistorySortOrder.oldest.name,
                           child: Text(
                             'Oldest First',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ),
                       ],

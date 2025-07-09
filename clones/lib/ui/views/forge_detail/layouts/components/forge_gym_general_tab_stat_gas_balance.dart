@@ -15,6 +15,7 @@ class ForgeGymGeneralTabStatGasBalance extends ConsumerWidget {
     if (pool == null) {
       return const SizedBox.shrink();
     }
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Stack(
@@ -55,14 +56,14 @@ class ForgeGymGeneralTabStatGasBalance extends ConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   '${formatNumberWithSeparator(pool.solBalance)} \$SOL',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   'available for gas',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ],
             ),

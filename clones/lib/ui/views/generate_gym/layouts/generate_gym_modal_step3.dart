@@ -17,6 +17,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,11 +30,11 @@ class GenerateGymModalStep3 extends ConsumerWidget {
               children: [
                 Text(
                   'Your gym',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                 ),
                 Text(
                   "You'll be able to make further changes later",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: theme.textTheme.bodyMedium,
                 ),
               ],
             ),
@@ -48,6 +49,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
   }
 
   Widget _uiEditor(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final generateGym = ref.watch(generateGymNotifierProvider);
     return Padding(
       padding: const EdgeInsets.all(12),
@@ -133,7 +135,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
               child: Center(
                 child: Text(
                   'No apps or tasks generated',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: theme.textTheme.bodyMedium,
                 ),
               ),
             ),

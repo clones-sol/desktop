@@ -37,6 +37,7 @@ class _ForgeGymGeneralTabGymUploadLimitState
 
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
+    final theme = Theme.of(context);
     return CardWidget(
       child: SizedBox(
         width: double.infinity,
@@ -64,11 +65,11 @@ class _ForgeGymGeneralTabGymUploadLimitState
                   children: [
                     Text(
                       'Upload Limits',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     Text(
                       'Set gym-wide upload limits',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -83,15 +84,14 @@ class _ForgeGymGeneralTabGymUploadLimitState
                     children: [
                       Text(
                         'Limit Type',
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: theme.textTheme.titleSmall,
                       ),
                       const SizedBox(height: 4),
                       DecoratedBox(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
+                            color: theme.colorScheme.primaryContainer,
                             width: 0.5,
                           ),
                           gradient: VMColors.gradientInputFormBackground,
@@ -103,34 +103,34 @@ class _ForgeGymGeneralTabGymUploadLimitState
                             isExpanded: true,
                             underline: const SizedBox(),
                             dropdownColor: Colors.black.withValues(alpha: 0.9),
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                             items: [
                               DropdownMenuItem(
                                 value: 'none',
                                 child: Text(
                                   'None',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: 'pertask',
                                 child: Text(
                                   'Per Task',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: 'perday',
                                 child: Text(
                                   'Per Day',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ),
                               DropdownMenuItem(
                                 value: 'total',
                                 child: Text(
                                   'Total',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: theme.textTheme.bodyMedium,
                                 ),
                               ),
                             ],
@@ -153,16 +153,14 @@ class _ForgeGymGeneralTabGymUploadLimitState
                       children: [
                         Text(
                           'Limit Value',
-                          style: Theme.of(context).textTheme.titleSmall,
+                          style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(height: 4),
                         DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primaryContainer,
+                              color: theme.colorScheme.primaryContainer,
                               width: 0.5,
                             ),
                             gradient: VMColors.gradientInputFormBackground,
@@ -173,7 +171,7 @@ class _ForgeGymGeneralTabGymUploadLimitState
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly,
                             ],
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               contentPadding: EdgeInsets.symmetric(
@@ -222,7 +220,7 @@ class _ForgeGymGeneralTabGymUploadLimitState
                   }
                   return Text(
                     explanation,
-                    style: Theme.of(context).textTheme.bodySmall,
+                    style: theme.textTheme.bodySmall,
                   );
                 },
               ),

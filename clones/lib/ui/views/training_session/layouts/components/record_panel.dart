@@ -54,7 +54,7 @@ class _RecordPanelState extends ConsumerState<RecordPanel> {
             ),
             const SizedBox(height: 10),
             Text(
-              'Up to: ${widget.reward?.maxReward} \$${Token.getTokenType(TokenType.clones)}',
+              'Up to: ${widget.reward?.maxReward} \$${Token.getTokenType(TokenType.viral)}',
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 10),

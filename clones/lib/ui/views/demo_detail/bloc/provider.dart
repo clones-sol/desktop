@@ -44,7 +44,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       ]);
     } catch (e) {
       state = state.copyWith(isLoading: false);
-      // TODO: Handle error
+      // TODO(reddwarf03): Handle error
     }
   }
 
@@ -131,7 +131,11 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
     } catch (e) {
       // It's okay if this fails, the file might not exist
       state = state.copyWith(
-          events: [], eventTypes: {}, enabledEventTypes: {}, startTime: 0,);
+        events: [],
+        eventTypes: {},
+        enabledEventTypes: {},
+        startTime: 0,
+      );
     }
   }
 
@@ -244,7 +248,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
                 jsonEncode(state.privateRanges.map((r) => r.toJson()).toList()),
           );
     } catch (e) {
-      // TODO: handle error
+      // TODO(reddwarf03): handle error
     }
   }
 
@@ -266,7 +270,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       // After processing, we might need to reload some data, e.g., sft.json
       await loadSftData(recordingId);
     } catch (e) {
-      // TODO: handle error
+      // TODO(reddwarf03): handle error
     } finally {
       state = state.copyWith(isProcessing: false);
     }
@@ -295,7 +299,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
 
     state = state.copyWith(isUploading: true, uploadError: null);
     try {
-      // TODO: Implement actual upload logic
+      // TODO(reddwarf03): Implement actual upload logic
       await Future.delayed(const Duration(seconds: 2));
       // final result = await ref.read(tauriApiClientProvider).uploadRecording(recordingId);
       // state = state.copyWith(recording: state.recording?.copyWith(submission: result));

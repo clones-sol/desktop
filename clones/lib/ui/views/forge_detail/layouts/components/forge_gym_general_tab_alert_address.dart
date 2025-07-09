@@ -37,6 +37,7 @@ class _ForgeGymGeneralTabAlertAddressState
     if (forgeDetail.pool == null) return const SizedBox.shrink();
     final tokenSymbol = forgeDetail.pool!.token.symbol;
 
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -63,11 +64,11 @@ class _ForgeGymGeneralTabAlertAddressState
                   children: [
                     Text(
                       'Receive alerts',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     Text(
                       'Get an email when your gym runs out of $tokenSymbol or SOL for gas fees.',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -91,9 +92,7 @@ class _ForgeGymGeneralTabAlertAddressState
                                 10,
                               ),
                               border: Border.all(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
+                                color: theme.colorScheme.primaryContainer,
                                 width: 0.5,
                               ),
                               gradient: VMColors.gradientInputFormBackground,
@@ -107,7 +106,7 @@ class _ForgeGymGeneralTabAlertAddressState
                                     )
                                     .setAlertEmail(value);
                               },
-                              style: Theme.of(context).textTheme.bodyMedium,
+                              style: theme.textTheme.bodyMedium,
                               autocorrect: false,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.text,
@@ -122,16 +121,10 @@ class _ForgeGymGeneralTabAlertAddressState
                                   left: 10,
                                 ),
                                 hintText: 'example@example.com',
-                                hintStyle: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium
-                                          ?.color!
-                                          .withValues(alpha: 0.2),
-                                    ),
+                                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.textTheme.bodyMedium?.color!
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
                             ),
                           ),

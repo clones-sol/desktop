@@ -219,6 +219,8 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
       titleSmall: const TextStyle(color: VMColors.primaryText),
     );
 
+    final mediaQuery = MediaQuery.of(context);
+
     return MaterialApp.router(
       title: 'Clones Desktop',
       theme: ThemeData(
@@ -227,7 +229,7 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
         ),
         textTheme: textTheme,
         snackBarTheme: SnackBarThemeData(
-          width: MediaQuery.of(context).size.width * 0.5,
+          width: mediaQuery.size.width * 0.5,
           backgroundColor: VMColors.tertiary.withValues(alpha: 0.7),
           elevation: 2,
           contentTextStyle: textTheme.bodyMedium,
