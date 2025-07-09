@@ -39,13 +39,13 @@ class _ManageTaskModalUploadLimitState
         manageTask.uploadLimitValue.toString()) {
       uploadLimitValueController.text = manageTask.uploadLimitValue.toString();
     }
-
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Limit Value for this task',
-          style: Theme.of(context).textTheme.titleSmall,
+          style: theme.textTheme.titleSmall,
         ),
         const SizedBox(height: 4),
         DecoratedBox(
@@ -63,7 +63,7 @@ class _ManageTaskModalUploadLimitState
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
             ],
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
             decoration: const InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.symmetric(

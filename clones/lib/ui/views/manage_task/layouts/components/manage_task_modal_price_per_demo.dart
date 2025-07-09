@@ -41,14 +41,14 @@ class _ManageTaskModalPricePerDemoState
     if (controller.text != manageTask.pricePerDemo.toString()) {
       controller.text = manageTask.pricePerDemo.toString();
     }
-
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           'Price per demonstration for this task.  Minimum price: 1 ${widget.tokenSymbol}',
-          style: Theme.of(context).textTheme.titleSmall,
+          style: theme.textTheme.titleSmall,
         ),
         const SizedBox(height: 4),
         Row(
@@ -80,7 +80,7 @@ class _ManageTaskModalPricePerDemoState
                       controller: controller,
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium,
                       inputFormatters: <TextInputFormatter>[
                         FilteringTextInputFormatter.allow(
                           RegExp(r'^\d+\.?\d{0,1}'),
@@ -110,7 +110,7 @@ class _ManageTaskModalPricePerDemoState
                       padding: const EdgeInsets.all(10),
                       child: Text(
                         widget.tokenSymbol,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),

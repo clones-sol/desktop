@@ -49,6 +49,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
     final renderBox = context.findRenderObject()! as RenderBox;
     final size = renderBox.size;
     final session = ref.watch(sessionNotifierProvider);
+    final theme = Theme.of(context);
     return OverlayEntry(
       builder: (context) => Positioned(
         width: 280,
@@ -95,7 +96,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                         children: [
                           Text(
                             'Wallet',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                           Row(
                             children: [
@@ -153,17 +154,14 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                         children: [
                           Text(
                             'Balance',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                           if (session.balance != null)
                             Text(
-                              '${session.balance!.toStringAsFixed(2)} \$${Token.getTokenType(TokenType.clones)}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: VMColors.secondary,
-                                  ),
+                              '${session.balance!.toStringAsFixed(2)} \$${Token.getTokenType(TokenType.viral)}',
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                color: VMColors.secondary,
+                              ),
                             ),
                         ],
                       ),

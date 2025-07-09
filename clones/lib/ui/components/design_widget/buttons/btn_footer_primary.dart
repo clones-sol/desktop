@@ -23,13 +23,15 @@ class BtnFooterPrimary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
         onTap: isLocked ? null : onTap,
         child: IntrinsicHeight(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
+            width: mediaQuery.size.width * 0.9,
             height: 49,
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
             alignment: Alignment.center,

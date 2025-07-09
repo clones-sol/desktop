@@ -24,6 +24,7 @@ class AppDialogs {
       useRootNavigator: false,
       context: context,
       builder: (BuildContext context) {
+        final theme = Theme.of(context);
         return PopupTemplate(
           popupContent: Column(
             mainAxisSize: MainAxisSize.min,
@@ -31,17 +32,17 @@ class AppDialogs {
               Text.rich(
                 TextSpan(
                   text: '',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                   children: <InlineSpan>[
                     TextSpan(
                       text: content,
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                     if (additionalContent != null)
                       TextSpan(
                         text: '\n\n$additionalContent',
-                        style: additionalContentStyle ??
-                            Theme.of(context).textTheme.bodySmall,
+                        style:
+                            additionalContentStyle ?? theme.textTheme.bodySmall,
                       ),
                   ],
                 ),
@@ -97,6 +98,8 @@ class AppDialogs {
     String? buttonLabel,
     Function? onPressed,
   }) async {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     await showDialog(
       context: context,
       useRootNavigator: false,
@@ -108,10 +111,10 @@ class AppDialogs {
             children: [
               Text(
                 content,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
               SizedBox(
-                width: MediaQuery.of(context).size.width,
+                width: mediaQuery.size.width,
                 height: 20,
               ),
               BtnPrimary(

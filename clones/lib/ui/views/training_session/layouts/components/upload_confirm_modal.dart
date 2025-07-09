@@ -18,6 +18,7 @@ class UploadConfirmModal extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return PopupTemplate(
       popupTitle: 'Confirm Upload',
       popupContent: Column(
@@ -25,7 +26,7 @@ class UploadConfirmModal extends ConsumerWidget {
         children: [
           Text.rich(
             TextSpan(
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
               children: [
                 const TextSpan(
                   text:
@@ -33,10 +34,10 @@ class UploadConfirmModal extends ConsumerWidget {
                 ),
                 TextSpan(
                   text: 'Privacy Policy.',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: VMColors.secondary,
-                        decoration: TextDecoration.underline,
-                      ),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: VMColors.secondary,
+                    decoration: TextDecoration.underline,
+                  ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
                       launchUrl(Uri.parse(Env.privacyPolicyUrl));
@@ -48,7 +49,7 @@ class UploadConfirmModal extends ConsumerWidget {
           const SizedBox(height: 16),
           Text(
             'By uploading your recording data, you give clones permission to process and train AI agents with it.',
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(
             height: 20,

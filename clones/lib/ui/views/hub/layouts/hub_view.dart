@@ -38,6 +38,7 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -46,11 +47,11 @@ class _Header extends StatelessWidget {
           children: [
             Text(
               'Agent Hub',
-              style: Theme.of(context).textTheme.titleLarge,
+              style: theme.textTheme.titleLarge,
             ),
             Text(
               'Explore deployed fine-tuned AI agents on Web3',
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
           ],
         ),
@@ -64,6 +65,7 @@ class _SearchAndFilters extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         children: [
@@ -77,17 +79,17 @@ class _SearchAndFilters extends StatelessWidget {
               gradient: VMColors.gradientInputFormBackground,
             ),
             child: TextField(
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 hintText:
                     'Search for an agent by application, task, or name...',
-                hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.color!
-                          .withValues(alpha: 0.2),
-                    ),
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color!
+                      .withValues(alpha: 0.2),
+                ),
                 prefixIcon: Icon(
                   Icons.search,
                   color: VMColors.secondaryText,
@@ -144,12 +146,13 @@ class _FilterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return ElevatedButton.icon(
       onPressed: () {},
       icon: FaIcon(icon, size: 14, color: iconColor ?? VMColors.secondaryText),
       label: Row(
         children: [
-          Text(label, style: Theme.of(context).textTheme.bodyMedium),
+          Text(label, style: theme.textTheme.bodyMedium),
           const SizedBox(width: 8),
           const FaIcon(FontAwesomeIcons.chevronDown, size: 12),
         ],
@@ -237,6 +240,7 @@ class _StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Row(
         children: [
@@ -256,13 +260,13 @@ class _StatCard extends StatelessWidget {
             children: [
               Text(
                 value,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),
@@ -406,6 +410,7 @@ class _AgentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return CardWidget(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,7 +436,7 @@ class _AgentCard extends StatelessWidget {
                     children: [
                       Text(
                         agent.name,
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium,
                       ),
                       Text(
                         agent.ticker,
@@ -449,7 +454,7 @@ class _AgentCard extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             agent.description,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: theme.textTheme.bodySmall,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),

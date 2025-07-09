@@ -11,6 +11,7 @@ class LeaderboardsStatActiveForges extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -31,14 +32,14 @@ class LeaderboardsStatActiveForges extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               stat.activeForges.toString(),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               'Active Forges',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 10),
           ],

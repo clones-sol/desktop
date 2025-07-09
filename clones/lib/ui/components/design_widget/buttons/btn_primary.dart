@@ -42,6 +42,7 @@ class BtnPrimary extends StatelessWidget {
   Widget _button(
     BuildContext context,
   ) {
+    final theme = Theme.of(context);
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 40),
       child: IntrinsicHeight(
@@ -63,12 +64,12 @@ class BtnPrimary extends StatelessWidget {
                   buttonText,
                   overflow: TextOverflow.visible,
                   softWrap: false,
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: isLocked
-                            ? Colors.white.withValues(alpha: 0.2)
-                            : Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  style: theme.textTheme.bodySmall!.copyWith(
+                    color: isLocked
+                        ? Colors.white.withValues(alpha: 0.2)
+                        : Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               if (isLoading)
                 const Padding(

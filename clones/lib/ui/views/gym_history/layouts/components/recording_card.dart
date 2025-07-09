@@ -176,6 +176,7 @@ class RecordingCard extends ConsumerWidget {
     IconData icon,
     Color color,
   ) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
@@ -184,9 +185,9 @@ class RecordingCard extends ConsumerWidget {
           const SizedBox(width: 5),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: color.withValues(alpha: 0.8),
-                ),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color.withValues(alpha: 0.8),
+            ),
           ),
         ],
       ),
@@ -222,7 +223,7 @@ class RecordingCard extends ConsumerWidget {
         uploadItem?.uploadStatus == UploadStatus.zipping;
     final isCompleted = uploadItem?.uploadStatus == UploadStatus.done;
     const isQueued = false; // Not in UploadStatus enum
-
+    final theme = Theme.of(context);
     return Row(
       children: [
         if (recording.status == 'completed' &&
@@ -244,7 +245,7 @@ class RecordingCard extends ConsumerWidget {
                 : isQueued
                     ? 'Queued'
                     : maxReward > 0
-                        ? 'Upload for ${maxReward.toStringAsFixed(2)} ${Token.getTokenType(TokenType.clones)}'
+                        ? 'Upload for ${maxReward.toStringAsFixed(2)} ${Token.getTokenType(TokenType.viral)}'
                         : 'Upload Recording',
           ),
         if (recording.location == 'local')
@@ -260,7 +261,7 @@ class RecordingCard extends ConsumerWidget {
                   break;
                 case 'export_zip':
                   try {
-                    // TODO: To fix: export recording
+                    // TODO(reddwarf03): To fix: export recording
                     await ref
                         .read(tauriApiClientProvider)
                         .exportRecording(recording.id);
@@ -268,7 +269,7 @@ class RecordingCard extends ConsumerWidget {
                       SnackBar(
                         content: Text(
                           'Record exported successfully',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: theme.textTheme.bodyMedium,
                         ),
                       ),
                     );
@@ -277,7 +278,7 @@ class RecordingCard extends ConsumerWidget {
                       SnackBar(
                         content: Text(
                           'Failed to export recording',
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: theme.textTheme.bodyMedium,
                         ),
                       ),
                     );
@@ -300,7 +301,7 @@ class RecordingCard extends ConsumerWidget {
                         SnackBar(
                           content: Text(
                             'Record deleted successfully',
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ),
                       );

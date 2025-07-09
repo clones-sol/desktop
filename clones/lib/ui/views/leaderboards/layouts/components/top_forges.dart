@@ -111,7 +111,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
         children: [
           const Expanded(
             flex: 2,
-            child: const Row(
+            child: Row(
               children: [
                 Text(
                   'Name',
@@ -142,7 +142,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '\$${Token.getTokenType(TokenType.clones)} Paid',
+                  '\$${Token.getTokenType(TokenType.viral)} Paid',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: VMColors.primaryText,
@@ -205,7 +205,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                         ),
                       ),
                       Text(
-                        ' \$${Token.getTokenType(TokenType.clones)}',
+                        ' \$${Token.getTokenType(TokenType.viral)}',
                         style: const TextStyle(
                           color: VMColors.secondary,
                         ),
@@ -244,6 +244,7 @@ class TopForgesFullscreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     return Stack(
       children: [
         Positioned.fill(
@@ -256,8 +257,8 @@ class TopForgesFullscreen extends StatelessWidget {
         ),
         Center(
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.height * 0.85,
+            width: mediaQuery.size.width * 0.9,
+            height: mediaQuery.size.height * 0.85,
             decoration: BoxDecoration(
               color: Colors.black.withValues(alpha: 0.95),
               borderRadius: BorderRadius.circular(24),

@@ -35,6 +35,7 @@ class DemoDetailEditor extends ConsumerWidget {
 
     final videoController = demoDetail.videoController;
     final startTime = demoDetail.startTime;
+    final theme = Theme.of(context);
 
     if (session.isConnected == false) {
       return const WalletNotConnected();
@@ -44,7 +45,7 @@ class DemoDetailEditor extends ConsumerWidget {
       return Center(
         child: Text(
           'No editor data to display.',
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
         ),
       );
     }
@@ -87,11 +88,11 @@ class DemoDetailEditor extends ConsumerWidget {
                   children: [
                     Text(
                       'Recording already submitted',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                     Text(
                       'New privacy masks will not be included',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -151,6 +152,7 @@ class DemoDetailEditor extends ConsumerWidget {
     VideoPlayerController? videoController,
     int startTime,
   ) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Stack(
@@ -186,7 +188,7 @@ class DemoDetailEditor extends ConsumerWidget {
                 ),
                 child: Text(
                   formatTimeMs(message.timestamp),
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ),
@@ -203,7 +205,7 @@ class DemoDetailEditor extends ConsumerWidget {
                     children: [
                       Text(
                         message.role.toUpperCase(),
-                        style: Theme.of(context).textTheme.bodySmall,
+                        style: theme.textTheme.bodySmall,
                       ),
                       IconButton(
                         icon: const Icon(
@@ -236,7 +238,7 @@ class DemoDetailEditor extends ConsumerWidget {
                           message.content
                               .replaceAll('```python', '')
                               .replaceAll('```', ''),
-                          style: Theme.of(context).textTheme.bodySmall,
+                          style: theme.textTheme.bodySmall,
                         ),
                       ],
                     )
@@ -282,7 +284,7 @@ class DemoDetailEditor extends ConsumerWidget {
               .read(demoDetailNotifierProvider.notifier)
               .deletePrivateRange(range),
         ),
-        // TODO: Add up/down buttons
+        // TODO(reddwarf03): Add up/down buttons
       ),
     );
   }

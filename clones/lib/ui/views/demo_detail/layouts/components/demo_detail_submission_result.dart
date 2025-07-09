@@ -30,7 +30,7 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
     }
 
     final score = submission.gradeResult?.score ?? submission.clampedScore ?? 0;
-
+    final theme = Theme.of(context);
     return Column(
       children: [
         CardWidget(
@@ -55,10 +55,10 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
                     Center(
                       child: Text(
                         '$score%',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: VMColors.getScoreColor(score),
-                            ),
+                        style: theme.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: VMColors.getScoreColor(score),
+                        ),
                       ),
                     ),
                   ],
@@ -68,7 +68,7 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
               Text(
                 submission.gradeResult?.reasoningForUser ??
                     'No reasoning provided.',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),

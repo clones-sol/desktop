@@ -14,6 +14,8 @@ class ForgeGymGeneralTabStatDemoPrice extends ConsumerWidget {
     if (pool == null) {
       return const SizedBox.shrink();
     }
+
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -43,10 +45,10 @@ class ForgeGymGeneralTabStatDemoPrice extends ConsumerWidget {
                   ),
                   child: Text(
                     pool.token.symbol,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: VMColors.containerIcon1.withValues(alpha: 0.7),
-                          fontSize: 10,
-                        ),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: VMColors.containerIcon1.withValues(alpha: 0.7),
+                      fontSize: 10,
+                    ),
                   ),
                 ),
               ],
@@ -54,14 +56,14 @@ class ForgeGymGeneralTabStatDemoPrice extends ConsumerWidget {
             const SizedBox(height: 10),
             Text(
               '${formatNumberWithSeparator(pool.pricePerDemo)} ${pool.token.symbol}',
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             Text(
               'per demonstration',
-              style: Theme.of(context).textTheme.bodySmall,
+              style: theme.textTheme.bodySmall,
             ),
           ],
         ),

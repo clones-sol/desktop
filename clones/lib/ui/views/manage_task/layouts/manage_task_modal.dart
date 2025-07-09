@@ -50,6 +50,8 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Stack(
       children: [
         Positioned.fill(
@@ -64,7 +66,7 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
           child: CardWidget(
             padding: CardPadding.large,
             child: SizedBox(
-              width: MediaQuery.of(context).size.height * 0.8,
+              width: mediaQuery.size.height * 0.8,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,7 +78,7 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
                         widget.modalType == ManageTaskModalType.create
                             ? 'Create a new task'
                             : 'Edit task',
-                        style: Theme.of(context).textTheme.titleLarge,
+                        style: theme.textTheme.titleLarge,
                       ),
                       IconButton(
                         onPressed: () => widget.onClose(),

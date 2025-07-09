@@ -87,7 +87,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
     final tasksProvider = getAppsForGymProvider(filter: _filter);
     final tasksAsync = ref.watch(tasksProvider);
     final settings = ref.watch(gymSettingsNotifierProvider);
-
+    final theme = Theme.of(context);
     return settings.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, stack) =>
@@ -104,7 +104,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   minFontSize: 14,
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: theme.textTheme.titleLarge,
                 ),
               ),
             ],
@@ -217,6 +217,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
   }
 
   Widget _buildHeader() {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Row(
@@ -228,7 +229,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                 padding: const EdgeInsets.only(left: 10),
                 child: Text(
                   'Available Tasks',
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium,
                 ),
               ),
               const SizedBox(width: 12),
@@ -241,7 +242,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                 ),
                 child: Text(
                   '${ref.watch(getAppsForGymProvider(filter: _filter)).asData?.value.map((e) => e.tasks.length).fold(0, (a, b) => a + b) ?? 0} Available',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ),
             ],
@@ -258,9 +259,9 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
             ),
             label: Text(
               'Filters',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: VMColors.secondary,
-                  ),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: VMColors.secondary,
+              ),
             ),
           ),
         ],

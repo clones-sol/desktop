@@ -22,6 +22,7 @@ class DemoDetailSteps extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
+    final theme = Theme.of(context);
     return Column(
       children: [
         CardWidget(
@@ -30,19 +31,19 @@ class DemoDetailSteps extends ConsumerWidget {
             children: [
               Text(
                 'Summary',
-                style: Theme.of(context).textTheme.titleMedium,
+                style: theme.textTheme.titleMedium,
               ),
               const SizedBox(height: 10),
               Text(
                 'Steps taken during the demonstration:',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     submission.gradeResult?.summary ?? 'No summary provided.',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: theme.textTheme.bodyMedium,
                   ),
                 ],
               ),

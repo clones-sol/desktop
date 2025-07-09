@@ -35,6 +35,7 @@ class _TypingIndicatorState extends State<TypingIndicator> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Align(
       alignment: Alignment.centerLeft,
       child: Stack(
@@ -45,7 +46,7 @@ class _TypingIndicatorState extends State<TypingIndicator> {
               messageBoxType: MessageBoxType.talkLeft,
               content: Text(
                 '.' * _dotCount + ' ' * (3 - _dotCount),
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
             ),
           ),

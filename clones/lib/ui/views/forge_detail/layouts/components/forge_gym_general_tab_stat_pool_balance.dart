@@ -15,6 +15,7 @@ class ForgeGymGeneralTabStatPoolBalance extends ConsumerWidget {
     if (pool == null) {
       return const SizedBox.shrink();
     }
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Stack(
@@ -58,11 +59,10 @@ class ForgeGymGeneralTabStatPoolBalance extends ConsumerWidget {
                       ),
                       child: Text(
                         'POOL',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: VMColors.containerIcon4
-                                  .withValues(alpha: 0.7),
-                              fontSize: 10,
-                            ),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: VMColors.containerIcon4.withValues(alpha: 0.7),
+                          fontSize: 10,
+                        ),
                       ),
                     ),
                   ],
@@ -70,14 +70,14 @@ class ForgeGymGeneralTabStatPoolBalance extends ConsumerWidget {
                 const SizedBox(height: 10),
                 Text(
                   '${formatNumberWithSeparator(pool.funds)} ${pool.token.symbol}',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   'available',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: theme.textTheme.bodySmall,
                 ),
               ],
             ),

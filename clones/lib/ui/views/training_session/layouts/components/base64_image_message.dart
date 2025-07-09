@@ -34,6 +34,7 @@ class _Base64ImageMessageState extends State<Base64ImageMessage>
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
     super.build(context);
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -45,7 +46,7 @@ class _Base64ImageMessageState extends State<Base64ImageMessage>
               padding: const EdgeInsets.only(left: 15, top: 15),
               child: Container(
                 constraints: BoxConstraints(
-                  maxWidth: MediaQuery.of(context).size.width * 0.7,
+                  maxWidth: mediaQuery.size.width * 0.7,
                 ),
                 child: MessageBox(
                   messageBoxType: MessageBoxType.talkLeft,

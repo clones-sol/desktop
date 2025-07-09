@@ -51,17 +51,18 @@ class _PageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           '3. Uploads',
-          style: Theme.of(context).textTheme.titleMedium,
+          style: theme.textTheme.titleMedium,
         ),
         BtnPrimary(
           buttonText: 'Export All Uploads',
           onTap: () {
-            // TODO: Implement export
+            // TODO(reddwarf03): Implement export
           },
         ),
       ],
@@ -140,7 +141,7 @@ class _UploadsTable extends ConsumerWidget {
     Set<String> selected,
   ) {
     final isSelected = selected.contains(submission.id);
-
+    final theme = Theme.of(context);
     void onSelect(bool? selected) {
       final notifier = ref.read(_selectedSubmissionsProvider.notifier);
       if (selected == true) {
@@ -166,26 +167,26 @@ class _UploadsTable extends ConsumerWidget {
         DataCell(
           Text(
             _getTitle(submission),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
         DataCell(_StatusCell(submission: submission)),
         DataCell(
           Text(
             _formatDuration(submission),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
         DataCell(
           Text(
             _getTotalFileSize(submission),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
         DataCell(
           Text(
             _formatDate(submission.createdAt),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
         DataCell(_QualityCell(submission: submission)),
@@ -258,13 +259,14 @@ class _PlatformCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         FaIcon(_getOSIcon(submission), size: 16, color: VMColors.secondaryText),
         const SizedBox(width: 8),
         Text(
           _getOSName(submission),
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
         ),
       ],
     );
@@ -277,6 +279,7 @@ class _StatusCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     Color backgroundColor;
     Color textColor;
 
@@ -310,9 +313,9 @@ class _StatusCell extends StatelessWidget {
       ),
       child: Text(
         submission.status,
-        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: textColor,
-            ),
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: textColor,
+        ),
       ),
     );
   }
@@ -324,6 +327,7 @@ class _QualityCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final score = submission.gradeResult?.score;
     if (score == null) return const Text('-');
 
@@ -338,10 +342,10 @@ class _QualityCell extends StatelessWidget {
 
     return Text(
       '${score.toStringAsFixed(0)}%',
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: color,
-            fontWeight: FontWeight.bold,
-          ),
+      style: theme.textTheme.bodyMedium?.copyWith(
+        color: color,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 }
@@ -352,6 +356,7 @@ class _RewardCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final reward = submission.reward;
     if (reward != null && reward > 0) {
       return Container(
@@ -361,10 +366,10 @@ class _RewardCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          '$reward ${Token.getTokenType(TokenType.clones)}',
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.white,
-              ),
+          '$reward ${Token.getTokenType(TokenType.viral)}',
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: Colors.white,
+          ),
         ),
       );
     }
@@ -376,7 +381,7 @@ class _RewardCell extends StatelessWidget {
       ),
       child: Text(
         'FREE',
-        style: Theme.of(context).textTheme.bodyMedium,
+        style: theme.textTheme.bodyMedium,
       ),
     );
   }

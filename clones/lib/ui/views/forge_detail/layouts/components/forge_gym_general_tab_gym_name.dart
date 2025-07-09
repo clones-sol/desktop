@@ -32,7 +32,7 @@ class _ForgeGymGeneralTabGymNameState
   @override
   Widget build(BuildContext context) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
-
+    final theme = Theme.of(context);
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
     return Expanded(
@@ -61,11 +61,11 @@ class _ForgeGymGeneralTabGymNameState
                   children: [
                     Text(
                       'Gym Name',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     Text(
                       'This name will be visible to users.',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -79,7 +79,7 @@ class _ForgeGymGeneralTabGymNameState
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: Theme.of(context).colorScheme.primaryContainer,
+                        color: theme.colorScheme.primaryContainer,
                         width: 0.5,
                       ),
                       gradient: VMColors.gradientInputFormBackground,
@@ -93,7 +93,7 @@ class _ForgeGymGeneralTabGymNameState
                             )
                             .setGymName(value);
                       },
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         contentPadding: const EdgeInsets.symmetric(
@@ -101,14 +101,10 @@ class _ForgeGymGeneralTabGymNameState
                           vertical: 12,
                         ),
                         hintText: 'Enter gym name',
-                        hintStyle:
-                            Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color!
-                                      .withValues(alpha: 0.2),
-                                ),
+                        hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.textTheme.bodyMedium?.color!
+                              .withValues(alpha: 0.2),
+                        ),
                       ),
                     ),
                   ),

@@ -45,12 +45,13 @@ class GenerateGymTextFieldGymPromptState
     BuildContext context,
   ) {
     final generateGymNotifier = ref.watch(generateGymNotifierProvider.notifier);
-
+    final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: MediaQuery.of(context).size.width,
+          width: mediaQuery.size.width,
           child: Row(
             children: [
               Expanded(
@@ -78,7 +79,7 @@ class GenerateGymTextFieldGymPromptState
                             ),
                           ),
                           child: TextField(
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                             autocorrect: false,
                             controller: controller,
                             onChanged: (text) async {

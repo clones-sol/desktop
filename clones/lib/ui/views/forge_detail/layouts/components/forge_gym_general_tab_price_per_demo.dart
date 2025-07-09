@@ -38,7 +38,7 @@ class _ForgeGymGeneralTabPricePerDemoState
     if (forgeDetail.pool == null) return const SizedBox.shrink();
 
     final tokenSymbol = forgeDetail.pool!.token.symbol;
-
+    final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
         child: Column(
@@ -65,11 +65,11 @@ class _ForgeGymGeneralTabPricePerDemoState
                   children: [
                     Text(
                       'Price per demonstration',
-                      style: Theme.of(context).textTheme.titleSmall,
+                      style: theme.textTheme.titleSmall,
                     ),
                     Text(
                       'Set the price for each demonstration. Minimum price: 1 $tokenSymbol',
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: theme.textTheme.bodySmall,
                     ),
                   ],
                 ),
@@ -87,8 +87,7 @@ class _ForgeGymGeneralTabPricePerDemoState
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color:
-                                Theme.of(context).colorScheme.primaryContainer,
+                            color: theme.colorScheme.primaryContainer,
                             width: 0.5,
                           ),
                           gradient: VMColors.gradientInputFormBackground,
@@ -105,8 +104,9 @@ class _ForgeGymGeneralTabPricePerDemoState
                           },
                           controller: controller,
                           keyboardType: const TextInputType.numberWithOptions(
-                              decimal: true,),
-                          style: Theme.of(context).textTheme.bodyMedium,
+                            decimal: true,
+                          ),
+                          style: theme.textTheme.bodyMedium,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.allow(
                               RegExp(r'^\d+\.?\d{0,1}'),
@@ -119,16 +119,10 @@ class _ForgeGymGeneralTabPricePerDemoState
                               vertical: 12,
                             ),
                             hintText: 'Reward per demo',
-                            hintStyle: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.color!
-                                      .withValues(alpha: 0.2),
-                                ),
+                            hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.textTheme.bodyMedium?.color!
+                                  .withValues(alpha: 0.2),
+                            ),
                           ),
                         ),
                       ),
@@ -138,7 +132,7 @@ class _ForgeGymGeneralTabPricePerDemoState
                           padding: const EdgeInsets.all(10),
                           child: Text(
                             tokenSymbol,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: theme.textTheme.bodyMedium,
                           ),
                         ),
                       ),

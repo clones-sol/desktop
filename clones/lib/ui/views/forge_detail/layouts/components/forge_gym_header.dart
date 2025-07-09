@@ -8,6 +8,7 @@ class ForgeGymHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
     final pool = ref.watch(forgeDetailNotifierProvider).pool;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
@@ -16,9 +17,9 @@ class ForgeGymHeader extends ConsumerWidget {
         children: [
           Text(
             pool?.name ?? '',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                ),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const SizedBox(width: 20),
           if (pool != null)

@@ -6,8 +6,9 @@ part 'token.g.dart';
 enum TokenType {
   @JsonValue('SOL')
   sol,
-  @JsonValue('CLNS')
-  clones,
+// TODO(reddwarf03): change to CLNS
+  @JsonValue('VIRAL')
+  viral,
   @JsonValue('CUSTOM')
   custom,
 }
@@ -26,8 +27,8 @@ class Token with _$Token {
     switch (type) {
       case 'SOL':
         return TokenType.sol;
-      case 'CLNS':
-        return TokenType.clones;
+      case 'VIRAL':
+        return TokenType.viral;
       case 'CUSTOM':
         return TokenType.custom;
       default:
@@ -39,8 +40,8 @@ class Token with _$Token {
     switch (type) {
       case TokenType.sol:
         return 'SOL';
-      case TokenType.clones:
-        return 'CLNS';
+      case TokenType.viral:
+        return 'VIRAL';
       case TokenType.custom:
         return 'CUSTOM';
     }

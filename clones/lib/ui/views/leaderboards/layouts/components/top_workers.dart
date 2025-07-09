@@ -155,7 +155,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '\$${Token.getTokenType(TokenType.clones)} Rewards',
+                  '\$${Token.getTokenType(TokenType.viral)} Rewards',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: VMColors.primaryText,
@@ -247,7 +247,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                         ),
                       ),
                       Text(
-                        ' \$${Token.getTokenType(TokenType.clones)}',
+                        ' \$${Token.getTokenType(TokenType.viral)}',
                         style: const TextStyle(
                           color: VMColors.secondary,
                         ),

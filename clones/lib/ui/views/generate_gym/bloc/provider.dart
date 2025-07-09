@@ -63,8 +63,8 @@ class GenerateGymNotifier extends _$GenerateGymNotifier
       if (session.address == null) return;
 
       final token = Token(
-        type: TokenType.clones,
-        symbol: 'CLNS',
+        type: TokenType.viral,
+        symbol: Token.getTokenType(TokenType.viral),
         address: Env.viralTokenAddress,
       );
       await ref.read(

@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$generateGymNotifierHash() =>
-    r'3aeeb9714f015454e1a3678b2aedea0a6854dec3';
+    r'1386b309bc1210e47a4b9d4e6e1daf7cc0732acc';
 
 /// See also [GenerateGymNotifier].
 @ProviderFor(GenerateGymNotifier)

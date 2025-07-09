@@ -34,7 +34,7 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
     if (controller.text != manageTask.prompt) {
       controller.text = manageTask.prompt;
     }
-
+    final theme = Theme.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(
@@ -62,18 +62,18 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
           onChanged: (v) =>
               ref.read(manageTaskNotifierProvider.notifier).setPrompt(v),
           cursorColor: VMColors.secondaryText,
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: theme.textTheme.bodyMedium,
           decoration: InputDecoration(
             border: InputBorder.none,
             contentPadding: const EdgeInsets.only(left: 10),
             hintText: 'Enter the prompt for the task...',
-            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.color!
-                      .withValues(alpha: 0.2),
-                ),
+            hintStyle: theme.textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyMedium
+                  ?.color!
+                  .withValues(alpha: 0.2),
+            ),
           ),
         ),
       ),
