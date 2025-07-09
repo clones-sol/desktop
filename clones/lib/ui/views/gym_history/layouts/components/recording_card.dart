@@ -1,0 +1,350 @@
+import 'package:clones/application/recording.dart';
+import 'package:clones/application/tauri_api.dart';
+import 'package:clones/application/upload/provider.dart';
+import 'package:clones/application/upload/state.dart';
+import 'package:clones/assets.dart';
+import 'package:clones/domain/models/recording/api_recording.dart';
+import 'package:clones/domain/models/token.dart';
+import 'package:clones/ui/components/card.dart';
+import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones/ui/components/design_widget/dialog/dialog.dart';
+import 'package:clones/ui/views/demo_detail/layouts/demo_detail_view.dart';
+import 'package:clones/utils/format_time.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+
+class RecordingCard extends ConsumerWidget {
+  const RecordingCard({super.key, required this.recording});
+
+  final ApiRecording recording;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uploadQueue = ref.watch(uploadQueueProvider);
+    final uploadItem = uploadQueue[recording.id];
+
+    final maxReward = recording.quest?.reward?.maxReward ??
+        recording.submission?.meta.quest.reward?.maxReward ??
+        0;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: InkWell(
+        onTap: () {
+          context.push(DemoDetailView.routeName, extra: recording.id);
+        },
+        child: CardWidget(
+          padding: CardPadding.none,
+          variant: CardVariant.secondary,
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              children: [
+                _buildIcon(context),
+                const SizedBox(width: 10),
+                Expanded(child: _buildTitleAndMeta(context)),
+                _buildStatus(context, uploadItem),
+                _buildActions(context, ref, uploadItem, maxReward.toDouble()),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon(BuildContext context) {
+    final iconUrl =
+        recording.quest?.iconUrl ?? recording.submission?.meta.quest.iconUrl;
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child: iconUrl != null
+          ? Image.network(
+              iconUrl,
+              errorBuilder: (context, error, stackTrace) =>
+                  Icon(Icons.apps, color: VMColors.secondaryText),
+            )
+          : Icon(Icons.apps, color: VMColors.secondaryText),
+    );
+  }
+
+  Widget _buildTitleAndMeta(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          recording.title,
+          style: theme.textTheme.titleMedium,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            Icon(Icons.schedule, size: 12, color: VMColors.secondaryText),
+            const SizedBox(width: 4),
+            Text(
+              formatDuration(recording.durationSeconds),
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(width: 8),
+            Icon(Icons.calendar_today, size: 12, color: VMColors.secondaryText),
+            const SizedBox(width: 4),
+            Text(
+              '${DateFormat.yMd().format(DateTime.parse(recording.timestamp))} ${DateFormat.jm().format(DateTime.parse(recording.timestamp))}',
+              style: theme.textTheme.bodySmall,
+            ),
+            const SizedBox(width: 8),
+            Icon(
+              recording.location == 'local'
+                  ? Icons.folder_outlined
+                  : Icons.cloud_outlined,
+              size: 12,
+              color: VMColors.secondaryText,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              recording.location == 'local' ? 'Local' : 'Cloud',
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: VMColors.secondaryText,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildStatus(BuildContext context, UploadTaskState? uploadItem) {
+    final status = recording.submission?.status ?? recording.status;
+
+    if (uploadItem?.uploadStatus == UploadStatus.error || status == 'failed') {
+      return _statusChip(
+        context,
+        'Upload Failed',
+        Icons.error_outline,
+        Colors.red,
+      );
+    }
+    if (status == 'processing' ||
+        status == 'pending' ||
+        uploadItem?.uploadStatus == UploadStatus.processing) {
+      return _statusChip(
+        context,
+        'Processing',
+        Icons.info_outline,
+        Colors.orange,
+      );
+    }
+    if (uploadItem?.uploadStatus == UploadStatus.uploading) {
+      return _statusChip(context, 'Uploading', Icons.upload_file, Colors.blue);
+    }
+
+    if (recording.submission?.clampedScore != null) {
+      return _ratingDisplay(
+        context,
+        recording.submission!.clampedScore!.toDouble(),
+      );
+    }
+    if ((recording.durationSeconds) < 1) {
+      return _statusChip(
+        context,
+        'Recording Error',
+        Icons.error_outline,
+        Colors.red,
+      );
+    }
+    if (recording.submission?.gradeResult?.score != null) {
+      return _ratingDisplay(
+        context,
+        recording.submission!.gradeResult!.score.toDouble(),
+      );
+    }
+    if (recording.submission != null) {
+      return _ratingDisplay(context, 0);
+    }
+
+    return const SizedBox.shrink();
+  }
+
+  Widget _statusChip(
+    BuildContext context,
+    String label,
+    IconData icon,
+    Color color,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          Icon(icon, color: color.withValues(alpha: 0.8), size: 16),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: color.withValues(alpha: 0.8),
+                ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _ratingDisplay(BuildContext context, double score) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Column(
+        children: [
+          Text(
+            '${score.toStringAsFixed(0)}%',
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: VMColors.secondary,
+            ),
+          ),
+          Text('Rating', style: theme.textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActions(
+    BuildContext context,
+    WidgetRef ref,
+    UploadTaskState? uploadItem,
+    double maxReward,
+  ) {
+    final isUploading = uploadItem?.uploadStatus == UploadStatus.processing ||
+        uploadItem?.uploadStatus == UploadStatus.uploading ||
+        uploadItem?.uploadStatus == UploadStatus.zipping;
+    final isCompleted = uploadItem?.uploadStatus == UploadStatus.done;
+    const isQueued = false; // Not in UploadStatus enum
+
+    return Row(
+      children: [
+        if (recording.status == 'completed' &&
+            recording.submission == null &&
+            !isCompleted)
+          BtnPrimary(
+            onTap: isUploading || isQueued
+                ? null
+                : () {
+                    ref
+                        .read(uploadQueueProvider.notifier)
+                        .upload(recording.id, recording.title);
+                  },
+            isLoading: isUploading,
+            icon: Icons.upload,
+            btnPrimaryType: BtnPrimaryType.outlinePrimary,
+            buttonText: isUploading
+                ? 'Uploading...'
+                : isQueued
+                    ? 'Queued'
+                    : maxReward > 0
+                        ? 'Upload for ${maxReward.toStringAsFixed(2)} ${Token.getTokenType(TokenType.clones)}'
+                        : 'Upload Recording',
+          ),
+        if (recording.location == 'local')
+          PopupMenuButton<String>(
+            icon: Icon(Icons.more_vert, color: VMColors.secondaryText),
+            color: Colors.black.withValues(alpha: 0.9),
+            onSelected: (value) async {
+              switch (value) {
+                case 'open_folder':
+                  await ref
+                      .read(tauriApiClientProvider)
+                      .openRecordingFolder(recording.id);
+                  break;
+                case 'export_zip':
+                  try {
+                    // TODO: To fix: export recording
+                    await ref
+                        .read(tauriApiClientProvider)
+                        .exportRecording(recording.id);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Record exported successfully',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          'Failed to export recording',
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                      ),
+                    );
+                  }
+
+                  break;
+                case 'delete':
+                  await AppDialogs.showConfirmDialog(
+                    context,
+                    ref,
+                    'Confirm Deletion',
+                    'Are you sure you want to delete this record?',
+                    'Delete',
+                    () async {
+                      await ref
+                          .read(tauriApiClientProvider)
+                          .deleteRecording(recording.id);
+                      ref.invalidate(mergedRecordingsProvider);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Record deleted successfully',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'open_folder',
+                child: ListTile(
+                  leading: Icon(Icons.folder, color: VMColors.secondaryText),
+                  title: Text(
+                    'Open Folder',
+                    style: TextStyle(color: VMColors.secondaryText),
+                  ),
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'export_zip',
+                child: ListTile(
+                  leading: Icon(Icons.archive, color: VMColors.secondaryText),
+                  title: Text(
+                    'Export Zip',
+                    style: TextStyle(color: VMColors.secondaryText),
+                  ),
+                ),
+              ),
+              if (recording.submission == null)
+                const PopupMenuItem<String>(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: Icon(Icons.delete, color: Colors.red),
+                    title: Text(
+                      'Delete',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+      ],
+    );
+  }
+}
