@@ -95,7 +95,7 @@ Users who contribute recordings may be eligible for compensation according to ou
 
 2. Through Email Support:
    - If you've lost access to your private key
-   - Email privacy@viralmind.ai
+   - Email privacy@clones.sol
    - Include your wallet public address in the request
    - We will process the deletion of recordings associated with that wallet
 

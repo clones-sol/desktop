@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-APP_NAME="Viralmind Desktop"
+APP_NAME="Clones Desktop"
 SDK_PATH="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk"
 
 echo ">>> Setting SDKROOT to: $SDK_PATH"

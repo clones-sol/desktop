@@ -128,8 +128,8 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
         with:
           tagName: ${{ github.ref == 'refs/heads/staging' && 'v__VERSION__-pre' || 'v__VERSION__' }} # Add -pre suffix for staging
-          releaseName: ${{ github.ref == 'refs/heads/staging' && 'Viralmind Desktop v__VERSION__ (Pre-release)' || 'Viralmind Desktop v__VERSION__' }}
-          releaseBody: 'Download Viralmind Desktop for your operating system below.'
+          releaseName: ${{ github.ref == 'refs/heads/staging' && 'Clones Desktop v__VERSION__ (Pre-release)' || 'Clones Desktop v__VERSION__' }}
+          releaseBody: 'Download Clones Desktop for your operating system below.'
           releaseDraft: false
           prerelease: ${{ github.ref == 'refs/heads/staging'}}
           args: ${{ matrix.args }}

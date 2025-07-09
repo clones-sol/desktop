@@ -5,25 +5,25 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "[viralmind-native] Run IPC Server",
+      "name": "[clones-native] Run IPC Server",
       "type": "node-terminal",
       "request": "launch",
       "command": "cargo run --bin ipc-server-only",
-      "cwd": "${workspaceFolder}/viralmind_flutter/native/src-tauri"
+      "cwd": "${workspaceFolder}/clones/native/src-tauri"
     },
     {
-      "name": "viralmind-flutter",
+      "name": "clones-flutter",
       "request": "launch",
       "type": "dart",
-      "program": "viralmind_flutter/lib/main.dart"
+      "program": "clones/lib/main.dart"
     }
   ],
   "compounds": [
     {
       "name": "[COMPOUND] Flutter with IPC",
       "configurations": [
-        "[viralmind-native] Run IPC Server",
-        "viralmind-flutter"
+        "[clones-native] Run IPC Server",
+        "clones-flutter"
       ],
       "stopAll": true
     }

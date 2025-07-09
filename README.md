@@ -1,4 +1,4 @@
-# ViralMind Desktop
+# Clones Desktop
 
 > 🚧 Work in progress - coming soon!
 
