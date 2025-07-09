@@ -143,15 +143,27 @@ pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
 
     thread::spawn(move || {
         info!("[AxTree] Polling thread started");
-        let mut thread_exit_clean = false;
-        while let Some(active) = lock_with_timeout(
-            POLLING_ACTIVE.get().unwrap(),
-            std::time::Duration::from_secs(2),
-        ) {
-            if !*active {
-                thread_exit_clean = true;
+        loop {
+            // Lock and check the active flag. The lock is released immediately after the check.
+            let should_continue = {
+                let active_lock = lock_with_timeout(
+                    POLLING_ACTIVE.get().unwrap(),
+                    std::time::Duration::from_secs(2),
+                );
+                if let Some(active) = active_lock {
+                    *active
+                } else {
+                    log::warn!(
+                        "[AxTree] Could not acquire polling_active lock in thread, stopping."
+                    );
+                    false
+                }
+            };
+
+            if !should_continue {
                 break;
             }
+
             info!("[AxTree] Starting new dump-tree process");
 
             // Run dump-tree and capture output
@@ -231,23 +243,14 @@ pub fn start_dump_tree_polling(_: tauri::AppHandle) -> Result<(), String> {
                 }
             }
 
-            // Only sleep if we're still supposed to be polling
-            if *POLLING_ACTIVE.get().unwrap().lock().unwrap() {
-                info!(
-                    "[AxTree] Sleeping for {} seconds before next poll",
-                    POLLING_SLEEP_SECS
-                );
-                thread::sleep(Duration::from_secs(POLLING_SLEEP_SECS));
-            }
-        }
-        if !thread_exit_clean {
-            log::warn!(
-                "[AxTree] Polling thread did not exit cleanly (active flag not set to false)"
+            // Sleep before the next poll
+            info!(
+                "[AxTree] Sleeping for {} seconds before next poll",
+                POLLING_SLEEP_SECS
             );
-        } else {
-            info!("[AxTree] Polling thread exited cleanly");
+            thread::sleep(Duration::from_secs(POLLING_SLEEP_SECS));
         }
-        info!("[AxTree] Stopped dump-tree polling");
+        info!("[AxTree] Polling thread exited.");
     });
 
     Ok(())

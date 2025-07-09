@@ -1,3 +1,4 @@
+import 'package:clones/application/feature_flags.dart';
 import 'package:clones/application/route_provider.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/ui/components/upload_manager.dart';
@@ -30,11 +31,12 @@ class Sidebar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentRoute = ref.watch(currentRouteProvider);
     final buttons = [
-      SidebarButtonData(
-        path: HubView.routeName,
-        imagePath: Assets.hubIcon,
-        label: 'Hub',
-      ),
+      if (FeatureFlags.enableHubFeature)
+        SidebarButtonData(
+          path: HubView.routeName,
+          imagePath: Assets.hubIcon,
+          label: 'Hub',
+        ),
       SidebarButtonData(
         path: GymView.routeName,
         imagePath: Assets.gymIcon,
@@ -64,10 +66,10 @@ class Sidebar extends ConsumerWidget {
 
     var activeIndex = 0;
     if (currentRoute.startsWith(TrainingSessionView.routeName)) {
-      activeIndex = 1;
+      activeIndex = FeatureFlags.enableHubFeature ? 1 : 0;
     } else {
       if (currentRoute.startsWith(DemoDetailView.routeName)) {
-        activeIndex = 1;
+        activeIndex = FeatureFlags.enableHubFeature ? 1 : 0;
       } else {
         activeIndex =
             buttons.indexWhere((b) => currentRoute.startsWith(b.path));

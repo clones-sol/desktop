@@ -1,5 +1,9 @@
+import 'package:clones/application/route_provider.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/ui/components/sidebar.dart';
+import 'package:clones/ui/views/forge/layouts/forge_view.dart';
+import 'package:clones/ui/views/gym/layouts/gym_view.dart';
+import 'package:clones/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,11 +23,11 @@ class LayoutBackground extends ConsumerWidget {
       builder: (context, constraints) {
         final screenHeight = constraints.maxHeight;
         final screenWidth = constraints.maxWidth;
-        final bandHeight = screenHeight * 0.6;
         final logoSize = screenWidth * 0.25;
         const minLogoSize = 120.0;
         const maxLogoSize = 400.0;
-        final clampedLogoSize = logoSize.clamp(minLogoSize, maxLogoSize);
+        logoSize.clamp(minLogoSize, maxLogoSize);
+        final currentRoute = ref.watch(currentRouteProvider);
 
         return Stack(
           alignment: Alignment.center,
@@ -40,15 +44,23 @@ class LayoutBackground extends ConsumerWidget {
               ),
             ),
             Positioned(
-              top: bandHeight * 1.3 - clampedLogoSize / 2,
-              right: 50,
+              bottom: 0,
+              right: 30,
               child: Opacity(
                 opacity: 0.05,
-                child: Image.asset(
-                  Assets.logoIcon,
-                  width: clampedLogoSize,
-                  height: clampedLogoSize,
-                  fit: BoxFit.contain,
+                child: Text(
+                  currentRoute == ForgeView.routeName
+                      ? 'forge'
+                      : currentRoute == GymView.routeName
+                          ? 'gym'
+                          : currentRoute == GymHistoryView.routeName
+                              ? 'gym'
+                              : '',
+                  style: const TextStyle(
+                    fontSize: 200,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

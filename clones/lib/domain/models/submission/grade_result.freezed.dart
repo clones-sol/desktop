@@ -23,6 +23,7 @@ mixin _$GradeResult {
   String get summary => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
   String get reasoning => throw _privateConstructorUsedError;
+  String? get scratchpad => throw _privateConstructorUsedError;
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
 
@@ -46,6 +47,7 @@ abstract class $GradeResultCopyWith<$Res> {
       {String summary,
       int score,
       String reasoning,
+      String? scratchpad,
       @JsonKey(name: '_id') String id});
 }
 
@@ -67,6 +69,7 @@ class _$GradeResultCopyWithImpl<$Res, $Val extends GradeResult>
     Object? summary = null,
     Object? score = null,
     Object? reasoning = null,
+    Object? scratchpad = freezed,
     Object? id = null,
   }) {
     return _then(_value.copyWith(
@@ -82,6 +85,10 @@ class _$GradeResultCopyWithImpl<$Res, $Val extends GradeResult>
           ? _value.reasoning
           : reasoning // ignore: cast_nullable_to_non_nullable
               as String,
+      scratchpad: freezed == scratchpad
+          ? _value.scratchpad
+          : scratchpad // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -102,6 +109,7 @@ abstract class _$$GradeResultImplCopyWith<$Res>
       {String summary,
       int score,
       String reasoning,
+      String? scratchpad,
       @JsonKey(name: '_id') String id});
 }
 
@@ -121,6 +129,7 @@ class __$$GradeResultImplCopyWithImpl<$Res>
     Object? summary = null,
     Object? score = null,
     Object? reasoning = null,
+    Object? scratchpad = freezed,
     Object? id = null,
   }) {
     return _then(_$GradeResultImpl(
@@ -136,6 +145,10 @@ class __$$GradeResultImplCopyWithImpl<$Res>
           ? _value.reasoning
           : reasoning // ignore: cast_nullable_to_non_nullable
               as String,
+      scratchpad: freezed == scratchpad
+          ? _value.scratchpad
+          : scratchpad // ignore: cast_nullable_to_non_nullable
+              as String?,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -151,6 +164,7 @@ class _$GradeResultImpl implements _GradeResult {
       {required this.summary,
       required this.score,
       required this.reasoning,
+      this.scratchpad,
       @JsonKey(name: '_id') required this.id});
 
   factory _$GradeResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -163,12 +177,14 @@ class _$GradeResultImpl implements _GradeResult {
   @override
   final String reasoning;
   @override
+  final String? scratchpad;
+  @override
   @JsonKey(name: '_id')
   final String id;
 
   @override
   String toString() {
-    return 'GradeResult(summary: $summary, score: $score, reasoning: $reasoning, id: $id)';
+    return 'GradeResult(summary: $summary, score: $score, reasoning: $reasoning, scratchpad: $scratchpad, id: $id)';
   }
 
   @override
@@ -180,12 +196,15 @@ class _$GradeResultImpl implements _GradeResult {
             (identical(other.score, score) || other.score == score) &&
             (identical(other.reasoning, reasoning) ||
                 other.reasoning == reasoning) &&
+            (identical(other.scratchpad, scratchpad) ||
+                other.scratchpad == scratchpad) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, summary, score, reasoning, id);
+  int get hashCode =>
+      Object.hash(runtimeType, summary, score, reasoning, scratchpad, id);
 
   /// Create a copy of GradeResult
   /// with the given fields replaced by the non-null parameter values.
@@ -208,6 +227,7 @@ abstract class _GradeResult implements GradeResult {
       {required final String summary,
       required final int score,
       required final String reasoning,
+      final String? scratchpad,
       @JsonKey(name: '_id') required final String id}) = _$GradeResultImpl;
 
   factory _GradeResult.fromJson(Map<String, dynamic> json) =
@@ -219,6 +239,8 @@ abstract class _GradeResult implements GradeResult {
   int get score;
   @override
   String get reasoning;
+  @override
+  String? get scratchpad;
   @override
   @JsonKey(name: '_id')
   String get id;

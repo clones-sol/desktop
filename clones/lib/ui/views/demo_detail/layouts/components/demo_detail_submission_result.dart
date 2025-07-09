@@ -70,6 +70,15 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
                     'No reasoning provided.',
                 style: theme.textTheme.bodyMedium,
               ),
+              if (submission.gradeResult?.scratchpad != null &&
+                  submission.gradeResult!.scratchpad!.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    submission.gradeResult?.scratchpad ?? '',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
             ],
           ),
         ),

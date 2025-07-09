@@ -175,25 +175,25 @@ VITE_API_URL=https://viralmind.ai
 VITE_S3_BASE_URL=https://training-gym.s3.us-east-2.amazonaws.com
 VITE_SOLSCAN_BASE_URL=https://solscan.io
 VITE_JUPITER_API_URL=https://api.jup.ag
-VITE_PRIVACY_POLICY_URL=https://github.com/viralmind-ai/desktop/blob/main/PRIVACY.md
+VITE_PRIVACY_POLICY_URL=https://github.com/clones-sol/desktop/blob/main/PRIVACY.md
 VITE_VIRAL_TOKEN_ADDRESS=HW7D5MyYG4Dz2C98axfjVBeLWpsEnofrqy6ZUwqwpump
 VITE_SOL_TOKEN_ADDRESS=So11111111111111111111111111111111111111112
 VITE_ENV=dev
 
 # === Backend (Rust/Tauri) binaries ===
 # URLs for platform-specific binaries (override to use custom builds or mirrors)
-DUMP_TREE_URL_WIN=https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-windows.exe
-DUMP_TREE_URL_LINUX=https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-linux-x86_64
-DUMP_TREE_URL_MACOS=https://github.com/viralmind-ai/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64
+DUMP_TREE_URL_WIN=https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-windows.exe
+DUMP_TREE_URL_LINUX=https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-linux-x86_64
+DUMP_TREE_URL_MACOS=https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64
 
-FFMPEG_URL_WIN=https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-windows.zip
-FFMPEG_URL_LINUX=https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-linux.tar.xz
-FFMPEG_URL_MACOS=https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffmpeg-macos.zip
-FFPROBE_URL_MACOS=https://github.com/viralmind-ai/ffmpeg-binaries/releases/latest/download/ffprobe-macos.zip
+FFMPEG_URL_WIN=https://github.com/clones-sol/ffmpeg-binaries/releases/latest/download/ffmpeg-windows.zip
+FFMPEG_URL_LINUX=https://github.com/clones-sol/ffmpeg-binaries/releases/latest/download/ffmpeg-linux.tar.xz
+FFMPEG_URL_MACOS=https://github.com/clones-sol/ffmpeg-binaries/releases/latest/download/ffmpeg-macos.zip
+FFPROBE_URL_MACOS=https://github.com/clones-sol/ffmpeg-binaries/releases/latest/download/ffprobe-macos.zip
 
-PIPELINE_URL_WIN=https://github.com/viralmind-ai/vm-pipeline/releases/latest/download/pipeline-win-x64.exe
-PIPELINE_URL_LINUX=https://github.com/viralmind-ai/vm-pipeline/releases/latest/download/pipeline-linux-x64
-PIPELINE_URL_MACOS=https://github.com/viralmind-ai/vm-pipeline/releases/latest/download/pipeline-macos-arm64
+PIPELINE_URL_WIN=https://github.com/clones-sol/vm-pipeline/releases/latest/download/pipeline-win-x64.exe
+PIPELINE_URL_LINUX=https://github.com/clones-sol/vm-pipeline/releases/latest/download/pipeline-linux-x64
+PIPELINE_URL_MACOS=https://github.com/clones-sol/vm-pipeline/releases/latest/download/pipeline-macos-arm64
 ```
 
 For production, create a `.env.production` file with the appropriate values.

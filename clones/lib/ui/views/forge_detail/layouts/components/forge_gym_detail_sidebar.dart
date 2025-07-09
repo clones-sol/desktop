@@ -1,3 +1,4 @@
+import 'package:clones/application/feature_flags.dart';
 import 'package:clones/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -35,12 +36,13 @@ class ForgeGymDetailSidebar extends ConsumerWidget {
         label: 'Uploads',
         key: 'uploads',
       ),
-      SidebarButtonData(
-        path: '/forge/$poolId/deploy',
-        icon: Icons.cloud_upload,
-        label: 'Deploy',
-        key: 'deploy',
-      ),
+      if (FeatureFlags.enableLaunchpadFeature)
+        SidebarButtonData(
+          path: '/forge/$poolId/deploy',
+          icon: Icons.cloud_upload,
+          label: 'Deploy',
+          key: 'deploy',
+        ),
     ];
 
     var activeIndex = buttons.indexWhere((b) => b.key == currentTab);
