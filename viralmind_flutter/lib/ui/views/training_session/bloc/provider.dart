@@ -574,13 +574,22 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
   Future<void> giveUp() async {
     if (state.recordingState == RecordingState.recording) {
       try {
-        await ref.read(tauriApiClientProvider).stopRecording('fail');
+        final recordingId =
+            await ref.read(tauriApiClientProvider).stopRecording('fail');
 
         setActiveQuest(null);
         setRecordingState(RecordingState.off);
 
         // TODO(reddwarf03): To check
         // await emit('quest-overlay', { 'quest': null });
+
+        await addMessage(
+          Message(
+            role: 'user',
+            content: recordingId,
+            type: MessageType.recording,
+          ),
+        );
 
         await addMessage(
           generateUserMessage('I give up on this task.'),
@@ -625,6 +634,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
   Future<void> initialMessage() async {
     setIsWaitingForResponse(true);
+
     try {
       final response = await http.post(
         Uri.parse('${Env.apiUrl}/api/v1/forge/chat'),
