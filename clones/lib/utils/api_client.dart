@@ -18,7 +18,8 @@ class ApiClient {
       headers.addAll(options.headers!);
     }
     if (options.requiresAuth) {
-      final token = ref.watch(sessionNotifierProvider).connectionToken;
+      final token =
+          ref.watch(sessionNotifierProvider.select((s) => s.connectionToken));
       if (token != null && token.isNotEmpty) {
         headers['x-connect-token'] = token;
       }

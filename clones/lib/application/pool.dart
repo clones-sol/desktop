@@ -1,6 +1,6 @@
 import 'package:clones/domain/models/forge_task/forge_app.dart';
 import 'package:clones/domain/models/quest/reward_info.dart';
-import 'package:clones/domain/models/token.dart';
+import 'package:clones/domain/models/supported_token.dart';
 import 'package:clones/domain/models/training_pool.dart';
 import 'package:clones/domain/models/upload/upload_limit.dart';
 import 'package:clones/infrastructure/pool.repository.dart';
@@ -37,25 +37,6 @@ Future<TrainingPool> refreshPool(
 }) async {
   final poolsRepository = ref.read(poolsRepositoryProvider);
   return poolsRepository.refreshPool(poolId);
-}
-
-@riverpod
-Future<void> createPool(
-  Ref ref, {
-  required String poolName,
-  required String skills,
-  required Token token,
-  required List<Map<String, dynamic>> apps,
-  required String ownerAddress,
-}) async {
-  final poolsRepository = ref.read(poolsRepositoryProvider);
-  return poolsRepository.createPool(
-    poolName: poolName,
-    skills: skills,
-    token: token,
-    apps: apps,
-    ownerAddress: ownerAddress,
-  );
 }
 
 @riverpod
@@ -99,7 +80,7 @@ Future<TrainingPool> createPoolWithApps(
   Ref ref, {
   required String poolName,
   required String skills,
-  required Token token,
+  required String tokenSymbol,
   required List<ForgeApp> apps,
   required String ownerAddress,
 }) async {
@@ -107,7 +88,7 @@ Future<TrainingPool> createPoolWithApps(
   return poolsRepository.createPoolWithApps(
     name: poolName,
     skills: skills,
-    token: token,
+    tokenSymbol: tokenSymbol,
     ownerAddress: ownerAddress,
     apps: apps,
   );
@@ -124,4 +105,10 @@ Future<void> updatePoolEmail(
     poolId: poolId,
     email: email,
   );
+}
+
+@riverpod
+Future<List<SupportedToken>> getSupportedTokens(Ref ref) async {
+  final poolsRepository = ref.read(poolsRepositoryProvider);
+  return poolsRepository.getSupportedTokens();
 }

@@ -319,201 +319,6 @@ class _RefreshPoolProviderElement
   String get poolId => (origin as RefreshPoolProvider).poolId;
 }
 
-String _$createPoolHash() => r'f6490de2cd584cf7843b415c5e4c2a30f7748d2d';
-
-/// See also [createPool].
-@ProviderFor(createPool)
-const createPoolProvider = CreatePoolFamily();
-
-/// See also [createPool].
-class CreatePoolFamily extends Family<AsyncValue<void>> {
-  /// See also [createPool].
-  const CreatePoolFamily();
-
-  /// See also [createPool].
-  CreatePoolProvider call({
-    required String poolName,
-    required String skills,
-    required Token token,
-    required List<Map<String, dynamic>> apps,
-    required String ownerAddress,
-  }) {
-    return CreatePoolProvider(
-      poolName: poolName,
-      skills: skills,
-      token: token,
-      apps: apps,
-      ownerAddress: ownerAddress,
-    );
-  }
-
-  @override
-  CreatePoolProvider getProviderOverride(
-    covariant CreatePoolProvider provider,
-  ) {
-    return call(
-      poolName: provider.poolName,
-      skills: provider.skills,
-      token: provider.token,
-      apps: provider.apps,
-      ownerAddress: provider.ownerAddress,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'createPoolProvider';
-}
-
-/// See also [createPool].
-class CreatePoolProvider extends AutoDisposeFutureProvider<void> {
-  /// See also [createPool].
-  CreatePoolProvider({
-    required String poolName,
-    required String skills,
-    required Token token,
-    required List<Map<String, dynamic>> apps,
-    required String ownerAddress,
-  }) : this._internal(
-          (ref) => createPool(
-            ref as CreatePoolRef,
-            poolName: poolName,
-            skills: skills,
-            token: token,
-            apps: apps,
-            ownerAddress: ownerAddress,
-          ),
-          from: createPoolProvider,
-          name: r'createPoolProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$createPoolHash,
-          dependencies: CreatePoolFamily._dependencies,
-          allTransitiveDependencies:
-              CreatePoolFamily._allTransitiveDependencies,
-          poolName: poolName,
-          skills: skills,
-          token: token,
-          apps: apps,
-          ownerAddress: ownerAddress,
-        );
-
-  CreatePoolProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.poolName,
-    required this.skills,
-    required this.token,
-    required this.apps,
-    required this.ownerAddress,
-  }) : super.internal();
-
-  final String poolName;
-  final String skills;
-  final Token token;
-  final List<Map<String, dynamic>> apps;
-  final String ownerAddress;
-
-  @override
-  Override overrideWith(
-    FutureOr<void> Function(CreatePoolRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: CreatePoolProvider._internal(
-        (ref) => create(ref as CreatePoolRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        poolName: poolName,
-        skills: skills,
-        token: token,
-        apps: apps,
-        ownerAddress: ownerAddress,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<void> createElement() {
-    return _CreatePoolProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is CreatePoolProvider &&
-        other.poolName == poolName &&
-        other.skills == skills &&
-        other.token == token &&
-        other.apps == apps &&
-        other.ownerAddress == ownerAddress;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, poolName.hashCode);
-    hash = _SystemHash.combine(hash, skills.hashCode);
-    hash = _SystemHash.combine(hash, token.hashCode);
-    hash = _SystemHash.combine(hash, apps.hashCode);
-    hash = _SystemHash.combine(hash, ownerAddress.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin CreatePoolRef on AutoDisposeFutureProviderRef<void> {
-  /// The parameter `poolName` of this provider.
-  String get poolName;
-
-  /// The parameter `skills` of this provider.
-  String get skills;
-
-  /// The parameter `token` of this provider.
-  Token get token;
-
-  /// The parameter `apps` of this provider.
-  List<Map<String, dynamic>> get apps;
-
-  /// The parameter `ownerAddress` of this provider.
-  String get ownerAddress;
-}
-
-class _CreatePoolProviderElement extends AutoDisposeFutureProviderElement<void>
-    with CreatePoolRef {
-  _CreatePoolProviderElement(super.provider);
-
-  @override
-  String get poolName => (origin as CreatePoolProvider).poolName;
-  @override
-  String get skills => (origin as CreatePoolProvider).skills;
-  @override
-  Token get token => (origin as CreatePoolProvider).token;
-  @override
-  List<Map<String, dynamic>> get apps => (origin as CreatePoolProvider).apps;
-  @override
-  String get ownerAddress => (origin as CreatePoolProvider).ownerAddress;
-}
-
 String _$updatePoolHash() => r'77ca953e5c565a9bb79395e43fc64298553b0fba';
 
 /// See also [updatePool].
@@ -888,7 +693,7 @@ class _GetRewardProviderElement
 }
 
 String _$createPoolWithAppsHash() =>
-    r'718ce3221b8d09b5b385b68a78ed72bf967e5764';
+    r'1f0f6468be224cc3c46e8a82147efeabedc4f61c';
 
 /// See also [createPoolWithApps].
 @ProviderFor(createPoolWithApps)
@@ -903,14 +708,14 @@ class CreatePoolWithAppsFamily extends Family<AsyncValue<TrainingPool>> {
   CreatePoolWithAppsProvider call({
     required String poolName,
     required String skills,
-    required Token token,
+    required String tokenSymbol,
     required List<ForgeApp> apps,
     required String ownerAddress,
   }) {
     return CreatePoolWithAppsProvider(
       poolName: poolName,
       skills: skills,
-      token: token,
+      tokenSymbol: tokenSymbol,
       apps: apps,
       ownerAddress: ownerAddress,
     );
@@ -923,7 +728,7 @@ class CreatePoolWithAppsFamily extends Family<AsyncValue<TrainingPool>> {
     return call(
       poolName: provider.poolName,
       skills: provider.skills,
-      token: provider.token,
+      tokenSymbol: provider.tokenSymbol,
       apps: provider.apps,
       ownerAddress: provider.ownerAddress,
     );
@@ -951,7 +756,7 @@ class CreatePoolWithAppsProvider
   CreatePoolWithAppsProvider({
     required String poolName,
     required String skills,
-    required Token token,
+    required String tokenSymbol,
     required List<ForgeApp> apps,
     required String ownerAddress,
   }) : this._internal(
@@ -959,7 +764,7 @@ class CreatePoolWithAppsProvider
             ref as CreatePoolWithAppsRef,
             poolName: poolName,
             skills: skills,
-            token: token,
+            tokenSymbol: tokenSymbol,
             apps: apps,
             ownerAddress: ownerAddress,
           ),
@@ -974,7 +779,7 @@ class CreatePoolWithAppsProvider
               CreatePoolWithAppsFamily._allTransitiveDependencies,
           poolName: poolName,
           skills: skills,
-          token: token,
+          tokenSymbol: tokenSymbol,
           apps: apps,
           ownerAddress: ownerAddress,
         );
@@ -988,14 +793,14 @@ class CreatePoolWithAppsProvider
     required super.from,
     required this.poolName,
     required this.skills,
-    required this.token,
+    required this.tokenSymbol,
     required this.apps,
     required this.ownerAddress,
   }) : super.internal();
 
   final String poolName;
   final String skills;
-  final Token token;
+  final String tokenSymbol;
   final List<ForgeApp> apps;
   final String ownerAddress;
 
@@ -1014,7 +819,7 @@ class CreatePoolWithAppsProvider
         debugGetCreateSourceHash: null,
         poolName: poolName,
         skills: skills,
-        token: token,
+        tokenSymbol: tokenSymbol,
         apps: apps,
         ownerAddress: ownerAddress,
       ),
@@ -1031,7 +836,7 @@ class CreatePoolWithAppsProvider
     return other is CreatePoolWithAppsProvider &&
         other.poolName == poolName &&
         other.skills == skills &&
-        other.token == token &&
+        other.tokenSymbol == tokenSymbol &&
         other.apps == apps &&
         other.ownerAddress == ownerAddress;
   }
@@ -1041,7 +846,7 @@ class CreatePoolWithAppsProvider
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, poolName.hashCode);
     hash = _SystemHash.combine(hash, skills.hashCode);
-    hash = _SystemHash.combine(hash, token.hashCode);
+    hash = _SystemHash.combine(hash, tokenSymbol.hashCode);
     hash = _SystemHash.combine(hash, apps.hashCode);
     hash = _SystemHash.combine(hash, ownerAddress.hashCode);
 
@@ -1058,8 +863,8 @@ mixin CreatePoolWithAppsRef on AutoDisposeFutureProviderRef<TrainingPool> {
   /// The parameter `skills` of this provider.
   String get skills;
 
-  /// The parameter `token` of this provider.
-  Token get token;
+  /// The parameter `tokenSymbol` of this provider.
+  String get tokenSymbol;
 
   /// The parameter `apps` of this provider.
   List<ForgeApp> get apps;
@@ -1078,7 +883,7 @@ class _CreatePoolWithAppsProviderElement
   @override
   String get skills => (origin as CreatePoolWithAppsProvider).skills;
   @override
-  Token get token => (origin as CreatePoolWithAppsProvider).token;
+  String get tokenSymbol => (origin as CreatePoolWithAppsProvider).tokenSymbol;
   @override
   List<ForgeApp> get apps => (origin as CreatePoolWithAppsProvider).apps;
   @override
@@ -1232,5 +1037,26 @@ class _UpdatePoolEmailProviderElement
   @override
   String get email => (origin as UpdatePoolEmailProvider).email;
 }
+
+String _$getSupportedTokensHash() =>
+    r'3b4de68b911021e116862eff3a07d2016678303c';
+
+/// See also [getSupportedTokens].
+@ProviderFor(getSupportedTokens)
+final getSupportedTokensProvider =
+    AutoDisposeFutureProvider<List<SupportedToken>>.internal(
+  getSupportedTokens,
+  name: r'getSupportedTokensProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getSupportedTokensHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef GetSupportedTokensRef
+    = AutoDisposeFutureProviderRef<List<SupportedToken>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

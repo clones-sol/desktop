@@ -18,6 +18,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -146,6 +147,7 @@ class GenerateGymModalStep3 extends ConsumerWidget {
 
   Widget _footerButtons(BuildContext context, WidgetRef ref) {
     final generateGymNotifier = ref.watch(generateGymNotifierProvider.notifier);
+    final generateGymState = ref.watch(generateGymNotifierProvider);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -157,10 +159,13 @@ class GenerateGymModalStep3 extends ConsumerWidget {
         ),
         const SizedBox(width: 10),
         BtnPrimary(
-          buttonText: 'Continue',
+          isLoading: generateGymState.isCreating,
+          buttonText: 'Create',
           onTap: () async {
             await generateGymNotifier.createPool();
-            onClose();
+            if (generateGymState.error == null) {
+              onClose();
+            }
           },
         ),
       ],

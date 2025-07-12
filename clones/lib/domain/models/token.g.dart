@@ -7,20 +7,12 @@ part of 'token.dart';
 // **************************************************************************
 
 _$TokenImpl _$$TokenImplFromJson(Map<String, dynamic> json) => _$TokenImpl(
-      type: $enumDecode(_$TokenTypeEnumMap, json['type']),
       symbol: json['symbol'] as String,
-      address: json['address'] as String,
+      address: json['address'] as String?,
     );
 
 Map<String, dynamic> _$$TokenImplToJson(_$TokenImpl instance) =>
     <String, dynamic>{
-      'type': _$TokenTypeEnumMap[instance.type]!,
       'symbol': instance.symbol,
       'address': instance.address,
     };
-
-const _$TokenTypeEnumMap = {
-  TokenType.sol: 'SOL',
-  TokenType.viral: 'VIRAL',
-  TokenType.custom: 'CUSTOM',
-};

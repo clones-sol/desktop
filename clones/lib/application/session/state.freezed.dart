@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$Session {
   String? get address => throw _privateConstructorUsedError;
   String? get connectionToken => throw _privateConstructorUsedError;
-  double? get balance => throw _privateConstructorUsedError;
+  List<TokenBalance>? get balances => throw _privateConstructorUsedError;
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.
@@ -31,7 +31,8 @@ abstract class $SessionCopyWith<$Res> {
   factory $SessionCopyWith(Session value, $Res Function(Session) then) =
       _$SessionCopyWithImpl<$Res, Session>;
   @useResult
-  $Res call({String? address, String? connectionToken, double? balance});
+  $Res call(
+      {String? address, String? connectionToken, List<TokenBalance>? balances});
 }
 
 /// @nodoc
@@ -51,7 +52,7 @@ class _$SessionCopyWithImpl<$Res, $Val extends Session>
   $Res call({
     Object? address = freezed,
     Object? connectionToken = freezed,
-    Object? balance = freezed,
+    Object? balances = freezed,
   }) {
     return _then(_value.copyWith(
       address: freezed == address
@@ -62,10 +63,10 @@ class _$SessionCopyWithImpl<$Res, $Val extends Session>
           ? _value.connectionToken
           : connectionToken // ignore: cast_nullable_to_non_nullable
               as String?,
-      balance: freezed == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
-              as double?,
+      balances: freezed == balances
+          ? _value.balances
+          : balances // ignore: cast_nullable_to_non_nullable
+              as List<TokenBalance>?,
     ) as $Val);
   }
 }
@@ -77,7 +78,8 @@ abstract class _$$SessionImplCopyWith<$Res> implements $SessionCopyWith<$Res> {
       __$$SessionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? address, String? connectionToken, double? balance});
+  $Res call(
+      {String? address, String? connectionToken, List<TokenBalance>? balances});
 }
 
 /// @nodoc
@@ -95,7 +97,7 @@ class __$$SessionImplCopyWithImpl<$Res>
   $Res call({
     Object? address = freezed,
     Object? connectionToken = freezed,
-    Object? balance = freezed,
+    Object? balances = freezed,
   }) {
     return _then(_$SessionImpl(
       address: freezed == address
@@ -106,10 +108,10 @@ class __$$SessionImplCopyWithImpl<$Res>
           ? _value.connectionToken
           : connectionToken // ignore: cast_nullable_to_non_nullable
               as String?,
-      balance: freezed == balance
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
-              as double?,
+      balances: freezed == balances
+          ? _value._balances
+          : balances // ignore: cast_nullable_to_non_nullable
+              as List<TokenBalance>?,
     ));
   }
 }
@@ -117,19 +119,28 @@ class __$$SessionImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SessionImpl extends _Session {
-  const _$SessionImpl({this.address, this.connectionToken, this.balance})
-      : super._();
+  const _$SessionImpl(
+      {this.address, this.connectionToken, final List<TokenBalance>? balances})
+      : _balances = balances,
+        super._();
 
   @override
   final String? address;
   @override
   final String? connectionToken;
+  final List<TokenBalance>? _balances;
   @override
-  final double? balance;
+  List<TokenBalance>? get balances {
+    final value = _balances;
+    if (value == null) return null;
+    if (_balances is EqualUnmodifiableListView) return _balances;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'Session(address: $address, connectionToken: $connectionToken, balance: $balance)';
+    return 'Session(address: $address, connectionToken: $connectionToken, balances: $balances)';
   }
 
   @override
@@ -140,12 +151,12 @@ class _$SessionImpl extends _Session {
             (identical(other.address, address) || other.address == address) &&
             (identical(other.connectionToken, connectionToken) ||
                 other.connectionToken == connectionToken) &&
-            (identical(other.balance, balance) || other.balance == balance));
+            const DeepCollectionEquality().equals(other._balances, _balances));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, address, connectionToken, balance);
+  int get hashCode => Object.hash(runtimeType, address, connectionToken,
+      const DeepCollectionEquality().hash(_balances));
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.
@@ -160,7 +171,7 @@ abstract class _Session extends Session {
   const factory _Session(
       {final String? address,
       final String? connectionToken,
-      final double? balance}) = _$SessionImpl;
+      final List<TokenBalance>? balances}) = _$SessionImpl;
   const _Session._() : super._();
 
   @override
@@ -168,7 +179,7 @@ abstract class _Session extends Session {
   @override
   String? get connectionToken;
   @override
-  double? get balance;
+  List<TokenBalance>? get balances;
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.

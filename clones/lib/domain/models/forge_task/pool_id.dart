@@ -1,3 +1,4 @@
+import 'package:clones/domain/models/token.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'pool_id.freezed.dart';
@@ -10,6 +11,7 @@ class PoolId with _$PoolId {
     @JsonKey(includeIfNull: false) required String name,
     @JsonKey(includeIfNull: false) required String status,
     @JsonKey(includeIfNull: false) required double pricePerDemo,
+    @JsonKey(includeIfNull: false) Token? token,
   }) = _PoolId;
 
   factory PoolId.fromJson(Map<String, dynamic> json) => _$PoolIdFromJson(json);

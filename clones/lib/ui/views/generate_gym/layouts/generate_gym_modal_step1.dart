@@ -24,6 +24,9 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(generateGymNotifierProvider.notifier).fetchSupportedTokens();
+    });
     final generateGym = ref.read(generateGymNotifierProvider);
     skillsController = TextEditingController(text: generateGym.skills);
   }
@@ -88,7 +91,71 @@ class _GenerateGymModalStep1State extends ConsumerState<GenerateGymModalStep1> {
         const SizedBox(height: 10),
         _examplePrompts(ref),
         const SizedBox(height: 20),
+        _buildRewardTokenSelector(context, ref),
+        const SizedBox(height: 20),
         _footerButtons(ref),
+      ],
+    );
+  }
+
+  Widget _buildRewardTokenSelector(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final generateGymState = ref.watch(generateGymNotifierProvider);
+    final generateGymNotifier = ref.read(generateGymNotifierProvider.notifier);
+
+    if (generateGymState.supportedTokens == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Reward Token', style: theme.textTheme.titleMedium),
+        Text(
+          'Choose the reward token for your gym',
+          style: theme.textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 8),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: theme.colorScheme.primaryContainer,
+              width: 0.5,
+            ),
+            gradient: VMColors.gradientInputFormBackground,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: DropdownButton<String>(
+              value: generateGymState.selectedTokenSymbol,
+              isExpanded: true,
+              underline: const SizedBox.shrink(),
+              dropdownColor: Colors.black.withValues(alpha: 0.9),
+              style: theme.textTheme.bodyMedium,
+              items: generateGymState.supportedTokens!
+                  .map(
+                    (token) => DropdownMenuItem(
+                      value: token.symbol,
+                      child: Row(
+                        children: [
+                          if (token.logoUrl != null)
+                            Image.network(token.logoUrl!, width: 24, height: 24)
+                          else
+                            Text(token.name),
+                        ],
+                      ),
+                    ),
+                  )
+                  .toList(),
+              onChanged: (value) {
+                if (value != null) {
+                  generateGymNotifier.setSelectedToken(value);
+                }
+              },
+            ),
+          ),
+        ),
       ],
     );
   }

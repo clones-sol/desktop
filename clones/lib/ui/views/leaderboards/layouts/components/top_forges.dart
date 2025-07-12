@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/leaderboard/forge_leader_board.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/utils/format_num.dart';
 import 'package:flutter/material.dart';
@@ -107,9 +106,9 @@ class _TopForgesState extends ConsumerState<TopForges> {
   Widget _buildTableHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: Row(
+      child: const Row(
         children: [
-          const Expanded(
+          Expanded(
             flex: 2,
             child: Row(
               children: [
@@ -123,7 +122,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -142,8 +141,8 @@ class _TopForgesState extends ConsumerState<TopForges> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '\$${Token.getTokenType(TokenType.viral)} Paid',
-                  style: const TextStyle(
+                  'Tokens Paid',
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: VMColors.primaryText,
                   ),
@@ -204,9 +203,9 @@ class _TopForgesState extends ConsumerState<TopForges> {
                           color: VMColors.secondaryText,
                         ),
                       ),
-                      Text(
-                        ' \$${Token.getTokenType(TokenType.viral)}',
-                        style: const TextStyle(
+                      const Text(
+                        ' Tokens',
+                        style: TextStyle(
                           color: VMColors.secondary,
                         ),
                       ),

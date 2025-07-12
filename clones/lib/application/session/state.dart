@@ -1,3 +1,4 @@
+import 'package:clones/domain/models/wallet/token_balance.dart';
 import 'package:clones/utils/env.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -8,7 +9,7 @@ class Session with _$Session {
   const factory Session({
     String? address,
     String? connectionToken,
-    double? balance,
+    List<TokenBalance>? balances,
   }) = _Session;
   const Session._();
 

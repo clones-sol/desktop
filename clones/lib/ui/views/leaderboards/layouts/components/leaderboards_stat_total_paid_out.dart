@@ -1,6 +1,5 @@
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/leaderboard/stats_leader_board.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/utils/format_num.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +32,8 @@ class LeaderboardsStatTotalPaidOut extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${formatNumberWithSeparator(stat.totalRewards)} \$${Token.getTokenType(TokenType.viral)}',
+              // TODO: add token symbol
+              '${formatNumberWithSeparator(stat.totalRewards)} Token',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

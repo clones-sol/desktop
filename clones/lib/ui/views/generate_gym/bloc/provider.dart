@@ -2,10 +2,8 @@ import 'package:clones/application/apps.dart';
 import 'package:clones/application/pool.dart';
 import 'package:clones/application/session/provider.dart';
 import 'package:clones/domain/models/forge_task/forge_app.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/views/generate_gym/bloc/setters.dart';
 import 'package:clones/ui/views/generate_gym/bloc/state.dart';
-import 'package:clones/utils/env.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'provider.g.dart';
@@ -57,28 +55,42 @@ class GenerateGymNotifier extends _$GenerateGymNotifier
     setApps(newApps);
   }
 
-  Future<void> createPool() async {
+  Future<void> fetchSupportedTokens() async {
     try {
-      final session = ref.watch(sessionNotifierProvider);
-      if (session.address == null) return;
-
-      final token = Token(
-        type: TokenType.viral,
-        symbol: Token.getTokenType(TokenType.viral),
-        address: Env.viralTokenAddress,
+      final tokens = await ref.read(getSupportedTokensProvider.future);
+      state = state.copyWith(
+        supportedTokens: tokens,
+        selectedTokenSymbol: tokens.isNotEmpty ? tokens.first.symbol : null,
       );
-      await ref.read(
-        createPoolWithAppsProvider(
-          poolName: state.gymName ?? 'Unnamed Gym',
-          skills: state.skills!,
-          token: token,
-          apps: state.apps ?? [],
-          ownerAddress: session.address!,
-        ).future,
-      );
-      ref.invalidate(listPoolsProvider);
     } catch (e) {
       setError(e.toString());
+    }
+  }
+
+  Future<void> createPool() async {
+    if (state.selectedTokenSymbol == null) {
+      setError('Please select a reward token.');
+      return;
+    }
+
+    try {
+      state = state.copyWith(isCreating: true, error: null);
+      await ref.read(
+        createPoolWithAppsProvider(
+          poolName: state.gymName ?? 'New Gym',
+          skills: state.skills ?? '',
+          tokenSymbol: state.selectedTokenSymbol!,
+          apps: state.apps ?? [],
+          ownerAddress: ref.read(sessionNotifierProvider).address!,
+        ).future,
+      );
+      state = state.copyWith(isCreating: false, isCreated: true);
+      ref.invalidate(listPoolsProvider);
+    } catch (e) {
+      state = state.copyWith(
+        isCreating: false,
+        error: e.toString(),
+      );
     }
   }
 }

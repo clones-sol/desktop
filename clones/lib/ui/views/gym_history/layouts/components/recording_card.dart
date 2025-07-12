@@ -4,7 +4,6 @@ import 'package:clones/application/upload/provider.dart';
 import 'package:clones/application/upload/state.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/recording/api_recording.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/ui/components/design_widget/dialog/dialog.dart';
@@ -245,7 +244,7 @@ class RecordingCard extends ConsumerWidget {
                 : isQueued
                     ? 'Queued'
                     : maxReward > 0
-                        ? 'Upload for ${maxReward.toStringAsFixed(2)} ${Token.getTokenType(TokenType.viral)}'
+                        ? 'Upload for ${maxReward.toStringAsFixed(2)} Tokens'
                         : 'Upload Recording',
           ),
         if (recording.location == 'local')

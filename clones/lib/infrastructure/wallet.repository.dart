@@ -7,10 +7,12 @@ class WalletRepositoryImpl {
 
   Future<double> getBalance({
     required String address,
+    required String symbol,
   }) async {
     try {
       final data = await _client.get<Map<String, dynamic>>(
         '/wallet/balance/$address',
+        params: {'symbol': symbol},
         options: const RequestOptions(requiresAuth: true),
       );
       return data['balance']?.toDouble() ?? 0;

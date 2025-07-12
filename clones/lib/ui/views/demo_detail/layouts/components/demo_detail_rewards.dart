@@ -1,7 +1,7 @@
+import 'package:clones/application/pool.dart';
 import 'package:clones/application/session/provider.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/submission/grade_result.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones/ui/components/wallet_not_connected.dart';
@@ -23,166 +23,180 @@ class DemoDetailRewards extends ConsumerWidget {
       return const WalletNotConnected();
     }
 
-    final submission =
-        ref.watch(demoDetailNotifierProvider).recording?.submission;
+    final recording = ref.watch(demoDetailNotifierProvider).recording;
+    final submission = recording?.submission;
+    final poolId = recording?.quest?.poolId;
 
-    if (submission == null) {
+    if (submission == null || poolId == null) {
       return const SizedBox.shrink();
     }
 
-    final theme = Theme.of(context);
-    final score = submission.gradeResult?.score ?? submission.clampedScore ?? 0;
-    final maxReward = submission.maxReward ?? 0;
-    final reward = submission.reward ?? 0;
+    final poolAsync = ref.watch(poolProvider(poolId));
 
-    return Column(
-      children: [
-        CardWidget(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Rewards',
-                style: theme.textTheme.titleMedium,
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return poolAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (error, stackTrace) => Center(child: Text('Error: $error')),
+      data: (pool) {
+        final theme = Theme.of(context);
+        final score =
+            submission.gradeResult?.score ?? submission.clampedScore ?? 0;
+        final maxReward = submission.maxReward ?? 0;
+        final reward = submission.reward ?? 0;
+
+        return Column(
+          children: [
+            CardWidget(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Earned:',
-                    style: theme.textTheme.bodyMedium,
+                    'Rewards',
+                    style: theme.textTheme.titleMedium,
                   ),
-                  Text(
-                    '$reward \$${Token.getTokenType(TokenType.viral)}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: VMColors.getScoreColor(score),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Max Reward:',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  Text(
-                    '$maxReward \$${Token.getTokenType(TokenType.viral)}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: VMColors.getScoreColor(100),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              LinearProgressIndicator(
-                value: maxReward > 0 ? reward / maxReward : 0,
-                minHeight: 10,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              const SizedBox(height: 20),
-              if (submission.gradeResult?.reasoningSystem != null &&
-                  submission.gradeResult!.reasoningSystem.isNotEmpty)
-                SizedBox(
-                  width: double.infinity,
-                  child: MessageBox(
-                    messageBoxType: MessageBoxType.info,
-                    content: Text(
-                      submission.gradeResult?.reasoningSystem ?? '',
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                  ),
-                ),
-              if (submission.treasuryTransfer != null)
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Treasury Transfer:',
-                            style: theme.textTheme.bodyMedium),
-                        InkWell(
-                          onTap: () {
-                            launchUrl(
-                              Uri.parse(
-                                '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
-                              ),
-                              mode: LaunchMode.externalApplication,
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                submission.treasuryTransfer?.treasuryWallet
-                                        .shortAddress() ??
-                                    '',
-                                style: TextStyle(
-                                  fontFamily: 'monospace',
-                                  color: VMColors.secondaryText,
-                                ),
-                              ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.open_in_new,
-                                color: VMColors.secondaryText,
-                                size: 16,
-                              ),
-                            ],
-                          ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Earned:',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      Text(
+                        '$reward \$${pool.token.symbol}',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: VMColors.getScoreColor(score),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Transaction hash:',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Max Reward:',
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                      Text(
+                        '$maxReward \$${pool.token.symbol}',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: VMColors.getScoreColor(100),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  LinearProgressIndicator(
+                    value: maxReward > 0 ? reward / maxReward : 0,
+                    minHeight: 10,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  const SizedBox(height: 20),
+                  if (submission.gradeResult?.reasoningSystem != null &&
+                      submission.gradeResult!.reasoningSystem.isNotEmpty)
+                    SizedBox(
+                      width: double.infinity,
+                      child: MessageBox(
+                        messageBoxType: MessageBoxType.info,
+                        content: Text(
+                          submission.gradeResult?.reasoningSystem ?? '',
                           style: theme.textTheme.bodyMedium,
                         ),
-                        Text(
-                          submission.treasuryTransfer?.txHash?.shortAddress() ??
-                              'NC',
-                          style: TextStyle(
-                            fontFamily: 'monospace',
-                            color: VMColors.secondaryText,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  if (submission.treasuryTransfer != null)
+                    Column(
                       children: [
-                        Text(
-                          'Transaction date:',
-                          style: theme.textTheme.bodyMedium,
-                        ),
-                        Text(
-                          submission.treasuryTransfer?.timestamp != null
-                              ? DateFormat.yMMMMd().add_Hms().format(
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                      submission.treasuryTransfer!.timestamp,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Treasury Transfer:',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                launchUrl(
+                                  Uri.parse(
+                                    '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
+                                  ),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    submission.treasuryTransfer?.treasuryWallet
+                                            .shortAddress() ??
+                                        '',
+                                    style: TextStyle(
+                                      fontFamily: 'monospace',
+                                      color: VMColors.secondaryText,
                                     ),
-                                  )
-                              : 'NC',
-                          style: TextStyle(
-                            color: VMColors.secondaryText,
-                          ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.open_in_new,
+                                    color: VMColors.secondaryText,
+                                    size: 16,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Transaction hash:',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            Text(
+                              submission.treasuryTransfer?.txHash
+                                      ?.shortAddress() ??
+                                  'NC',
+                              style: TextStyle(
+                                fontFamily: 'monospace',
+                                color: VMColors.secondaryText,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Transaction date:',
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            Text(
+                              submission.treasuryTransfer?.timestamp != null
+                                  ? DateFormat.yMMMMd().add_Hms().format(
+                                        DateTime.fromMillisecondsSinceEpoch(
+                                          submission
+                                              .treasuryTransfer!.timestamp,
+                                        ),
+                                      )
+                                  : 'NC',
+                              style: TextStyle(
+                                color: VMColors.secondaryText,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    ),
-                  ],
-                )
-            ],
-          ),
-        ),
-      ],
+                    )
+                ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

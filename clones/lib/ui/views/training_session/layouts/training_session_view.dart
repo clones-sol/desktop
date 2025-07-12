@@ -5,7 +5,6 @@ import 'package:clones/assets.dart';
 import 'package:clones/domain/app_info.dart';
 import 'package:clones/domain/models/message/message.dart';
 import 'package:clones/domain/models/message/typing_message.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones/ui/components/pfp.dart';
@@ -457,7 +456,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Get scored and earn \$${Token.getTokenType(TokenType.viral)} tokens',
+                        'Get scored and earn Tokens',
                         style: theme.textTheme.bodyMedium,
                       ),
                       const SizedBox(height: 10),

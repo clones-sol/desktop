@@ -22,4 +22,8 @@ mixin GenerateGymSetters on AutoDisposeNotifier<GenerateGymState> {
   void setApps(List<ForgeApp> apps) {
     state = state.copyWith(apps: apps);
   }
+
+  void setSelectedToken(String symbol) {
+    state = state.copyWith(selectedTokenSymbol: symbol);
+  }
 }

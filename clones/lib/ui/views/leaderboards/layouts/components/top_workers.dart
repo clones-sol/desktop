@@ -1,8 +1,6 @@
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/leaderboard/worker_leader_board.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
-import 'package:clones/utils/format_num.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -107,9 +105,9 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
   Widget _buildTableHeader(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(20),
-      child: Row(
+      child: const Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
                 Text(
@@ -122,7 +120,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -136,7 +134,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
               ],
             ),
           ),
-          const Expanded(
+          Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -155,8 +153,8 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '\$${Token.getTokenType(TokenType.viral)} Rewards',
-                  style: const TextStyle(
+                  'Tokens Rewards',
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: VMColors.primaryText,
                   ),
@@ -241,15 +239,9 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        formatNumberWithSeparator(worker.rewards),
+                        '${worker.rewards} Tokens',
                         style: TextStyle(
                           color: VMColors.secondaryText,
-                        ),
-                      ),
-                      Text(
-                        ' \$${Token.getTokenType(TokenType.viral)}',
-                        style: const TextStyle(
-                          color: VMColors.secondary,
                         ),
                       ),
                     ],
