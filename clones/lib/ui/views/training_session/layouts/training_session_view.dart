@@ -360,7 +360,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
 
   Widget _buildMessageContent(Message message) {
     final theme = Theme.of(context);
-    return Text(
+    return SelectableText(
       message.content,
       style: theme.textTheme.bodyMedium,
     );

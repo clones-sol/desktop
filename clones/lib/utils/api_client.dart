@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ApiClient {
   ApiClient(this.ref, {String? baseUrl})
-      : baseUrl = baseUrl ?? '${Env.apiUrl}/api/v1';
+      : baseUrl = baseUrl ?? '${Env.apiBackendUrl}/api/v1';
   final String baseUrl;
   final Ref ref;
 
@@ -46,7 +46,12 @@ class ApiClient {
         queryParameters: params,
         options: dio.Options(headers: headers),
       );
-      final apiResponse = ApiResponse.fromJson(response.data);
+      final ApiResponse apiResponse;
+      if (response.data is List) {
+        apiResponse = ApiResponse(success: true, data: response.data);
+      } else {
+        apiResponse = ApiResponse.fromJson(response.data);
+      }
       if (!apiResponse.success || apiResponse.data == null) {
         throw ApiError(
           status: response.statusCode ?? 400,
@@ -99,7 +104,12 @@ class ApiClient {
         options: dio.Options(headers: headers),
       );
 
-      final apiResponse = ApiResponse.fromJson(response.data);
+      final ApiResponse apiResponse;
+      if (response.data is List) {
+        apiResponse = ApiResponse(success: true, data: response.data);
+      } else {
+        apiResponse = ApiResponse.fromJson(response.data);
+      }
 
       if (!apiResponse.success || apiResponse.data == null) {
         throw ApiError(
@@ -151,7 +161,12 @@ class ApiClient {
         data: data,
         options: dio.Options(headers: headers),
       );
-      final apiResponse = ApiResponse.fromJson(response.data);
+      final ApiResponse apiResponse;
+      if (response.data is List) {
+        apiResponse = ApiResponse(success: true, data: response.data);
+      } else {
+        apiResponse = ApiResponse.fromJson(response.data);
+      }
       if (!apiResponse.success || apiResponse.data == null) {
         throw ApiError(
           status: response.statusCode ?? 400,
@@ -200,7 +215,12 @@ class ApiClient {
         endpoint,
         options: dio.Options(headers: headers),
       );
-      final apiResponse = ApiResponse.fromJson(response.data);
+      final ApiResponse apiResponse;
+      if (response.data is List) {
+        apiResponse = ApiResponse(success: true, data: response.data);
+      } else {
+        apiResponse = ApiResponse.fromJson(response.data);
+      }
       if (!apiResponse.success || apiResponse.data == null) {
         throw ApiError(
           status: response.statusCode ?? 400,

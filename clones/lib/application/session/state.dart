@@ -14,5 +14,6 @@ class Session with _$Session {
 
   bool get isConnected => address != null && connectionToken != null;
 
-  String get connectionUrl => '${Env.apiUrl}/connect?token=$connectionToken';
+  String get connectionUrl =>
+      '${Env.apiWebsiteUrl}/connect?token=$connectionToken';
 }

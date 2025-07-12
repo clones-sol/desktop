@@ -1,4 +1,5 @@
 import 'package:clones/application/route_provider.dart';
+import 'package:clones/application/session/provider.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/ui/components/sidebar.dart';
 import 'package:clones/ui/views/forge/layouts/forge_view.dart';
@@ -19,6 +20,7 @@ class LayoutBackground extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final session = ref.watch(sessionNotifierProvider);
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenHeight = constraints.maxHeight;
@@ -49,13 +51,15 @@ class LayoutBackground extends ConsumerWidget {
               child: Opacity(
                 opacity: 0.05,
                 child: Text(
-                  currentRoute == ForgeView.routeName
-                      ? 'forge'
-                      : currentRoute == GymView.routeName
-                          ? 'gym'
-                          : currentRoute == GymHistoryView.routeName
+                  session.isConnected == false
+                      ? ''
+                      : currentRoute == ForgeView.routeName
+                          ? 'forge'
+                          : currentRoute == GymView.routeName
                               ? 'gym'
-                              : '',
+                              : currentRoute == GymHistoryView.routeName
+                                  ? 'gym'
+                                  : '',
                   style: const TextStyle(
                     fontSize: 200,
                     fontWeight: FontWeight.bold,
