@@ -183,7 +183,7 @@ final walletRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef WalletRepositoryRef = AutoDisposeProviderRef<WalletRepositoryImpl>;
-String _$sessionNotifierHash() => r'ae855dc74c310930629316d3c262062fc72d7e4f';
+String _$sessionNotifierHash() => r'f14c8dc9377a47cde2f723f888085f09f39b30f1';
 
 /// See also [SessionNotifier].
 @ProviderFor(SessionNotifier)

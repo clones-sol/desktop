@@ -9,7 +9,7 @@ part 'submission_file.g.dart';
 class SubmissionFile with _$SubmissionFile {
   const factory SubmissionFile({
     required String file,
-    required String s3Key,
+    required String storageKey,
     required int size,
     @JsonKey(name: '_id') required String id,
   }) = _SubmissionFile;

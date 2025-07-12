@@ -6,7 +6,7 @@ class Env {
       dotenv.env['VIRAL_TOKEN_ADDRESS'] ?? '';
   static String get solTokenAddress => dotenv.env['SOL_TOKEN_ADDRESS'] ?? '';
   static String get privacyPolicyUrl => dotenv.env['PRIVACY_POLICY_URL'] ?? '';
-  static String get s3BaseUrl => dotenv.env['S3_BASE_URL'] ?? '';
+  static String get storageBaseUrl => dotenv.env['STORAGE_BASE_URL'] ?? '';
   static String get solscanBaseUrl => dotenv.env['SOLSCAN_BASE_URL'] ?? '';
   static String get apiWebsiteUrl => dotenv.env['API_WEBSITE_URL'] ?? '';
   static String get apiBackendUrl => dotenv.env['API_BACKEND_URL'] ?? '';

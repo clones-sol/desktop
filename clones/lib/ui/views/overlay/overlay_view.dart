@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:clones/application/tauri_api.dart';
 import 'package:clones/domain/models/quest/quest.dart';
 import 'package:clones/ui/views/training_session/bloc/provider.dart';
 import 'package:clones/ui/views/training_session/bloc/state.dart';

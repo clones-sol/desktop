@@ -1,5 +1,4 @@
 import 'package:clones/assets.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/domain/models/training_pool.dart';
 import 'package:clones/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones/ui/views/forge_detail/bloc/provider.dart';
@@ -94,8 +93,8 @@ class ForgeGymGeneralTab extends ConsumerWidget {
             children: [
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Insufficient ${Token.getTokenType(TokenType.sol)} for Gas'
-                    : 'Insufficient ${Token.getTokenType(TokenType.viral)} Tokens',
+                    ? 'Insufficient SOL for Gas'
+                    : 'Insufficient ${forgeDetail.pool!.token.symbol} Tokens',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: VMColors.primaryText,
@@ -103,14 +102,14 @@ class ForgeGymGeneralTab extends ConsumerWidget {
               ),
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Your gym needs min $kMinSolBalance ${Token.getTokenType(TokenType.sol)} to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
-                    : "Your gym needs ${Token.getTokenType(TokenType.viral)} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
+                    ? 'Your gym needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the gym cannot function on the Solana blockchain.'
+                    : "Your gym needs ${forgeDetail.pool!.token.symbol} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
                 style: TextStyle(
                   color: VMColors.secondaryText,
                 ),
               ),
               Text(
-                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? Token.getTokenType(TokenType.sol) : Token.getTokenType(TokenType.viral)} to the address above to activate your gym and start collecting data.',
+                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? 'SOL' : forgeDetail.pool!.token.symbol} to the address above to activate your gym and start collecting data.',
                 style: TextStyle(
                   color: VMColors.secondaryText,
                 ),

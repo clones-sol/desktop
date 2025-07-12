@@ -21,7 +21,7 @@ SubmissionFile _$SubmissionFileFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$SubmissionFile {
   String get file => throw _privateConstructorUsedError;
-  String get s3Key => throw _privateConstructorUsedError;
+  String get storageKey => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
   @JsonKey(name: '_id')
   String get id => throw _privateConstructorUsedError;
@@ -43,7 +43,10 @@ abstract class $SubmissionFileCopyWith<$Res> {
       _$SubmissionFileCopyWithImpl<$Res, SubmissionFile>;
   @useResult
   $Res call(
-      {String file, String s3Key, int size, @JsonKey(name: '_id') String id});
+      {String file,
+      String storageKey,
+      int size,
+      @JsonKey(name: '_id') String id});
 }
 
 /// @nodoc
@@ -62,7 +65,7 @@ class _$SubmissionFileCopyWithImpl<$Res, $Val extends SubmissionFile>
   @override
   $Res call({
     Object? file = null,
-    Object? s3Key = null,
+    Object? storageKey = null,
     Object? size = null,
     Object? id = null,
   }) {
@@ -71,9 +74,9 @@ class _$SubmissionFileCopyWithImpl<$Res, $Val extends SubmissionFile>
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as String,
-      s3Key: null == s3Key
-          ? _value.s3Key
-          : s3Key // ignore: cast_nullable_to_non_nullable
+      storageKey: null == storageKey
+          ? _value.storageKey
+          : storageKey // ignore: cast_nullable_to_non_nullable
               as String,
       size: null == size
           ? _value.size
@@ -96,7 +99,10 @@ abstract class _$$SubmissionFileImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String file, String s3Key, int size, @JsonKey(name: '_id') String id});
+      {String file,
+      String storageKey,
+      int size,
+      @JsonKey(name: '_id') String id});
 }
 
 /// @nodoc
@@ -113,7 +119,7 @@ class __$$SubmissionFileImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? file = null,
-    Object? s3Key = null,
+    Object? storageKey = null,
     Object? size = null,
     Object? id = null,
   }) {
@@ -122,9 +128,9 @@ class __$$SubmissionFileImplCopyWithImpl<$Res>
           ? _value.file
           : file // ignore: cast_nullable_to_non_nullable
               as String,
-      s3Key: null == s3Key
-          ? _value.s3Key
-          : s3Key // ignore: cast_nullable_to_non_nullable
+      storageKey: null == storageKey
+          ? _value.storageKey
+          : storageKey // ignore: cast_nullable_to_non_nullable
               as String,
       size: null == size
           ? _value.size
@@ -143,7 +149,7 @@ class __$$SubmissionFileImplCopyWithImpl<$Res>
 class _$SubmissionFileImpl implements _SubmissionFile {
   const _$SubmissionFileImpl(
       {required this.file,
-      required this.s3Key,
+      required this.storageKey,
       required this.size,
       @JsonKey(name: '_id') required this.id});
 
@@ -153,7 +159,7 @@ class _$SubmissionFileImpl implements _SubmissionFile {
   @override
   final String file;
   @override
-  final String s3Key;
+  final String storageKey;
   @override
   final int size;
   @override
@@ -162,7 +168,7 @@ class _$SubmissionFileImpl implements _SubmissionFile {
 
   @override
   String toString() {
-    return 'SubmissionFile(file: $file, s3Key: $s3Key, size: $size, id: $id)';
+    return 'SubmissionFile(file: $file, storageKey: $storageKey, size: $size, id: $id)';
   }
 
   @override
@@ -171,14 +177,15 @@ class _$SubmissionFileImpl implements _SubmissionFile {
         (other.runtimeType == runtimeType &&
             other is _$SubmissionFileImpl &&
             (identical(other.file, file) || other.file == file) &&
-            (identical(other.s3Key, s3Key) || other.s3Key == s3Key) &&
+            (identical(other.storageKey, storageKey) ||
+                other.storageKey == storageKey) &&
             (identical(other.size, size) || other.size == size) &&
             (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, file, s3Key, size, id);
+  int get hashCode => Object.hash(runtimeType, file, storageKey, size, id);
 
   /// Create a copy of SubmissionFile
   /// with the given fields replaced by the non-null parameter values.
@@ -200,7 +207,7 @@ class _$SubmissionFileImpl implements _SubmissionFile {
 abstract class _SubmissionFile implements SubmissionFile {
   const factory _SubmissionFile(
       {required final String file,
-      required final String s3Key,
+      required final String storageKey,
       required final int size,
       @JsonKey(name: '_id') required final String id}) = _$SubmissionFileImpl;
 
@@ -210,7 +217,7 @@ abstract class _SubmissionFile implements SubmissionFile {
   @override
   String get file;
   @override
-  String get s3Key;
+  String get storageKey;
   @override
   int get size;
   @override

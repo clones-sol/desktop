@@ -1,6 +1,7 @@
 import 'package:clones/domain/models/api/request_options.dart';
 import 'package:clones/domain/models/forge_task/forge_app.dart';
 import 'package:clones/domain/models/quest/reward_info.dart';
+import 'package:clones/domain/models/supported_token.dart';
 import 'package:clones/domain/models/token.dart';
 import 'package:clones/domain/models/training_pool.dart';
 import 'package:clones/domain/models/upload/upload_limit.dart';
@@ -33,9 +34,7 @@ class PoolsRepositoryImpl {
               ownerAddress: pool['ownerAddress'],
               depositAddress: pool['depositAddress'],
               token: Token(
-                type: Token.parseTokenType(pool['token']['type']),
                 symbol: pool['token']['symbol'],
-                address: pool['token']['address'],
               ),
               uploadLimit: pool['uploadLimit'] == null
                   ? null
@@ -73,9 +72,7 @@ class PoolsRepositoryImpl {
         ownerAddress: data['ownerAddress'],
         depositAddress: data['depositAddress'],
         token: Token(
-          type: Token.parseTokenType(data['token']['type']),
           symbol: data['token']['symbol'],
-          address: data['token']['address'],
         ),
         uploadLimit: data['uploadLimit'] == null
             ? null
@@ -86,34 +83,6 @@ class PoolsRepositoryImpl {
       );
     } catch (e) {
       throw Exception('Failed to refresh pool: $e');
-    }
-  }
-
-  Future<void> createPool({
-    required String poolName,
-    required String skills,
-    required Token token,
-    required List<Map<String, dynamic>> apps,
-    required String ownerAddress,
-  }) async {
-    try {
-      await _client.post(
-        '/forge/pools',
-        data: {
-          'name': poolName,
-          'skills': skills,
-          'token': {
-            'type': Token.getTokenType(token.type),
-            'symbol': token.symbol,
-            'address': token.address,
-          },
-          'apps': apps,
-          'ownerAddress': ownerAddress,
-        },
-        options: const RequestOptions(requiresAuth: true),
-      );
-    } catch (e) {
-      throw Exception('Failed to create pool: $e');
     }
   }
 
@@ -192,7 +161,7 @@ class PoolsRepositoryImpl {
   Future<TrainingPool> createPoolWithApps({
     required String name,
     required String skills,
-    required Token token,
+    required String tokenSymbol,
     required String ownerAddress,
     required List<ForgeApp> apps,
   }) async {
@@ -200,7 +169,10 @@ class PoolsRepositoryImpl {
       final data = {
         'name': name,
         'skills': skills,
-        'token': token.toJson(),
+        'token': {
+          'type': 'SPL',
+          'symbol': tokenSymbol,
+        },
         'ownerAddress': ownerAddress,
         'apps': apps.map((a) => a.toJson()).toList(),
       };
@@ -227,6 +199,21 @@ class PoolsRepositoryImpl {
       );
     } catch (e) {
       throw Exception('Failed to update pool email: $e');
+    }
+  }
+
+  Future<List<SupportedToken>> getSupportedTokens() async {
+    try {
+      final data = await _client.get<List<dynamic>>(
+        '/forge/pools/supportedTokens',
+        options: const RequestOptions(requiresAuth: true),
+        fromJson: (json) => json as List<dynamic>,
+      );
+      return data
+          .map((e) => SupportedToken.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      throw Exception('Failed to get supported tokens: $e');
     }
   }
 }

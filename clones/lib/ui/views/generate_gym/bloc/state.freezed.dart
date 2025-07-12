@@ -22,6 +22,11 @@ mixin _$GenerateGymState {
   List<ForgeApp>? get apps => throw _privateConstructorUsedError;
   bool get showJsonEditor => throw _privateConstructorUsedError;
   GenerateGymStep get currentStep => throw _privateConstructorUsedError;
+  bool get isCreating => throw _privateConstructorUsedError;
+  bool get isCreated => throw _privateConstructorUsedError;
+  List<SupportedToken>? get supportedTokens =>
+      throw _privateConstructorUsedError;
+  String? get selectedTokenSymbol => throw _privateConstructorUsedError;
 
   /// Create a copy of GenerateGymState
   /// with the given fields replaced by the non-null parameter values.
@@ -42,7 +47,11 @@ abstract class $GenerateGymStateCopyWith<$Res> {
       String? gymName,
       List<ForgeApp>? apps,
       bool showJsonEditor,
-      GenerateGymStep currentStep});
+      GenerateGymStep currentStep,
+      bool isCreating,
+      bool isCreated,
+      List<SupportedToken>? supportedTokens,
+      String? selectedTokenSymbol});
 }
 
 /// @nodoc
@@ -66,6 +75,10 @@ class _$GenerateGymStateCopyWithImpl<$Res, $Val extends GenerateGymState>
     Object? apps = freezed,
     Object? showJsonEditor = null,
     Object? currentStep = null,
+    Object? isCreating = null,
+    Object? isCreated = null,
+    Object? supportedTokens = freezed,
+    Object? selectedTokenSymbol = freezed,
   }) {
     return _then(_value.copyWith(
       skills: freezed == skills
@@ -92,6 +105,22 @@ class _$GenerateGymStateCopyWithImpl<$Res, $Val extends GenerateGymState>
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
               as GenerateGymStep,
+      isCreating: null == isCreating
+          ? _value.isCreating
+          : isCreating // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCreated: null == isCreated
+          ? _value.isCreated
+          : isCreated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      supportedTokens: freezed == supportedTokens
+          ? _value.supportedTokens
+          : supportedTokens // ignore: cast_nullable_to_non_nullable
+              as List<SupportedToken>?,
+      selectedTokenSymbol: freezed == selectedTokenSymbol
+          ? _value.selectedTokenSymbol
+          : selectedTokenSymbol // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -110,7 +139,11 @@ abstract class _$$GenerateGymStateImplCopyWith<$Res>
       String? gymName,
       List<ForgeApp>? apps,
       bool showJsonEditor,
-      GenerateGymStep currentStep});
+      GenerateGymStep currentStep,
+      bool isCreating,
+      bool isCreated,
+      List<SupportedToken>? supportedTokens,
+      String? selectedTokenSymbol});
 }
 
 /// @nodoc
@@ -132,6 +165,10 @@ class __$$GenerateGymStateImplCopyWithImpl<$Res>
     Object? apps = freezed,
     Object? showJsonEditor = null,
     Object? currentStep = null,
+    Object? isCreating = null,
+    Object? isCreated = null,
+    Object? supportedTokens = freezed,
+    Object? selectedTokenSymbol = freezed,
   }) {
     return _then(_$GenerateGymStateImpl(
       skills: freezed == skills
@@ -158,6 +195,22 @@ class __$$GenerateGymStateImplCopyWithImpl<$Res>
           ? _value.currentStep
           : currentStep // ignore: cast_nullable_to_non_nullable
               as GenerateGymStep,
+      isCreating: null == isCreating
+          ? _value.isCreating
+          : isCreating // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCreated: null == isCreated
+          ? _value.isCreated
+          : isCreated // ignore: cast_nullable_to_non_nullable
+              as bool,
+      supportedTokens: freezed == supportedTokens
+          ? _value._supportedTokens
+          : supportedTokens // ignore: cast_nullable_to_non_nullable
+              as List<SupportedToken>?,
+      selectedTokenSymbol: freezed == selectedTokenSymbol
+          ? _value.selectedTokenSymbol
+          : selectedTokenSymbol // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -171,8 +224,13 @@ class _$GenerateGymStateImpl extends _GenerateGymState {
       this.gymName,
       final List<ForgeApp>? apps,
       this.showJsonEditor = false,
-      this.currentStep = GenerateGymStep.input})
+      this.currentStep = GenerateGymStep.input,
+      this.isCreating = false,
+      this.isCreated = false,
+      final List<SupportedToken>? supportedTokens,
+      this.selectedTokenSymbol})
       : _apps = apps,
+        _supportedTokens = supportedTokens,
         super._();
 
   @override
@@ -197,10 +255,28 @@ class _$GenerateGymStateImpl extends _GenerateGymState {
   @override
   @JsonKey()
   final GenerateGymStep currentStep;
+  @override
+  @JsonKey()
+  final bool isCreating;
+  @override
+  @JsonKey()
+  final bool isCreated;
+  final List<SupportedToken>? _supportedTokens;
+  @override
+  List<SupportedToken>? get supportedTokens {
+    final value = _supportedTokens;
+    if (value == null) return null;
+    if (_supportedTokens is EqualUnmodifiableListView) return _supportedTokens;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? selectedTokenSymbol;
 
   @override
   String toString() {
-    return 'GenerateGymState(skills: $skills, error: $error, gymName: $gymName, apps: $apps, showJsonEditor: $showJsonEditor, currentStep: $currentStep)';
+    return 'GenerateGymState(skills: $skills, error: $error, gymName: $gymName, apps: $apps, showJsonEditor: $showJsonEditor, currentStep: $currentStep, isCreating: $isCreating, isCreated: $isCreated, supportedTokens: $supportedTokens, selectedTokenSymbol: $selectedTokenSymbol)';
   }
 
   @override
@@ -215,12 +291,30 @@ class _$GenerateGymStateImpl extends _GenerateGymState {
             (identical(other.showJsonEditor, showJsonEditor) ||
                 other.showJsonEditor == showJsonEditor) &&
             (identical(other.currentStep, currentStep) ||
-                other.currentStep == currentStep));
+                other.currentStep == currentStep) &&
+            (identical(other.isCreating, isCreating) ||
+                other.isCreating == isCreating) &&
+            (identical(other.isCreated, isCreated) ||
+                other.isCreated == isCreated) &&
+            const DeepCollectionEquality()
+                .equals(other._supportedTokens, _supportedTokens) &&
+            (identical(other.selectedTokenSymbol, selectedTokenSymbol) ||
+                other.selectedTokenSymbol == selectedTokenSymbol));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, skills, error, gymName,
-      const DeepCollectionEquality().hash(_apps), showJsonEditor, currentStep);
+  int get hashCode => Object.hash(
+      runtimeType,
+      skills,
+      error,
+      gymName,
+      const DeepCollectionEquality().hash(_apps),
+      showJsonEditor,
+      currentStep,
+      isCreating,
+      isCreated,
+      const DeepCollectionEquality().hash(_supportedTokens),
+      selectedTokenSymbol);
 
   /// Create a copy of GenerateGymState
   /// with the given fields replaced by the non-null parameter values.
@@ -239,7 +333,11 @@ abstract class _GenerateGymState extends GenerateGymState {
       final String? gymName,
       final List<ForgeApp>? apps,
       final bool showJsonEditor,
-      final GenerateGymStep currentStep}) = _$GenerateGymStateImpl;
+      final GenerateGymStep currentStep,
+      final bool isCreating,
+      final bool isCreated,
+      final List<SupportedToken>? supportedTokens,
+      final String? selectedTokenSymbol}) = _$GenerateGymStateImpl;
   const _GenerateGymState._() : super._();
 
   @override
@@ -254,6 +352,14 @@ abstract class _GenerateGymState extends GenerateGymState {
   bool get showJsonEditor;
   @override
   GenerateGymStep get currentStep;
+  @override
+  bool get isCreating;
+  @override
+  bool get isCreated;
+  @override
+  List<SupportedToken>? get supportedTokens;
+  @override
+  String? get selectedTokenSymbol;
 
   /// Create a copy of GenerateGymState
   /// with the given fields replaced by the non-null parameter values.

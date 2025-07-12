@@ -38,11 +38,11 @@ class _DownloadScriptsModalState extends State<DownloadScriptsModal>
         .where((sub) => sub.files.isNotEmpty)
         .expand(
           (sub) => sub.files.map((file) {
-            final s3Key = file.s3Key;
+            final storageKey = file.storageKey;
             return {
-              'url': '${Env.s3BaseUrl}/$s3Key',
+              'url': '${Env.storageBaseUrl}/$storageKey',
               'id': sub.id,
-              'filename': s3Key.split('-').last,
+              'filename': storageKey.split('-').last,
             };
           }),
         )
@@ -104,11 +104,11 @@ files.forEach(file => {
         .where((sub) => sub.files.isNotEmpty)
         .expand(
           (sub) => sub.files.map((file) {
-            final s3Key = file.s3Key;
+            final storageKey = file.storageKey;
             return {
-              'url': '${Env.s3BaseUrl}/$s3Key',
+              'url': '${Env.storageBaseUrl}/$storageKey',
               'id': sub.id,
-              'filename': s3Key.split('-').last,
+              'filename': storageKey.split('-').last,
             };
           }),
         )
@@ -161,11 +161,11 @@ for file in files:
         .where((sub) => sub.files.isNotEmpty)
         .expand(
           (sub) => sub.files.map((file) {
-            final s3Key = file.s3Key;
+            final storageKey = file.storageKey;
             return {
-              'url': '${Env.s3BaseUrl}/$s3Key',
+              'url': '${Env.storageBaseUrl}/$storageKey',
               'id': sub.id,
-              'filename': s3Key.split('-').last,
+              'filename': storageKey.split('-').last,
             };
           }),
         )

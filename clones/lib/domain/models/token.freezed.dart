@@ -20,9 +20,8 @@ Token _$TokenFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Token {
-  TokenType get type => throw _privateConstructorUsedError;
   String get symbol => throw _privateConstructorUsedError;
-  String get address => throw _privateConstructorUsedError;
+  String? get address => throw _privateConstructorUsedError;
 
   /// Serializes this Token to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -38,7 +37,7 @@ abstract class $TokenCopyWith<$Res> {
   factory $TokenCopyWith(Token value, $Res Function(Token) then) =
       _$TokenCopyWithImpl<$Res, Token>;
   @useResult
-  $Res call({TokenType type, String symbol, String address});
+  $Res call({String symbol, String? address});
 }
 
 /// @nodoc
@@ -56,23 +55,18 @@ class _$TokenCopyWithImpl<$Res, $Val extends Token>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = null,
     Object? symbol = null,
-    Object? address = null,
+    Object? address = freezed,
   }) {
     return _then(_value.copyWith(
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as TokenType,
       symbol: null == symbol
           ? _value.symbol
           : symbol // ignore: cast_nullable_to_non_nullable
               as String,
-      address: null == address
+      address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -84,7 +78,7 @@ abstract class _$$TokenImplCopyWith<$Res> implements $TokenCopyWith<$Res> {
       __$$TokenImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({TokenType type, String symbol, String address});
+  $Res call({String symbol, String? address});
 }
 
 /// @nodoc
@@ -100,23 +94,18 @@ class __$$TokenImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = null,
     Object? symbol = null,
-    Object? address = null,
+    Object? address = freezed,
   }) {
     return _then(_$TokenImpl(
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as TokenType,
       symbol: null == symbol
           ? _value.symbol
           : symbol // ignore: cast_nullable_to_non_nullable
               as String,
-      address: null == address
+      address: freezed == address
           ? _value.address
           : address // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -124,22 +113,19 @@ class __$$TokenImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$TokenImpl implements _Token {
-  const _$TokenImpl(
-      {required this.type, required this.symbol, required this.address});
+  const _$TokenImpl({required this.symbol, this.address});
 
   factory _$TokenImpl.fromJson(Map<String, dynamic> json) =>
       _$$TokenImplFromJson(json);
 
   @override
-  final TokenType type;
-  @override
   final String symbol;
   @override
-  final String address;
+  final String? address;
 
   @override
   String toString() {
-    return 'Token(type: $type, symbol: $symbol, address: $address)';
+    return 'Token(symbol: $symbol, address: $address)';
   }
 
   @override
@@ -147,14 +133,13 @@ class _$TokenImpl implements _Token {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$TokenImpl &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.symbol, symbol) || other.symbol == symbol) &&
             (identical(other.address, address) || other.address == address));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, type, symbol, address);
+  int get hashCode => Object.hash(runtimeType, symbol, address);
 
   /// Create a copy of Token
   /// with the given fields replaced by the non-null parameter values.
@@ -173,19 +158,15 @@ class _$TokenImpl implements _Token {
 }
 
 abstract class _Token implements Token {
-  const factory _Token(
-      {required final TokenType type,
-      required final String symbol,
-      required final String address}) = _$TokenImpl;
+  const factory _Token({required final String symbol, final String? address}) =
+      _$TokenImpl;
 
   factory _Token.fromJson(Map<String, dynamic> json) = _$TokenImpl.fromJson;
 
   @override
-  TokenType get type;
-  @override
   String get symbol;
   @override
-  String get address;
+  String? get address;
 
   /// Create a copy of Token
   /// with the given fields replaced by the non-null parameter values.

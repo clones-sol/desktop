@@ -1,7 +1,6 @@
 import 'package:clones/application/submissions.dart';
 import 'package:clones/assets.dart';
 import 'package:clones/domain/models/submission/pool_submission.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/ui/views/forge_detail/bloc/provider.dart';
@@ -366,7 +365,7 @@ class _RewardCell extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
-          '$reward ${Token.getTokenType(TokenType.viral)}',
+          '$reward Tokens',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: Colors.white,
           ),

@@ -1,6 +1,5 @@
 import 'package:clones/application/session/provider.dart';
 import 'package:clones/assets.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/utils/env.dart';
 import 'package:clones/utils/format_address.dart';
@@ -148,24 +147,52 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                         ],
                       ),
                       const SizedBox(height: 12),
-
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Balance',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          if (session.balance != null)
-                            Text(
-                              '${session.balance!.toStringAsFixed(2)} \$${Token.getTokenType(TokenType.viral)}',
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: VMColors.secondary,
-                              ),
+                      if (session.balances != null)
+                        ...session.balances!.map(
+                          (tokenBalance) => Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    if (tokenBalance.logoUrl != null)
+                                      Image.network(
+                                        tokenBalance.logoUrl!,
+                                        width: 20,
+                                        height: 20,
+                                      )
+                                    else
+                                      const Icon(
+                                        Icons.monetization_on_outlined,
+                                        size: 20,
+                                      ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      tokenBalance.name,
+                                      style: theme.textTheme.bodyMedium,
+                                    ),
+                                  ],
+                                ),
+                                if (tokenBalance.isLoading)
+                                  const SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                else
+                                  Text(
+                                    '${tokenBalance.balance?.toStringAsFixed(2) ?? 'N/A'} ${tokenBalance.symbol}',
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: VMColors.secondary,
+                                    ),
+                                  ),
+                              ],
                             ),
-                        ],
-                      ),
-                      // TODO(reddwarf03): Check if we need to show the recent activity
+                          ),
+                        ),
                       const SizedBox(height: 16),
                       BtnPrimary(
                         widthExpanded: true,

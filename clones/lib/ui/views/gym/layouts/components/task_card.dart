@@ -5,7 +5,6 @@ import 'package:clones/assets.dart';
 import 'package:clones/domain/app_info.dart';
 import 'package:clones/domain/models/forge_task/forge_app.dart';
 import 'package:clones/domain/models/forge_task/forge_task_item.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/ui/views/training_session/layouts/training_session_view.dart';
@@ -16,15 +15,20 @@ import 'package:go_router/go_router.dart';
 class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
-    required this.app,
     required this.task,
+    required this.app,
   });
-  final ForgeApp app;
+
   final ForgeTaskItem task;
+  final ForgeApp app;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final tokenSymbol = app.poolId?.token?.symbol ?? '';
+    final rewardText =
+        '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} $tokenSymbol';
+
     return Stack(
       children: [
         Padding(
@@ -119,7 +123,7 @@ class TaskCard extends StatelessWidget {
               ],
             ),
             child: Text(
-              '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} ${Token.getTokenType(TokenType.viral)}',
+              rewardText,
               style: theme.textTheme.bodySmall!.copyWith(
                 color: VMColors.rewardInfo,
               ),

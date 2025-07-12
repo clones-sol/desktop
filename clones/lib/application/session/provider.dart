@@ -2,7 +2,9 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:clones/application/pool.dart';
 import 'package:clones/application/session/state.dart';
+import 'package:clones/domain/models/wallet/token_balance.dart';
 import 'package:clones/infrastructure/wallet.repository.dart';
 import 'package:clones/utils/api_client.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,7 @@ class SessionNotifier extends _$SessionNotifier {
     state = state.copyWith(
       connectionToken: null,
       address: null,
-      balance: null,
+      balances: null,
     );
   }
 
@@ -41,7 +43,7 @@ class SessionNotifier extends _$SessionNotifier {
     if (token == null) {
       state = state.copyWith(
         address: null,
-        balance: null,
+        balances: null,
       );
       return;
     }
@@ -65,7 +67,7 @@ class SessionNotifier extends _$SessionNotifier {
             state = state.copyWith(
               address: checkConnectionResult.address,
             );
-            await setBalance();
+            await fetchBalances();
           }
         }
       } catch (e) {
@@ -81,14 +83,43 @@ class SessionNotifier extends _$SessionNotifier {
     _connectingTimer = null;
   }
 
-  Future<void> setBalance() async {
+  Future<void> fetchBalances() async {
     if (state.address == null) {
-      state = state.copyWith(balance: null);
+      state = state.copyWith(balances: []);
       return;
     }
     final walletRepository = ref.read(walletRepositoryProvider);
-    final balance = await walletRepository.getBalance(address: state.address!);
-    state = state.copyWith(balance: balance);
+    final supportedTokens = await ref.read(getSupportedTokensProvider.future);
+
+    state = state.copyWith(
+      balances: supportedTokens
+          .map(
+            (token) => TokenBalance(
+              symbol: token.symbol,
+              name: token.name,
+              logoUrl: token.logoUrl,
+              isLoading: true,
+            ),
+          )
+          .toList(),
+    );
+
+    final updatedBalances = <TokenBalance>[];
+    for (final tokenBalance in state.balances!) {
+      try {
+        final balance = await walletRepository.getBalance(
+          address: state.address!,
+          symbol: tokenBalance.symbol,
+        );
+        updatedBalances.add(
+          tokenBalance.copyWith(balance: balance, isLoading: false),
+        );
+      } catch (e) {
+        debugPrint('Failed to fetch balance for ${tokenBalance.symbol}: $e');
+        updatedBalances.add(tokenBalance.copyWith(isLoading: false));
+      }
+    }
+    state = state.copyWith(balances: updatedBalances);
   }
 
   Future<void> getConnectionUrl() async {

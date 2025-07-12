@@ -172,7 +172,7 @@ APP_IDENTIFIER_SUFFIX=dev  # Optional: Add a suffix to the app identifier for de
 
 # === Frontend (Vite/Svelte) ===
 VITE_API_URL=https://viralmind.ai
-VITE_S3_BASE_URL=https://training-gym.s3.us-east-2.amazonaws.com
+VITE_STORAGE_BASE_URL=https://training-gym.s3.us-east-2.amazonaws.com
 VITE_SOLSCAN_BASE_URL=https://solscan.io
 VITE_JUPITER_API_URL=https://api.jup.ag
 VITE_PRIVACY_POLICY_URL=https://github.com/clones-sol/desktop/blob/main/PRIVACY.md
