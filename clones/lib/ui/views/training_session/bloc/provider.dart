@@ -59,8 +59,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         await ref
             .read(tauriApiClientProvider)
             .startRecording(quest: state.activeQuest, fps: fps);
-        // TODO(reddwarf03): To check
-        // await emit('quest-overlay', { quest: activeQuest! });
         setRecordingState(RecordingState.recording);
       }
       setRecordingLoading(false);
@@ -424,8 +422,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         type: MessageType.loading,
       ),
     );
-    // TODO(reddwarf03): To check
-    // await emit('quest-overlay', { 'quest': null });
 
     setRecordingLoading(false);
     if (state.recordingState == RecordingState.recording) {
@@ -637,7 +633,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
     try {
       final response = await http.post(
-        Uri.parse('${Env.apiUrl}/api/v1/forge/chat'),
+        Uri.parse('${Env.apiBackendUrl}/api/v1/forge/chat'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'messages': [],

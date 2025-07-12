@@ -17,7 +17,7 @@ String getPlatform() {
 }
 
 /// API URL based on environment (adapt as needed)
-final String apiUrl = Env.apiUrl;
+final String apiBackendUrl = Env.apiBackendUrl;
 
 /// Checks for application updates (stub, platform-specific)
 Future<void> checkForUpdate() async {

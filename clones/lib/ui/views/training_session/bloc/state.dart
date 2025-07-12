@@ -9,7 +9,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'state.freezed.dart';
 
-enum RecordingState { off, recording, saved }
+enum RecordingState { off, starting, recording, stopping, saved }
 
 @freezed
 class TrainingSessionState with _$TrainingSessionState {
