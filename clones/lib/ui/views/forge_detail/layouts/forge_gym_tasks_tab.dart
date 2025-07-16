@@ -22,8 +22,6 @@ class ForgeGymTasksTab extends ConsumerStatefulWidget {
     super.key,
   });
 
-  static const String routeName = '/forge/gym/tasks';
-
   @override
   ConsumerState<ForgeGymTasksTab> createState() => _ForgeGymTasksTabState();
 }

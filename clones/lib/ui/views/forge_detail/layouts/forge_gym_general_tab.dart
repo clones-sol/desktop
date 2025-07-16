@@ -18,8 +18,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ForgeGymGeneralTab extends ConsumerWidget {
   const ForgeGymGeneralTab({super.key});
 
-  static const String routeName = '/forge/gym/general';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);

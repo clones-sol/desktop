@@ -16,8 +16,6 @@ final _selectedSubmissionsProvider =
 class ForgeGymUploadsTab extends ConsumerWidget {
   const ForgeGymUploadsTab({super.key});
 
-  static const String routeName = '/forge/gym/uploads';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pool = ref.watch(forgeDetailNotifierProvider).pool;
