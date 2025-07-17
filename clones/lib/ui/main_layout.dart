@@ -28,13 +28,28 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   Future<void> _initializeTools() async {
     final tauriApiClient = ref.read(tauriApiClientProvider);
-    await tauriApiClient.initTools();
+    const maxRetries = 10;
+    const retryDelay = Duration(seconds: 2);
 
-    await _checkToolsStatus();
-
-    _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
-      _checkToolsStatus();
-    });
+    for (var i = 0; i < maxRetries; i++) {
+      try {
+        await tauriApiClient.initTools();
+        // If successful, start checking status and exit the loop
+        await _checkToolsStatus();
+        _timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+          _checkToolsStatus();
+        });
+        return; // Exit the function on success
+      } catch (e) {
+        debugPrint('Failed to init tools (attempt ${i + 1}/$maxRetries): $e');
+        if (i < maxRetries - 1) {
+          await Future.delayed(retryDelay);
+        } else {
+          debugPrint('Could not initialize tools after $maxRetries attempts.');
+          // TODO(reddwarf03): Handle the final failure (e.g., show an error message to the user)
+        }
+      }
+    }
   }
 
   Future<void> _checkToolsStatus() async {
