@@ -37,9 +37,7 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
       setError(e.toString());
     }
 
-    // TODO(reddwarf0): Need in backend a getPool function
-    final pools = await ref.refresh(listPoolsProvider.future);
-    final newPool = pools.firstWhere((p) => p.id == state.pool?.id);
+    final newPool = await ref.refresh(poolProvider(pool.id).future);
     ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
   }
 
@@ -49,9 +47,8 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
       await _updatePool();
       setIsUpdateGymStatusSuccess(true);
 
-      // TODO(reddwarf0): Need in backend a getPool function
-      final pools = await ref.refresh(listPoolsProvider.future);
-      final newPool = pools.firstWhere((p) => p.id == state.pool?.id);
+      final newPool =
+          await ref.refresh(poolProvider(state.pool?.id ?? '').future);
       ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
     } catch (e) {
       setError(e.toString());
@@ -64,9 +61,8 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
       await _updatePool();
       setIsUpdatePoolSuccess(true);
 
-      // TODO(reddwarf0): Need in backend a getPool function
-      final pools = await ref.refresh(listPoolsProvider.future);
-      final newPool = pools.firstWhere((p) => p.id == state.pool?.id);
+      final newPool =
+          await ref.refresh(poolProvider(state.pool?.id ?? '').future);
       ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
     } catch (e) {
       setError(e.toString());

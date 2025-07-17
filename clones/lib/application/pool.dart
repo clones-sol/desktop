@@ -26,8 +26,8 @@ Future<List<TrainingPool>> listPools(Ref ref) async {
 
 @riverpod
 Future<TrainingPool> pool(Ref ref, String poolId) async {
-  final pools = await ref.watch(listPoolsProvider.future);
-  return pools.firstWhere((p) => p.id == poolId);
+  final poolsRepository = ref.read(poolsRepositoryProvider);
+  return poolsRepository.getPool(poolId);
 }
 
 @riverpod

@@ -50,6 +50,41 @@ class PoolsRepositoryImpl {
     }
   }
 
+  Future<TrainingPool> getPool(String poolId) async {
+    try {
+      final pool = await _client.get<Map<String, dynamic>>(
+        '/forge/pools/$poolId',
+        options: const RequestOptions(requiresAuth: true),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+
+      return TrainingPool(
+        id: pool['_id'],
+        name: pool['name'],
+        skills: pool['skills'],
+        status: _parseStatus(pool['status']),
+        demonstrations: pool['demonstrations'],
+        pricePerDemo: pool['pricePerDemo'].toDouble(),
+        createdAt: DateTime.parse(pool['createdAt']),
+        funds: pool['funds']?.toDouble() ?? 0,
+        solBalance: pool['solBalance']?.toDouble() ?? 0,
+        ownerAddress: pool['ownerAddress'],
+        depositAddress: pool['depositAddress'],
+        token: Token(
+          symbol: pool['token']['symbol'],
+        ),
+        uploadLimit: pool['uploadLimit'] == null
+            ? null
+            : UploadLimit.fromJson(
+                pool['uploadLimit'] as Map<String, dynamic>,
+              ),
+        ownerEmail: pool['ownerEmail'],
+      );
+    } catch (e) {
+      throw Exception('Failed to load pool with id $poolId: $e');
+    }
+  }
+
   Future<TrainingPool> refreshPool(String poolId) async {
     try {
       final data = await _client.post<Map<String, dynamic>>(
