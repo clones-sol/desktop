@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ManageTaskModalUploadLimit extends ConsumerStatefulWidget {
-  const ManageTaskModalUploadLimit({super.key});
-
+  const ManageTaskModalUploadLimit(
+      {super.key, this.focusNode, this.onSubmitted});
+  final FocusNode? focusNode;
+  final void Function(String)? onSubmitted;
   @override
   ConsumerState<ManageTaskModalUploadLimit> createState() =>
       _ManageTaskModalUploadLimitState();
@@ -58,7 +60,10 @@ class _ManageTaskModalUploadLimitState
             gradient: VMColors.gradientInputFormBackground,
           ),
           child: TextField(
+            focusNode: widget.focusNode,
+            onSubmitted: widget.onSubmitted,
             controller: uploadLimitValueController,
+            textInputAction: TextInputAction.done,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,

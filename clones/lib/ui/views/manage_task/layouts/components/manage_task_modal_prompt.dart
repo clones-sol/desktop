@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ManageTaskModalPrompt extends ConsumerStatefulWidget {
-  const ManageTaskModalPrompt({super.key});
+  const ManageTaskModalPrompt({super.key, this.focusNode});
+
+  final FocusNode? focusNode;
 
   @override
   ConsumerState<ManageTaskModalPrompt> createState() =>
@@ -35,48 +37,53 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
       controller.text = manageTask.prompt;
     }
     final theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          10,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Prompt for this task',
+          style: theme.textTheme.titleSmall,
         ),
-        border: Border.all(
-          color: VMColors.secondary.withValues(alpha: 0.3),
-          width: 0.5,
-        ),
-        gradient: LinearGradient(
-          colors: [
-            VMColors.secondary.withValues(alpha: 0.3),
-            VMColors.secondary.withValues(alpha: 0.1),
-          ],
-        ),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        child: TextField(
-          controller: controller,
-          autocorrect: false,
-          textInputAction: TextInputAction.newline,
-          keyboardType: TextInputType.multiline,
-          maxLines: 5,
-          onChanged: (v) =>
-              ref.read(manageTaskNotifierProvider.notifier).setPrompt(v),
-          cursorColor: VMColors.secondaryText,
-          style: theme.textTheme.bodyMedium,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.only(left: 10),
-            hintText: 'Enter the prompt for the task...',
-            hintStyle: theme.textTheme.bodyMedium?.copyWith(
-              color: Theme.of(context)
-                  .textTheme
-                  .bodyMedium
-                  ?.color!
-                  .withValues(alpha: 0.2),
+        const SizedBox(height: 4),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primaryContainer,
+              width: 0.5,
+            ),
+            gradient: VMColors.gradientInputFormBackground,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: TextField(
+              controller: controller,
+              focusNode: widget.focusNode,
+              autocorrect: false,
+              textInputAction: TextInputAction.newline,
+              keyboardType: TextInputType.multiline,
+              maxLines: 5,
+              onChanged: (v) =>
+                  ref.read(manageTaskNotifierProvider.notifier).setPrompt(v),
+              cursorColor: VMColors.secondaryText,
+              style: theme.textTheme.bodyMedium,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: const EdgeInsets.only(left: 10),
+                hintText: 'Enter the prompt for the task...',
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.color!
+                      .withValues(alpha: 0.2),
+                ),
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
