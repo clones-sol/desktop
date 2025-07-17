@@ -259,11 +259,10 @@ class RecordingCard extends ConsumerWidget {
                       .openRecordingFolder(recording.id);
                   break;
                 case 'export_zip':
-                  try {
-                    // TODO(reddwarf03): To fix: export recording
-                    await ref
-                        .read(tauriApiClientProvider)
-                        .exportRecording(recording.id);
+                  final result = await ref
+                      .read(tauriApiClientProvider)
+                      .exportRecording(recording.id);
+                  if (result.isNotEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
@@ -272,7 +271,7 @@ class RecordingCard extends ConsumerWidget {
                         ),
                       ),
                     );
-                  } catch (e) {
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
