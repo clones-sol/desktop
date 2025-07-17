@@ -25,7 +25,7 @@ class AgentSocketService {
 
     _token = token;
     final httpUrl = Env.apiBackendUrl;
-    final wsUrl = httpUrl.replaceFirst(RegExp(r'^http'), 'ws');
+    final wsUrl = httpUrl.replaceFirst(RegExp('^http'), 'ws');
     final uri = Uri.parse('$wsUrl?token=$token');
     _channel = IOWebSocketChannel.connect(uri);
 
@@ -37,11 +37,12 @@ class AgentSocketService {
             _controller!.add(AgentSocketMessage.fromJson(json));
           } catch (e) {
             _controller!.add(
-                AgentSocketMessage.error(error: 'Failed to parse message: $e'));
+              AgentSocketMessage.error(error: 'Failed to parse message: $e'),
+            );
           }
         }
       },
-      onDone: () => _handleDisconnect(),
+      onDone: _handleDisconnect,
       onError: (error) {
         if (_controller?.hasListener ?? false) {
           _controller!.add(AgentSocketMessage.error(error: error.toString()));

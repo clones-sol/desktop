@@ -150,7 +150,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                       if (session.balances != null)
                         ...session.balances!.map(
                           (tokenBalance) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: const EdgeInsets.only(bottom: 8),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [

@@ -18,7 +18,7 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
   int _seconds = 0;
   bool _isLocked = false;
   bool _isCollapsed = false;
-  bool _focused = true; // Assume focused by default for now
+  final bool _focused = true; // Assume focused by default for now
 
   @override
   void initState() {
@@ -114,7 +114,7 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -151,9 +151,13 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
         statusText = 'Stopping';
         statusColor = Colors.green;
         break;
-      default:
+      case RecordingState.off:
         statusText = 'Stopped';
         statusColor = Colors.grey;
+        break;
+      case RecordingState.saved:
+        statusText = 'Saved';
+        statusColor = Colors.green;
     }
 
     return Container(
@@ -176,11 +180,15 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(statusText,
-              style: const TextStyle(color: Colors.white, fontSize: 14)),
+          Text(
+            statusText,
+            style: const TextStyle(color: Colors.white, fontSize: 14),
+          ),
           const Spacer(),
-          Text(_formattedTime,
-              style: const TextStyle(color: Colors.white, fontSize: 12)),
+          Text(
+            _formattedTime,
+            style: const TextStyle(color: Colors.white, fontSize: 12),
+          ),
           const SizedBox(width: 8),
           _buildIconButton(
             _isCollapsed ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
@@ -208,7 +216,7 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
   }
 
   Widget _buildContent(Quest? quest, RecordingState recordingState) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: const Color(0xFF333333), // Equivalent to bg-primary-400/50
         borderRadius: BorderRadius.only(
@@ -221,12 +229,14 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
           if (quest != null) _buildQuestDetails(quest),
           if (quest == null)
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8),
               child: Center(
-                  child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2))),
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
             ),
           _buildControls(recordingState),
         ],
@@ -236,14 +246,17 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
 
   Widget _buildQuestDetails(Quest quest) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             quest.title,
             style: const TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
           ),
           const SizedBox(height: 8),
           if (quest.objectives.isNotEmpty)
@@ -254,18 +267,21 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
                 itemCount: quest.objectives.length,
                 itemBuilder: (context, index) {
                   return Padding(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                    padding: const EdgeInsets.only(left: 8, bottom: 4),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('• ',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 12)),
+                        const Text(
+                          '• ',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
+                        ),
                         Expanded(
                           child: Text(
                             quest.objectives[index],
                             style: const TextStyle(
-                                color: Colors.white, fontSize: 12),
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ],
@@ -280,7 +296,7 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
   }
 
   Widget _buildControls(RecordingState recordingState) {
-    return Container(
+    return DecoratedBox(
       decoration: const BoxDecoration(
         border: Border(top: BorderSide(color: Color(0xFF555555))),
         color: Color(0xFF666666),
@@ -291,8 +307,10 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
             Expanded(
               child: TextButton.icon(
                 icon: const Icon(Icons.stop, size: 16, color: Colors.white),
-                label: const Text('Stop',
-                    style: TextStyle(color: Colors.white, fontSize: 12)),
+                label: const Text(
+                  'Stop',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
                 onPressed: _handleStop,
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
@@ -310,7 +328,9 @@ class _OverlayViewState extends ConsumerState<OverlayView> {
                     width: 16,
                     height: 16,
                     child: CircularProgressIndicator(
-                        strokeWidth: 2, color: Colors.white),
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

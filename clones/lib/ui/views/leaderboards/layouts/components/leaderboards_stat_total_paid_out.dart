@@ -32,7 +32,7 @@ class LeaderboardsStatTotalPaidOut extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              // TODO: add token symbol
+              // TODO(reddwarf03): add token symbol
               '${formatNumberWithSeparator(stat.totalRewards)} Token',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
