@@ -41,7 +41,7 @@ final listPoolsProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ListPoolsRef = AutoDisposeFutureProviderRef<List<TrainingPool>>;
-String _$poolHash() => r'0151b4e201882a9b44d02f75ae81b4d80728cdea';
+String _$poolHash() => r'e4444e30d0aa4565b392d5bc273bfd0f385ecde0';
 
 /// Copied from Dart SDK
 class _SystemHash {

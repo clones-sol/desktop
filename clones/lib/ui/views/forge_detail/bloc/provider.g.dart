@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$forgeDetailNotifierHash() =>
-    r'4866fa8b9a38d3ccc632cb2ab2006af757db0b48';
+    r'62ccdbcf6beb50812259e3f1cc12450f8b83cbe5';
 
 /// See also [ForgeDetailNotifier].
 @ProviderFor(ForgeDetailNotifier)
