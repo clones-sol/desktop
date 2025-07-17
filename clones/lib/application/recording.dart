@@ -1,22 +1,13 @@
 import 'package:clones/application/submissions.dart';
 import 'package:clones/application/tauri_api.dart';
-import 'package:clones/domain/models/quest/quest.dart';
 import 'package:clones/domain/models/recording/api_recording.dart';
 import 'package:clones/domain/models/recording/monitor_info.dart';
 import 'package:clones/domain/models/recording/recording_meta.dart' as rec_meta;
 import 'package:clones/domain/models/submission/submission_status.dart';
-import 'package:clones/infrastructure/recording.repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'recording.g.dart';
-
-@riverpod
-RecordingRepositoryImpl recordingRepository(
-  Ref ref,
-) {
-  return RecordingRepositoryImpl();
-}
 
 @riverpod
 Future<List<rec_meta.RecordingMeta>> listRecordings(Ref ref) async {
@@ -50,18 +41,6 @@ Future<String> getRecordingFile(
     recordingId: recordingId,
     filename: filename,
   );
-}
-
-@riverpod
-Future<void> startRecording(Ref ref, {Quest? quest, int fps = 30}) async {
-  final recordingRepository = ref.read(recordingRepositoryProvider);
-  return recordingRepository.startRecording(quest: quest, fps: fps);
-}
-
-@riverpod
-Future<String> stopRecording(Ref ref, {String? reason}) async {
-  final recordingRepository = ref.read(recordingRepositoryProvider);
-  return recordingRepository.stopRecording(reason: reason);
 }
 
 @riverpod

@@ -1303,7 +1303,9 @@ pub async fn create_recording_zip(
 
 pub async fn export_recording_zip(id: String, app: tauri::AppHandle) -> Result<String, String> {
     let buf = create_recording_zip(app.clone(), id.clone()).await;
-    let selected_dir = app.dialog().file().blocking_pick_folder();
+    let selected_dir = app.dialog().file()
+    .set_file_name(&format!("export_recording_{}.zip", id))
+    .blocking_save_file();
 
     // If user cancels the dialog, selected_dir will be None
     if let Some(dir_path) = selected_dir {
