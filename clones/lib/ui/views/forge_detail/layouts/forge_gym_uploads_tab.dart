@@ -95,11 +95,11 @@ class _PageHeader extends ConsumerWidget {
               Chip(
                 label: Text('${selectedSubmissions.length} selected'),
                 padding: const EdgeInsets.all(4),
-                backgroundColor: VMColors.secondary.withOpacity(0.2),
+                backgroundColor: VMColors.secondary.withValues(alpha: 0.2),
                 labelStyle: theme.textTheme.bodySmall
                     ?.copyWith(color: VMColors.secondary),
-              )
-            ]
+              ),
+            ],
           ],
         ),
         BtnPrimary(

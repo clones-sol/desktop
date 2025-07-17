@@ -10,6 +10,7 @@ import 'package:clones/ui/views/manage_task/layouts/components/manage_task_modal
 import 'package:clones/ui/views/manage_task/layouts/components/manage_task_modal_prompt.dart';
 import 'package:clones/ui/views/manage_task/layouts/components/manage_task_modal_upload_limit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ManageTaskModal extends ConsumerStatefulWidget {
@@ -32,8 +33,16 @@ class ManageTaskModal extends ConsumerStatefulWidget {
 }
 
 class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
+  late final FocusNode _promptFocusNode;
+  late final FocusNode _pricePerDemoFocusNode;
+  late final FocusNode _uploadLimitFocusNode;
+
   @override
   void initState() {
+    super.initState();
+    _promptFocusNode = FocusNode();
+    _pricePerDemoFocusNode = FocusNode();
+    _uploadLimitFocusNode = FocusNode();
     Future(() async {
       ref
           .read(manageTaskNotifierProvider.notifier)
@@ -45,7 +54,36 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
           ..setUploadLimitValue(widget.task!.uploadLimit ?? 0);
       }
     });
-    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _promptFocusNode.dispose();
+    _pricePerDemoFocusNode.dispose();
+    _uploadLimitFocusNode.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final state = ref.read(manageTaskNotifierProvider);
+    if (state.prompt.isEmpty) {
+      return;
+    }
+    final ForgeTaskItem result;
+    if (widget.modalType == ManageTaskModalType.create) {
+      result = ForgeTaskItem(
+        prompt: state.prompt,
+        rewardLimit: state.pricePerDemo,
+        uploadLimit: state.uploadLimitValue,
+      );
+    } else {
+      result = widget.task!.copyWith(
+        prompt: state.prompt,
+        rewardLimit: state.pricePerDemo,
+        uploadLimit: state.uploadLimitValue,
+      );
+    }
+    widget.onDone(result);
   }
 
   @override
@@ -90,13 +128,40 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  const ManageTaskModalPrompt(),
-                  const SizedBox(height: 20),
-                  ManageTaskModalPricePerDemo(
-                    tokenSymbol: widget.tokenSymbol,
+                  Focus(
+                    onKeyEvent: (node, event) {
+                      if (event is KeyDownEvent &&
+                          event.logicalKey == LogicalKeyboardKey.tab) {
+                        _pricePerDemoFocusNode.requestFocus();
+                        return KeyEventResult.handled;
+                      }
+                      return KeyEventResult.ignored;
+                    },
+                    child: ManageTaskModalPrompt(
+                      focusNode: _promptFocusNode,
+                    ),
                   ),
                   const SizedBox(height: 20),
-                  const ManageTaskModalUploadLimit(),
+                  Focus(
+                    onKeyEvent: (node, event) {
+                      if (event is KeyDownEvent &&
+                          event.logicalKey == LogicalKeyboardKey.tab) {
+                        _uploadLimitFocusNode.requestFocus();
+                        return KeyEventResult.handled;
+                      }
+                      return KeyEventResult.ignored;
+                    },
+                    child: ManageTaskModalPricePerDemo(
+                      tokenSymbol: widget.tokenSymbol,
+                      focusNode: _pricePerDemoFocusNode,
+                      onSubmitted: (_) => _submit(),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ManageTaskModalUploadLimit(
+                    focusNode: _uploadLimitFocusNode,
+                    onSubmitted: (_) => _submit(),
+                  ),
                   const SizedBox(height: 20),
                   _footerButtons(ref),
                 ],
@@ -122,24 +187,7 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
           buttonText: widget.modalType == ManageTaskModalType.create
               ? 'Add task'
               : 'Save task',
-          onTap: () {
-            final state = ref.read(manageTaskNotifierProvider);
-            final ForgeTaskItem result;
-            if (widget.modalType == ManageTaskModalType.create) {
-              result = ForgeTaskItem(
-                prompt: state.prompt,
-                rewardLimit: state.pricePerDemo,
-                uploadLimit: state.uploadLimitValue,
-              );
-            } else {
-              result = widget.task!.copyWith(
-                prompt: state.prompt,
-                rewardLimit: state.pricePerDemo,
-                uploadLimit: state.uploadLimitValue,
-              );
-            }
-            widget.onDone(result);
-          },
+          onTap: _submit,
           isLocked: ref.watch(manageTaskNotifierProvider).prompt.isEmpty,
         ),
       ],
