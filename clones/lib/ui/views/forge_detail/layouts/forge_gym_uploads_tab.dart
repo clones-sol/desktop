@@ -3,6 +3,7 @@ import 'package:clones/assets.dart';
 import 'package:clones/domain/models/submission/pool_submission.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones/ui/components/modals/download_scripts_modal.dart';
 import 'package:clones/ui/views/forge_detail/bloc/provider.dart';
 import 'package:clones/ui/views/forge_detail/layouts/components/forge_gym_header.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class ForgeGymUploadsTab extends ConsumerWidget {
           child: Column(
             children: [
               const ForgeGymHeader(),
-              const _PageHeader(),
+              _PageHeader(submissions: submissions),
               const SizedBox(height: 24),
               _UploadsTable(submissions: submissions),
             ],
@@ -43,24 +44,67 @@ class ForgeGymUploadsTab extends ConsumerWidget {
   }
 }
 
-class _PageHeader extends StatelessWidget {
-  const _PageHeader();
+class _PageHeader extends ConsumerWidget {
+  const _PageHeader({required this.submissions});
+  final List<PoolSubmission> submissions;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    final selectedSubmissions = ref.watch(_selectedSubmissionsProvider);
+    final hasSelection = selectedSubmissions.isNotEmpty;
+
+    VoidCallback? onTapCallback;
+    if (hasSelection) {
+      onTapCallback = () {
+        final submissionsToExport = submissions
+            .where((s) => selectedSubmissions.contains(s.id))
+            .toList();
+        showDialog(
+          context: context,
+          builder: (context) =>
+              DownloadScriptsModal(submissions: submissionsToExport),
+        );
+      };
+    } else {
+      if (submissions.isEmpty) {
+        onTapCallback = null;
+      } else {
+        onTapCallback = () {
+          showDialog(
+            context: context,
+            builder: (context) =>
+                DownloadScriptsModal(submissions: submissions),
+          );
+        };
+      }
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          '3. Uploads',
-          style: theme.textTheme.titleMedium,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '3. Uploads',
+              style: theme.textTheme.titleMedium,
+            ),
+            if (hasSelection) ...[
+              const SizedBox(width: 8),
+              Chip(
+                label: Text('${selectedSubmissions.length} selected'),
+                padding: const EdgeInsets.all(4),
+                backgroundColor: VMColors.secondary.withOpacity(0.2),
+                labelStyle: theme.textTheme.bodySmall
+                    ?.copyWith(color: VMColors.secondary),
+              )
+            ]
+          ],
         ),
         BtnPrimary(
-          buttonText: 'Export All Uploads',
-          onTap: () {
-            // TODO(reddwarf03): Implement export
-          },
+          buttonText: hasSelection ? 'Export Selected' : 'Export All Uploads',
+          onTap: onTapCallback,
         ),
       ],
     );

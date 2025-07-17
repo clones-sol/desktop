@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:clones/assets.dart';
@@ -6,6 +7,7 @@ import 'package:clones/domain/models/submission/pool_submission.dart';
 import 'package:clones/ui/components/card.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/utils/env.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -240,7 +242,56 @@ done
     });
   }
 
-  void _downloadScript() {}
+  Future<void> _downloadScript() async {
+    final script = _getActiveScript();
+    final bytes = Uint8List.fromList(utf8.encode(script));
+    String fileName;
+    String mimeType;
+    String fileExtension;
+
+    switch (_tabController.index) {
+      case 0:
+        fileName = 'download.js';
+        mimeType = 'application/javascript';
+        fileExtension = '.js';
+        break;
+      case 1:
+        fileName = 'download.py';
+        mimeType = 'application/x-python-code';
+        fileExtension = '.py';
+        break;
+      case 2:
+        fileName = 'download.sh';
+        mimeType = 'application/x-shellscript';
+        fileExtension = '.sh';
+        break;
+      default:
+        return;
+    }
+
+    String? result = '';
+    var error = '';
+    try {
+      result = await FileSaver.instance.saveAs(
+        name: fileName,
+        bytes: bytes,
+        mimeType: MimeType.custom,
+        customMimeType: mimeType,
+        fileExtension: fileExtension,
+      );
+    } catch (e) {
+      error = e.toString();
+    }
+    if (result != null && result.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Script downloaded successfully!')),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error downloading script! $error')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -260,44 +311,34 @@ done
         ),
         Center(
           child: CardWidget(
-            variant: CardVariant.secondary,
             padding: CardPadding.large,
             child: Material(
               type: MaterialType.transparency,
-              child: Container(
-                width: 1000,
-                constraints: const BoxConstraints(maxHeight: 800),
+              child: SizedBox(
+                width: mediaQuery.size.width * 0.8,
+                height: mediaQuery.size.height * 0.8,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       'Download Submissions Scripts',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: VMColors.primaryText,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
-                    SizedBox(
-                      width: mediaQuery.size.width * 0.8,
-                      height: 600,
+                    Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'These scripts will download all submission files to a "downloads" folder in the directory where you run the script. Each submission will be in its own subfolder named with the submission ID.',
-                            style: TextStyle(
-                              color: VMColors.secondaryText,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
                           Text(
                             'Total submissions with files: ${filteredSubmissions.length}',
-                            style: TextStyle(
-                              color: VMColors.secondaryText,
-                            ),
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 20),
                           TabBar(
                             labelColor: VMColors.primaryText,
                             unselectedLabelColor: VMColors.secondaryText,
@@ -312,7 +353,7 @@ done
                               Tab(text: 'Shell'),
                             ],
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 20),
                           Expanded(
                             child: TabBarView(
                               controller: _tabController,
@@ -332,18 +373,18 @@ done
                       spacing: 20,
                       children: [
                         BtnPrimary(
+                          buttonText: 'Download Script',
+                          onTap: _downloadScript,
+                        ),
+                        BtnPrimary(
                           buttonText: 'Copy to Clipboard',
                           onTap: _copyToClipboard,
                           btnPrimaryType: BtnPrimaryType.outlinePrimary,
                         ),
                         BtnPrimary(
-                          buttonText: 'Download Script',
-                          onTap: _downloadScript,
-                          btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                        ),
-                        BtnPrimary(
                           buttonText: 'Close',
                           onTap: () => Navigator.of(context).pop(),
+                          btnPrimaryType: BtnPrimaryType.outlinePrimary,
                         ),
                       ],
                     ),
@@ -358,14 +399,10 @@ done
   }
 
   Widget _buildScriptView(String script) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.8),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: SingleChildScrollView(
-        child: SelectableText(script),
+    return SingleChildScrollView(
+      child: SelectableText(
+        script,
+        style: Theme.of(context).textTheme.bodySmall,
       ),
     );
   }
