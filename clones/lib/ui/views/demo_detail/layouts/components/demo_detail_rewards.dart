@@ -190,7 +190,7 @@ class DemoDetailRewards extends ConsumerWidget {
                           ],
                         ),
                       ],
-                    )
+                    ),
                 ],
               ),
             ),

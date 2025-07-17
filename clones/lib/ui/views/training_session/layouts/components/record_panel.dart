@@ -1,7 +1,5 @@
 import 'package:clones/assets.dart';
-import 'package:clones/domain/models/quest/reward_info.dart';
 import 'package:clones/domain/models/quest/quest_reward.dart';
-import 'package:clones/domain/models/token.dart';
 import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones/ui/components/design_widget/text/app_text.dart';
 import 'package:clones/ui/views/training_session/bloc/provider.dart';
@@ -55,26 +53,27 @@ class _RecordPanelState extends ConsumerState<RecordPanel> {
               ),
             ),
             const SizedBox(height: 10),
-            widget.reward != null
-                ? Column(
-                    children: [
-                      Text(
-                        'Complete the task to get a reward.',
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Up to: ${widget.reward?.maxReward ?? 0} Tokens',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: VMColors.secondary,
-                        ),
-                      ),
-                    ],
-                  )
-                : Text(
+            if (widget.reward != null)
+              Column(
+                children: [
+                  Text(
                     'Complete the task to get a reward.',
                     style: theme.textTheme.bodyMedium,
                   ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Up to: ${widget.reward?.maxReward ?? 0} Tokens',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: VMColors.secondary,
+                    ),
+                  ),
+                ],
+              )
+            else
+              Text(
+                'Complete the task to get a reward.',
+                style: theme.textTheme.bodyMedium,
+              ),
             const SizedBox(height: 10),
             Text(
               'Your Objectives:',

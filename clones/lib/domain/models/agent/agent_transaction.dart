@@ -1,8 +1,8 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:clones/domain/models/agent/agent_deployment.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:clones/domain/models/agent/gym_agent.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'agent_transaction.freezed.dart';
 part 'agent_transaction.g.dart';
