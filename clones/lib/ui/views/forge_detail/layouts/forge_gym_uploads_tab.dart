@@ -129,6 +129,7 @@ class _UploadsTable extends ConsumerWidget {
     }
 
     return CardWidget(
+      padding: CardPadding.none,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Column(
