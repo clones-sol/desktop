@@ -6,6 +6,7 @@ authors = ["you"]
 license = ""
 repository = ""
 edition = "2021"
+default-run = "clones-desktop"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -17,16 +18,16 @@ name = "gym_desktop_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
-tauri-build = { version = "2.0.0-beta.23", features = [] }
+tauri-build = { version = "2.3.0", features = [] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
-core-graphics = "0.24.0"
-core-foundation = "0.10.0"
+core-graphics = "0.25.0"
+core-foundation = "0.10.1"
 macos-accessibility-client = "0.0.1"
-window-vibrancy = "0.5.2"
+window-vibrancy = "0.6.0"
 
 [target."cfg(any(target_os = \"macos\", windows, target_os = \"linux\"))".dependencies]
-tauri-plugin-single-instance = { version = "2.0.0", features = ["deep-link"] }
+tauri-plugin-single-instance = { version = "2.3.0", features = ["deep-link"] }
 
 [target."cfg(not(target_os = \"linux\"))".dependencies]
 app-finder = "0.1.0"
@@ -35,38 +36,39 @@ app-finder = "0.1.0"
 multiinput = "0.1.0"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-updater = "2"
+tauri-plugin-updater = "2.9.0"
 
 [dependencies]
-tauri = { version = "2.0.0-beta.23", features = ["tray-icon", "devtools", "macos-private-api", "protocol-asset"] }
+tauri = { version = "2.6.2", features = ["tray-icon", "devtools", "macos-private-api", "protocol-asset"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-tauri-plugin-opener = "2.0.0-beta.9"
+tauri-plugin-opener = "2.4.0"
 rdev = { git = "https://github.com/rustdesk-org/rdev" }
 chrono = "0.4"
-once_cell = "1.19"
+once_cell = "1.21.3"
 reqwest = { version = "0.11", features = ["blocking", "json"] }
 zip = "0.6"
 tar = "0.4"
 xz2 = { version = "0.1", features = ["static"] }
 lazy_static = "1.4.0"
 display-info = "0.4.3"
-xcap = "0.2.2"
+xcap = "0.3.0"
 base64 = "0.21.7"
 image = "0.24.7"
-tauri-plugin-shell = "2.0.0-beta.8"
-tauri-plugin-os = "2.0.0-beta.8"
-tauri-plugin-clipboard-manager = "2.0.0-beta.8"
-tauri-plugin-process = "2.0.0-beta.8"
-tauri-plugin-log = { version = "2.0.0-beta.8", features = ["colored"] }
+tauri-plugin-shell = "2.3.0"
+tauri-plugin-os = "2.3.0"
+tauri-plugin-clipboard-manager = "2.3.0"
+tauri-plugin-process = "2.3.0"
+tauri-plugin-log = { version = "2.3.0", features = ["colored"] }
 log = "0.4.26"
-tauri-plugin-deep-link = "2.0.0-beta.8"
-tauri-plugin-dialog = "2.0.0-beta.8"
+tauri-plugin-deep-link = "2.3.0"
+tauri-plugin-dialog = "2.3.0"
 dotenvy = "0.15"
-walkdir = "2"
+walkdir = "2.5"
 wait-timeout = "0.2"
 rlimit = "0.10"
 anyhow = "1.0"
+env_logger = "0.11.3"
 
 # Ajouts pour le serveur IPC
 tokio = { version = "1", features = ["full"] }

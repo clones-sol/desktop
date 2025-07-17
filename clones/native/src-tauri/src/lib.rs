@@ -35,10 +35,12 @@ pub struct DeepLinkState(pub Arc<Mutex<Option<String>>>);
 
 /// Creates a Tauri builder with all plugins, state, and command handlers.
 pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
-    tauri::Builder::default()
+    let builder = tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_deep_link::init())
-        .plugin(
+        .plugin(tauri_plugin_deep_link::init());
+
+    let builder = if std::env::var("PRIMARY_LOGGER").unwrap_or_default() == "true" {
+        builder.plugin(
             tauri_plugin_log::Builder::new()
                 .level_for("tao::platform_impl::platform", log::LevelFilter::Error)
                 .level_for("reqwest::blocking::wait", log::LevelFilter::Error)
@@ -52,6 +54,11 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
                 ))
                 .build(),
         )
+    } else {
+        builder
+    };
+
+    builder
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_clipboard_manager::init())
         .plugin(tauri_plugin_os::init())
@@ -115,7 +122,6 @@ pub fn run() {
     
         listen_handle.clone().listen("deep-link", move |event| {
             let url = event.payload();
-            println!("[Deep Link] Received: {}", url);
             let state = listen_handle.state::<DeepLinkState>();
             let mut lock = state.0.lock().unwrap();
             *lock = Some(url.to_string().trim_matches('"').to_string());

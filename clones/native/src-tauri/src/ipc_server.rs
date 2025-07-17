@@ -164,10 +164,17 @@ pub async fn init(app_handle: AppHandle) {
 
     // We launch the server in a Tokio task so as not to block the main Tauri thread
     tokio::spawn(async move {
-        let listener = tokio::net::TcpListener::bind(addr).await.unwrap();
-        axum::serve(listener, app.into_make_service())
-            .await
-            .unwrap();
+        match tokio::net::TcpListener::bind(addr).await {
+            Ok(listener) => {
+                log::info!("[IPC Server] Successfully bound to {}", addr);
+                if let Err(e) = axum::serve(listener, app.into_make_service()).await {
+                    log::error!("[IPC Server] Server error: {}", e);
+                }
+            }
+            Err(e) => {
+                log::error!("[IPC Server] Failed to bind to {}: {}", addr, e);
+            }
+        }
     });
 }
 
