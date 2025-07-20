@@ -19,13 +19,16 @@ const PIPELINE_TIMEOUT_SECS: u64 = 300; // 5 minutes
 
 #[cfg(target_os = "windows")]
 fn get_pipeline_url() -> String {
-    std::env::var("PIPELINE_URL_WIN").unwrap_or_else(|_| "https://github.com/clones-sol/vm-pipeline/releases/latest/download/pipeline-win-x64.exe".to_string())
+    std::env::var("PIPELINE_URL_WIN").unwrap_or_else(|_| {
+        "https://github.com/clones-sol/pipeline/releases/latest/download/pipeline-win-x64.exe"
+            .to_string()
+    })
 }
 
 #[cfg(target_os = "linux")]
 fn get_pipeline_url() -> String {
     std::env::var("PIPELINE_URL_LINUX").unwrap_or_else(|_| {
-        "https://github.com/clones-sol/vm-pipeline/releases/latest/download/pipeline-linux-x64"
+        "https://github.com/clones-sol/pipeline/releases/latest/download/pipeline-linux-x64"
             .to_string()
     })
 }
@@ -33,7 +36,7 @@ fn get_pipeline_url() -> String {
 #[cfg(target_os = "macos")]
 fn get_pipeline_url() -> String {
     std::env::var("PIPELINE_URL_MACOS").unwrap_or_else(|_| {
-        "https://github.com/cloes-sol/vm-pipeline/releases/latest/download/pipeline-macos-arm64"
+        "https://github.com/clones-sol/pipeline/releases/latest/download/pipeline-macos-arm64"
             .to_string()
     })
 }
