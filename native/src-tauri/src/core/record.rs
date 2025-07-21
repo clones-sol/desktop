@@ -247,11 +247,10 @@ pub struct QuestState {
     pub current_quest: Mutex<Option<Quest>>,
 }
 
-// Global state for recording and logging and overlay
+// Global state for recording and logging
 lazy_static::lazy_static! {
     static ref RECORDER_STATE: Arc<Mutex<Option<Recorder>>> = Arc::new(Mutex::new(None));
     static ref RECORDING_STATE: Arc<Mutex<Option<String>>> = Arc::new(Mutex::new(Some("off".to_string())));
-    static ref OVERLAY_WINDOW_STATE: Mutex<Option<tauri::WebviewWindow>> = Mutex::new(None);
     static ref LOGGER_STATE: Arc<Mutex<Option<Logger>>> = Arc::new(Mutex::new(None));
 }
 
@@ -392,21 +391,11 @@ pub async fn start_recording(
     // Initialize FFmpeg
     init_ffmpeg()?;
 
-    create_overlay_window(&app)?;
-
     // Store quest data in state if available
     if let Some(quest_data) = &quest {
         // Store in QuestState for later retrieval
         *quest_state.current_quest.lock().unwrap() = Some(quest_data.clone());
 
-        // Also emit the event for backward compatibility
-        app.emit(
-            "quest-overlay",
-            serde_json::json!({
-                "quest": quest_data
-            }),
-        )
-        .map_err(|e| format!("Failed to emit quest data: {}", e))?;
     }
 
     let (session_dir, timestamp) = get_session_path(&app)?;
@@ -560,14 +549,6 @@ pub async fn stop_recording(
                 .map_err(|e| format!("Failed to write meta file: {}", e))?;
             }
         }
-    }
-
-    // destroy the overlay window
-    let mut overlay_state = OVERLAY_WINDOW_STATE.lock().map_err(|e| e.to_string())?;
-    if let Some(window) = overlay_state.take() {
-        window
-            .close()
-            .map_err(|e| format!("Failed to close overlay window: {}", e))?;
     }
 
     // Find the most recent recording directory to get its ID
@@ -1341,80 +1322,3 @@ pub async fn get_current_quest(
     Ok(current_quest.clone())
 }
 
-fn create_overlay_window(app: &tauri::AppHandle) -> Result<(), String> {
-    log::info!("Starting to create overlay window");
-
-    // Get primary display info
-    let displays = DisplayInfo::all().map_err(|e| format!("Failed to get display info: {}", e))?;
-    let primary = displays
-        .iter()
-        .find(|d| d.is_primary)
-        .or_else(|| displays.first())
-        .ok_or_else(|| "No display found".to_string())?;
-
-    log::info!(
-        "Using primary display: {}x{} at position ({},{})",
-        primary.width,
-        primary.height,
-        primary.x,
-        primary.y
-    );
-
-    // set overlay locations for specific platforms
-    let overlay_w = 280.0;
-    let overlay_h = 280.0;
-    let overlay_x = primary.width as f64 - overlay_w;
-    let overlay_y = primary.y as f64;
-
-    log::info!(
-        "Overlay window dimensions: {}x{} at position ({},{})",
-        overlay_w,
-        overlay_h,
-        overlay_x,
-        overlay_y
-    );
-
-    // create the overlay window
-    let overlay_window =
-        tauri::WebviewWindowBuilder::new(app, "overlay", tauri::WebviewUrl::App("overlay".into()))
-            .transparent(true)
-            .always_on_top(true)
-            .decorations(false)
-            .focused(false)
-            .shadow(false)
-            .position(overlay_x, overlay_y)
-            .inner_size(overlay_w, overlay_h)
-            .skip_taskbar(true)
-            .resizable(false)
-            .visible_on_all_workspaces(true)
-            .build();
-
-    match overlay_window {
-        Ok(window) => {
-            log::info!("Successfully created overlay window");
-
-            // Check if the window is visible
-            if let Ok(visible) = window.is_visible() {
-                log::info!("Overlay window visibility: {}", visible);
-            } else {
-                log::warn!("Failed to check overlay window visibility");
-            }
-
-            // Store the window in the global state
-            if let Ok(mut overlay_state) = OVERLAY_WINDOW_STATE.lock() {
-                log::info!("Storing overlay window in global state");
-                *overlay_state = Some(window);
-            } else {
-                log::error!("Failed to acquire lock for overlay window state");
-                return Err("Failed to store overlay window: mutex lock failed".to_string());
-            }
-
-            Ok(())
-        }
-        Err(e) => {
-            log::error!("Failed to create overlay window: {}", e);
-
-            Err(format!("Failed to create overlay window: {}", e))
-        }
-    }
-}

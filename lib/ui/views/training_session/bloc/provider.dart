@@ -38,6 +38,24 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     return const TrainingSessionState();
   }
 
+  @override
+  set state(TrainingSessionState value) {
+    if (state.activeQuest != value.activeQuest) {
+      MultiWindowsRecord.demoUpdate(
+        value.overlayWindowId,
+        value.activeQuest?.toJson(),
+      );
+    }
+
+    if (state.recordingState != value.recordingState) {
+      MultiWindowsRecord.recordingStateUpdate(
+        value.overlayWindowId,
+        value.recordingState.name,
+      );
+    }
+    super.state = value;
+  }
+
   Future<void> setToneAudio(String source) async {
     final toneAudio = AudioPlayer();
     await toneAudio.setSource(AssetSource(source));
@@ -67,6 +85,22 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     } finally {
       setRecordingLoading(false);
     }
+
+    final window = await DesktopMultiWindow.createWindow();
+    state = state.copyWith(overlayWindowId: window.windowId);
+    await window.setFrame(Offset.zero & const Size(300, 300));
+    await window.setTitle('Record');
+    await window.show();
+
+    // Send initial state to the new window
+    await MultiWindowsRecord.demoUpdate(
+      state.overlayWindowId,
+      state.activeQuest == null ? null : jsonEncode(state.activeQuest),
+    );
+    await MultiWindowsRecord.recordingStateUpdate(
+      state.overlayWindowId,
+      state.recordingState.name,
+    );
   }
 
   Future<void> typeMessage(
@@ -563,6 +597,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       delay: false,
     );
 
+    await MultiWindowsRecord.recordingComplete(state.overlayWindowId);
+
     setRecordingProcessing(false);
     triggerScrollToBottom();
   }
@@ -575,6 +611,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
         setActiveQuest(null);
         setRecordingState(RecordingState.off);
+        await MultiWindowsRecord.recordingComplete(state.overlayWindowId);
 
         // TODO(reddwarf03): To check
         // await emit('quest-overlay', { 'quest': null });

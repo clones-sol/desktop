@@ -4,6 +4,13 @@ String formatTime(int seconds) {
   return '$minutes:$secs';
 }
 
+String formatTimeWithHours(int seconds) {
+  final hours = (seconds ~/ 3600).toString().padLeft(2, '0');
+  final minutes = ((seconds % 3600) ~/ 60).toString().padLeft(2, '0');
+  final secs = (seconds % 60).toString().padLeft(2, '0');
+  return '$hours:$minutes:$secs';
+}
+
 String formatDuration(int seconds) {
   if (seconds == 0) return '0:00';
   final duration = Duration(seconds: seconds);

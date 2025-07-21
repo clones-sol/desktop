@@ -178,7 +178,6 @@ class PoolsRepositoryImpl {
   }) async {
     try {
       final params = <String, dynamic>{'poolId': poolId};
-      if (taskId != null) params['taskId'] = taskId;
       return await _client.get<RewardInfo>(
         '/forge/pools/reward',
         params: params,

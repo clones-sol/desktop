@@ -37,6 +37,7 @@ mixin _$TrainingSessionState {
   int get scrollToBottomNonce => throw _privateConstructorUsedError;
   AudioPlayer? get toneAudio => throw _privateConstructorUsedError;
   AudioPlayer? get blipAudio => throw _privateConstructorUsedError;
+  int? get overlayWindowId => throw _privateConstructorUsedError;
 
   /// Create a copy of TrainingSessionState
   /// with the given fields replaced by the non-null parameter values.
@@ -72,7 +73,8 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       AppInfo? app,
       int scrollToBottomNonce,
       AudioPlayer? toneAudio,
-      AudioPlayer? blipAudio});
+      AudioPlayer? blipAudio,
+      int? overlayWindowId});
 
   $QuestCopyWith<$Res>? get currentQuest;
   $QuestCopyWith<$Res>? get activeQuest;
@@ -117,6 +119,7 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
     Object? scrollToBottomNonce = null,
     Object? toneAudio = freezed,
     Object? blipAudio = freezed,
+    Object? overlayWindowId = freezed,
   }) {
     return _then(_value.copyWith(
       prompt: freezed == prompt
@@ -203,6 +206,10 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
           ? _value.blipAudio
           : blipAudio // ignore: cast_nullable_to_non_nullable
               as AudioPlayer?,
+      overlayWindowId: freezed == overlayWindowId
+          ? _value.overlayWindowId
+          : overlayWindowId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 
@@ -292,7 +299,8 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
       AppInfo? app,
       int scrollToBottomNonce,
       AudioPlayer? toneAudio,
-      AudioPlayer? blipAudio});
+      AudioPlayer? blipAudio,
+      int? overlayWindowId});
 
   @override
   $QuestCopyWith<$Res>? get currentQuest;
@@ -338,6 +346,7 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
     Object? scrollToBottomNonce = null,
     Object? toneAudio = freezed,
     Object? blipAudio = freezed,
+    Object? overlayWindowId = freezed,
   }) {
     return _then(_$TrainingSessionStateImpl(
       prompt: freezed == prompt
@@ -424,6 +433,10 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
           ? _value.blipAudio
           : blipAudio // ignore: cast_nullable_to_non_nullable
               as AudioPlayer?,
+      overlayWindowId: freezed == overlayWindowId
+          ? _value.overlayWindowId
+          : overlayWindowId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -452,7 +465,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
       this.app,
       this.scrollToBottomNonce = 0,
       this.toneAudio,
-      this.blipAudio})
+      this.blipAudio,
+      this.overlayWindowId})
       : _chatMessages = chatMessages,
         _deletedRanges = deletedRanges,
         _originalSftData = originalSftData,
@@ -533,10 +547,12 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   final AudioPlayer? toneAudio;
   @override
   final AudioPlayer? blipAudio;
+  @override
+  final int? overlayWindowId;
 
   @override
   String toString() {
-    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentQuest: $currentQuest, activeQuest: $activeQuest, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
+    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentQuest: $currentQuest, activeQuest: $activeQuest, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio, overlayWindowId: $overlayWindowId)';
   }
 
   @override
@@ -582,7 +598,9 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
             (identical(other.toneAudio, toneAudio) ||
                 other.toneAudio == toneAudio) &&
             (identical(other.blipAudio, blipAudio) ||
-                other.blipAudio == blipAudio));
+                other.blipAudio == blipAudio) &&
+            (identical(other.overlayWindowId, overlayWindowId) ||
+                other.overlayWindowId == overlayWindowId));
   }
 
   @override
@@ -608,7 +626,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
         app,
         scrollToBottomNonce,
         toneAudio,
-        blipAudio
+        blipAudio,
+        overlayWindowId
       ]);
 
   /// Create a copy of TrainingSessionState
@@ -644,7 +663,8 @@ abstract class _TrainingSessionState extends TrainingSessionState {
       final AppInfo? app,
       final int scrollToBottomNonce,
       final AudioPlayer? toneAudio,
-      final AudioPlayer? blipAudio}) = _$TrainingSessionStateImpl;
+      final AudioPlayer? blipAudio,
+      final int? overlayWindowId}) = _$TrainingSessionStateImpl;
   const _TrainingSessionState._() : super._();
 
   @override
@@ -689,6 +709,8 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   AudioPlayer? get toneAudio;
   @override
   AudioPlayer? get blipAudio;
+  @override
+  int? get overlayWindowId;
 
   /// Create a copy of TrainingSessionState
   /// with the given fields replaced by the non-null parameter values.

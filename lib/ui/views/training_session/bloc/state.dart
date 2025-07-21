@@ -35,6 +35,7 @@ class TrainingSessionState with _$TrainingSessionState {
     @Default(0) int scrollToBottomNonce,
     AudioPlayer? toneAudio,
     AudioPlayer? blipAudio,
+    int? overlayWindowId,
   }) = _TrainingSessionState;
   const TrainingSessionState._();
 }

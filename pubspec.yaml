@@ -15,6 +15,7 @@ dependencies:
   collection: any
   crypto: any
   decimal: ^3.2.2
+  desktop_multi_window: ^0.2.1
   dio: ^5.8.0+1
   dotted_border: ^3.0.1
   file_saver: ^0.3.1

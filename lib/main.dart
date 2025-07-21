@@ -17,6 +17,7 @@ import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.d
 import 'package:clones_desktop/ui/views/overlay/overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,12 +26,6 @@ import 'package:google_fonts/google_fonts.dart';
 final _router = GoRouter(
   initialLocation: HomeView.routeName,
   routes: [
-    GoRoute(
-      path: '/overlay',
-      pageBuilder: (context, state) => const NoTransitionPage(
-        child: OverlayView(),
-      ),
-    ),
     ShellRoute(
       builder: (context, state, child) {
         return MainLayout(
@@ -143,10 +138,21 @@ final _router = GoRouter(
   ],
 );
 
-Future<void> main() async {
+Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  runApp(const ProviderScope(child: ClonesApp()));
+  if (args.firstOrNull == 'multi_window') {
+    final windowId = int.parse(args[1]);
+    runApp(
+      ProviderScope(
+        child: RecordOverlayView(
+          windowController: WindowController.fromWindowId(windowId),
+        ),
+      ),
+    );
+  } else {
+    runApp(const ProviderScope(child: ClonesApp()));
+  }
 }
 
 class ClonesApp extends ConsumerStatefulWidget {
@@ -165,6 +171,15 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateRoute();
     });
+    DesktopMultiWindow.setMethodHandler(_handleMethodCall);
+  }
+
+  Future<dynamic> _handleMethodCall(MethodCall call, int fromWindowId) async {
+    if (call.method == MultiWindowsMethod.stopRecording.name) {
+      await ref
+          .read(trainingSessionNotifierProvider.notifier)
+          .recordingComplete();
+    }
   }
 
   void _updateRoute() {
