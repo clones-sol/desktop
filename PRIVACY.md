@@ -93,12 +93,6 @@ Users who contribute recordings may be eligible for compensation according to ou
    - Requires connecting the original wallet used for submission
    - Immediate automated processing
 
-2. Through Email Support:
-   - If you've lost access to your private key
-   - Email privacy@clones.sol
-   - Include your wallet public address in the request
-   - We will process the deletion of recordings associated with that wallet
-
 In both cases, we will:
 - Remove your data from our servers
 - Exclude your data from future public dataset releases
@@ -119,7 +113,6 @@ You acknowledge and understand that:
    
 3. Recommendations:
    - Securely back up your wallet if you want to maintain direct deletion rights
-   - Save your wallet's public address in case you need to request deletion via email
    - Consider these limitations before submitting recordings
    - Use the provided privacy tools during recording to prevent capturing sensitive information
 
