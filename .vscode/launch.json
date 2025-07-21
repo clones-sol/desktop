@@ -9,13 +9,13 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "PRIMARY_LOGGER=true sleep 2; cargo run --bin ipc-server-only",
-      "cwd": "${workspaceFolder}/clones/native/src-tauri"
+      "cwd": "${workspaceFolder}/native/src-tauri"
     },
     {
       "name": "clones-flutter",
       "request": "launch",
       "type": "dart",
-      "program": "clones/lib/main.dart"
+      "program": "lib/main.dart"
     }
   ],
   "compounds": [

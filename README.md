@@ -1,6 +1,6 @@
 # Clones Desktop
 
-A desktop application for contributing to the world's largest dataset for multimodal computer-use agents. Earn $CLONES tokens in two ways: record your desktop interactions to train better computer-use AI, or provide secure virtual desktop infrastructure for deploying these agents. 
+A desktop application for contributing to the world's largest dataset for multimodal computer-use agents. Earn $CLONES, $USDC or $SOL tokens in two ways: record your desktop interactions to train better computer-use AI, or provide secure virtual desktop infrastructure for deploying these agents. 
 
 Built from the ground up with privacy and security as core principles. See our [Privacy Policy](PRIVACY.md) for details.
 
@@ -10,7 +10,7 @@ This project is a monorepo containing the Flutter application and the Rust backe
 
 ### Prerequisites
 
-- [Flutter](https://flutter.dev/docs/get-started/install)
+- [Flutter](https://flutter.dev/docs/get-started/install) - Flutter 3.29+
 - [Rust](https://www.rust-lang.org/tools/install)
 - [VS Code](https://code.visualstudio.com/) with the following extensions:
     - [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
@@ -31,18 +31,7 @@ Please refer to the website repository for instructions on how to run it in deve
 
 1.  **Configure Environment Variables**
 
-    Create a `.env` file in the `clones` directory with the following content:
-    ```
-    ENV=dev
-    APP_IDENTIFIER_SUFFIX="-devnet"
-    VIRAL_TOKEN_ADDRESS=FndpD76kqsCU7RqPRgu2bdcPCNNAzfFW3x8zFBuejuEG
-    SOL_TOKEN_ADDRESS=So11111111111111111111111111111111111111112
-    PRIVACY_POLICY_URL=https://github.com/clones-sol/desktop/blob/main/PRIVACY.md
-    SOLSCAN_BASE_URL=https://solscan.io
-    API_WEBSITE_URL=http://localhost:5173
-    API_BACKEND_URL=http://localhost:8001
-    JUPITER_API_URL=https://api.jup.ag
-    ```
+    Create a `.env` file in the `clones` directory (See `env.example`)
 
 2.  **Run the application**
 
@@ -54,3 +43,8 @@ Please refer to the website repository for instructions on how to run it in deve
     4.  Press F5 to start debugging.
 
     This will launch both the Flutter application and the Rust backend with the Inter-Process Communication (IPC) server.
+
+
+### Note
+
+*** This Application is currently in active development so it might fail to build. Please refer to issues or create new issues if you find any. Contributions are welcomed.
