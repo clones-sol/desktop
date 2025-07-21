@@ -9,7 +9,6 @@ import 'package:clones/ui/views/gym/layouts/gym_view.dart';
 import 'package:clones/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:clones/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones/ui/views/leaderboards/layouts/leaderboards_view.dart';
-import 'package:clones/ui/views/skills_tree/layouts/skill_tree_view.dart';
 import 'package:clones/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -46,11 +45,6 @@ class Sidebar extends ConsumerWidget {
         path: GymHistoryView.routeName,
         imagePath: Assets.gymHistoryIcon,
         label: 'Gym History',
-      ),
-      SidebarButtonData(
-        path: SkillTreeView.routeName,
-        imagePath: Assets.skillsTreeIcon,
-        label: 'Skills tree',
       ),
       SidebarButtonData(
         path: LeaderboardsView.routeName,

@@ -14,7 +14,6 @@ import 'package:clones/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:clones/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones/ui/views/overlay/overlay_view.dart';
-import 'package:clones/ui/views/skills_tree/layouts/skill_tree_view.dart';
 import 'package:clones/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -114,12 +113,6 @@ final _router = GoRouter(
           path: LeaderboardsView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: LeaderboardsView(),
-          ),
-        ),
-        GoRoute(
-          path: SkillTreeView.routeName,
-          pageBuilder: (context, state) => const NoTransitionPage(
-            child: SkillTreeView(),
           ),
         ),
         GoRoute(
