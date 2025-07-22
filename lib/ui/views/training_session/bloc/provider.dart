@@ -16,6 +16,8 @@ import 'package:clones_desktop/domain/models/quest/quest_reward.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:clones_desktop/utils/env.dart';
+import 'package:clones_desktop/utils/multi_windows_record.dart';
+import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;

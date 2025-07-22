@@ -1,8 +1,8 @@
-import 'package:clones/domain/models/quest/quest.dart';
-import 'package:clones/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:clones/ui/components/design_widget/text/app_text.dart';
-import 'package:clones/ui/views/record_overlay/bloc/provider.dart';
-import 'package:clones/ui/views/training_session/bloc/state.dart';
+import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/design_widget/text/app_text.dart';
+import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,10 +47,7 @@ class RecordOverlayObjectives extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            quest.title,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
+          Text(quest.title, style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 8),
           if (quest.objectives.isNotEmpty)
             SizedBox(
