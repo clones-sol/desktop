@@ -1,0 +1,50 @@
+# Clones Desktop
+
+A desktop application for contributing to the world's largest dataset for multimodal computer-use agents. Earn $CLONES, $USDC or $SOL tokens in two ways: record your desktop interactions to train better computer-use AI, or provide secure virtual desktop infrastructure for deploying these agents.
+
+Built from the ground up with privacy and security as core principles. See our [Privacy Policy](../../PRIVACY.md) for details.
+
+## Getting Started
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/clones-sol/desktop.git
+cd desktop
+```
+
+## Development
+
+This project is a monorepo containing the Flutter application and the Rust backend.
+
+### Prerequisites
+
+-   [Flutter](https://flutter.dev/docs/get-started/install) - Flutter 3.29+
+-   [Rust](https://www.rust-lang.org/tools/install)
+-   [VS Code](https://code.visualstudio.com/) with the following extensions:
+    -   [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
+    -   [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+-   The [backend server](../projects/backend.mdx) and [website](../projects/website.mdx) must be running. Using the recommended Docker setup for both is advised.
+
+### Application Setup (Flutter + Rust)
+
+#### 1. Configure Environment Variables
+
+Create a `.env` file in the root of the `desktop` project directory by copying the `env.example` file.
+
+```bash
+cp env.example .env
+```
+
+For local development, the default values in this file do not need to be changed.
+
+#### 2. Run the Application
+
+The recommended way to run the application in development mode is to use the provided `launch.json` configuration in your IDE.
+
+1.  Open the project in you IDE.
+2.  Go to the "Run and Debug" panel (Shortcut: `Cmd+Shift+D` or `Ctrl+Shift+D` with Cursor/VS Code).
+3.  Select the **[COMPOUND] Flutter with IPC** configuration from the dropdown menu.
+4.  Start debugging.
+
+This will launch both the Flutter application and the Rust backend with the Inter-Process Communication (IPC) server, enabling them to work together.
