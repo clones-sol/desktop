@@ -186,7 +186,7 @@ class DemoDetailEditor extends ConsumerWidget {
                     ),
                   ],
                 ),
-                child: Text(
+                child: SelectableText(
                   formatTimeMs(message.timestamp),
                   style: theme.textTheme.bodySmall,
                 ),
@@ -194,7 +194,7 @@ class DemoDetailEditor extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(5),
             child: CardWidget(
               variant: CardVariant.secondary,
               child: Column(
@@ -234,11 +234,13 @@ class DemoDetailEditor extends ConsumerWidget {
                           size: 20,
                         ),
                         const SizedBox(width: 10),
-                        Text(
-                          message.content
-                              .replaceAll('```python', '')
-                              .replaceAll('```', ''),
-                          style: theme.textTheme.bodySmall,
+                        Expanded(
+                          child: SelectableText(
+                            message.content
+                                .replaceAll('```python', '')
+                                .replaceAll('```', ''),
+                            style: theme.textTheme.bodySmall,
+                          ),
                         ),
                       ],
                     )

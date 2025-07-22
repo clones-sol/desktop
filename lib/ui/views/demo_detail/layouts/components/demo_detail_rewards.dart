@@ -120,7 +120,7 @@ class DemoDetailRewards extends ConsumerWidget {
                               onTap: () {
                                 launchUrl(
                                   Uri.parse(
-                                    '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
+                                    '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}/?cluster=${Env.solscanCluster}',
                                   ),
                                   mode: LaunchMode.externalApplication,
                                 );
@@ -155,13 +155,33 @@ class DemoDetailRewards extends ConsumerWidget {
                               'Transaction hash:',
                               style: theme.textTheme.bodyMedium,
                             ),
-                            Text(
-                              submission.treasuryTransfer?.txHash
-                                      ?.shortAddress() ??
-                                  'NC',
-                              style: TextStyle(
-                                fontFamily: 'monospace',
-                                color: VMColors.secondaryText,
+                            InkWell(
+                              onTap: () {
+                                launchUrl(
+                                  Uri.parse(
+                                    '${Env.solscanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}/?cluster=${Env.solscanCluster}',
+                                  ),
+                                  mode: LaunchMode.externalApplication,
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    submission.treasuryTransfer?.txHash
+                                            ?.shortAddress() ??
+                                        'NC',
+                                    style: TextStyle(
+                                      fontFamily: 'monospace',
+                                      color: VMColors.secondaryText,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.open_in_new,
+                                    color: VMColors.secondaryText,
+                                    size: 16,
+                                  ),
+                                ],
                               ),
                             ),
                           ],

@@ -181,7 +181,12 @@ class DemoDetailEvents extends ConsumerWidget {
                             btnPrimaryType: BtnPrimaryType.outlinePrimary,
                             onTap: () async {
                               await Clipboard.setData(
-                                ClipboardData(text: jsonEncode(event)),
+                                ClipboardData(text: jsonEncode(event.data)),
+                              );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Data copied!'),
+                                ),
                               );
                             },
                             buttonText: 'Copy',
