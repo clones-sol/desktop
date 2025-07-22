@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:clones/domain/models/quest/quest.dart';
-import 'package:clones/ui/views/record_overlay/bloc/state.dart';
-import 'package:clones/ui/views/training_session/bloc/state.dart';
-import 'package:clones/utils/multi_windows_record.dart';
+import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
+import 'package:clones_desktop/utils/multi_windows_record.dart';
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -83,8 +83,9 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
           : Quest.fromJson(jsonDecode(call.arguments as String));
       setDemo(demo);
     } else if (call.method == MultiWindowsMethod.recordingStateUpdate.name) {
-      final recordingState =
-          RecordingState.values.byName(call.arguments as String);
+      final recordingState = RecordingState.values.byName(
+        call.arguments as String,
+      );
       setRecordingState(recordingState);
       if (recordingState == RecordingState.recording) {
         startTimer();

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:clones/domain/models/quest/quest.dart';
-import 'package:clones/ui/views/training_session/bloc/state.dart';
+import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'state.freezed.dart';

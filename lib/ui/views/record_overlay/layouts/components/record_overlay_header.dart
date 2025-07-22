@@ -1,6 +1,6 @@
-import 'package:clones/ui/views/record_overlay/bloc/provider.dart';
-import 'package:clones/ui/views/training_session/bloc/state.dart';
-import 'package:clones/utils/format_time.dart';
+import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
+import 'package:clones_desktop/utils/format_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
