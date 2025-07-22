@@ -23,8 +23,8 @@ _$SubmissionStatusImpl _$$SubmissionStatusImplFromJson(
       gradeResult: json['grade_result'] == null
           ? null
           : GradeResult.fromJson(json['grade_result'] as Map<String, dynamic>),
-      maxReward: (json['maxReward'] as num?)?.toInt(),
-      reward: (json['reward'] as num?)?.toInt(),
+      maxReward: (json['maxReward'] as num?)?.toDouble(),
+      reward: (json['reward'] as num?)?.toDouble(),
       treasuryTransfer: json['treasuryTransfer'] == null
           ? null
           : TreasuryTransfer.fromJson(

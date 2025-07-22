@@ -32,8 +32,8 @@ mixin _$SubmissionStatus {
   int? get clampedScore => throw _privateConstructorUsedError;
   @JsonKey(name: 'grade_result')
   GradeResult? get gradeResult => throw _privateConstructorUsedError;
-  int? get maxReward => throw _privateConstructorUsedError;
-  int? get reward => throw _privateConstructorUsedError;
+  double? get maxReward => throw _privateConstructorUsedError;
+  double? get reward => throw _privateConstructorUsedError;
   TreasuryTransfer? get treasuryTransfer => throw _privateConstructorUsedError;
 
   /// Serializes this SubmissionStatus to a JSON map.
@@ -63,8 +63,8 @@ abstract class $SubmissionStatusCopyWith<$Res> {
       String updatedAt,
       int? clampedScore,
       @JsonKey(name: 'grade_result') GradeResult? gradeResult,
-      int? maxReward,
-      int? reward,
+      double? maxReward,
+      double? reward,
       TreasuryTransfer? treasuryTransfer});
 
   $SubmissionMetaCopyWith<$Res> get meta;
@@ -145,11 +145,11 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
       maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       treasuryTransfer: freezed == treasuryTransfer
           ? _value.treasuryTransfer
           : treasuryTransfer // ignore: cast_nullable_to_non_nullable
@@ -215,8 +215,8 @@ abstract class _$$SubmissionStatusImplCopyWith<$Res>
       String updatedAt,
       int? clampedScore,
       @JsonKey(name: 'grade_result') GradeResult? gradeResult,
-      int? maxReward,
-      int? reward,
+      double? maxReward,
+      double? reward,
       TreasuryTransfer? treasuryTransfer});
 
   @override
@@ -298,11 +298,11 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
       maxReward: freezed == maxReward
           ? _value.maxReward
           : maxReward // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       reward: freezed == reward
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as double?,
       treasuryTransfer: freezed == treasuryTransfer
           ? _value.treasuryTransfer
           : treasuryTransfer // ignore: cast_nullable_to_non_nullable
@@ -362,9 +362,9 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
   @JsonKey(name: 'grade_result')
   final GradeResult? gradeResult;
   @override
-  final int? maxReward;
+  final double? maxReward;
   @override
-  final int? reward;
+  final double? reward;
   @override
   final TreasuryTransfer? treasuryTransfer;
 
@@ -446,8 +446,8 @@ abstract class _SubmissionStatus implements SubmissionStatus {
       required final String updatedAt,
       final int? clampedScore,
       @JsonKey(name: 'grade_result') final GradeResult? gradeResult,
-      final int? maxReward,
-      final int? reward,
+      final double? maxReward,
+      final double? reward,
       final TreasuryTransfer? treasuryTransfer}) = _$SubmissionStatusImpl;
 
   factory _SubmissionStatus.fromJson(Map<String, dynamic> json) =
@@ -476,9 +476,9 @@ abstract class _SubmissionStatus implements SubmissionStatus {
   @JsonKey(name: 'grade_result')
   GradeResult? get gradeResult;
   @override
-  int? get maxReward;
+  double? get maxReward;
   @override
-  int? get reward;
+  double? get reward;
   @override
   TreasuryTransfer? get treasuryTransfer;
 

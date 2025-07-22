@@ -22,8 +22,8 @@ class SubmissionStatus with _$SubmissionStatus {
     required String updatedAt,
     int? clampedScore,
     @JsonKey(name: 'grade_result') GradeResult? gradeResult,
-    int? maxReward,
-    int? reward,
+    double? maxReward,
+    double? reward,
     TreasuryTransfer? treasuryTransfer,
   }) = _SubmissionStatus;
 
