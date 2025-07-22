@@ -2,9 +2,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Env {
   static String get env => dotenv.env['ENV'] ?? 'dev';
-  static String get viralTokenAddress =>
-      dotenv.env['VIRAL_TOKEN_ADDRESS'] ?? '';
-  static String get solTokenAddress => dotenv.env['SOL_TOKEN_ADDRESS'] ?? '';
   static String get privacyPolicyUrl => dotenv.env['PRIVACY_POLICY_URL'] ?? '';
   static String get storageBaseUrl => dotenv.env['STORAGE_BASE_URL'] ?? '';
   static String get solscanBaseUrl => dotenv.env['SOLSCAN_BASE_URL'] ?? '';

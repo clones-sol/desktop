@@ -1,0 +1,169 @@
+# Backend Server
+
+This is the backend server for Clones. It handles database operations and API endpoints.
+
+## Getting Started
+
+First, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/clones-sol/backend.git
+cd backend
+```
+
+## Environment Setup
+
+Before running the backend, you need to configure your environment variables.
+
+1.  In the root of the backend project, locate the `env.example` file.
+2.  Create a copy of this file and name it `.env`.
+
+    ```bash
+    cp .env.example .env
+    ```
+
+3.  The `.env` file is included in `.gitignore` and should not be committed to version control.
+4.  Open the `.env` file and fill in the required values. At a minimum, you must provide:
+    *   `OPENAI_API_KEY`: Your key for OpenAI services.
+    *   `DEPOSIT_KEY_ENCRYPTION_SECRET` and `DEPOSIT_KEY_ENCRYPTION_SALT`: These are critical for securing user funds. For local development, you can generate them with the following commands:
+        ```bash
+        # For the secret key
+        openssl rand -base64 32
+
+        # For the salt
+        openssl rand -base64 16
+        ```
+    The other variables can usually be left with their default values for a standard local setup.
+
+    Here is an example of what the top of your `.env` file should look like:
+    ```dotenv
+    # --- OpenAI ---
+    OPENAI_API_KEY=your_openai_api_key_here
+
+    # --- Security - See README.md ---
+    # Generate with: openssl rand -base64 32
+    DEPOSIT_KEY_ENCRYPTION_SECRET=
+    # Generate with: openssl rand -base64 16
+    DEPOSIT_KEY_ENCRYPTION_SALT=
+
+    # --- Solana Blockchain ---
+    # You can use a public RPC or your own.
+    RPC_URL=https://api.devnet.solana.com/
+
+    # --- Mongodb ----
+    DB_URI=mongodb://admin:admin@mongodb:27017/dev?authSource=admin
+
+    # --- Raydium
+    SOLANA_CLUSTER=devnet
+    ```
+
+## Security
+
+### Critical: Private Key Encryption
+
+To protect user funds, all `depositPrivateKey` values for training pools are encrypted before being stored in the database. This is a critical security measure to prevent fund theft in the event of a database breach.
+
+The encryption is handled by the `src/services/security/crypto.ts` module, which uses the **AES-256-GCM** algorithm.
+
+### Environment Variables
+
+The entire security mechanism relies on two critical environment variables, which must be set up as described in the [Environment Setup](#environment-setup) section:
+- `DEPOSIT_KEY_ENCRYPTION_SECRET`: The Master Encryption Key.
+- `DEPOSIT_KEY_ENCRYPTION_SALT`: A cryptographic salt used to derive the encryption key from the master key.
+
+**Never commit these values to version control.**
+
+## Running with Docker
+
+The backend runs inside a Docker container. Use `docker compose` to manage the service from the root of the backend project.
+
+```bash
+# Start the services in detached mode
+docker compose up -d
+
+# View logs for the backend service
+docker compose logs -f backend
+
+# Execute a command inside the backend container
+docker exec backend npm run <command>
+
+# Stop and remove the services
+docker compose down
+```
+
+## Creating Development Tokens
+
+To test features involving SPL tokens, you may need to create your own development tokens on the Solana devnet. This guide explains how to create and mint tokens for use in your local development environment.
+
+### 1. Prerequisites
+
+Ensure you have the [Solana CLI tool suite](https://docs.solana.com/cli/install-solana-cli-tools) installed. You will specifically need `solana` and `spl-token`.
+
+### 2. Configure Solana CLI
+
+First, make sure your CLI is configured to point to the devnet and uses the project's local keypair.
+
+```bash
+# Set the RPC URL to devnet
+solana config set --url https://api.devnet.solana.com
+
+# Set the keypair to the one included in this repository
+# (Assuming the keypair is in secrets/solana-keypair.json relative to where you run the command)
+solana config set --keypair secrets/solana-keypair.json
+```
+
+### 3. Fund Your Wallet
+
+You'll need some devnet SOL to pay for transaction fees.
+
+```bash
+# Airdrop 2 SOL to your wallet
+solana airdrop 2
+```
+
+### 4. Create a New Token
+
+Run the following command to create a new SPL token. A standard token has 6 decimal places.
+
+```bash
+spl-token create-token --decimals 6
+```
+
+This command will output a **Token Address** (also called a "mint address"). **Copy this address.**
+
+*Example output:*
+```
+Creating token 4fmd25KposhGSi3hFSJP4tWWex2wGWjEQdu14YWTddFV ...
+Address: 4fmd25KposhGSi3hFSJP4tWWex2wGWjEQdu14YWTddFV
+```
+
+### 5. Create a Token Account
+
+Next, create an account in your wallet to hold the new tokens. Use the token address from the previous step.
+
+```bash
+# Replace <TOKEN_ADDRESS> with the address you copied
+spl-token create-account <TOKEN_ADDRESS>
+```
+
+### 6. Mint Tokens
+
+Now you can mint (create) as many tokens as you need for testing.
+
+```bash
+# Replace <TOKEN_ADDRESS> with your token address and <AMOUNT> with the quantity you want
+spl-token mint <TOKEN_ADDRESS> <AMOUNT>
+```
+
+### 7. Update Backend Configuration
+
+To make the backend aware of your new token, you must add its mint address to `src/services/blockchain/tokens.ts`. Find the correct token symbol (e.g., `USDC`, `CLONES`) and update the `development` address.
+
+### 8. Add to Phantom Wallet (Optional)
+
+You can add the token to your Phantom wallet to see your balance.
+1.  Open Phantom and click "Manage Token List".
+2.  Paste the **Token Address** into the search field.
+3.  Enable the token.
+
+> **Note:** The token will likely appear as "Unknown Token". This is normal because we have not provided on-chain metadata (like a name or symbol). This does not affect its functionality for development purposes.
