@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class Assets {
   static const String assetFolder = 'assets/';
   static const String assetIconsFolder = '${assetFolder}icons/';
+  static const String assetMenuFolder = '${assetFolder}menus/';
 
-  static const String logoIcon = '${assetFolder}Logo_Icon.png';
   static const String background = '${assetFolder}main-background.png';
 
   // Icons
+  static const String homeIcon = '${assetIconsFolder}home_icon.png';
   static const String forgeIcon = '${assetIconsFolder}forge_icon.png';
   static const String gymIcon = '${assetIconsFolder}gym_icon.png';
   static const String gymHistoryIcon =
@@ -28,6 +29,10 @@ class Assets {
   static const String recordIcon = '${assetIconsFolder}record_icon.png';
   static const String uploadIcon = '${assetIconsFolder}upload_icon.png';
   static const String robotIcon = '${assetIconsFolder}robot_icon.png';
+
+  // Menu
+  static const String menuFarm = '${assetMenuFolder}farmer_menu.png';
+  static const String menuForge = '${assetMenuFolder}forge_menu.png';
 }
 
 class VMColors {

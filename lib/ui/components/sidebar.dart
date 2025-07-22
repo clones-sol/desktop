@@ -7,6 +7,7 @@ import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dar
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
 import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
+import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
@@ -56,6 +57,11 @@ class Sidebar extends ConsumerWidget {
         imagePath: Assets.forgeIcon,
         label: 'Forge',
       ),
+      SidebarButtonData(
+        path: HomeView.routeName,
+        imagePath: Assets.homeIcon,
+        label: 'Home',
+      ),
     ];
 
     var activeIndex = 0;
@@ -76,15 +82,6 @@ class Sidebar extends ConsumerWidget {
       color: Colors.transparent,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Image.asset(
-              Assets.logoIcon,
-              height: 32,
-              width: 32,
-              fit: BoxFit.contain,
-            ),
-          ),
           Expanded(
             child: AnimatedSidebarSection(
               buttons: buttons,
