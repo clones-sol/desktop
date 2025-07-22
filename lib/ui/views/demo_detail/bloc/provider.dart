@@ -140,6 +140,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
   }
 
   Future<void> loadSftData(String recordingId) async {
+    state = state.copyWith(sftMessages: [], privateRanges: []);
     try {
       // Load SFT messages
       final sftJson = await ref.read(tauriApiClientProvider).getRecordingFile(
@@ -149,7 +150,7 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       final List<dynamic> sftData = jsonDecode(sftJson);
       final sftMessages =
           sftData.map((data) => SftMessage.fromJson(data)).toList();
-
+      state = state.copyWith(sftMessages: sftMessages);
       // Load private ranges
       final rangesJson =
           await ref.read(tauriApiClientProvider).getRecordingFile(
@@ -167,7 +168,6 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       _applyMasking();
     } catch (e) {
       // It's okay if these files don't exist
-      state = state.copyWith(sftMessages: [], privateRanges: []);
     }
   }
 
