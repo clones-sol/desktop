@@ -13,6 +13,7 @@ import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
 import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/overlay/overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final _router = GoRouter(
-  initialLocation: GymView.routeName,
+  initialLocation: HomeView.routeName,
   routes: [
     GoRoute(
       path: '/overlay',
@@ -37,6 +38,12 @@ final _router = GoRouter(
         );
       },
       routes: [
+        GoRoute(
+          path: HomeView.routeName,
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: HomeView(),
+          ),
+        ),
         GoRoute(
           path: HubView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(

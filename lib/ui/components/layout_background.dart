@@ -5,6 +5,7 @@ import 'package:clones_desktop/ui/components/sidebar.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
 import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
+import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -53,13 +54,15 @@ class LayoutBackground extends ConsumerWidget {
                 child: Text(
                   session.isConnected == false
                       ? ''
-                      : currentRoute == ForgeView.routeName
-                          ? 'forge'
-                          : currentRoute == GymView.routeName
-                              ? 'gym'
-                              : currentRoute == GymHistoryView.routeName
+                      : currentRoute == HomeView.routeName
+                          ? 'Clones'
+                          : currentRoute == ForgeView.routeName
+                              ? 'forge'
+                              : currentRoute == GymView.routeName
                                   ? 'gym'
-                                  : '',
+                                  : currentRoute == GymHistoryView.routeName
+                                      ? 'gym'
+                                      : '',
                   style: const TextStyle(
                     fontSize: 200,
                     fontWeight: FontWeight.bold,
