@@ -1,0 +1,17 @@
+name: Clones
+description: Human-like agents trained by humans, for humans.
+logo: "/assets/Logo_Icon.png"
+anchors:
+  - title: Telegram
+    icon: telegram
+    link: https://t.me/viralmind
+sidebar:
+  - - Getting Started
+    - "/"
+  - - Projects
+    - - - Backend
+        - "/projects/backend"
+      - - Website
+        - "/projects/website"
+      - - Desktop
+        - "/projects/desktop"
