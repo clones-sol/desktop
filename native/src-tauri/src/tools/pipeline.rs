@@ -3,13 +3,14 @@
 //! This module manages the download, initialization, and execution of the pipeline binary for processing recorded data.
 
 use crate::tools::ffmpeg::{get_ffmpeg_dir, get_ffprobe_dir};
+use crate::utils::settings::get_custom_app_local_data_dir;
 use log::info;
 #[cfg(unix)]
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::OnceLock;
 use std::time::Duration;
-use tauri::{AppHandle, Manager, Url};
+use tauri::{AppHandle, Url};
 use wait_timeout::ChildExt;
 
 /// Path to the pipeline binary, initialized once per session.
@@ -148,9 +149,7 @@ pub fn process_recording(app: &AppHandle, recording_id: &str) -> Result<(), Stri
         .ok_or_else(|| "pipeline not initialized".to_string())?;
 
     // Get the recording folder path using app.path() like record.rs
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
+    let recordings_dir = get_custom_app_local_data_dir(app)
         .map_err(|e| format!("Failed to get app data directory: {}", e))?
         .join("recordings")
         .join(recording_id);

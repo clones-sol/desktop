@@ -20,6 +20,8 @@ class _DemoDetailVideoPreviewState
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        ref.watch(demoDetailNotifierProvider.select((s) => s.isLoading));
     final videoController =
         ref.watch(demoDetailNotifierProvider.select((s) => s.videoController));
 
@@ -37,49 +39,53 @@ class _DemoDetailVideoPreviewState
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 10),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                if (!videoLoaded)
-                  const Center(
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1,
+            if (!videoLoaded)
+              Text('No video found', style: theme.textTheme.bodyMedium)
+            else
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (isLoading)
+                    const Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        ),
+                      ),
+                    )
+                  else
+                    Opacity(
+                      opacity:
+                          videoController?.value.isPlaying ?? false ? 1 : 0.5,
+                      child: AspectRatio(
+                        aspectRatio: videoController?.value.aspectRatio ?? 1,
+                        child: VideoPlayer(videoController!),
                       ),
                     ),
-                  )
-                else
-                  Opacity(
-                    opacity: videoController.value.isPlaying ? 1 : 0.5,
-                    child: AspectRatio(
-                      aspectRatio: videoController.value.aspectRatio,
-                      child: VideoPlayer(videoController),
+                  if (videoLoaded)
+                    ValueListenableBuilder<VideoPlayerValue>(
+                      valueListenable: videoController,
+                      builder: (context, value, child) {
+                        return IconButton(
+                          icon: Icon(
+                            value.isPlaying ? Icons.pause : Icons.play_arrow,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          onPressed: () {
+                            if (value.isPlaying) {
+                              videoController.pause();
+                            } else {
+                              videoController.play();
+                            }
+                          },
+                        );
+                      },
                     ),
-                  ),
-                if (videoLoaded)
-                  ValueListenableBuilder<VideoPlayerValue>(
-                    valueListenable: videoController,
-                    builder: (context, value, child) {
-                      return IconButton(
-                        icon: Icon(
-                          value.isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                        onPressed: () {
-                          if (value.isPlaying) {
-                            videoController.pause();
-                          } else {
-                            videoController.play();
-                          }
-                        },
-                      );
-                    },
-                  ),
-              ],
-            ),
+                ],
+              ),
             if (videoLoaded)
               _buildCustomTimeline(context, ref, videoController),
           ],
