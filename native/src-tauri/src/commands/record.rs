@@ -2,7 +2,10 @@
 //!
 //! This module provides commands for managing recording sessions, files, and metadata from the frontend.
 
-use crate::core::record::{self, Quest, QuestState, RecordingMeta};
+use crate::{
+    core::record::{self, Quest, QuestState, RecordingMeta},
+    utils::settings::get_custom_app_local_data_dir,
+};
 use tauri::{AppHandle, State};
 
 /// Starts a new recording session.
@@ -218,7 +221,9 @@ pub async fn export_recording_zip(id: String, app: AppHandle) -> Result<String, 
 /// * `Err` if retrieval failed.
 #[tauri::command]
 pub async fn get_app_data_dir(app: AppHandle) -> Result<String, String> {
-    record::get_app_data_dir(app).await
+    let dir = get_custom_app_local_data_dir(&app)
+        .map_err(|e| format!("Failed to get app data dir: {}", e))?;
+    Ok(dir.to_string_lossy().to_string())
 }
 
 /// Gets the current quest from the quest state.

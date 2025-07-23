@@ -5,6 +5,7 @@
 use log::{error, info};
 use serde::{Deserialize, Serialize};
 use std::{
+    env,
     fs::{self, File},
     io::{BufReader, BufWriter, Write},
     path::PathBuf,
@@ -105,10 +106,8 @@ impl Settings {
     /// * `Ok(())` if the settings were saved successfully.
     /// * `Err` if writing failed.
     pub fn save(&self, app: &AppHandle) -> Result<(), String> {
-        let base = app
-            .path()
-            .app_local_data_dir()
-            .map_err(|_| "Failed to get app data directory")?;
+        let base =
+            get_custom_app_local_data_dir(app).map_err(|_| "Failed to get app data directory")?;
         let path =
             crate::tools::sanitize_and_check_path(&base, std::path::Path::new("settings.json"))?;
 
@@ -140,9 +139,38 @@ impl Settings {
     }
 }
 
-fn get_settings_path(app: &AppHandle) -> PathBuf {
-    app.path()
+pub fn get_custom_app_local_data_dir(app: &AppHandle) -> Result<PathBuf, String> {
+    let mut data_dir = app
+        .path()
         .app_local_data_dir()
+        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
+
+    let suffix = env::var("APP_IDENTIFIER_SUFFIX").unwrap_or_default();
+
+    if !suffix.is_empty() {
+        let original_name = data_dir
+            .file_name()
+            .and_then(|s| s.to_str())
+            .ok_or("Could not get dir name")?
+            .to_string();
+        let new_name = format!("{}{}", original_name, suffix);
+        if data_dir.pop() {
+            data_dir.push(new_name);
+        } else {
+            return Err("Could not get parent directory".to_string());
+        }
+    }
+
+    if !data_dir.exists() {
+        fs::create_dir_all(&data_dir)
+            .map_err(|e| format!("Failed to create suffixed app data directory: {}", e))?;
+    }
+
+    Ok(data_dir)
+}
+
+fn get_settings_path(app: &AppHandle) -> PathBuf {
+    get_custom_app_local_data_dir(app)
         .expect("Failed to get app data directory")
         .join("settings.json")
 }

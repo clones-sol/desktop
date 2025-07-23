@@ -35,12 +35,13 @@ class MenuItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    return CardWidget(
-      variant: CardVariant.secondary,
-      child: InkWell(
-        onTap: () {
-          context.go(item.linkRoute);
-        },
+
+    return InkWell(
+      onTap: () {
+        context.go(item.linkRoute);
+      },
+      child: CardWidget(
+        variant: CardVariant.secondary,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

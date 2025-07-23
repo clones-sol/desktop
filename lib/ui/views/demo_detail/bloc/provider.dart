@@ -43,9 +43,9 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
         initializeVideoPlayer(recordingId),
       ]);
     } catch (e) {
-      state = state.copyWith(isLoading: false);
       // TODO(reddwarf03): Handle error
     }
+    state = state.copyWith(isLoading: false);
   }
 
   Future<void> initializeVideoPlayer(String recordingId) async {

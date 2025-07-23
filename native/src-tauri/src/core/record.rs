@@ -7,6 +7,7 @@ use crate::tools::axtree;
 use crate::tools::ffmpeg::{init_ffmpeg, FFmpegRecorder, FFMPEG_PATH, FFPROBE_PATH};
 use crate::tools::pipeline;
 use crate::utils::logger::Logger;
+use crate::utils::settings::get_custom_app_local_data_dir;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 use chrono::Local;
 use display_info::DisplayInfo;
@@ -255,11 +256,7 @@ lazy_static::lazy_static! {
 }
 
 fn get_session_path(app: &tauri::AppHandle) -> Result<(PathBuf, String), String> {
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
-        .join("recordings");
+    let recordings_dir = get_custom_app_local_data_dir(app)?.join("recordings");
 
     std::fs::create_dir_all(&recordings_dir)
         .map_err(|e| format!("Failed to create recordings directory: {}", e))?;
@@ -282,11 +279,7 @@ fn get_session_path(app: &tauri::AppHandle) -> Result<(PathBuf, String), String>
 /// * `Ok(Vec<RecordingMeta>)` with all found recordings.
 /// * `Err` if an error occurred.
 pub async fn list_recordings(app: tauri::AppHandle) -> Result<Vec<RecordingMeta>, String> {
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
-        .join("recordings");
+    let recordings_dir = get_custom_app_local_data_dir(&app)?.join("recordings");
 
     if !recordings_dir.exists() {
         return Ok(Vec::new());
@@ -514,11 +507,7 @@ pub async fn stop_recording(
     if let Some(start_time) = *quest_state.recording_start_time.lock().unwrap() {
         let duration = Local::now().signed_duration_since(start_time).num_seconds() as u64;
 
-        let recordings_dir = app
-            .path()
-            .app_local_data_dir()
-            .map_err(|e| format!("Failed to get app data directory: {}", e))?
-            .join("recordings");
+        let recordings_dir = get_custom_app_local_data_dir(&app)?.join("recordings");
 
         // Find the most recent recording directory
         let mut entries: Vec<_> = fs::read_dir(&recordings_dir)
@@ -552,11 +541,7 @@ pub async fn stop_recording(
     }
 
     // Find the most recent recording directory to get its ID
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
-        .join("recordings");
+    let recordings_dir = get_custom_app_local_data_dir(&app)?.join("recordings");
 
     let mut entries: Vec<_> = fs::read_dir(&recordings_dir)
         .map_err(|e| format!("Failed to read recordings directory: {}", e))?
@@ -621,10 +606,7 @@ pub async fn get_recording_file(
     as_base64: Option<bool>,
     as_path: Option<bool>,
 ) -> Result<String, String> {
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
         .join("recordings")
         .join(&recording_id);
 
@@ -679,10 +661,7 @@ pub async fn write_recording_file(
     content: String,
 ) -> Result<(), String> {
     // Get the path to the recording directory
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
         .join("recordings")
         .join(&recording_id);
 
@@ -704,11 +683,7 @@ pub async fn open_recording_folder(
     app: tauri::AppHandle,
     recording_id: String,
 ) -> Result<(), String> {
-    let mut recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
-        .join("recordings");
+    let mut recordings_dir = get_custom_app_local_data_dir(&app)?.join("recordings");
     // only add the ID if requested
     if !recording_id.is_empty() {
         recordings_dir = recordings_dir.join(&recording_id);
@@ -725,10 +700,7 @@ pub async fn open_recording_folder(
 }
 
 pub async fn delete_recording(app: tauri::AppHandle, recording_id: String) -> Result<(), String> {
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
         .join("recordings")
         .join(&recording_id);
 
@@ -1116,12 +1088,8 @@ pub async fn create_recording_zip(
         recording_id
     );
 
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?
-        .join("recordings")
-        .join(&recording_id);
+    let recordings_dir =
+        get_custom_app_local_data_dir(&app)?.join("recordings").join(&recording_id);
 
     log::info!(
         "[create_recording_zip] Recording directory: {}",
@@ -1301,15 +1269,6 @@ pub async fn export_recording_zip(id: String, app: tauri::AppHandle) -> Result<S
     } else {
         Ok("".to_string())
     }
-}
-
-pub async fn get_app_data_dir(app: tauri::AppHandle) -> Result<String, String> {
-    let path = app
-        .path()
-        .app_local_data_dir()
-        .map_err(|e| format!("Failed to get app data directory: {}", e))?;
-
-    Ok(path.to_string_lossy().to_string())
 }
 
 pub async fn get_current_quest(

@@ -4,6 +4,7 @@
 
 use crate::tools::helpers::lock_with_timeout;
 use crate::tools::sanitize_and_check_path;
+use crate::utils::settings::get_custom_app_local_data_dir;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 use chrono::Utc;
 use log::info;
@@ -16,7 +17,6 @@ use std::{
     sync::{Mutex, OnceLock},
     time::Duration,
 };
-use tauri::Manager;
 use xcap::{image::ImageFormat, Monitor};
 
 #[cfg(not(target_os = "linux"))]
@@ -73,10 +73,8 @@ pub async fn list_apps(
 ) -> Result<Vec<serde_json::Value>, String> {
     #[cfg(not(target_os = "linux"))]
     {
-        let base = app
-            .path()
-            .app_local_data_dir()
-            .map_err(|e| format!("Failed to get app data directory: {}", e))?;
+        let base =
+            get_custom_app_local_data_dir(&app).map_err(|e| format!("Failed to get app data directory: {}", e))?;
         let path = sanitize_and_check_path(&base, Path::new("app_list.json"))?;
 
         // Concurrency lock

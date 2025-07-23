@@ -2,12 +2,11 @@
 //!
 //! This module provides a command to zip the entire recordings directory and save it to a user-selected location.
 
-use crate::tools::sanitize_and_check_path;
+use crate::{tools::sanitize_and_check_path, utils::settings::get_custom_app_local_data_dir};
 use std::{
     io::{Cursor, Read, Write},
     path::Path,
 };
-use tauri::Manager;
 use tauri_plugin_dialog::DialogExt;
 use walkdir::WalkDir;
 use zip::{write::FileOptions, ZipWriter};
@@ -22,9 +21,7 @@ use zip::{write::FileOptions, ZipWriter};
 /// * `Err` if zipping or saving failed.
 #[tauri::command]
 pub async fn export_recordings(app: tauri::AppHandle) -> Result<String, String> {
-    let recordings_dir = app
-        .path()
-        .app_local_data_dir()
+    let recordings_dir = get_custom_app_local_data_dir(&app)
         .map_err(|e| format!("Failed to get app data directory: {}", e))?
         .join("recordings");
 
