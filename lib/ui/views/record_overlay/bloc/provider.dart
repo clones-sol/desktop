@@ -60,12 +60,12 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
     }
   }
 
-  void setFocused(bool focused) {
+  Future<void> setFocused(bool focused) async {
     state = state.copyWith(focused: focused);
     if (focused) {
-      windowManager.setOpacity(1);
+      await windowManager.setOpacity(1);
     } else {
-      windowManager.setOpacity(0.3);
+      await windowManager.setOpacity(0.3);
     }
   }
 

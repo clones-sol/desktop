@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_header.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_objectives.dart';
@@ -30,12 +32,15 @@ class _RecordOverlayViewState extends ConsumerState<RecordOverlayView>
 
   @override
   void onWindowFocus() {
-    ref.read(recordOverlayNotifierProvider.notifier).setFocused(true);
+    unawaited(
+        ref.read(recordOverlayNotifierProvider.notifier).setFocused(true));
   }
 
   @override
   void onWindowBlur() {
-    ref.read(recordOverlayNotifierProvider.notifier).setFocused(false);
+    unawaited(
+      ref.read(recordOverlayNotifierProvider.notifier).setFocused(false),
+    );
   }
 
   @override
