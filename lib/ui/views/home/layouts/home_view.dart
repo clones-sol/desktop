@@ -131,12 +131,12 @@ class HomeView extends ConsumerWidget {
                   children: [
                     SizedBox(
                       width: mediaQuery.size.width * 0.25,
-                      height: mediaQuery.size.height * 0.3,
+                      height: mediaQuery.size.height * 0.4,
                       child: MenuItemWidget(item: menuItems[0]),
                     ),
                     SizedBox(
                       width: mediaQuery.size.width * 0.25,
-                      height: mediaQuery.size.height * 0.3,
+                      height: mediaQuery.size.height * 0.4,
                       child: MenuItemWidget(item: menuItems[1]),
                     ),
                   ],
