@@ -16,6 +16,13 @@
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart"
+    },
+    {
+      "name": "clones-flutter-profile",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "flutterMode": "profile"
     }
   ],
   "compounds": [
@@ -24,6 +31,14 @@
       "configurations": [
         "[clones-native] Run IPC Server",
         "clones-flutter"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "[COMPOUND] Flutter with IPC Profile",
+      "configurations": [
+        "[clones-native] Run IPC Server",
+        "clones-flutter-profile"
       ],
       "stopAll": true
     }
