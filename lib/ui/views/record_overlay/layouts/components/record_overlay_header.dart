@@ -1,4 +1,5 @@
 import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:clones_desktop/utils/format_time.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,12 @@ class RecordOverlayHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final trainingSession = ref.watch(trainingSessionNotifierProvider);
     final recordOverlay = ref.watch(recordOverlayNotifierProvider);
     String statusText;
     Color statusColor;
 
-    switch (recordOverlay.recordingState) {
+    switch (trainingSession.recordingState) {
       case RecordingState.starting:
         statusText = 'Starting';
         statusColor = Colors.red;
@@ -35,43 +37,40 @@ class RecordOverlayHeader extends ConsumerWidget {
         statusColor = Colors.green;
     }
 
-    return Opacity(
-      opacity: recordOverlay.focused ? 1.0 : 0.7,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        child: Row(
-          children: [
-            Container(
-              width: 12,
-              height: 12,
-              decoration: BoxDecoration(
-                color: statusColor,
-                shape: BoxShape.circle,
-              ),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      child: Row(
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: statusColor,
+              shape: BoxShape.circle,
             ),
-            const SizedBox(width: 8),
-            Text(
-              statusText,
-              style: const TextStyle(color: Colors.white, fontSize: 14),
-            ),
-            const Spacer(),
-            Text(
-              formatTimeWithHours(recordOverlay.seconds),
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-            ),
-            const SizedBox(width: 8),
-            _buildIconButton(
-              recordOverlay.isCollapsed
-                  ? Icons.keyboard_arrow_up
-                  : Icons.keyboard_arrow_down,
-              ref.read(recordOverlayNotifierProvider.notifier).toggleCollapsed,
-            ),
-            _buildIconButton(
-              recordOverlay.isLocked ? Icons.lock : Icons.lock_open,
-              ref.read(recordOverlayNotifierProvider.notifier).toggleLocked,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            statusText,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const Spacer(),
+          Text(
+            formatTimeWithHours(recordOverlay.seconds),
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(width: 8),
+          _buildIconButton(
+            recordOverlay.isCollapsed
+                ? Icons.keyboard_arrow_up
+                : Icons.keyboard_arrow_down,
+            ref.read(recordOverlayNotifierProvider.notifier).toggleCollapsed,
+          ),
+          _buildIconButton(
+            recordOverlay.isLocked ? Icons.lock : Icons.lock_open,
+            ref.read(recordOverlayNotifierProvider.notifier).toggleLocked,
+          ),
+        ],
       ),
     );
   }

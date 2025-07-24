@@ -21,7 +21,7 @@ class RecordPanel extends ConsumerStatefulWidget {
   final String title;
   final QuestReward? reward;
   final List<String> objectives;
-  final Function(int fps) onStartRecording;
+  final Function() onStartRecording;
   final VoidCallback onComplete;
   final VoidCallback onGiveUp;
 
@@ -30,9 +30,6 @@ class RecordPanel extends ConsumerStatefulWidget {
 }
 
 class _RecordPanelState extends ConsumerState<RecordPanel> {
-  final int _fps = 30;
-  // final List<int> _fpsOptions = [24, 30, 60, 120];
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -129,30 +126,10 @@ class _RecordPanelState extends ConsumerState<RecordPanel> {
       );
     } else {
       return BtnPrimary(
-        onTap: () => widget.onStartRecording(_fps),
+        onTap: () => widget.onStartRecording(),
         buttonText: 'Start Recording',
         isLoading: recordingLoading,
       );
     }
   }
-
-/*  Widget _buildSettingsButton() {
-    return PopupMenuButton<int>(
-      onSelected: (int fps) {
-        setState(() {
-          _fps = fps;
-        });
-      },
-      itemBuilder: (BuildContext context) {
-        return _fpsOptions.map((int choice) {
-          return PopupMenuItem<int>(
-            value: choice,
-            child: Text('$choice FPS'),
-          );
-        }).toList();
-      },
-      icon: const Icon(Icons.settings, color: Colors.white),
-      tooltip: 'Recording Settings',
-    );
-  }*/
 }

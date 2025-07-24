@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -13,15 +14,15 @@ import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
 import 'package:clones_desktop/domain/models/quest/quest.dart';
 import 'package:clones_desktop/domain/models/quest/quest_reward.dart';
+import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:clones_desktop/utils/env.dart';
-import 'package:clones_desktop/utils/multi_windows_record.dart';
-import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:window_manager/window_manager.dart';
 
 part 'provider.g.dart';
 
@@ -40,24 +41,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     return const TrainingSessionState();
   }
 
-  @override
-  set state(TrainingSessionState value) {
-    if (state.activeQuest != value.activeQuest) {
-      MultiWindowsRecord.demoUpdate(
-        value.overlayWindowId,
-        value.activeQuest?.toJson(),
-      );
-    }
-
-    if (state.recordingState != value.recordingState) {
-      MultiWindowsRecord.recordingStateUpdate(
-        value.overlayWindowId,
-        value.recordingState.name,
-      );
-    }
-    super.state = value;
-  }
-
   Future<void> setToneAudio(String source) async {
     final toneAudio = AudioPlayer();
     await toneAudio.setSource(AssetSource(source));
@@ -72,13 +55,21 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     await state.blipAudio!.setVolume(0.15);
   }
 
-  Future<void> startRecording(int fps) async {
+  Future<void> startRecording() async {
     try {
       setRecordingLoading(true);
       if (state.recordingState == RecordingState.off) {
+        final originalSize = await windowManager.getSize();
+        state = state.copyWith(originalWindowSize: originalSize);
+
+        unawaited(windowManager.setSize(kRecordOverlaySize));
+        unawaited(
+          windowManager.setAlignment(Alignment.topRight, animate: true),
+        );
+
         await ref
             .read(tauriApiClientProvider)
-            .startRecording(quest: state.activeQuest, fps: fps);
+            .startRecording(quest: state.activeQuest);
         setRecordingState(RecordingState.recording);
       }
       setRecordingLoading(false);
@@ -87,22 +78,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     } finally {
       setRecordingLoading(false);
     }
-
-    final window = await DesktopMultiWindow.createWindow();
-    state = state.copyWith(overlayWindowId: window.windowId);
-    await window.setFrame(Offset.zero & const Size(300, 300));
-    await window.setTitle('Record');
-    await window.show();
-
-    // Send initial state to the new window
-    await MultiWindowsRecord.demoUpdate(
-      state.overlayWindowId,
-      state.activeQuest == null ? null : jsonEncode(state.activeQuest),
-    );
-    await MultiWindowsRecord.recordingStateUpdate(
-      state.overlayWindowId,
-      state.recordingState.name,
-    );
   }
 
   Future<void> typeMessage(
@@ -462,6 +437,10 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     setRecordingLoading(false);
     if (state.recordingState == RecordingState.recording) {
       try {
+        if (state.originalWindowSize != null) {
+          unawaited(windowManager.setSize(state.originalWindowSize!));
+          unawaited(windowManager.center(animate: true));
+        }
         final recordingId =
             await ref.read(tauriApiClientProvider).stopRecording('done');
 
@@ -599,8 +578,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       delay: false,
     );
 
-    await MultiWindowsRecord.recordingComplete(state.overlayWindowId);
-
     setRecordingProcessing(false);
     triggerScrollToBottom();
   }
@@ -608,12 +585,16 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
   Future<void> giveUp() async {
     if (state.recordingState == RecordingState.recording) {
       try {
+        if (state.originalWindowSize != null) {
+          unawaited(windowManager.setSize(state.originalWindowSize!));
+          unawaited(windowManager.center(animate: true));
+        }
+
         final recordingId =
             await ref.read(tauriApiClientProvider).stopRecording('fail');
 
         setActiveQuest(null);
         setRecordingState(RecordingState.off);
-        await MultiWindowsRecord.recordingComplete(state.overlayWindowId);
 
         // TODO(reddwarf03): To check
         // await emit('quest-overlay', { 'quest': null });

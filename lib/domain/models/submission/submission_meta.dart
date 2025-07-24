@@ -14,7 +14,7 @@ class SubmissionMeta with _$SubmissionMeta {
     required String timestamp,
     @JsonKey(name: 'duration_seconds') required int durationSeconds,
     required String status,
-    required String reason,
+    String? reason,
     required String title,
     required String description,
     required String platform,

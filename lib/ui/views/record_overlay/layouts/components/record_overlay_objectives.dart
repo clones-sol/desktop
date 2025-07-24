@@ -1,8 +1,8 @@
 import 'package:clones_desktop/domain/models/quest/quest.dart';
-import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/components/design_widget/text/app_text.dart';
 import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
-import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
+import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_controls.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,13 +11,14 @@ class RecordOverlayObjectives extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final trainingSession = ref.watch(trainingSessionNotifierProvider);
     final recordOverlay = ref.watch(recordOverlayNotifierProvider);
 
     if (recordOverlay.isCollapsed) {
       return const SizedBox.shrink();
     }
 
-    final demo = recordOverlay.demo;
+    final demo = trainingSession.activeQuest;
 
     return Opacity(
       opacity: recordOverlay.focused ? 1.0 : 0.7,
@@ -35,7 +36,7 @@ class RecordOverlayObjectives extends ConsumerWidget {
                 ),
               ),
             ),
-          _buildControls(ref),
+          const RecordOverlayControls(),
         ],
       ),
     );
@@ -79,45 +80,6 @@ class RecordOverlayObjectives extends ConsumerWidget {
             ),
         ],
       ),
-    );
-  }
-
-  Widget _buildControls(WidgetRef ref) {
-    final recordOverlay = ref.watch(recordOverlayNotifierProvider);
-    final recordingState = recordOverlay.recordingState;
-
-    return Row(
-      children: [
-        if (recordingState == RecordingState.recording)
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: BtnPrimary(
-                widthExpanded: true,
-                buttonText: 'Stop',
-                onTap:
-                    ref.read(recordOverlayNotifierProvider.notifier).handleStop,
-              ),
-            ),
-          ),
-        if (recordingState == RecordingState.starting ||
-            recordingState == RecordingState.stopping)
-          const Expanded(
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 12),
-              child: Center(
-                child: SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-      ],
     );
   }
 }

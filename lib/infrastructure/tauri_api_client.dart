@@ -59,13 +59,13 @@ class TauriApiClient {
     }
   }
 
-  Future<void> startRecording({Quest? quest, required int fps}) async {
+  Future<void> startRecording({Quest? quest}) async {
     final response = await _client.post(
       Uri.parse('$_baseUrl/recordings/start'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
         'quest': quest?.toJson(),
-        'fps': fps,
+        'fps': 30,
       }),
     );
 

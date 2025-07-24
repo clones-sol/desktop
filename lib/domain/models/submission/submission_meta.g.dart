@@ -12,7 +12,7 @@ _$SubmissionMetaImpl _$$SubmissionMetaImplFromJson(Map<String, dynamic> json) =>
       timestamp: json['timestamp'] as String,
       durationSeconds: (json['duration_seconds'] as num).toInt(),
       status: json['status'] as String,
-      reason: json['reason'] as String,
+      reason: json['reason'] as String?,
       title: json['title'] as String,
       description: json['description'] as String,
       platform: json['platform'] as String,

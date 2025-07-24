@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$recordOverlayNotifierHash() =>
-    r'bbe204a6e8d06601cfcc92a11dc838db4cf46262';
+    r'b9ac7cfab4576010fe2d01ff30b3ffc460013981';
 
 /// See also [RecordOverlayNotifier].
 @ProviderFor(RecordOverlayNotifier)

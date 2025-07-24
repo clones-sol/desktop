@@ -15,16 +15,13 @@ import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
-import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
-import 'package:clones_desktop/utils/multi_windows_record.dart';
-import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:window_manager/window_manager.dart';
 
 final _router = GoRouter(
   initialLocation: HomeView.routeName,
@@ -138,24 +135,36 @@ final _router = GoRouter(
         ),
       ],
     ),
+    GoRoute(
+      path: RecordOverlayView.routeName,
+      pageBuilder: (context, state) => const NoTransitionPage(
+        child: RecordOverlayView(),
+      ),
+    ),
   ],
 );
 
 Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
-  if (args.firstOrNull == 'multi_window') {
-    final windowId = int.parse(args[1]);
-    runApp(
-      ProviderScope(
-        child: RecordOverlayView(
-          windowController: WindowController.fromWindowId(windowId),
-        ),
-      ),
-    );
-  } else {
-    runApp(const ProviderScope(child: ClonesApp()));
-  }
+
+  await windowManager.ensureInitialized();
+
+  const initialSize = Size(1200, 800);
+
+  const windowOptions = WindowOptions(
+    size: initialSize,
+    center: true,
+    backgroundColor: Colors.transparent,
+    skipTaskbar: false,
+    titleBarStyle: TitleBarStyle.hidden,
+  );
+
+  await windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
+  runApp(const ProviderScope(child: ClonesApp()));
 }
 
 class ClonesApp extends ConsumerStatefulWidget {
@@ -174,15 +183,6 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _updateRoute();
     });
-    DesktopMultiWindow.setMethodHandler(_handleMethodCall);
-  }
-
-  Future<dynamic> _handleMethodCall(MethodCall call, int fromWindowId) async {
-    if (call.method == MultiWindowsMethod.stopRecording.name) {
-      await ref
-          .read(trainingSessionNotifierProvider.notifier)
-          .recordingComplete();
-    }
   }
 
   void _updateRoute() {

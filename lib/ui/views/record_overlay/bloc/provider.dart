@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:clones_desktop/domain/models/quest/quest.dart';
 import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
+import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
-import 'package:clones_desktop/utils/multi_windows_record.dart';
-import 'package:desktop_multi_window/desktop_multi_window.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:window_manager/window_manager.dart';
 
 part 'provider.g.dart';
 
@@ -19,16 +15,16 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
   @override
   RecordOverlayState build() {
     ref.onDispose(stopTimer);
-    DesktopMultiWindow.setMethodHandler(handleMethodCall);
+
+    ref.listen(trainingSessionNotifierProvider, (previous, next) {
+      if (next.recordingState == RecordingState.recording) {
+        startTimer();
+      } else {
+        stopTimer();
+      }
+    });
+
     return const RecordOverlayState();
-  }
-
-  void setDemo(Quest? demo) {
-    state = state.copyWith(demo: demo);
-  }
-
-  void setRecordingState(RecordingState recordingState) {
-    state = state.copyWith(recordingState: recordingState);
   }
 
   void startTimer() {
@@ -36,7 +32,6 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
     setSeconds(0);
     state = state.copyWith(
       timer: Timer.periodic(const Duration(seconds: 1), (timer) {
-        debugPrint('timer: ${state.seconds + 1}');
         setSeconds(state.seconds + 1);
       }),
     );
@@ -47,20 +42,31 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
     setTimer(null);
   }
 
-  void toggleCollapsed() {
+  Future<void> toggleCollapsed() async {
     state = state.copyWith(isCollapsed: !state.isCollapsed);
+    if (state.isCollapsed) {
+      await windowManager.setSize(kRecordOverlayCollapsedSize);
+    } else {
+      await windowManager.setSize(kRecordOverlaySize);
+    }
   }
 
-  void toggleLocked() {
+  Future<void> toggleLocked() async {
     state = state.copyWith(isLocked: !state.isLocked);
+    if (state.isLocked) {
+      await windowManager.setResizable(false);
+    } else {
+      await windowManager.setResizable(true);
+    }
   }
 
   void setFocused(bool focused) {
     state = state.copyWith(focused: focused);
-  }
-
-  void resetTimer() {
-    state = state.copyWith(seconds: 0);
+    if (focused) {
+      windowManager.setOpacity(1);
+    } else {
+      windowManager.setOpacity(0.3);
+    }
   }
 
   void setSeconds(int seconds) {
@@ -73,34 +79,5 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
 
   void handleStop() {
     stopTimer();
-    MultiWindowsRecord.stopRecording();
-  }
-
-  Future<dynamic> handleMethodCall(MethodCall call, int fromWindowId) async {
-    if (call.method == MultiWindowsMethod.demoUpdate.name) {
-      final demo = call.arguments == null
-          ? null
-          : Quest.fromJson(jsonDecode(call.arguments as String));
-      setDemo(demo);
-    } else if (call.method == MultiWindowsMethod.recordingStateUpdate.name) {
-      final recordingState = RecordingState.values.byName(
-        call.arguments as String,
-      );
-      setRecordingState(recordingState);
-      if (recordingState == RecordingState.recording) {
-        startTimer();
-      } else {
-        stopTimer();
-      }
-    } else if (call.method == MultiWindowsMethod.recordingComplete.name) {
-      stopTimer();
-      setRecordingState(RecordingState.off);
-    } else if (call.method == 'focus') {
-      debugPrint('focus');
-      await Future.microtask(() => setFocused(true));
-    } else if (call.method == 'blur') {
-      debugPrint('blur');
-      await Future.microtask(() => setFocused(false));
-    }
   }
 }
