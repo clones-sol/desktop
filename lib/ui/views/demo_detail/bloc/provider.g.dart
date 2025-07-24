@@ -7,7 +7,11 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$demoDetailNotifierHash() =>
+<<<<<<< HEAD
     r'1ffdc0bedb2c312246679c3d1ae07d14aaa8ab75';
+=======
+    r'652e56363f1f8eb5061979375e29a3fefddb7d39';
+>>>>>>> 6501060 (feat: :sparkles: Implement recording trimming functionality, including API integration and UI updates for trim range selection.)
 
 /// See also [DemoDetailNotifier].
 @ProviderFor(DemoDetailNotifier)
