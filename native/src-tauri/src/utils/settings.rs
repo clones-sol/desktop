@@ -145,14 +145,14 @@ pub fn get_custom_app_local_data_dir(app: &AppHandle) -> Result<PathBuf, String>
         .app_local_data_dir()
         .map_err(|e| format!("Failed to get app data directory: {}", e))?;
 
-    let suffix = env::var("APP_IDENTIFIER_SUFFIX").unwrap_or_default();
+    const APP_IDENTIFIER_SUFFIX: &str = "APP_IDENTIFIER_SUFFIX";
+    let suffix = env::var(APP_IDENTIFIER_SUFFIX).unwrap_or_default();
 
     if !suffix.is_empty() {
         let original_name = data_dir
             .file_name()
             .and_then(|s| s.to_str())
-            .ok_or("Could not get dir name")?
-            .to_string();
+            .ok_or("Could not get dir name")?;
         let new_name = format!("{}{}", original_name, suffix);
         if data_dir.pop() {
             data_dir.push(new_name);
