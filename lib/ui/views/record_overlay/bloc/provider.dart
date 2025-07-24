@@ -76,8 +76,4 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
   void setTimer(Timer? timer) {
     state = state.copyWith(timer: timer);
   }
-
-  void handleStop() {
-    stopTimer();
-  }
 }
