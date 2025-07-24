@@ -27,7 +27,7 @@ class RecordOverlayControls extends ConsumerWidget {
                 buttonText: 'Give Up',
                 btnPrimaryType: BtnPrimaryType.outlinePrimary,
                 onTap: () async {
-                  ref.read(recordOverlayNotifierProvider.notifier).handleStop();
+                  ref.read(recordOverlayNotifierProvider.notifier).stopTimer();
                   unawaited(
                     ref.read(trainingSessionNotifierProvider.notifier).giveUp(),
                   );
@@ -43,7 +43,7 @@ class RecordOverlayControls extends ConsumerWidget {
                 widthExpanded: true,
                 buttonText: 'Complete',
                 onTap: () async {
-                  ref.read(recordOverlayNotifierProvider.notifier).handleStop();
+                  ref.read(recordOverlayNotifierProvider.notifier).stopTimer();
                   unawaited(
                     ref
                         .read(trainingSessionNotifierProvider.notifier)
