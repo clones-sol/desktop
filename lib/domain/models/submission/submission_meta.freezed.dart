@@ -25,7 +25,7 @@ mixin _$SubmissionMeta {
   @JsonKey(name: 'duration_seconds')
   int get durationSeconds => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
-  String get reason => throw _privateConstructorUsedError;
+  String? get reason => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get platform => throw _privateConstructorUsedError;
@@ -58,7 +58,7 @@ abstract class $SubmissionMetaCopyWith<$Res> {
       String timestamp,
       @JsonKey(name: 'duration_seconds') int durationSeconds,
       String status,
-      String reason,
+      String? reason,
       String title,
       String description,
       String platform,
@@ -92,7 +92,7 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
     Object? timestamp = null,
     Object? durationSeconds = null,
     Object? status = null,
-    Object? reason = null,
+    Object? reason = freezed,
     Object? title = null,
     Object? description = null,
     Object? platform = null,
@@ -120,10 +120,10 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      reason: null == reason
+      reason: freezed == reason
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -197,7 +197,7 @@ abstract class _$$SubmissionMetaImplCopyWith<$Res>
       String timestamp,
       @JsonKey(name: 'duration_seconds') int durationSeconds,
       String status,
-      String reason,
+      String? reason,
       String title,
       String description,
       String platform,
@@ -231,7 +231,7 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
     Object? timestamp = null,
     Object? durationSeconds = null,
     Object? status = null,
-    Object? reason = null,
+    Object? reason = freezed,
     Object? title = null,
     Object? description = null,
     Object? platform = null,
@@ -259,10 +259,10 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
               as String,
-      reason: null == reason
+      reason: freezed == reason
           ? _value.reason
           : reason // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -311,7 +311,7 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
       required this.timestamp,
       @JsonKey(name: 'duration_seconds') required this.durationSeconds,
       required this.status,
-      required this.reason,
+      this.reason,
       required this.title,
       required this.description,
       required this.platform,
@@ -335,7 +335,7 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
   @override
   final String status;
   @override
-  final String reason;
+  final String? reason;
   @override
   final String title;
   @override
@@ -429,7 +429,7 @@ abstract class _SubmissionMeta implements SubmissionMeta {
       required final String timestamp,
       @JsonKey(name: 'duration_seconds') required final int durationSeconds,
       required final String status,
-      required final String reason,
+      final String? reason,
       required final String title,
       required final String description,
       required final String platform,
@@ -454,7 +454,7 @@ abstract class _SubmissionMeta implements SubmissionMeta {
   @override
   String get status;
   @override
-  String get reason;
+  String? get reason;
   @override
   String get title;
   @override

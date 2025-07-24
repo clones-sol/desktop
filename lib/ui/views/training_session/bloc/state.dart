@@ -5,6 +5,7 @@ import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
 import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'state.freezed.dart';
@@ -23,6 +24,7 @@ class TrainingSessionState with _$TrainingSessionState {
     @Default(false) bool showUploadConfirmModal,
     String? currentRecordingId,
     @Default(false) bool isUploading,
+    Size? originalWindowSize,
     @Default(false) bool loadingSftData,
     @Default(RecordingState.off) RecordingState recordingState,
     @Default([]) List<Message> chatMessages,
@@ -35,7 +37,6 @@ class TrainingSessionState with _$TrainingSessionState {
     @Default(0) int scrollToBottomNonce,
     AudioPlayer? toneAudio,
     AudioPlayer? blipAudio,
-    int? overlayWindowId,
   }) = _TrainingSessionState;
   const TrainingSessionState._();
 }

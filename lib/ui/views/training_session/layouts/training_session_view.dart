@@ -9,6 +9,7 @@ import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.d
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/pfp.dart';
 import 'package:clones_desktop/ui/components/recording_panel.dart';
+import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/components/base64_image_message.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/components/record_panel.dart';
@@ -16,6 +17,7 @@ import 'package:clones_desktop/ui/views/training_session/layouts/components/typi
 import 'package:clones_desktop/ui/views/training_session/layouts/components/upload_confirm_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class TrainingSessionView extends ConsumerStatefulWidget {
   const TrainingSessionView({
@@ -198,24 +200,31 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                                   reward: trainingSession.activeQuest!.reward,
                                   objectives:
                                       trainingSession.activeQuest!.objectives,
-                                  onStartRecording: (fps) => ref
+                                  onStartRecording: () async {
+                                    unawaited(
+                                      ref
+                                          .read(
+                                            trainingSessionNotifierProvider
+                                                .notifier,
+                                          )
+                                          .startRecording(),
+                                    );
+                                    await context.push(
+                                      RecordOverlayView.routeName,
+                                    );
+                                  },
+                                  onComplete: () => ref
                                       .read(
                                         trainingSessionNotifierProvider
                                             .notifier,
                                       )
-                                      .startRecording(fps),
-                                  onComplete: ref
+                                      .recordingComplete(),
+                                  onGiveUp: () => ref
                                       .read(
                                         trainingSessionNotifierProvider
                                             .notifier,
                                       )
-                                      .recordingComplete,
-                                  onGiveUp: ref
-                                      .read(
-                                        trainingSessionNotifierProvider
-                                            .notifier,
-                                      )
-                                      .giveUp,
+                                      .giveUp(),
                                 ),
                               ),
                             ),

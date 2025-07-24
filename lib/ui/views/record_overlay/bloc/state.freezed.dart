@@ -16,8 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$RecordOverlayState {
-  Quest? get demo => throw _privateConstructorUsedError;
-  RecordingState get recordingState => throw _privateConstructorUsedError;
   Timer? get timer => throw _privateConstructorUsedError;
   int get seconds => throw _privateConstructorUsedError;
   bool get isLocked => throw _privateConstructorUsedError;
@@ -38,15 +36,11 @@ abstract class $RecordOverlayStateCopyWith<$Res> {
       _$RecordOverlayStateCopyWithImpl<$Res, RecordOverlayState>;
   @useResult
   $Res call(
-      {Quest? demo,
-      RecordingState recordingState,
-      Timer? timer,
+      {Timer? timer,
       int seconds,
       bool isLocked,
       bool isCollapsed,
       bool focused});
-
-  $QuestCopyWith<$Res>? get demo;
 }
 
 /// @nodoc
@@ -64,8 +58,6 @@ class _$RecordOverlayStateCopyWithImpl<$Res, $Val extends RecordOverlayState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? demo = freezed,
-    Object? recordingState = null,
     Object? timer = freezed,
     Object? seconds = null,
     Object? isLocked = null,
@@ -73,14 +65,6 @@ class _$RecordOverlayStateCopyWithImpl<$Res, $Val extends RecordOverlayState>
     Object? focused = null,
   }) {
     return _then(_value.copyWith(
-      demo: freezed == demo
-          ? _value.demo
-          : demo // ignore: cast_nullable_to_non_nullable
-              as Quest?,
-      recordingState: null == recordingState
-          ? _value.recordingState
-          : recordingState // ignore: cast_nullable_to_non_nullable
-              as RecordingState,
       timer: freezed == timer
           ? _value.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -103,20 +87,6 @@ class _$RecordOverlayStateCopyWithImpl<$Res, $Val extends RecordOverlayState>
               as bool,
     ) as $Val);
   }
-
-  /// Create a copy of RecordOverlayState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res>? get demo {
-    if (_value.demo == null) {
-      return null;
-    }
-
-    return $QuestCopyWith<$Res>(_value.demo!, (value) {
-      return _then(_value.copyWith(demo: value) as $Val);
-    });
-  }
 }
 
 /// @nodoc
@@ -128,16 +98,11 @@ abstract class _$$RecordOverlayStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Quest? demo,
-      RecordingState recordingState,
-      Timer? timer,
+      {Timer? timer,
       int seconds,
       bool isLocked,
       bool isCollapsed,
       bool focused});
-
-  @override
-  $QuestCopyWith<$Res>? get demo;
 }
 
 /// @nodoc
@@ -153,8 +118,6 @@ class __$$RecordOverlayStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? demo = freezed,
-    Object? recordingState = null,
     Object? timer = freezed,
     Object? seconds = null,
     Object? isLocked = null,
@@ -162,14 +125,6 @@ class __$$RecordOverlayStateImplCopyWithImpl<$Res>
     Object? focused = null,
   }) {
     return _then(_$RecordOverlayStateImpl(
-      demo: freezed == demo
-          ? _value.demo
-          : demo // ignore: cast_nullable_to_non_nullable
-              as Quest?,
-      recordingState: null == recordingState
-          ? _value.recordingState
-          : recordingState // ignore: cast_nullable_to_non_nullable
-              as RecordingState,
       timer: freezed == timer
           ? _value.timer
           : timer // ignore: cast_nullable_to_non_nullable
@@ -198,20 +153,13 @@ class __$$RecordOverlayStateImplCopyWithImpl<$Res>
 
 class _$RecordOverlayStateImpl extends _RecordOverlayState {
   const _$RecordOverlayStateImpl(
-      {this.demo,
-      this.recordingState = RecordingState.off,
-      this.timer = null,
+      {this.timer = null,
       this.seconds = 0,
       this.isLocked = false,
       this.isCollapsed = false,
       this.focused = true})
       : super._();
 
-  @override
-  final Quest? demo;
-  @override
-  @JsonKey()
-  final RecordingState recordingState;
   @override
   @JsonKey()
   final Timer? timer;
@@ -230,7 +178,7 @@ class _$RecordOverlayStateImpl extends _RecordOverlayState {
 
   @override
   String toString() {
-    return 'RecordOverlayState(demo: $demo, recordingState: $recordingState, timer: $timer, seconds: $seconds, isLocked: $isLocked, isCollapsed: $isCollapsed, focused: $focused)';
+    return 'RecordOverlayState(timer: $timer, seconds: $seconds, isLocked: $isLocked, isCollapsed: $isCollapsed, focused: $focused)';
   }
 
   @override
@@ -238,9 +186,6 @@ class _$RecordOverlayStateImpl extends _RecordOverlayState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RecordOverlayStateImpl &&
-            (identical(other.demo, demo) || other.demo == demo) &&
-            (identical(other.recordingState, recordingState) ||
-                other.recordingState == recordingState) &&
             (identical(other.timer, timer) || other.timer == timer) &&
             (identical(other.seconds, seconds) || other.seconds == seconds) &&
             (identical(other.isLocked, isLocked) ||
@@ -251,8 +196,8 @@ class _$RecordOverlayStateImpl extends _RecordOverlayState {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, demo, recordingState, timer,
-      seconds, isLocked, isCollapsed, focused);
+  int get hashCode =>
+      Object.hash(runtimeType, timer, seconds, isLocked, isCollapsed, focused);
 
   /// Create a copy of RecordOverlayState
   /// with the given fields replaced by the non-null parameter values.
@@ -266,19 +211,13 @@ class _$RecordOverlayStateImpl extends _RecordOverlayState {
 
 abstract class _RecordOverlayState extends RecordOverlayState {
   const factory _RecordOverlayState(
-      {final Quest? demo,
-      final RecordingState recordingState,
-      final Timer? timer,
+      {final Timer? timer,
       final int seconds,
       final bool isLocked,
       final bool isCollapsed,
       final bool focused}) = _$RecordOverlayStateImpl;
   const _RecordOverlayState._() : super._();
 
-  @override
-  Quest? get demo;
-  @override
-  RecordingState get recordingState;
   @override
   Timer? get timer;
   @override

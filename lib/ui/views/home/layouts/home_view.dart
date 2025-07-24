@@ -34,6 +34,7 @@ class MenuItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return CardWidget(
       variant: CardVariant.secondary,
       child: InkWell(
@@ -47,16 +48,16 @@ class MenuItemWidget extends StatelessWidget {
               children: [
                 Image.asset(
                   item.imageName,
-                  width: 150,
-                  height: 150,
+                  width: mediaQuery.size.width * 0.2,
+                  height: mediaQuery.size.height * 0.2,
                   color: VMColors.tertiary,
                 ),
                 Opacity(
                   opacity: 0.7,
                   child: Image.asset(
                     item.imageName,
-                    width: 150,
-                    height: 150,
+                    width: mediaQuery.size.width * 0.2,
+                    height: mediaQuery.size.height * 0.2,
                   ),
                 ),
               ],
