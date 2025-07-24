@@ -10,7 +10,8 @@ import 'package:video_player/video_player.dart';
 enum _DragHandle { start, end, none }
 
 class DemoDetailVideoPreview extends ConsumerStatefulWidget {
-  const DemoDetailVideoPreview({super.key});
+  const DemoDetailVideoPreview({super.key, this.onExpand});
+  final VoidCallback? onExpand;
 
   @override
   ConsumerState<DemoDetailVideoPreview> createState() =>
@@ -34,104 +35,115 @@ class _DemoDetailVideoPreviewState
         videoController != null && videoController.value.isInitialized;
 
     final theme = Theme.of(context);
-    return IntrinsicHeight(
-      child: CardWidget(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Video Preview',
-              style: theme.textTheme.titleMedium,
-            ),
-            const SizedBox(height: 10),
-            if (!videoLoaded)
-              Text('No video found', style: theme.textTheme.bodyMedium)
-            else
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (state.isLoading)
-                    const Center(
-                      child: SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1,
+    return CardWidget(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Video Preview',
+                style: theme.textTheme.titleMedium,
+              ),
+              if (widget.onExpand != null)
+                IconButton(
+                  icon: const Icon(
+                    Icons.fullscreen,
+                    color: VMColors.secondary,
+                  ),
+                  onPressed: widget.onExpand,
+                  tooltip: 'Fullscreen',
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          if (!videoLoaded)
+            Text('No video found', style: theme.textTheme.bodyMedium)
+          else
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                if (state.isLoading)
+                  const Center(
+                    child: SizedBox(
+                      width: 50,
+                      height: 50,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1,
+                      ),
+                    ),
+                  )
+                else
+                  Opacity(
+                    opacity: videoController.value.isPlaying ? 1 : 0.5,
+                    child: AspectRatio(
+                      aspectRatio: videoController.value.aspectRatio,
+                      child: VideoPlayer(videoController),
+                    ),
+                  ),
+                if (videoLoaded)
+                  ValueListenableBuilder<VideoPlayerValue>(
+                    valueListenable: videoController,
+                    builder: (context, value, child) {
+                      return IconButton(
+                        icon: Icon(
+                          value.isPlaying ? Icons.pause : Icons.play_arrow,
+                          color: Colors.white,
+                          size: 50,
                         ),
-                      ),
-                    )
-                  else
-                    Opacity(
-                      opacity: videoController.value.isPlaying ? 1 : 0.5,
-                      child: AspectRatio(
-                        aspectRatio: videoController.value.aspectRatio,
-                        child: VideoPlayer(videoController),
-                      ),
-                    ),
-                  if (videoLoaded)
-                    ValueListenableBuilder<VideoPlayerValue>(
-                      valueListenable: videoController,
-                      builder: (context, value, child) {
-                        return IconButton(
-                          icon: Icon(
-                            value.isPlaying ? Icons.pause : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 50,
-                          ),
-                          onPressed: () {
-                            if (value.isPlaying) {
-                              videoController.pause();
-                            } else {
-                              videoController.play();
+                        onPressed: () {
+                          if (value.isPlaying) {
+                            videoController.pause();
+                          } else {
+                            videoController.play();
+                          }
+                        },
+                      );
+                    },
+                  ),
+              ],
+            ),
+          if (videoLoaded) _buildCustomTimeline(context, ref, videoController),
+          if (videoLoaded && (_localDragRange ?? state.trimRange) != null)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Start: ${formatTimeMs((_localDragRange ?? state.trimRange)!.start.round())}',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                  Text(
+                    'End: ${formatTimeMs((_localDragRange ?? state.trimRange)!.end.round())}',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                  BtnPrimary(
+                    buttonText: 'Trim Video',
+                    onTap: !state.isTrimming
+                        ? () {
+                            final currentRange =
+                                _localDragRange ?? state.trimRange;
+                            if (currentRange != null) {
+                              ref
+                                  .read(demoDetailNotifierProvider.notifier)
+                                  .trimRecording(
+                                    currentRange.start / 1000.0,
+                                    currentRange.end / 1000.0,
+                                  );
                             }
-                          },
-                        );
-                      },
-                    ),
+                          }
+                        : null,
+                    isLoading: state.isTrimming,
+                    isLocked: state.isTrimming,
+                    btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                  ),
                 ],
               ),
-            if (videoLoaded)
-              _buildCustomTimeline(context, ref, videoController),
-            if (videoLoaded && (_localDragRange ?? state.trimRange) != null)
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Start: ${formatTimeMs((_localDragRange ?? state.trimRange)!.start.round())}',
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                    Text(
-                      'End: ${formatTimeMs((_localDragRange ?? state.trimRange)!.end.round())}',
-                      style: theme.textTheme.bodyMedium,
-                    ),
-                    BtnPrimary(
-                      buttonText: 'Trim Video',
-                      onTap: !state.isTrimming
-                          ? () {
-                              final currentRange =
-                                  _localDragRange ?? state.trimRange;
-                              if (currentRange != null) {
-                                ref
-                                    .read(demoDetailNotifierProvider.notifier)
-                                    .trimRecording(
-                                      currentRange.start / 1000.0,
-                                      currentRange.end / 1000.0,
-                                    );
-                              }
-                            }
-                          : null,
-                      isLoading: state.isTrimming,
-                      isLocked: state.isTrimming,
-                      btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                    ),
-                  ],
-                ),
-              ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -245,7 +257,10 @@ class _DemoDetailVideoPreviewState
                   trimOverlay(context, ref, controller, timelineWidth),
                   draggableHandles(context, ref, controller, timelineWidth),
                   hoverPositionLineAndTimeLabel(
-                      context, controller, timelineWidth),
+                    context,
+                    controller,
+                    timelineWidth,
+                  ),
                 ],
               ),
             ),
