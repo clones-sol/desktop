@@ -78,7 +78,10 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       // Clean up the old controller if it exists
       await state.videoController?.dispose();
 
-      state = state.copyWith(videoController: controller);
+      final newRange =
+          RangeValues(0, controller.value.duration.inMilliseconds.toDouble());
+
+      state = state.copyWith(videoController: controller, trimRange: newRange);
 
       // Optional: Delete the file when the controller is disposed
       controller.addListener(() {
@@ -194,6 +197,10 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
     state = state.copyWith(enabledEventTypes: newEnabledTypes);
   }
 
+  void setTrimRange(RangeValues range) {
+    state = state.copyWith(trimRange: range);
+  }
+
   // --- SFT Editor Logic ---
 
   void addPrivateRangeAroundMessage(SftMessage message) {
@@ -249,6 +256,24 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
           );
     } catch (e) {
       // TODO(reddwarf03): handle error
+    }
+  }
+
+  Future<void> trimRecording(double startTime, double endTime) async {
+    final recordingId = state.recording?.id;
+    if (recordingId == null) return;
+    state = state.copyWith(isTrimming: true);
+    try {
+      await ref.read(tauriApiClientProvider).trimRecording(
+            recordingId,
+            startTime,
+            endTime,
+          );
+      await initializeVideoPlayer(recordingId);
+      state = state.copyWith(isTrimming: false);
+    } catch (e) {
+      // TODO(reddwarf03): handle error
+      state = state.copyWith(isTrimming: false);
     }
   }
 
