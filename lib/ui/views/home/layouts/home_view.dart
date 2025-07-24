@@ -68,7 +68,9 @@ class MenuItemWidget extends StatelessWidget {
               children: [
                 Text(
                   item.title,
-                  style: theme.textTheme.titleMedium,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: VMColors.primary,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(

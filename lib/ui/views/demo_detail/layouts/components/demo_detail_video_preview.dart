@@ -57,11 +57,10 @@ class _DemoDetailVideoPreviewState
                     )
                   else
                     Opacity(
-                      opacity:
-                          videoController?.value.isPlaying ?? false ? 1 : 0.5,
+                      opacity: videoController.value.isPlaying ? 1 : 0.5,
                       child: AspectRatio(
-                        aspectRatio: videoController?.value.aspectRatio ?? 1,
-                        child: VideoPlayer(videoController!),
+                        aspectRatio: videoController.value.aspectRatio,
+                        child: VideoPlayer(videoController),
                       ),
                     ),
                   if (videoLoaded)
