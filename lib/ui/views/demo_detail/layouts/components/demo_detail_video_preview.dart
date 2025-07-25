@@ -36,114 +36,121 @@ class _DemoDetailVideoPreviewState
 
     final theme = Theme.of(context);
     return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Video Preview',
-                style: theme.textTheme.titleMedium,
-              ),
-              if (widget.onExpand != null)
-                IconButton(
-                  icon: const Icon(
-                    Icons.fullscreen,
-                    color: VMColors.secondary,
-                  ),
-                  onPressed: widget.onExpand,
-                  tooltip: 'Fullscreen',
-                ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          if (!videoLoaded)
-            Text('No video found', style: theme.textTheme.bodyMedium)
-          else
-            Stack(
-              alignment: Alignment.center,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (state.isLoading)
-                  const Center(
-                    child: SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 1,
-                      ),
+                Text(
+                  'Video Preview',
+                  style: theme.textTheme.titleMedium,
+                ),
+                if (widget.onExpand != null)
+                  IconButton(
+                    icon: const Icon(
+                      Icons.fullscreen,
+                      color: VMColors.secondary,
                     ),
-                  )
-                else
-                  Opacity(
-                    opacity: videoController.value.isPlaying ? 1 : 0.5,
-                    child: AspectRatio(
-                      aspectRatio: videoController.value.aspectRatio,
-                      child: VideoPlayer(videoController),
-                    ),
-                  ),
-                if (videoLoaded)
-                  ValueListenableBuilder<VideoPlayerValue>(
-                    valueListenable: videoController,
-                    builder: (context, value, child) {
-                      return IconButton(
-                        icon: Icon(
-                          value.isPlaying ? Icons.pause : Icons.play_arrow,
-                          color: Colors.white,
-                          size: 50,
-                        ),
-                        onPressed: () {
-                          if (value.isPlaying) {
-                            videoController.pause();
-                          } else {
-                            videoController.play();
-                          }
-                        },
-                      );
-                    },
+                    onPressed: widget.onExpand,
+                    tooltip: 'Fullscreen',
                   ),
               ],
             ),
-          if (videoLoaded) _buildCustomTimeline(context, ref, videoController),
-          if (videoLoaded && (_localDragRange ?? state.trimRange) != null)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const SizedBox(height: 10),
+            if (!videoLoaded)
+              Text('No video found', style: theme.textTheme.bodyMedium)
+            else
+              Stack(
+                alignment: Alignment.center,
                 children: [
-                  Text(
-                    'Start: ${formatTimeMs((_localDragRange ?? state.trimRange)!.start.round())}',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  Text(
-                    'End: ${formatTimeMs((_localDragRange ?? state.trimRange)!.end.round())}',
-                    style: theme.textTheme.bodyMedium,
-                  ),
-                  BtnPrimary(
-                    buttonText: 'Trim Video',
-                    onTap: !state.isTrimming
-                        ? () {
-                            final currentRange =
-                                _localDragRange ?? state.trimRange;
-                            if (currentRange != null) {
-                              ref
-                                  .read(demoDetailNotifierProvider.notifier)
-                                  .trimRecording(
-                                    currentRange.start / 1000.0,
-                                    currentRange.end / 1000.0,
-                                  );
+                  if (state.isLoading)
+                    const Center(
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 1,
+                        ),
+                      ),
+                    )
+                  else
+                    Opacity(
+                      opacity: _draggedHandle != _DragHandle.none ||
+                              videoController.value.isPlaying
+                          ? 1
+                          : 0.5,
+                      child: AspectRatio(
+                        aspectRatio: videoController.value.aspectRatio,
+                        child: VideoPlayer(videoController),
+                      ),
+                    ),
+                  if (videoLoaded && _draggedHandle == _DragHandle.none)
+                    ValueListenableBuilder<VideoPlayerValue>(
+                      valueListenable: videoController,
+                      builder: (context, value, child) {
+                        return IconButton(
+                          icon: Icon(
+                            value.isPlaying ? Icons.pause : Icons.play_arrow,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                          onPressed: () {
+                            if (value.isPlaying) {
+                              videoController.pause();
+                            } else {
+                              videoController.play();
                             }
-                          }
-                        : null,
-                    isLoading: state.isTrimming,
-                    isLocked: state.isTrimming,
-                    btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                  ),
+                          },
+                        );
+                      },
+                    ),
                 ],
               ),
-            ),
-        ],
+            if (videoLoaded)
+              _buildCustomTimeline(context, ref, videoController),
+            if (videoLoaded && (_localDragRange ?? state.trimRange) != null)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Start: ${formatTimeMs((_localDragRange ?? state.trimRange)!.start.round())}',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    Text(
+                      'End: ${formatTimeMs((_localDragRange ?? state.trimRange)!.end.round())}',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    BtnPrimary(
+                      buttonText: 'Trim Video',
+                      onTap: !state.isTrimming
+                          ? () {
+                              final currentRange =
+                                  _localDragRange ?? state.trimRange;
+                              if (currentRange != null) {
+                                ref
+                                    .read(demoDetailNotifierProvider.notifier)
+                                    .trimRecording(
+                                      currentRange.start / 1000.0,
+                                      currentRange.end / 1000.0,
+                                    );
+                              }
+                            }
+                          : null,
+                      isLoading: state.isTrimming,
+                      isLocked: state.isTrimming,
+                      btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
@@ -202,11 +209,13 @@ class _DemoDetailVideoPreviewState
                           (details.delta.dx / timelineWidth) * durationMs)
                       .clamp(0.0, _localDragRange!.end);
                   _localDragRange = RangeValues(newStart, _localDragRange!.end);
+                  controller.seekTo(Duration(milliseconds: newStart.round()));
                 } else if (_draggedHandle == _DragHandle.end) {
                   final newEnd = (_localDragRange!.end +
                           (details.delta.dx / timelineWidth) * durationMs)
                       .clamp(_localDragRange!.start, durationMs);
                   _localDragRange = RangeValues(_localDragRange!.start, newEnd);
+                  controller.seekTo(Duration(milliseconds: newEnd.round()));
                 }
               });
             },
