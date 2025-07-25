@@ -26,6 +26,9 @@ mixin _$DemoDetailState {
   int get startTime => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
   VideoPlayerController? get videoController =>
+      throw _privateConstructorUsedError; // Video editing
+  List<RangeValues> get deletedSegments => throw _privateConstructorUsedError;
+  bool get isApplyingEdits =>
       throw _privateConstructorUsedError; // New states for button handling
   bool get isProcessing => throw _privateConstructorUsedError;
   bool get isExporting => throw _privateConstructorUsedError;
@@ -57,6 +60,8 @@ abstract class $DemoDetailStateCopyWith<$Res> {
       Set<String> enabledEventTypes,
       int startTime,
       @JsonKey(includeIfNull: false) VideoPlayerController? videoController,
+      List<RangeValues> deletedSegments,
+      bool isApplyingEdits,
       bool isProcessing,
       bool isExporting,
       bool isUploading,
@@ -91,6 +96,8 @@ class _$DemoDetailStateCopyWithImpl<$Res, $Val extends DemoDetailState>
     Object? enabledEventTypes = null,
     Object? startTime = null,
     Object? videoController = freezed,
+    Object? deletedSegments = null,
+    Object? isApplyingEdits = null,
     Object? isProcessing = null,
     Object? isExporting = null,
     Object? isUploading = null,
@@ -135,6 +142,14 @@ class _$DemoDetailStateCopyWithImpl<$Res, $Val extends DemoDetailState>
           ? _value.videoController
           : videoController // ignore: cast_nullable_to_non_nullable
               as VideoPlayerController?,
+      deletedSegments: null == deletedSegments
+          ? _value.deletedSegments
+          : deletedSegments // ignore: cast_nullable_to_non_nullable
+              as List<RangeValues>,
+      isApplyingEdits: null == isApplyingEdits
+          ? _value.isApplyingEdits
+          : isApplyingEdits // ignore: cast_nullable_to_non_nullable
+              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -195,6 +210,8 @@ abstract class _$$DemoDetailStateImplCopyWith<$Res>
       Set<String> enabledEventTypes,
       int startTime,
       @JsonKey(includeIfNull: false) VideoPlayerController? videoController,
+      List<RangeValues> deletedSegments,
+      bool isApplyingEdits,
       bool isProcessing,
       bool isExporting,
       bool isUploading,
@@ -228,6 +245,8 @@ class __$$DemoDetailStateImplCopyWithImpl<$Res>
     Object? enabledEventTypes = null,
     Object? startTime = null,
     Object? videoController = freezed,
+    Object? deletedSegments = null,
+    Object? isApplyingEdits = null,
     Object? isProcessing = null,
     Object? isExporting = null,
     Object? isUploading = null,
@@ -272,6 +291,14 @@ class __$$DemoDetailStateImplCopyWithImpl<$Res>
           ? _value.videoController
           : videoController // ignore: cast_nullable_to_non_nullable
               as VideoPlayerController?,
+      deletedSegments: null == deletedSegments
+          ? _value._deletedSegments
+          : deletedSegments // ignore: cast_nullable_to_non_nullable
+              as List<RangeValues>,
+      isApplyingEdits: null == isApplyingEdits
+          ? _value.isApplyingEdits
+          : isApplyingEdits // ignore: cast_nullable_to_non_nullable
+              as bool,
       isProcessing: null == isProcessing
           ? _value.isProcessing
           : isProcessing // ignore: cast_nullable_to_non_nullable
@@ -313,6 +340,8 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
       final Set<String> enabledEventTypes = const {},
       this.startTime = 0,
       @JsonKey(includeIfNull: false) this.videoController,
+      final List<RangeValues> deletedSegments = const [],
+      this.isApplyingEdits = false,
       this.isProcessing = false,
       this.isExporting = false,
       this.isUploading = false,
@@ -324,6 +353,7 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
         _privateRanges = privateRanges,
         _eventTypes = eventTypes,
         _enabledEventTypes = enabledEventTypes,
+        _deletedSegments = deletedSegments,
         super._();
 
   @override
@@ -383,6 +413,20 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
   @override
   @JsonKey(includeIfNull: false)
   final VideoPlayerController? videoController;
+// Video editing
+  final List<RangeValues> _deletedSegments;
+// Video editing
+  @override
+  @JsonKey()
+  List<RangeValues> get deletedSegments {
+    if (_deletedSegments is EqualUnmodifiableListView) return _deletedSegments;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_deletedSegments);
+  }
+
+  @override
+  @JsonKey()
+  final bool isApplyingEdits;
 // New states for button handling
   @override
   @JsonKey()
@@ -402,7 +446,7 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
 
   @override
   String toString() {
-    return 'DemoDetailState(isLoading: $isLoading, recording: $recording, events: $events, sftMessages: $sftMessages, privateRanges: $privateRanges, eventTypes: $eventTypes, enabledEventTypes: $enabledEventTypes, startTime: $startTime, videoController: $videoController, isProcessing: $isProcessing, isExporting: $isExporting, isUploading: $isUploading, exportPath: $exportPath, exportError: $exportError, uploadError: $uploadError)';
+    return 'DemoDetailState(isLoading: $isLoading, recording: $recording, events: $events, sftMessages: $sftMessages, privateRanges: $privateRanges, eventTypes: $eventTypes, enabledEventTypes: $enabledEventTypes, startTime: $startTime, videoController: $videoController, deletedSegments: $deletedSegments, isApplyingEdits: $isApplyingEdits, isProcessing: $isProcessing, isExporting: $isExporting, isUploading: $isUploading, exportPath: $exportPath, exportError: $exportError, uploadError: $uploadError)';
   }
 
   @override
@@ -427,6 +471,10 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
                 other.startTime == startTime) &&
             (identical(other.videoController, videoController) ||
                 other.videoController == videoController) &&
+            const DeepCollectionEquality()
+                .equals(other._deletedSegments, _deletedSegments) &&
+            (identical(other.isApplyingEdits, isApplyingEdits) ||
+                other.isApplyingEdits == isApplyingEdits) &&
             (identical(other.isProcessing, isProcessing) ||
                 other.isProcessing == isProcessing) &&
             (identical(other.isExporting, isExporting) ||
@@ -453,6 +501,8 @@ class _$DemoDetailStateImpl extends _DemoDetailState {
       const DeepCollectionEquality().hash(_enabledEventTypes),
       startTime,
       videoController,
+      const DeepCollectionEquality().hash(_deletedSegments),
+      isApplyingEdits,
       isProcessing,
       isExporting,
       isUploading,
@@ -482,6 +532,8 @@ abstract class _DemoDetailState extends DemoDetailState {
       final int startTime,
       @JsonKey(includeIfNull: false)
       final VideoPlayerController? videoController,
+      final List<RangeValues> deletedSegments,
+      final bool isApplyingEdits,
       final bool isProcessing,
       final bool isExporting,
       final bool isUploading,
@@ -508,7 +560,11 @@ abstract class _DemoDetailState extends DemoDetailState {
   int get startTime;
   @override
   @JsonKey(includeIfNull: false)
-  VideoPlayerController? get videoController; // New states for button handling
+  VideoPlayerController? get videoController; // Video editing
+  @override
+  List<RangeValues> get deletedSegments;
+  @override
+  bool get isApplyingEdits; // New states for button handling
   @override
   bool get isProcessing;
   @override
