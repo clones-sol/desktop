@@ -81,9 +81,14 @@ pub struct StopRecordingPayload {
 }
 
 #[derive(Deserialize)]
-pub struct TrimPayload {
-    start_time: f64,
-    end_time: f64,
+pub struct Segment {
+    start: f64,
+    end: f64,
+}
+
+#[derive(Deserialize)]
+pub struct ApplyEditsPayload {
+    segments: Vec<Segment>,
 }
 
 // Structure for the `set_upload_data_allowed` payload
@@ -201,6 +206,7 @@ pub async fn init(app_handle: AppHandle) {
         // GET /displays/size: Get the size of all displays.
         .route("/displays/size", get(get_all_displays_size_handler))
         .route("/recordings/:id/trim", post(trim_recording_handler))
+        .route("/recordings/:id/apply-edits", post(apply_edits_handler))
         .with_state(state)
         .layer(cors);
 
@@ -483,12 +489,17 @@ async fn export_recordings_handler(
     }
 }
 
-async fn trim_recording_handler(
+async fn apply_edits_handler(
     State(state): State<AppState>,
     axum::extract::Path(id): axum::extract::Path<String>,
-    Json(payload): Json<TrimPayload>,
+    Json(payload): Json<ApplyEditsPayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
-    match record::trim_recording(state.app_handle, id, payload.start_time, payload.end_time).await {
+    let segments_to_keep: Vec<(f64, f64)> = payload
+        .segments
+        .into_iter()
+        .map(|s| (s.start, s.end))
+        .collect();
+    match record::apply_edits(state.app_handle, id, segments_to_keep).await {
         Ok(_) => Ok(StatusCode::OK),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
