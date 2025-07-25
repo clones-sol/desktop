@@ -21,6 +21,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:screen_retriever/screen_retriever.dart';
 import 'package:window_manager/window_manager.dart';
 
 final _router = GoRouter(
@@ -150,9 +151,19 @@ Future<void> main(List<String> args) async {
 
   await windowManager.ensureInitialized();
 
-  const initialSize = Size(1200, 800);
+  final allDisplays = await screenRetriever.getAllDisplays();
+  final smallestDisplay = allDisplays.reduce((a, b) {
+    final areaA = a.size.width * a.size.height;
+    final areaB = b.size.width * b.size.height;
+    return areaA < areaB ? a : b;
+  });
 
-  const windowOptions = WindowOptions(
+  final initialSize = Size(
+    smallestDisplay.size.width,
+    smallestDisplay.size.height,
+  );
+
+  final windowOptions = WindowOptions(
     size: initialSize,
     center: true,
     backgroundColor: Colors.transparent,
