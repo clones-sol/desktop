@@ -108,33 +108,36 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
 /// This function initializes the Tauri runtime, registers all plugins, manages state, and exposes command handlers for frontend invocation.
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let app = setup_builder()
-    .setup(|app| {
-        let app_handle = app.handle();
-        let listen_handle = app_handle.clone();
-    
-        tauri::async_runtime::spawn({
-            let app_handle = app_handle.clone();
-            async move {
-                ipc_server::init(app_handle).await;
+    #[cfg(not(feature = "ipc-server-only"))]
+    {
+        let app = setup_builder()
+            .setup(|app| {
+                let app_handle = app.handle();
+                let listen_handle = app_handle.clone();
+
+                tauri::async_runtime::spawn({
+                    let app_handle = app_handle.clone();
+                    async move {
+                        ipc_server::init(app_handle).await;
+                    }
+                });
+
+                listen_handle.clone().listen("deep-link", move |event| {
+                    let url = event.payload();
+                    let state = listen_handle.state::<DeepLinkState>();
+                    let mut lock = state.0.lock().unwrap();
+                    *lock = Some(url.to_string().trim_matches('"').to_string());
+                });
+
+                Ok(())
+            })
+            .build(tauri::generate_context!())
+            .expect("error while building tauri application");
+
+        app.run(|_app_handle, event| {
+            if let tauri::RunEvent::ExitRequested { api, .. } = event {
+                api.prevent_exit();
             }
         });
-    
-        listen_handle.clone().listen("deep-link", move |event| {
-            let url = event.payload();
-            let state = listen_handle.state::<DeepLinkState>();
-            let mut lock = state.0.lock().unwrap();
-            *lock = Some(url.to_string().trim_matches('"').to_string());
-        });
-    
-        Ok(())  
-    })
-    .build(tauri::generate_context!())
-    .expect("error while building tauri application");
-    
-    app.run(|_app_handle, event| {
-        if let tauri::RunEvent::ExitRequested { api, .. } = event {
-            api.prevent_exit();
-        }
-    });
+    }
 }
