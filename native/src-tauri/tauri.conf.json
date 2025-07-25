@@ -4,7 +4,7 @@
   "version": "0.1.4",
   "identifier": "sol.clones.desktop",
   "build": {
-    "frontendDist": "../build/web"
+    "frontendDist": "../../build/web"
   },
   "plugins": {
     "updater": {
