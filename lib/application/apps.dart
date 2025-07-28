@@ -1,6 +1,6 @@
 import 'package:clones_desktop/application/recording.dart';
 import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/ui/gym_filter.dart';
+import 'package:clones_desktop/domain/models/ui/factory_filter.dart';
 import 'package:clones_desktop/infrastructure/apps.repository.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,17 +40,17 @@ Future<List<ForgeApp>> getAppsForSkills(Ref ref) async {
 }
 
 @riverpod
-Future<List<ForgeApp>> getAppsForGym(
+Future<List<ForgeApp>> getAppsForFactory(
   Ref ref, {
-  required GymFilter filter,
+  required FactoryFilter filter,
 }) async {
   final appsRepository = ref.read(appsRepositoryProvider);
-  final apps = await appsRepository.getAppsForGym(filter: filter.toJson());
+  final apps = await appsRepository.getAppsForFactory(filter: filter.toJson());
   return apps;
 }
 
 @riverpod
-Future<List<String>> getGymCategories(Ref ref) async {
+Future<List<String>> getFactoryCategories(Ref ref) async {
   final appsRepository = ref.read(appsRepositoryProvider);
-  return appsRepository.getGymCategories();
+  return appsRepository.getFactoryCategories();
 }

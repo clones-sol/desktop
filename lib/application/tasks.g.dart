@@ -24,7 +24,8 @@ final tasksRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TasksRepositoryRef = AutoDisposeProviderRef<TasksRepositoryImpl>;
-String _$getTasksForGymHash() => r'f3ecebe94ec43ca60c31eb402483462e606b97d7';
+String _$getTasksForFactoryHash() =>
+    r'125b2d10d59065fabb691def33d42fbbb3b34613';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,27 +48,27 @@ class _SystemHash {
   }
 }
 
-/// See also [getTasksForGym].
-@ProviderFor(getTasksForGym)
-const getTasksForGymProvider = GetTasksForGymFamily();
+/// See also [getTasksForFactory].
+@ProviderFor(getTasksForFactory)
+const getTasksForFactoryProvider = GetTasksForFactoryFamily();
 
-/// See also [getTasksForGym].
-class GetTasksForGymFamily extends Family<AsyncValue<List<ForgeTask>>> {
-  /// See also [getTasksForGym].
-  const GetTasksForGymFamily();
+/// See also [getTasksForFactory].
+class GetTasksForFactoryFamily extends Family<AsyncValue<List<ForgeTask>>> {
+  /// See also [getTasksForFactory].
+  const GetTasksForFactoryFamily();
 
-  /// See also [getTasksForGym].
-  GetTasksForGymProvider call({
+  /// See also [getTasksForFactory].
+  GetTasksForFactoryProvider call({
     Map<String, dynamic>? filter,
   }) {
-    return GetTasksForGymProvider(
+    return GetTasksForFactoryProvider(
       filter: filter,
     );
   }
 
   @override
-  GetTasksForGymProvider getProviderOverride(
-    covariant GetTasksForGymProvider provider,
+  GetTasksForFactoryProvider getProviderOverride(
+    covariant GetTasksForFactoryProvider provider,
   ) {
     return call(
       filter: provider.filter,
@@ -86,33 +87,33 @@ class GetTasksForGymFamily extends Family<AsyncValue<List<ForgeTask>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getTasksForGymProvider';
+  String? get name => r'getTasksForFactoryProvider';
 }
 
-/// See also [getTasksForGym].
-class GetTasksForGymProvider
+/// See also [getTasksForFactory].
+class GetTasksForFactoryProvider
     extends AutoDisposeFutureProvider<List<ForgeTask>> {
-  /// See also [getTasksForGym].
-  GetTasksForGymProvider({
+  /// See also [getTasksForFactory].
+  GetTasksForFactoryProvider({
     Map<String, dynamic>? filter,
   }) : this._internal(
-          (ref) => getTasksForGym(
-            ref as GetTasksForGymRef,
+          (ref) => getTasksForFactory(
+            ref as GetTasksForFactoryRef,
             filter: filter,
           ),
-          from: getTasksForGymProvider,
-          name: r'getTasksForGymProvider',
+          from: getTasksForFactoryProvider,
+          name: r'getTasksForFactoryProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getTasksForGymHash,
-          dependencies: GetTasksForGymFamily._dependencies,
+                  : _$getTasksForFactoryHash,
+          dependencies: GetTasksForFactoryFamily._dependencies,
           allTransitiveDependencies:
-              GetTasksForGymFamily._allTransitiveDependencies,
+              GetTasksForFactoryFamily._allTransitiveDependencies,
           filter: filter,
         );
 
-  GetTasksForGymProvider._internal(
+  GetTasksForFactoryProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -126,12 +127,12 @@ class GetTasksForGymProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<ForgeTask>> Function(GetTasksForGymRef provider) create,
+    FutureOr<List<ForgeTask>> Function(GetTasksForFactoryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetTasksForGymProvider._internal(
-        (ref) => create(ref as GetTasksForGymRef),
+      override: GetTasksForFactoryProvider._internal(
+        (ref) => create(ref as GetTasksForFactoryRef),
         from: from,
         name: null,
         dependencies: null,
@@ -144,12 +145,12 @@ class GetTasksForGymProvider
 
   @override
   AutoDisposeFutureProviderElement<List<ForgeTask>> createElement() {
-    return _GetTasksForGymProviderElement(this);
+    return _GetTasksForFactoryProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetTasksForGymProvider && other.filter == filter;
+    return other is GetTasksForFactoryProvider && other.filter == filter;
   }
 
   @override
@@ -163,18 +164,19 @@ class GetTasksForGymProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetTasksForGymRef on AutoDisposeFutureProviderRef<List<ForgeTask>> {
+mixin GetTasksForFactoryRef on AutoDisposeFutureProviderRef<List<ForgeTask>> {
   /// The parameter `filter` of this provider.
   Map<String, dynamic>? get filter;
 }
 
-class _GetTasksForGymProviderElement
+class _GetTasksForFactoryProviderElement
     extends AutoDisposeFutureProviderElement<List<ForgeTask>>
-    with GetTasksForGymRef {
-  _GetTasksForGymProviderElement(super.provider);
+    with GetTasksForFactoryRef {
+  _GetTasksForFactoryProviderElement(super.provider);
 
   @override
-  Map<String, dynamic>? get filter => (origin as GetTasksForGymProvider).filter;
+  Map<String, dynamic>? get filter =>
+      (origin as GetTasksForFactoryProvider).filter;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

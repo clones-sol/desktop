@@ -15,10 +15,10 @@ TasksRepositoryImpl tasksRepository(
 }
 
 @riverpod
-Future<List<ForgeTask>> getTasksForGym(
+Future<List<ForgeTask>> getTasksForFactory(
   Ref ref, {
   Map<String, dynamic>? filter,
 }) async {
   final tasksRepository = ref.read(tasksRepositoryProvider);
-  return tasksRepository.getTasksForGym(filter: filter);
+  return tasksRepository.getTasksForFactory(filter: filter);
 }

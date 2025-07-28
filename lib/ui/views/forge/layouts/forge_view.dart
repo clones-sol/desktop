@@ -3,9 +3,9 @@ import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/wallet_not_connected.dart';
 import 'package:clones_desktop/ui/views/forge/bloc/provider.dart';
-import 'package:clones_desktop/ui/views/forge/layouts/components/forge_existing_gym_card.dart';
-import 'package:clones_desktop/ui/views/forge/layouts/components/forge_new_gym_card.dart';
-import 'package:clones_desktop/ui/views/generate_gym/layouts/generate_gym_modal.dart';
+import 'package:clones_desktop/ui/views/forge/layouts/components/forge_existing_factory_card.dart';
+import 'package:clones_desktop/ui/views/forge/layouts/components/forge_new_factory_card.dart';
+import 'package:clones_desktop/ui/views/generate_factory/layouts/generate_factory_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -60,9 +60,9 @@ class ForgeView extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final pool = allPools[index];
                         if (pool == null) {
-                          return const ForgeNewGymCard();
+                          return const ForgeNewFactoryCard();
                         }
-                        return ForgeExistingGymCard(
+                        return ForgeExistingFactoryCard(
                           pool: pool,
                           onTap: () {
                             context.go(
@@ -96,12 +96,12 @@ class ForgeView extends ConsumerWidget {
             ),
           ),
         ),
-        if (ref.watch(forgeNotifierProvider).showGenerateGymModal)
-          GenerateGymModal(
+        if (ref.watch(forgeNotifierProvider).showGenerateFactoryModal)
+          GenerateFactoryModal(
             onClose: () {
               ref
                   .read(forgeNotifierProvider.notifier)
-                  .setShowGenerateGymModal(false);
+                  .setShowGenerateFactoryModal(false);
             },
           ),
       ],

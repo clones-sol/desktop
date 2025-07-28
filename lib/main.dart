@@ -3,14 +3,14 @@ import 'package:clones_desktop/application/route_provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/main_layout.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
+import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
+import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_gym_deploy_tab.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_gym_detail_shell.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_gym_general_tab.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_gym_tasks_tab.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_gym_uploads_tab.dart';
-import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
-import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
+import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_deploy_tab.dart';
+import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_detail_shell.dart';
+import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_general_tab.dart';
+import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_tasks_tab.dart';
+import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_uploads_tab.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
@@ -47,15 +47,15 @@ final _router = GoRouter(
           ),
         ),
         GoRoute(
-          path: GymView.routeName,
+          path: FactoryView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: GymView(),
+            child: FactoryView(),
           ),
         ),
         GoRoute(
-          path: GymHistoryView.routeName,
+          path: FactoryHistoryView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
-            child: GymHistoryView(),
+            child: FactoryHistoryView(),
           ),
         ),
         GoRoute(
@@ -79,7 +79,7 @@ final _router = GoRouter(
           pageBuilder: (context, state, child) {
             final poolId = state.pathParameters['id']!;
             return NoTransitionPage(
-              child: ForgeGymDetailShell(
+              child: ForgeFactoryDetailShell(
                 poolId: poolId,
                 child: child,
               ),
@@ -89,25 +89,25 @@ final _router = GoRouter(
             GoRoute(
               path: '/forge/:id/general',
               pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeGymGeneralTab());
+                return const NoTransitionPage(child: ForgeFactoryGeneralTab());
               },
             ),
             GoRoute(
               path: '/forge/:id/tasks',
               pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeGymTasksTab());
+                return const NoTransitionPage(child: ForgeFactoryTasksTab());
               },
             ),
             GoRoute(
               path: '/forge/:id/uploads',
               pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeGymUploadsTab());
+                return const NoTransitionPage(child: ForgeFactoryUploadsTab());
               },
             ),
             GoRoute(
               path: '/forge/:id/deploy',
               pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeGymDeployTab());
+                return const NoTransitionPage(child: ForgeFactoryDeployTab());
               },
             ),
           ],
@@ -223,7 +223,7 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
 
         // Handle `clones://open` by navigating to the main view.
         if (uri.host == 'open') {
-          _router.go(GymView.routeName);
+          _router.go(FactoryView.routeName);
           return;
         }
 

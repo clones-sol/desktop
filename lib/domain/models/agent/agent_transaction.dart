@@ -1,7 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:clones_desktop/domain/models/agent/agent_deployment.dart';
-import 'package:clones_desktop/domain/models/agent/gym_agent.dart';
+import 'package:clones_desktop/domain/models/agent/factory_agent.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'agent_transaction.freezed.dart';
@@ -76,7 +76,7 @@ class AgentMetrics with _$AgentMetrics {
 @freezed
 class AgentSearchResponse with _$AgentSearchResponse {
   const factory AgentSearchResponse({
-    required List<GymAgent> data,
+    required List<FactoryAgent> data,
     required AgentPagination pagination,
   }) = _AgentSearchResponse;
 

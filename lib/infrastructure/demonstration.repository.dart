@@ -19,7 +19,7 @@ class DemonstrationRepositoryImpl {
     final appList = apps.map((app) => app.name).join('\n');
 
     final demonstration = await _client.post<Demonstration>(
-      '/gym/quest',
+      '/factory/quest',
       data: {
         'installed_applications': appList,
         'address': address,
@@ -53,7 +53,7 @@ class DemonstrationRepositoryImpl {
     final screenshot = await _tauriClient.takeScreenshot();
 
     return _client.post<Map<String, dynamic>>(
-      '/gym/progress',
+      '/factory/progress',
       data: {
         'quest': demonstration.toJson(),
         'screenshots': [screenshot],

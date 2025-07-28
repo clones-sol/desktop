@@ -24,7 +24,7 @@ final agentRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AgentRepositoryRef = AutoDisposeProviderRef<AgentRepositoryImpl>;
-String _$createAgentHash() => r'e87251835edc8dfe7b144f2a61f8ff5bc996ae14';
+String _$createAgentHash() => r'ba2204279c3202e58f52a52a9c675fca1ecb83fd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -52,7 +52,7 @@ class _SystemHash {
 const createAgentProvider = CreateAgentFamily();
 
 /// See also [createAgent].
-class CreateAgentFamily extends Family<AsyncValue<GymAgent>> {
+class CreateAgentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [createAgent].
   const CreateAgentFamily();
 
@@ -114,7 +114,7 @@ class CreateAgentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [createAgent].
-class CreateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class CreateAgentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [createAgent].
   CreateAgentProvider({
     required String poolId,
@@ -189,7 +189,7 @@ class CreateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(CreateAgentRef provider) create,
+    FutureOr<FactoryAgent> Function(CreateAgentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -214,7 +214,7 @@ class CreateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _CreateAgentProviderElement(this);
   }
 
@@ -251,7 +251,7 @@ class CreateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CreateAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin CreateAgentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `poolId` of this provider.
   String get poolId;
 
@@ -281,7 +281,7 @@ mixin CreateAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
 }
 
 class _CreateAgentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with CreateAgentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent> with CreateAgentRef {
   _CreateAgentProviderElement(super.provider);
 
   @override
@@ -305,14 +305,14 @@ class _CreateAgentProviderElement
       (origin as CreateAgentProvider).huggingFaceApiKey;
 }
 
-String _$getAgentByPoolIdHash() => r'd9455b80bbf088ebd128513ce9ae6dc4b3f306b9';
+String _$getAgentByPoolIdHash() => r'56e657332611d1fdf8ee31986821c757786a508b';
 
 /// See also [getAgentByPoolId].
 @ProviderFor(getAgentByPoolId)
 const getAgentByPoolIdProvider = GetAgentByPoolIdFamily();
 
 /// See also [getAgentByPoolId].
-class GetAgentByPoolIdFamily extends Family<AsyncValue<GymAgent?>> {
+class GetAgentByPoolIdFamily extends Family<AsyncValue<FactoryAgent?>> {
   /// See also [getAgentByPoolId].
   const GetAgentByPoolIdFamily();
 
@@ -350,7 +350,8 @@ class GetAgentByPoolIdFamily extends Family<AsyncValue<GymAgent?>> {
 }
 
 /// See also [getAgentByPoolId].
-class GetAgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
+class GetAgentByPoolIdProvider
+    extends AutoDisposeFutureProvider<FactoryAgent?> {
   /// See also [getAgentByPoolId].
   GetAgentByPoolIdProvider(
     String poolId,
@@ -385,7 +386,7 @@ class GetAgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent?> Function(GetAgentByPoolIdRef provider) create,
+    FutureOr<FactoryAgent?> Function(GetAgentByPoolIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -402,7 +403,7 @@ class GetAgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent?> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent?> createElement() {
     return _GetAgentByPoolIdProviderElement(this);
   }
 
@@ -422,13 +423,13 @@ class GetAgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetAgentByPoolIdRef on AutoDisposeFutureProviderRef<GymAgent?> {
+mixin GetAgentByPoolIdRef on AutoDisposeFutureProviderRef<FactoryAgent?> {
   /// The parameter `poolId` of this provider.
   String get poolId;
 }
 
 class _GetAgentByPoolIdProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent?>
+    extends AutoDisposeFutureProviderElement<FactoryAgent?>
     with GetAgentByPoolIdRef {
   _GetAgentByPoolIdProviderElement(super.provider);
 
@@ -436,11 +437,12 @@ class _GetAgentByPoolIdProviderElement
   String get poolId => (origin as GetAgentByPoolIdProvider).poolId;
 }
 
-String _$listAgentsHash() => r'53bb9dd4d9a939c353a255a425ac8edb44389e52';
+String _$listAgentsHash() => r'bac45b64194547224c1de8ae1f6e25c715b72f5c';
 
 /// See also [listAgents].
 @ProviderFor(listAgents)
-final listAgentsProvider = AutoDisposeFutureProvider<List<GymAgent>>.internal(
+final listAgentsProvider =
+    AutoDisposeFutureProvider<List<FactoryAgent>>.internal(
   listAgents,
   name: r'listAgentsProvider',
   debugGetCreateSourceHash:
@@ -451,15 +453,15 @@ final listAgentsProvider = AutoDisposeFutureProvider<List<GymAgent>>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef ListAgentsRef = AutoDisposeFutureProviderRef<List<GymAgent>>;
-String _$updateAgentHash() => r'6b4b3a56e53d432e1f97235c6ebbecffff54a3c2';
+typedef ListAgentsRef = AutoDisposeFutureProviderRef<List<FactoryAgent>>;
+String _$updateAgentHash() => r'59c845e2d1c8503fe8de76e6260ee471adcd183b';
 
 /// See also [updateAgent].
 @ProviderFor(updateAgent)
 const updateAgentProvider = UpdateAgentFamily();
 
 /// See also [updateAgent].
-class UpdateAgentFamily extends Family<AsyncValue<GymAgent>> {
+class UpdateAgentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [updateAgent].
   const UpdateAgentFamily();
 
@@ -512,7 +514,7 @@ class UpdateAgentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [updateAgent].
-class UpdateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class UpdateAgentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [updateAgent].
   UpdateAgentProvider({
     required String agentId,
@@ -572,7 +574,7 @@ class UpdateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(UpdateAgentRef provider) create,
+    FutureOr<FactoryAgent> Function(UpdateAgentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -594,7 +596,7 @@ class UpdateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _UpdateAgentProviderElement(this);
   }
 
@@ -625,7 +627,7 @@ class UpdateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin UpdateAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin UpdateAgentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 
@@ -646,7 +648,7 @@ mixin UpdateAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
 }
 
 class _UpdateAgentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with UpdateAgentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent> with UpdateAgentRef {
   _UpdateAgentProviderElement(super.provider);
 
   @override
@@ -664,14 +666,14 @@ class _UpdateAgentProviderElement
       (origin as UpdateAgentProvider).huggingFaceApiKey;
 }
 
-String _$deployAgentHash() => r'92931e26e16ddf35fbb2efa780d1a5d9738a4e99';
+String _$deployAgentHash() => r'5753e84df9972a391b106316f717fe829b796269';
 
 /// See also [deployAgent].
 @ProviderFor(deployAgent)
 const deployAgentProvider = DeployAgentFamily();
 
 /// See also [deployAgent].
-class DeployAgentFamily extends Family<AsyncValue<GymAgent>> {
+class DeployAgentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [deployAgent].
   const DeployAgentFamily();
 
@@ -709,7 +711,7 @@ class DeployAgentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [deployAgent].
-class DeployAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class DeployAgentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [deployAgent].
   DeployAgentProvider(
     String agentId,
@@ -744,7 +746,7 @@ class DeployAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(DeployAgentRef provider) create,
+    FutureOr<FactoryAgent> Function(DeployAgentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -761,7 +763,7 @@ class DeployAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _DeployAgentProviderElement(this);
   }
 
@@ -781,27 +783,27 @@ class DeployAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin DeployAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin DeployAgentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _DeployAgentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with DeployAgentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent> with DeployAgentRef {
   _DeployAgentProviderElement(super.provider);
 
   @override
   String get agentId => (origin as DeployAgentProvider).agentId;
 }
 
-String _$cancelDeploymentHash() => r'2468579c0a47a1fe2e0f6c686fbfb6bd8a3b5a0c';
+String _$cancelDeploymentHash() => r'f33090fd0a2a43d23eae07d55834906d050374ff';
 
 /// See also [cancelDeployment].
 @ProviderFor(cancelDeployment)
 const cancelDeploymentProvider = CancelDeploymentFamily();
 
 /// See also [cancelDeployment].
-class CancelDeploymentFamily extends Family<AsyncValue<GymAgent>> {
+class CancelDeploymentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [cancelDeployment].
   const CancelDeploymentFamily();
 
@@ -839,7 +841,7 @@ class CancelDeploymentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [cancelDeployment].
-class CancelDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class CancelDeploymentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [cancelDeployment].
   CancelDeploymentProvider(
     String agentId,
@@ -874,7 +876,7 @@ class CancelDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(CancelDeploymentRef provider) create,
+    FutureOr<FactoryAgent> Function(CancelDeploymentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -891,7 +893,7 @@ class CancelDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _CancelDeploymentProviderElement(this);
   }
 
@@ -911,13 +913,13 @@ class CancelDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CancelDeploymentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin CancelDeploymentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _CancelDeploymentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent>
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
     with CancelDeploymentRef {
   _CancelDeploymentProviderElement(super.provider);
 
@@ -925,14 +927,14 @@ class _CancelDeploymentProviderElement
   String get agentId => (origin as CancelDeploymentProvider).agentId;
 }
 
-String _$retryDeploymentHash() => r'71c7cdf320da7268a2aba16dd68e872f018f91b3';
+String _$retryDeploymentHash() => r'475f7220df376abed3d9ced9f92925c58ddadd46';
 
 /// See also [retryDeployment].
 @ProviderFor(retryDeployment)
 const retryDeploymentProvider = RetryDeploymentFamily();
 
 /// See also [retryDeployment].
-class RetryDeploymentFamily extends Family<AsyncValue<GymAgent>> {
+class RetryDeploymentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [retryDeployment].
   const RetryDeploymentFamily();
 
@@ -970,7 +972,7 @@ class RetryDeploymentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [retryDeployment].
-class RetryDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class RetryDeploymentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [retryDeployment].
   RetryDeploymentProvider(
     String agentId,
@@ -1005,7 +1007,7 @@ class RetryDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(RetryDeploymentRef provider) create,
+    FutureOr<FactoryAgent> Function(RetryDeploymentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1022,7 +1024,7 @@ class RetryDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _RetryDeploymentProviderElement(this);
   }
 
@@ -1042,27 +1044,28 @@ class RetryDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin RetryDeploymentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin RetryDeploymentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _RetryDeploymentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with RetryDeploymentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
+    with RetryDeploymentRef {
   _RetryDeploymentProviderElement(super.provider);
 
   @override
   String get agentId => (origin as RetryDeploymentProvider).agentId;
 }
 
-String _$deactivateAgentHash() => r'b8ae99a898951422e20b938d18430de3090bcfc9';
+String _$deactivateAgentHash() => r'7d6fd9f2e7ffb55a90fd78bb35824d90353e25cd';
 
 /// See also [deactivateAgent].
 @ProviderFor(deactivateAgent)
 const deactivateAgentProvider = DeactivateAgentFamily();
 
 /// See also [deactivateAgent].
-class DeactivateAgentFamily extends Family<AsyncValue<GymAgent>> {
+class DeactivateAgentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [deactivateAgent].
   const DeactivateAgentFamily();
 
@@ -1100,7 +1103,7 @@ class DeactivateAgentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [deactivateAgent].
-class DeactivateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class DeactivateAgentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [deactivateAgent].
   DeactivateAgentProvider(
     String agentId,
@@ -1135,7 +1138,7 @@ class DeactivateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(DeactivateAgentRef provider) create,
+    FutureOr<FactoryAgent> Function(DeactivateAgentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1152,7 +1155,7 @@ class DeactivateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _DeactivateAgentProviderElement(this);
   }
 
@@ -1172,27 +1175,28 @@ class DeactivateAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin DeactivateAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin DeactivateAgentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _DeactivateAgentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with DeactivateAgentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
+    with DeactivateAgentRef {
   _DeactivateAgentProviderElement(super.provider);
 
   @override
   String get agentId => (origin as DeactivateAgentProvider).agentId;
 }
 
-String _$archiveAgentHash() => r'e9d1b28af7043604ae7bb0146fb52eb2a51701b2';
+String _$archiveAgentHash() => r'883c58637abfa664a32560583424e08f8fad033c';
 
 /// See also [archiveAgent].
 @ProviderFor(archiveAgent)
 const archiveAgentProvider = ArchiveAgentFamily();
 
 /// See also [archiveAgent].
-class ArchiveAgentFamily extends Family<AsyncValue<GymAgent>> {
+class ArchiveAgentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [archiveAgent].
   const ArchiveAgentFamily();
 
@@ -1230,7 +1234,7 @@ class ArchiveAgentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [archiveAgent].
-class ArchiveAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class ArchiveAgentProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [archiveAgent].
   ArchiveAgentProvider(
     String agentId,
@@ -1265,7 +1269,7 @@ class ArchiveAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(ArchiveAgentRef provider) create,
+    FutureOr<FactoryAgent> Function(ArchiveAgentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1282,7 +1286,7 @@ class ArchiveAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _ArchiveAgentProviderElement(this);
   }
 
@@ -1302,13 +1306,14 @@ class ArchiveAgentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin ArchiveAgentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin ArchiveAgentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _ArchiveAgentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with ArchiveAgentRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
+    with ArchiveAgentRef {
   _ArchiveAgentProviderElement(super.provider);
 
   @override
@@ -1652,14 +1657,14 @@ class _SubmitTransactionProviderElement
       (origin as SubmitTransactionProvider).idempotencyKey;
 }
 
-String _$addAgentVersionHash() => r'a2265e80cc6271efd3238761518dc363127221d8';
+String _$addAgentVersionHash() => r'16fd209bef85a19544acc3f5957b2b64c3057b58';
 
 /// See also [addAgentVersion].
 @ProviderFor(addAgentVersion)
 const addAgentVersionProvider = AddAgentVersionFamily();
 
 /// See also [addAgentVersion].
-class AddAgentVersionFamily extends Family<AsyncValue<GymAgent>> {
+class AddAgentVersionFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [addAgentVersion].
   const AddAgentVersionFamily();
 
@@ -1706,7 +1711,7 @@ class AddAgentVersionFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [addAgentVersion].
-class AddAgentVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
+class AddAgentVersionProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [addAgentVersion].
   AddAgentVersionProvider({
     required String agentId,
@@ -1756,7 +1761,7 @@ class AddAgentVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(AddAgentVersionRef provider) create,
+    FutureOr<FactoryAgent> Function(AddAgentVersionRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1776,7 +1781,7 @@ class AddAgentVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _AddAgentVersionProviderElement(this);
   }
 
@@ -1803,7 +1808,7 @@ class AddAgentVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AddAgentVersionRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin AddAgentVersionRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 
@@ -1818,7 +1823,8 @@ mixin AddAgentVersionRef on AutoDisposeFutureProviderRef<GymAgent> {
 }
 
 class _AddAgentVersionProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent> with AddAgentVersionRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
+    with AddAgentVersionRef {
   _AddAgentVersionProviderElement(super.provider);
 
   @override
@@ -1832,14 +1838,14 @@ class _AddAgentVersionProviderElement
       (origin as AddAgentVersionProvider).huggingFaceApiKey;
 }
 
-String _$setActiveVersionHash() => r'0c3e4a145adea4ec364d1280774152eb5fe938b2';
+String _$setActiveVersionHash() => r'50f8e3d67a9d58a7f0e0652c8856a28db2ad80ac';
 
 /// See also [setActiveVersion].
 @ProviderFor(setActiveVersion)
 const setActiveVersionProvider = SetActiveVersionFamily();
 
 /// See also [setActiveVersion].
-class SetActiveVersionFamily extends Family<AsyncValue<GymAgent>> {
+class SetActiveVersionFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [setActiveVersion].
   const SetActiveVersionFamily();
 
@@ -1880,7 +1886,7 @@ class SetActiveVersionFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [setActiveVersion].
-class SetActiveVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
+class SetActiveVersionProvider extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [setActiveVersion].
   SetActiveVersionProvider({
     required String agentId,
@@ -1920,7 +1926,7 @@ class SetActiveVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(SetActiveVersionRef provider) create,
+    FutureOr<FactoryAgent> Function(SetActiveVersionRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -1938,7 +1944,7 @@ class SetActiveVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _SetActiveVersionProviderElement(this);
   }
 
@@ -1961,7 +1967,7 @@ class SetActiveVersionProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SetActiveVersionRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin SetActiveVersionRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 
@@ -1970,7 +1976,7 @@ mixin SetActiveVersionRef on AutoDisposeFutureProviderRef<GymAgent> {
 }
 
 class _SetActiveVersionProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent>
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
     with SetActiveVersionRef {
   _SetActiveVersionProviderElement(super.provider);
 
@@ -2606,14 +2612,14 @@ class _AgentUpdatesProviderElement
   String get agentId => (origin as AgentUpdatesProvider).agentId;
 }
 
-String _$agentByPoolIdHash() => r'4b9459a4cafea0e1017b901e91f017b0e7a77a23';
+String _$agentByPoolIdHash() => r'16d39e1d266cf4336dae355133132cd4f2e0b2b6';
 
 /// See also [agentByPoolId].
 @ProviderFor(agentByPoolId)
 const agentByPoolIdProvider = AgentByPoolIdFamily();
 
 /// See also [agentByPoolId].
-class AgentByPoolIdFamily extends Family<AsyncValue<GymAgent?>> {
+class AgentByPoolIdFamily extends Family<AsyncValue<FactoryAgent?>> {
   /// See also [agentByPoolId].
   const AgentByPoolIdFamily();
 
@@ -2651,7 +2657,7 @@ class AgentByPoolIdFamily extends Family<AsyncValue<GymAgent?>> {
 }
 
 /// See also [agentByPoolId].
-class AgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
+class AgentByPoolIdProvider extends AutoDisposeFutureProvider<FactoryAgent?> {
   /// See also [agentByPoolId].
   AgentByPoolIdProvider(
     String poolId,
@@ -2686,7 +2692,7 @@ class AgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent?> Function(AgentByPoolIdRef provider) create,
+    FutureOr<FactoryAgent?> Function(AgentByPoolIdRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -2703,7 +2709,7 @@ class AgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent?> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent?> createElement() {
     return _AgentByPoolIdProviderElement(this);
   }
 
@@ -2723,13 +2729,14 @@ class AgentByPoolIdProvider extends AutoDisposeFutureProvider<GymAgent?> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin AgentByPoolIdRef on AutoDisposeFutureProviderRef<GymAgent?> {
+mixin AgentByPoolIdRef on AutoDisposeFutureProviderRef<FactoryAgent?> {
   /// The parameter `poolId` of this provider.
   String get poolId;
 }
 
 class _AgentByPoolIdProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent?> with AgentByPoolIdRef {
+    extends AutoDisposeFutureProviderElement<FactoryAgent?>
+    with AgentByPoolIdRef {
   _AgentByPoolIdProviderElement(super.provider);
 
   @override
@@ -2737,14 +2744,14 @@ class _AgentByPoolIdProviderElement
 }
 
 String _$initiateDeploymentHash() =>
-    r'92690da703326d2c2ba36f112ca808b293184018';
+    r'368f30c8e35d3c04a6ec033fdbe933e1f3d41862';
 
 /// See also [initiateDeployment].
 @ProviderFor(initiateDeployment)
 const initiateDeploymentProvider = InitiateDeploymentFamily();
 
 /// See also [initiateDeployment].
-class InitiateDeploymentFamily extends Family<AsyncValue<GymAgent>> {
+class InitiateDeploymentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [initiateDeployment].
   const InitiateDeploymentFamily();
 
@@ -2782,7 +2789,8 @@ class InitiateDeploymentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [initiateDeployment].
-class InitiateDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class InitiateDeploymentProvider
+    extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [initiateDeployment].
   InitiateDeploymentProvider(
     String agentId,
@@ -2817,7 +2825,7 @@ class InitiateDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(InitiateDeploymentRef provider) create,
+    FutureOr<FactoryAgent> Function(InitiateDeploymentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -2834,7 +2842,7 @@ class InitiateDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _InitiateDeploymentProviderElement(this);
   }
 
@@ -2854,13 +2862,13 @@ class InitiateDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin InitiateDeploymentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin InitiateDeploymentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _InitiateDeploymentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent>
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
     with InitiateDeploymentRef {
   _InitiateDeploymentProviderElement(super.provider);
 
@@ -2869,14 +2877,14 @@ class _InitiateDeploymentProviderElement
 }
 
 String _$retryAgentDeploymentHash() =>
-    r'2482153f1f45621779089cabc6ac65318778c48b';
+    r'705fc7de175218b9e3e132018ffc59498b402cb2';
 
 /// See also [retryAgentDeployment].
 @ProviderFor(retryAgentDeployment)
 const retryAgentDeploymentProvider = RetryAgentDeploymentFamily();
 
 /// See also [retryAgentDeployment].
-class RetryAgentDeploymentFamily extends Family<AsyncValue<GymAgent>> {
+class RetryAgentDeploymentFamily extends Family<AsyncValue<FactoryAgent>> {
   /// See also [retryAgentDeployment].
   const RetryAgentDeploymentFamily();
 
@@ -2914,7 +2922,8 @@ class RetryAgentDeploymentFamily extends Family<AsyncValue<GymAgent>> {
 }
 
 /// See also [retryAgentDeployment].
-class RetryAgentDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
+class RetryAgentDeploymentProvider
+    extends AutoDisposeFutureProvider<FactoryAgent> {
   /// See also [retryAgentDeployment].
   RetryAgentDeploymentProvider(
     String agentId,
@@ -2949,7 +2958,7 @@ class RetryAgentDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
   @override
   Override overrideWith(
-    FutureOr<GymAgent> Function(RetryAgentDeploymentRef provider) create,
+    FutureOr<FactoryAgent> Function(RetryAgentDeploymentRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -2966,7 +2975,7 @@ class RetryAgentDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<GymAgent> createElement() {
+  AutoDisposeFutureProviderElement<FactoryAgent> createElement() {
     return _RetryAgentDeploymentProviderElement(this);
   }
 
@@ -2986,13 +2995,13 @@ class RetryAgentDeploymentProvider extends AutoDisposeFutureProvider<GymAgent> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin RetryAgentDeploymentRef on AutoDisposeFutureProviderRef<GymAgent> {
+mixin RetryAgentDeploymentRef on AutoDisposeFutureProviderRef<FactoryAgent> {
   /// The parameter `agentId` of this provider.
   String get agentId;
 }
 
 class _RetryAgentDeploymentProviderElement
-    extends AutoDisposeFutureProviderElement<GymAgent>
+    extends AutoDisposeFutureProviderElement<FactoryAgent>
     with RetryAgentDeploymentRef {
   _RetryAgentDeploymentProviderElement(super.provider);
 

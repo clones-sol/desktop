@@ -41,11 +41,11 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
     ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
   }
 
-  Future<void> updateGymStatus() async {
-    setIsUpdateGymStatusSuccess(false);
+  Future<void> updateFactoryStatus() async {
+    setIsUpdateFactoryStatusSuccess(false);
     try {
       await _updatePool();
-      setIsUpdateGymStatusSuccess(true);
+      setIsUpdateFactoryStatusSuccess(true);
 
       final newPool =
           await ref.refresh(poolProvider(state.pool?.id ?? '').future);
@@ -79,8 +79,8 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
     await ref.read(
       updatePoolProvider(
         poolId: pool.id,
-        poolName: state.gymName,
-        status: state.gymStatus,
+        poolName: state.factoryName,
+        status: state.factoryStatus,
         skills: pool.skills,
         apps: state.apps,
         pricePerDemo: state.pricePerDemo,

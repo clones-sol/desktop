@@ -16,10 +16,10 @@ class ForgeApp with _$ForgeApp {
     @Default([]) List<ForgeTaskItem> tasks,
     @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
     @JsonKey(includeIfNull: false) bool? seen,
-    @JsonKey(includeIfNull: false) bool? gymLimitReached,
-    @JsonKey(includeIfNull: false) int? gymSubmissions,
-    @JsonKey(includeIfNull: false) String? gymLimitType,
-    @JsonKey(includeIfNull: false) int? gymLimitValue,
+    @JsonKey(includeIfNull: false) bool? factoryLimitReached,
+    @JsonKey(includeIfNull: false) int? factorySubmissions,
+    @JsonKey(includeIfNull: false) String? factoryLimitType,
+    @JsonKey(includeIfNull: false) int? factoryLimitValue,
   }) = _ForgeApp;
 
   factory ForgeApp.fromJson(Map<String, dynamic> json) =>

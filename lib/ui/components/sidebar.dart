@@ -4,9 +4,9 @@ import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/upload_manager.dart';
 import 'package:clones_desktop/ui/components/wallet_button.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
+import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
+import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
-import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
-import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
@@ -38,14 +38,14 @@ class Sidebar extends ConsumerWidget {
           label: 'Hub',
         ),
       SidebarButtonData(
-        path: GymView.routeName,
-        imagePath: Assets.gymIcon,
-        label: 'Gym',
+        path: FactoryView.routeName,
+        imagePath: Assets.factoryIcon,
+        label: 'Factory',
       ),
       SidebarButtonData(
-        path: GymHistoryView.routeName,
-        imagePath: Assets.gymHistoryIcon,
-        label: 'Gym History',
+        path: FactoryHistoryView.routeName,
+        imagePath: Assets.factoryHistoryIcon,
+        label: 'Factory History',
       ),
       SidebarButtonData(
         path: LeaderboardsView.routeName,

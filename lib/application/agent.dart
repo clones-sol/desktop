@@ -3,7 +3,7 @@ import 'package:clones_desktop/domain/models/agent/agent_legal.dart';
 import 'package:clones_desktop/domain/models/agent/agent_socket_message.dart';
 import 'package:clones_desktop/domain/models/agent/agent_tokenomics.dart';
 import 'package:clones_desktop/domain/models/agent/agent_transaction.dart';
-import 'package:clones_desktop/domain/models/agent/gym_agent.dart';
+import 'package:clones_desktop/domain/models/agent/factory_agent.dart';
 import 'package:clones_desktop/infrastructure/agent.repository.dart';
 import 'package:clones_desktop/infrastructure/agent_socket.service.dart';
 import 'package:clones_desktop/utils/api_client.dart';
@@ -19,7 +19,7 @@ AgentRepositoryImpl agentRepository(Ref ref) {
 }
 
 @riverpod
-Future<GymAgent> createAgent(
+Future<FactoryAgent> createAgent(
   Ref ref, {
   required String poolId,
   required String agentName,
@@ -46,19 +46,19 @@ Future<GymAgent> createAgent(
 }
 
 @riverpod
-Future<GymAgent?> getAgentByPoolId(Ref ref, String poolId) async {
+Future<FactoryAgent?> getAgentByPoolId(Ref ref, String poolId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.getAgentByPoolId(poolId);
 }
 
 @riverpod
-Future<List<GymAgent>> listAgents(Ref ref) async {
+Future<List<FactoryAgent>> listAgents(Ref ref) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.listAgents();
 }
 
 @riverpod
-Future<GymAgent> updateAgent(
+Future<FactoryAgent> updateAgent(
   Ref ref, {
   required String agentId,
   String? agentName,
@@ -79,31 +79,31 @@ Future<GymAgent> updateAgent(
 }
 
 @riverpod
-Future<GymAgent> deployAgent(Ref ref, String agentId) async {
+Future<FactoryAgent> deployAgent(Ref ref, String agentId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.deployAgent(agentId);
 }
 
 @riverpod
-Future<GymAgent> cancelDeployment(Ref ref, String agentId) async {
+Future<FactoryAgent> cancelDeployment(Ref ref, String agentId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.cancelDeployment(agentId);
 }
 
 @riverpod
-Future<GymAgent> retryDeployment(Ref ref, String agentId) async {
+Future<FactoryAgent> retryDeployment(Ref ref, String agentId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.retryDeployment(agentId);
 }
 
 @riverpod
-Future<GymAgent> deactivateAgent(Ref ref, String agentId) async {
+Future<FactoryAgent> deactivateAgent(Ref ref, String agentId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.deactivateAgent(agentId);
 }
 
 @riverpod
-Future<GymAgent> archiveAgent(Ref ref, String agentId) async {
+Future<FactoryAgent> archiveAgent(Ref ref, String agentId) async {
   final repository = ref.read(agentRepositoryProvider);
   return repository.archiveAgent(agentId);
 }
@@ -139,7 +139,7 @@ Future<SubmitTxResponse> submitTransaction(
 }
 
 @riverpod
-Future<GymAgent> addAgentVersion(
+Future<FactoryAgent> addAgentVersion(
   Ref ref, {
   required String agentId,
   required String versionTag,
@@ -156,7 +156,7 @@ Future<GymAgent> addAgentVersion(
 }
 
 @riverpod
-Future<GymAgent> setActiveVersion(
+Future<FactoryAgent> setActiveVersion(
   Ref ref, {
   required String agentId,
   required String versionTag,
@@ -250,19 +250,19 @@ Stream<AgentSocketMessage> agentUpdates(Ref ref, String agentId) {
 }
 
 @riverpod
-Future<GymAgent?> agentByPoolId(Ref ref, String poolId) {
+Future<FactoryAgent?> agentByPoolId(Ref ref, String poolId) {
   final agentRepository = ref.watch(agentRepositoryProvider);
   return agentRepository.getAgentByPoolId(poolId);
 }
 
 @riverpod
-Future<GymAgent> initiateDeployment(Ref ref, String agentId) {
+Future<FactoryAgent> initiateDeployment(Ref ref, String agentId) {
   final agentRepository = ref.watch(agentRepositoryProvider);
   return agentRepository.initiateDeployment(agentId);
 }
 
 @riverpod
-Future<GymAgent> retryAgentDeployment(Ref ref, String agentId) {
+Future<FactoryAgent> retryAgentDeployment(Ref ref, String agentId) {
   final agentRepository = ref.watch(agentRepositoryProvider);
   return agentRepository.retryDeployment(agentId);
 }

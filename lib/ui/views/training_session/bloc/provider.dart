@@ -683,7 +683,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
           .read(tauriApiClientProvider)
           .deleteRecording(state.currentRecordingId!);
       if (deleted.isNotEmpty) {
-        // TODO(reddwarf03): /app/gym
+        // TODO(reddwarf03): /app/factory
         //Navigator.of(context).pop();
       }
     }

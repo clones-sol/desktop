@@ -2,9 +2,9 @@ import 'package:clones_desktop/application/route_provider.dart';
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/sidebar.dart';
+import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
+import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
-import 'package:clones_desktop/ui/views/gym/layouts/gym_view.dart';
-import 'package:clones_desktop/ui/views/gym_history/layouts/gym_history_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -58,10 +58,10 @@ class LayoutBackground extends ConsumerWidget {
                           ? 'Clones'
                           : currentRoute == ForgeView.routeName
                               ? 'forge'
-                              : currentRoute == GymView.routeName
-                                  ? 'gym'
-                                  : currentRoute == GymHistoryView.routeName
-                                      ? 'gym'
+                              : currentRoute == FactoryView.routeName
+                                  ? 'factory'
+                                  : currentRoute == FactoryHistoryView.routeName
+                                      ? 'factory'
                                       : '',
                   style: const TextStyle(
                     fontSize: 200,

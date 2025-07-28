@@ -13,16 +13,16 @@ enum ViewModeTasks {
 @freezed
 class ForgeDetailState with _$ForgeDetailState {
   const factory ForgeDetailState({
-    @Default('') String gymName,
+    @Default('') String factoryName,
     @Default(1) double pricePerDemo,
     @Default(10) int uploadLimitValue,
     @Default('none') String uploadLimitType,
-    @Default(TrainingPoolStatus.noFunds) TrainingPoolStatus? gymStatus,
+    @Default(TrainingPoolStatus.noFunds) TrainingPoolStatus? factoryStatus,
     TrainingPool? pool,
     @Default(ViewModeTasks.edit) ViewModeTasks viewModeTasks,
     String? error,
     @Default([]) List<ForgeApp> apps,
-    @Default(false) bool isUpdateGymStatusSuccess,
+    @Default(false) bool isUpdateFactoryStatusSuccess,
     @Default(false) bool isUpdatePoolSuccess,
     @Default(false) bool isRefreshBalanceSuccess,
     @Default(false) bool hasUnsavedChanges,
