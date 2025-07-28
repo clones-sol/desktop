@@ -23,7 +23,7 @@ const menuItems = [
     'Farm Data',
     'Generate high-quality demonstrations and earn rewards.',
     Assets.menuFarm,
-    '/gym',
+    '/factory',
   ),
 ];
 

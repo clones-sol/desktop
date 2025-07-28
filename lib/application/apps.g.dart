@@ -212,29 +212,29 @@ final getAppsForSkillsProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GetAppsForSkillsRef = AutoDisposeFutureProviderRef<List<ForgeApp>>;
-String _$getAppsForGymHash() => r'61087aec2218a1c546d477601fbc5c415a1e6c8f';
+String _$getAppsForFactoryHash() => r'85fcf5a28f059a446cbbb7c87b7515c78e63ef3b';
 
-/// See also [getAppsForGym].
-@ProviderFor(getAppsForGym)
-const getAppsForGymProvider = GetAppsForGymFamily();
+/// See also [getAppsForFactory].
+@ProviderFor(getAppsForFactory)
+const getAppsForFactoryProvider = GetAppsForFactoryFamily();
 
-/// See also [getAppsForGym].
-class GetAppsForGymFamily extends Family<AsyncValue<List<ForgeApp>>> {
-  /// See also [getAppsForGym].
-  const GetAppsForGymFamily();
+/// See also [getAppsForFactory].
+class GetAppsForFactoryFamily extends Family<AsyncValue<List<ForgeApp>>> {
+  /// See also [getAppsForFactory].
+  const GetAppsForFactoryFamily();
 
-  /// See also [getAppsForGym].
-  GetAppsForGymProvider call({
-    required GymFilter filter,
+  /// See also [getAppsForFactory].
+  GetAppsForFactoryProvider call({
+    required FactoryFilter filter,
   }) {
-    return GetAppsForGymProvider(
+    return GetAppsForFactoryProvider(
       filter: filter,
     );
   }
 
   @override
-  GetAppsForGymProvider getProviderOverride(
-    covariant GetAppsForGymProvider provider,
+  GetAppsForFactoryProvider getProviderOverride(
+    covariant GetAppsForFactoryProvider provider,
   ) {
     return call(
       filter: provider.filter,
@@ -253,32 +253,33 @@ class GetAppsForGymFamily extends Family<AsyncValue<List<ForgeApp>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getAppsForGymProvider';
+  String? get name => r'getAppsForFactoryProvider';
 }
 
-/// See also [getAppsForGym].
-class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
-  /// See also [getAppsForGym].
-  GetAppsForGymProvider({
-    required GymFilter filter,
+/// See also [getAppsForFactory].
+class GetAppsForFactoryProvider
+    extends AutoDisposeFutureProvider<List<ForgeApp>> {
+  /// See also [getAppsForFactory].
+  GetAppsForFactoryProvider({
+    required FactoryFilter filter,
   }) : this._internal(
-          (ref) => getAppsForGym(
-            ref as GetAppsForGymRef,
+          (ref) => getAppsForFactory(
+            ref as GetAppsForFactoryRef,
             filter: filter,
           ),
-          from: getAppsForGymProvider,
-          name: r'getAppsForGymProvider',
+          from: getAppsForFactoryProvider,
+          name: r'getAppsForFactoryProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getAppsForGymHash,
-          dependencies: GetAppsForGymFamily._dependencies,
+                  : _$getAppsForFactoryHash,
+          dependencies: GetAppsForFactoryFamily._dependencies,
           allTransitiveDependencies:
-              GetAppsForGymFamily._allTransitiveDependencies,
+              GetAppsForFactoryFamily._allTransitiveDependencies,
           filter: filter,
         );
 
-  GetAppsForGymProvider._internal(
+  GetAppsForFactoryProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -288,16 +289,16 @@ class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
     required this.filter,
   }) : super.internal();
 
-  final GymFilter filter;
+  final FactoryFilter filter;
 
   @override
   Override overrideWith(
-    FutureOr<List<ForgeApp>> Function(GetAppsForGymRef provider) create,
+    FutureOr<List<ForgeApp>> Function(GetAppsForFactoryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetAppsForGymProvider._internal(
-        (ref) => create(ref as GetAppsForGymRef),
+      override: GetAppsForFactoryProvider._internal(
+        (ref) => create(ref as GetAppsForFactoryRef),
         from: from,
         name: null,
         dependencies: null,
@@ -310,12 +311,12 @@ class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
 
   @override
   AutoDisposeFutureProviderElement<List<ForgeApp>> createElement() {
-    return _GetAppsForGymProviderElement(this);
+    return _GetAppsForFactoryProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetAppsForGymProvider && other.filter == filter;
+    return other is GetAppsForFactoryProvider && other.filter == filter;
   }
 
   @override
@@ -329,37 +330,38 @@ class GetAppsForGymProvider extends AutoDisposeFutureProvider<List<ForgeApp>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetAppsForGymRef on AutoDisposeFutureProviderRef<List<ForgeApp>> {
+mixin GetAppsForFactoryRef on AutoDisposeFutureProviderRef<List<ForgeApp>> {
   /// The parameter `filter` of this provider.
-  GymFilter get filter;
+  FactoryFilter get filter;
 }
 
-class _GetAppsForGymProviderElement
+class _GetAppsForFactoryProviderElement
     extends AutoDisposeFutureProviderElement<List<ForgeApp>>
-    with GetAppsForGymRef {
-  _GetAppsForGymProviderElement(super.provider);
+    with GetAppsForFactoryRef {
+  _GetAppsForFactoryProviderElement(super.provider);
 
   @override
-  GymFilter get filter => (origin as GetAppsForGymProvider).filter;
+  FactoryFilter get filter => (origin as GetAppsForFactoryProvider).filter;
 }
 
-String _$getGymCategoriesHash() => r'7f5f177d7cf9735cdffe7718ed4b10e8878e383f';
+String _$getFactoryCategoriesHash() =>
+    r'db400870d957e66004e026b8b66c2ed573bf2382';
 
-/// See also [getGymCategories].
-@ProviderFor(getGymCategories)
-final getGymCategoriesProvider =
+/// See also [getFactoryCategories].
+@ProviderFor(getFactoryCategories)
+final getFactoryCategoriesProvider =
     AutoDisposeFutureProvider<List<String>>.internal(
-  getGymCategories,
-  name: r'getGymCategoriesProvider',
+  getFactoryCategories,
+  name: r'getFactoryCategoriesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$getGymCategoriesHash,
+      : _$getFactoryCategoriesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef GetGymCategoriesRef = AutoDisposeFutureProviderRef<List<String>>;
+typedef GetFactoryCategoriesRef = AutoDisposeFutureProviderRef<List<String>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

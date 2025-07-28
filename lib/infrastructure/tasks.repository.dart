@@ -5,7 +5,7 @@ class TasksRepositoryImpl {
   TasksRepositoryImpl(this._client);
   final ApiClient _client;
 
-  Future<List<ForgeTask>> getTasksForGym({
+  Future<List<ForgeTask>> getTasksForFactory({
     Map<String, dynamic>? filter,
   }) async {
     try {

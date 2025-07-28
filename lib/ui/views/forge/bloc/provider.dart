@@ -13,15 +13,15 @@ class ForgeNotifier extends _$ForgeNotifier {
     return const ForgeState();
   }
 
-  void setShowGymDetail(bool show) {
-    state = state.copyWith(showGymDetail: show);
+  void setShowFactoryDetail(bool show) {
+    state = state.copyWith(showFactoryDetail: show);
   }
 
   void setSelectedPool(TrainingPool? pool) {
     state = state.copyWith(selectedPool: pool);
   }
 
-  void setShowGenerateGymModal(bool show) {
-    state = state.copyWith(showGenerateGymModal: show);
+  void setShowGenerateFactoryModal(bool show) {
+    state = state.copyWith(showGenerateFactoryModal: show);
   }
 }

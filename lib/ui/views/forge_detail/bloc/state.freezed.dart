@@ -16,16 +16,16 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ForgeDetailState {
-  String get gymName => throw _privateConstructorUsedError;
+  String get factoryName => throw _privateConstructorUsedError;
   double get pricePerDemo => throw _privateConstructorUsedError;
   int get uploadLimitValue => throw _privateConstructorUsedError;
   String get uploadLimitType => throw _privateConstructorUsedError;
-  TrainingPoolStatus? get gymStatus => throw _privateConstructorUsedError;
+  TrainingPoolStatus? get factoryStatus => throw _privateConstructorUsedError;
   TrainingPool? get pool => throw _privateConstructorUsedError;
   ViewModeTasks get viewModeTasks => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   List<ForgeApp> get apps => throw _privateConstructorUsedError;
-  bool get isUpdateGymStatusSuccess => throw _privateConstructorUsedError;
+  bool get isUpdateFactoryStatusSuccess => throw _privateConstructorUsedError;
   bool get isUpdatePoolSuccess => throw _privateConstructorUsedError;
   bool get isRefreshBalanceSuccess => throw _privateConstructorUsedError;
   bool get hasUnsavedChanges => throw _privateConstructorUsedError;
@@ -52,16 +52,16 @@ abstract class $ForgeDetailStateCopyWith<$Res> {
       _$ForgeDetailStateCopyWithImpl<$Res, ForgeDetailState>;
   @useResult
   $Res call(
-      {String gymName,
+      {String factoryName,
       double pricePerDemo,
       int uploadLimitValue,
       String uploadLimitType,
-      TrainingPoolStatus? gymStatus,
+      TrainingPoolStatus? factoryStatus,
       TrainingPool? pool,
       ViewModeTasks viewModeTasks,
       String? error,
       List<ForgeApp> apps,
-      bool isUpdateGymStatusSuccess,
+      bool isUpdateFactoryStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
       bool hasUnsavedChanges,
@@ -91,16 +91,16 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? gymName = null,
+    Object? factoryName = null,
     Object? pricePerDemo = null,
     Object? uploadLimitValue = null,
     Object? uploadLimitType = null,
-    Object? gymStatus = freezed,
+    Object? factoryStatus = freezed,
     Object? pool = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
     Object? apps = null,
-    Object? isUpdateGymStatusSuccess = null,
+    Object? isUpdateFactoryStatusSuccess = null,
     Object? isUpdatePoolSuccess = null,
     Object? isRefreshBalanceSuccess = null,
     Object? hasUnsavedChanges = null,
@@ -113,9 +113,9 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
     Object? editingTaskIdx = freezed,
   }) {
     return _then(_value.copyWith(
-      gymName: null == gymName
-          ? _value.gymName
-          : gymName // ignore: cast_nullable_to_non_nullable
+      factoryName: null == factoryName
+          ? _value.factoryName
+          : factoryName // ignore: cast_nullable_to_non_nullable
               as String,
       pricePerDemo: null == pricePerDemo
           ? _value.pricePerDemo
@@ -129,9 +129,9 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
           ? _value.uploadLimitType
           : uploadLimitType // ignore: cast_nullable_to_non_nullable
               as String,
-      gymStatus: freezed == gymStatus
-          ? _value.gymStatus
-          : gymStatus // ignore: cast_nullable_to_non_nullable
+      factoryStatus: freezed == factoryStatus
+          ? _value.factoryStatus
+          : factoryStatus // ignore: cast_nullable_to_non_nullable
               as TrainingPoolStatus?,
       pool: freezed == pool
           ? _value.pool
@@ -149,9 +149,9 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
           ? _value.apps
           : apps // ignore: cast_nullable_to_non_nullable
               as List<ForgeApp>,
-      isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
-          ? _value.isUpdateGymStatusSuccess
-          : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
+      isUpdateFactoryStatusSuccess: null == isUpdateFactoryStatusSuccess
+          ? _value.isUpdateFactoryStatusSuccess
+          : isUpdateFactoryStatusSuccess // ignore: cast_nullable_to_non_nullable
               as bool,
       isUpdatePoolSuccess: null == isUpdatePoolSuccess
           ? _value.isUpdatePoolSuccess
@@ -220,16 +220,16 @@ abstract class _$$ForgeDetailStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String gymName,
+      {String factoryName,
       double pricePerDemo,
       int uploadLimitValue,
       String uploadLimitType,
-      TrainingPoolStatus? gymStatus,
+      TrainingPoolStatus? factoryStatus,
       TrainingPool? pool,
       ViewModeTasks viewModeTasks,
       String? error,
       List<ForgeApp> apps,
-      bool isUpdateGymStatusSuccess,
+      bool isUpdateFactoryStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
       bool hasUnsavedChanges,
@@ -258,16 +258,16 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? gymName = null,
+    Object? factoryName = null,
     Object? pricePerDemo = null,
     Object? uploadLimitValue = null,
     Object? uploadLimitType = null,
-    Object? gymStatus = freezed,
+    Object? factoryStatus = freezed,
     Object? pool = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
     Object? apps = null,
-    Object? isUpdateGymStatusSuccess = null,
+    Object? isUpdateFactoryStatusSuccess = null,
     Object? isUpdatePoolSuccess = null,
     Object? isRefreshBalanceSuccess = null,
     Object? hasUnsavedChanges = null,
@@ -280,9 +280,9 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
     Object? editingTaskIdx = freezed,
   }) {
     return _then(_$ForgeDetailStateImpl(
-      gymName: null == gymName
-          ? _value.gymName
-          : gymName // ignore: cast_nullable_to_non_nullable
+      factoryName: null == factoryName
+          ? _value.factoryName
+          : factoryName // ignore: cast_nullable_to_non_nullable
               as String,
       pricePerDemo: null == pricePerDemo
           ? _value.pricePerDemo
@@ -296,9 +296,9 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
           ? _value.uploadLimitType
           : uploadLimitType // ignore: cast_nullable_to_non_nullable
               as String,
-      gymStatus: freezed == gymStatus
-          ? _value.gymStatus
-          : gymStatus // ignore: cast_nullable_to_non_nullable
+      factoryStatus: freezed == factoryStatus
+          ? _value.factoryStatus
+          : factoryStatus // ignore: cast_nullable_to_non_nullable
               as TrainingPoolStatus?,
       pool: freezed == pool
           ? _value.pool
@@ -316,9 +316,9 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
           ? _value._apps
           : apps // ignore: cast_nullable_to_non_nullable
               as List<ForgeApp>,
-      isUpdateGymStatusSuccess: null == isUpdateGymStatusSuccess
-          ? _value.isUpdateGymStatusSuccess
-          : isUpdateGymStatusSuccess // ignore: cast_nullable_to_non_nullable
+      isUpdateFactoryStatusSuccess: null == isUpdateFactoryStatusSuccess
+          ? _value.isUpdateFactoryStatusSuccess
+          : isUpdateFactoryStatusSuccess // ignore: cast_nullable_to_non_nullable
               as bool,
       isUpdatePoolSuccess: null == isUpdatePoolSuccess
           ? _value.isUpdatePoolSuccess
@@ -368,16 +368,16 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
 
 class _$ForgeDetailStateImpl extends _ForgeDetailState {
   const _$ForgeDetailStateImpl(
-      {this.gymName = '',
+      {this.factoryName = '',
       this.pricePerDemo = 1,
       this.uploadLimitValue = 10,
       this.uploadLimitType = 'none',
-      this.gymStatus = TrainingPoolStatus.noFunds,
+      this.factoryStatus = TrainingPoolStatus.noFunds,
       this.pool,
       this.viewModeTasks = ViewModeTasks.edit,
       this.error,
       final List<ForgeApp> apps = const [],
-      this.isUpdateGymStatusSuccess = false,
+      this.isUpdateFactoryStatusSuccess = false,
       this.isUpdatePoolSuccess = false,
       this.isRefreshBalanceSuccess = false,
       this.hasUnsavedChanges = false,
@@ -393,7 +393,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 
   @override
   @JsonKey()
-  final String gymName;
+  final String factoryName;
   @override
   @JsonKey()
   final double pricePerDemo;
@@ -405,7 +405,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
   final String uploadLimitType;
   @override
   @JsonKey()
-  final TrainingPoolStatus? gymStatus;
+  final TrainingPoolStatus? factoryStatus;
   @override
   final TrainingPool? pool;
   @override
@@ -424,7 +424,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 
   @override
   @JsonKey()
-  final bool isUpdateGymStatusSuccess;
+  final bool isUpdateFactoryStatusSuccess;
   @override
   @JsonKey()
   final bool isUpdatePoolSuccess;
@@ -454,7 +454,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 
   @override
   String toString() {
-    return 'ForgeDetailState(gymName: $gymName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, gymStatus: $gymStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, apps: $apps, isUpdateGymStatusSuccess: $isUpdateGymStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges, showNewAppForm: $showNewAppForm, showManageTaskModal: $showManageTaskModal, manageTaskModalType: $manageTaskModalType, newAppName: $newAppName, newAppDomain: $newAppDomain, editingTaskAppIdx: $editingTaskAppIdx, editingTaskIdx: $editingTaskIdx)';
+    return 'ForgeDetailState(factoryName: $factoryName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, factoryStatus: $factoryStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, apps: $apps, isUpdateFactoryStatusSuccess: $isUpdateFactoryStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges, showNewAppForm: $showNewAppForm, showManageTaskModal: $showManageTaskModal, manageTaskModalType: $manageTaskModalType, newAppName: $newAppName, newAppDomain: $newAppDomain, editingTaskAppIdx: $editingTaskAppIdx, editingTaskIdx: $editingTaskIdx)';
   }
 
   @override
@@ -462,23 +462,25 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ForgeDetailStateImpl &&
-            (identical(other.gymName, gymName) || other.gymName == gymName) &&
+            (identical(other.factoryName, factoryName) ||
+                other.factoryName == factoryName) &&
             (identical(other.pricePerDemo, pricePerDemo) ||
                 other.pricePerDemo == pricePerDemo) &&
             (identical(other.uploadLimitValue, uploadLimitValue) ||
                 other.uploadLimitValue == uploadLimitValue) &&
             (identical(other.uploadLimitType, uploadLimitType) ||
                 other.uploadLimitType == uploadLimitType) &&
-            (identical(other.gymStatus, gymStatus) ||
-                other.gymStatus == gymStatus) &&
+            (identical(other.factoryStatus, factoryStatus) ||
+                other.factoryStatus == factoryStatus) &&
             (identical(other.pool, pool) || other.pool == pool) &&
             (identical(other.viewModeTasks, viewModeTasks) ||
                 other.viewModeTasks == viewModeTasks) &&
             (identical(other.error, error) || other.error == error) &&
             const DeepCollectionEquality().equals(other._apps, _apps) &&
-            (identical(
-                    other.isUpdateGymStatusSuccess, isUpdateGymStatusSuccess) ||
-                other.isUpdateGymStatusSuccess == isUpdateGymStatusSuccess) &&
+            (identical(other.isUpdateFactoryStatusSuccess,
+                    isUpdateFactoryStatusSuccess) ||
+                other.isUpdateFactoryStatusSuccess ==
+                    isUpdateFactoryStatusSuccess) &&
             (identical(other.isUpdatePoolSuccess, isUpdatePoolSuccess) ||
                 other.isUpdatePoolSuccess == isUpdatePoolSuccess) &&
             (identical(
@@ -505,16 +507,16 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
   @override
   int get hashCode => Object.hashAll([
         runtimeType,
-        gymName,
+        factoryName,
         pricePerDemo,
         uploadLimitValue,
         uploadLimitType,
-        gymStatus,
+        factoryStatus,
         pool,
         viewModeTasks,
         error,
         const DeepCollectionEquality().hash(_apps),
-        isUpdateGymStatusSuccess,
+        isUpdateFactoryStatusSuccess,
         isUpdatePoolSuccess,
         isRefreshBalanceSuccess,
         hasUnsavedChanges,
@@ -539,16 +541,16 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 
 abstract class _ForgeDetailState extends ForgeDetailState {
   const factory _ForgeDetailState(
-      {final String gymName,
+      {final String factoryName,
       final double pricePerDemo,
       final int uploadLimitValue,
       final String uploadLimitType,
-      final TrainingPoolStatus? gymStatus,
+      final TrainingPoolStatus? factoryStatus,
       final TrainingPool? pool,
       final ViewModeTasks viewModeTasks,
       final String? error,
       final List<ForgeApp> apps,
-      final bool isUpdateGymStatusSuccess,
+      final bool isUpdateFactoryStatusSuccess,
       final bool isUpdatePoolSuccess,
       final bool isRefreshBalanceSuccess,
       final bool hasUnsavedChanges,
@@ -562,7 +564,7 @@ abstract class _ForgeDetailState extends ForgeDetailState {
   const _ForgeDetailState._() : super._();
 
   @override
-  String get gymName;
+  String get factoryName;
   @override
   double get pricePerDemo;
   @override
@@ -570,7 +572,7 @@ abstract class _ForgeDetailState extends ForgeDetailState {
   @override
   String get uploadLimitType;
   @override
-  TrainingPoolStatus? get gymStatus;
+  TrainingPoolStatus? get factoryStatus;
   @override
   TrainingPool? get pool;
   @override
@@ -580,7 +582,7 @@ abstract class _ForgeDetailState extends ForgeDetailState {
   @override
   List<ForgeApp> get apps;
   @override
-  bool get isUpdateGymStatusSuccess;
+  bool get isUpdateFactoryStatusSuccess;
   @override
   bool get isUpdatePoolSuccess;
   @override

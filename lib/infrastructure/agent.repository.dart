@@ -1,7 +1,7 @@
 import 'package:clones_desktop/domain/models/agent/agent_legal.dart';
 import 'package:clones_desktop/domain/models/agent/agent_tokenomics.dart';
 import 'package:clones_desktop/domain/models/agent/agent_transaction.dart';
-import 'package:clones_desktop/domain/models/agent/gym_agent.dart';
+import 'package:clones_desktop/domain/models/agent/factory_agent.dart';
 import 'package:clones_desktop/domain/models/api/api_error.dart';
 import 'package:clones_desktop/domain/models/api/request_options.dart';
 import 'package:clones_desktop/utils/api_client.dart';
@@ -11,7 +11,7 @@ class AgentRepositoryImpl {
   final ApiClient _client;
 
   /// Create a new agent
-  Future<GymAgent> createAgent({
+  Future<FactoryAgent> createAgent({
     required String poolId,
     required String agentName,
     required String ticker,
@@ -60,14 +60,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to create agent: $e');
     }
   }
 
   /// Get agent by pool ID
-  Future<GymAgent?> getAgentByPoolId(String poolId) async {
+  Future<FactoryAgent?> getAgentByPoolId(String poolId) async {
     try {
       final response = await _client.get<Map<String, dynamic>?>(
         '/forge/agents/pool/$poolId',
@@ -77,7 +77,7 @@ class AgentRepositoryImpl {
       if (response == null) {
         return null;
       }
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       // An error (like 404) can mean no agent exists, which is a valid case.
       if (e is ApiError && e.status == 404) {
@@ -88,7 +88,7 @@ class AgentRepositoryImpl {
   }
 
   /// List all agents owned by the authenticated user
-  Future<List<GymAgent>> listAgents() async {
+  Future<List<FactoryAgent>> listAgents() async {
     try {
       final data = await _client.get<List<dynamic>>(
         '/forge/agents',
@@ -97,7 +97,7 @@ class AgentRepositoryImpl {
       );
 
       return data
-          .map((agent) => GymAgent.fromJson(agent as Map<String, dynamic>))
+          .map((agent) => FactoryAgent.fromJson(agent as Map<String, dynamic>))
           .toList();
     } catch (e) {
       throw Exception('Failed to load agents: $e');
@@ -105,7 +105,7 @@ class AgentRepositoryImpl {
   }
 
   /// Update agent details
-  Future<GymAgent> updateAgent({
+  Future<FactoryAgent> updateAgent({
     required String agentId,
     String? agentName,
     String? description,
@@ -139,14 +139,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to update agent: $e');
     }
   }
 
   /// Initiate deployment
-  Future<GymAgent> deployAgent(String agentId) async {
+  Future<FactoryAgent> deployAgent(String agentId) async {
     try {
       final response = await _client.post<Map<String, dynamic>>(
         '/forge/agents/$agentId/deploy',
@@ -154,14 +154,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to deploy agent: $e');
     }
   }
 
   /// Cancel deployment
-  Future<GymAgent> cancelDeployment(String agentId) async {
+  Future<FactoryAgent> cancelDeployment(String agentId) async {
     try {
       final response = await _client.post<Map<String, dynamic>>(
         '/forge/agents/$agentId/cancel',
@@ -169,14 +169,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to cancel deployment: $e');
     }
   }
 
   /// Retry failed deployment
-  Future<GymAgent> retryDeployment(String agentId) async {
+  Future<FactoryAgent> retryDeployment(String agentId) async {
     try {
       final response = await _client.post<Map<String, dynamic>>(
         '/forge/agents/$agentId/retry-deployment',
@@ -184,14 +184,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to retry deployment: $e');
     }
   }
 
   /// Deactivate agent
-  Future<GymAgent> deactivateAgent(String agentId) async {
+  Future<FactoryAgent> deactivateAgent(String agentId) async {
     try {
       final response = await _client.patch<Map<String, dynamic>>(
         '/forge/agents/$agentId/status',
@@ -200,14 +200,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to deactivate agent: $e');
     }
   }
 
   /// Archive agent (soft delete)
-  Future<GymAgent> archiveAgent(String agentId) async {
+  Future<FactoryAgent> archiveAgent(String agentId) async {
     try {
       final response = await _client.delete<Map<String, dynamic>>(
         '/forge/agents/$agentId',
@@ -215,7 +215,7 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to archive agent: $e');
     }
@@ -271,7 +271,7 @@ class AgentRepositoryImpl {
   }
 
   /// Add new agent version
-  Future<GymAgent> addAgentVersion({
+  Future<FactoryAgent> addAgentVersion({
     required String agentId,
     required String versionTag,
     String? customUrl,
@@ -294,14 +294,14 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to add agent version: $e');
     }
   }
 
   /// Set active agent version
-  Future<GymAgent> setActiveVersion({
+  Future<FactoryAgent> setActiveVersion({
     required String agentId,
     required String versionTag,
   }) async {
@@ -313,7 +313,7 @@ class AgentRepositoryImpl {
         fromJson: (json) => json as Map<String, dynamic>,
       );
 
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to set active version: $e');
     }
@@ -385,14 +385,14 @@ class AgentRepositoryImpl {
   }
 
   /// Initiate deployment process
-  Future<GymAgent> initiateDeployment(String agentId) async {
+  Future<FactoryAgent> initiateDeployment(String agentId) async {
     try {
       final response = await _client.post<Map<String, dynamic>>(
         '/forge/agents/$agentId/deploy',
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => json as Map<String, dynamic>,
       );
-      return GymAgent.fromJson(response);
+      return FactoryAgent.fromJson(response);
     } catch (e) {
       throw Exception('Failed to initiate deployment: $e');
     }

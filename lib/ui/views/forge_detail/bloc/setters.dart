@@ -17,9 +17,9 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
     state = state.copyWith(error: error);
   }
 
-  void setGymName(String gymName) {
-    if (state.gymName == gymName) return;
-    state = state.copyWith(gymName: gymName);
+  void setFactoryName(String factoryName) {
+    if (state.factoryName == factoryName) return;
+    state = state.copyWith(factoryName: factoryName);
   }
 
   void setPricePerDemo(double pricePerDemo) {
@@ -42,14 +42,18 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
     state = state.copyWith(hasUnsavedChanges: hasUnsavedChanges);
   }
 
-  void setGymStatus(TrainingPoolStatus gymStatus) {
-    if (state.gymStatus == gymStatus) return;
-    state = state.copyWith(gymStatus: gymStatus);
+  void setFactoryStatus(TrainingPoolStatus factoryStatus) {
+    if (state.factoryStatus == factoryStatus) return;
+    state = state.copyWith(factoryStatus: factoryStatus);
   }
 
-  void setIsUpdateGymStatusSuccess(bool isUpdateGymStatusSuccess) {
-    if (state.isUpdateGymStatusSuccess == isUpdateGymStatusSuccess) return;
-    state = state.copyWith(isUpdateGymStatusSuccess: isUpdateGymStatusSuccess);
+  void setIsUpdateFactoryStatusSuccess(bool isUpdateFactoryStatusSuccess) {
+    if (state.isUpdateFactoryStatusSuccess == isUpdateFactoryStatusSuccess) {
+      return;
+    }
+    state = state.copyWith(
+      isUpdateFactoryStatusSuccess: isUpdateFactoryStatusSuccess,
+    );
   }
 
   void setIsUpdatePoolSuccess(bool isUpdatePoolSuccess) {

@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-import 'package:clones_desktop/domain/models/gym_settings.dart';
+import 'package:clones_desktop/domain/models/factory_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsRepository {
   SettingsRepository(this._prefs);
   final SharedPreferences _prefs;
 
-  static const String _gymSettingsKey = 'gymSettings';
+  static const String _factorySettingsKey = 'factorySettings';
 
-  Future<GymSettings> getGymSettings() async {
-    final jsonString = _prefs.getString(_gymSettingsKey);
+  Future<FactorySettings> getFactorySettings() async {
+    final jsonString = _prefs.getString(_factorySettingsKey);
     if (jsonString != null) {
-      return GymSettings.fromJson(jsonDecode(jsonString));
+      return FactorySettings.fromJson(jsonDecode(jsonString));
     }
-    return const GymSettings(); // Return default settings if none are stored
+    return const FactorySettings(); // Return default settings if none are stored
   }
 
-  Future<void> saveGymSettings(GymSettings settings) async {
+  Future<void> saveFactorySettings(FactorySettings settings) async {
     final jsonString = jsonEncode(settings.toJson());
-    await _prefs.setString(_gymSettingsKey, jsonString);
+    await _prefs.setString(_factorySettingsKey, jsonString);
   }
 }

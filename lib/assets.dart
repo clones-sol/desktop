@@ -10,10 +10,11 @@ class Assets {
   // Icons
   static const String homeIcon = '${assetIconsFolder}home_icon.png';
   static const String forgeIcon = '${assetIconsFolder}forge_icon.png';
-  static const String gymIcon = '${assetIconsFolder}gym_icon.png';
-  static const String gymHistoryIcon =
-      '${assetIconsFolder}gym_history_icon.png';
-  static const String gymAddIcon = '${assetIconsFolder}add_gym_icon.png';
+  static const String factoryIcon = '${assetIconsFolder}factory_icon.png';
+  static const String factoryHistoryIcon =
+      '${assetIconsFolder}factory_history_icon.png';
+  static const String factoryAddIcon =
+      '${assetIconsFolder}add_factory_icon.png';
   static const String statsIcon = '${assetIconsFolder}stats_icon.png';
   static const String skillsTreeIcon =
       '${assetIconsFolder}skills_tree_icon.png';

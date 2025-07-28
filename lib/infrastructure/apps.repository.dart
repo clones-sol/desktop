@@ -153,7 +153,7 @@ class AppsRepositoryImpl {
     }
   }
 
-  Future<List<ForgeApp>> getAppsForGym({
+  Future<List<ForgeApp>> getAppsForFactory({
     Map<String, dynamic>? filter,
   }) async {
     try {
@@ -194,18 +194,18 @@ class AppsRepositoryImpl {
           )
           .toList();
     } catch (e) {
-      throw Exception('Failed to get apps for gym: $e');
+      throw Exception('Failed to get apps for factory: $e');
     }
   }
 
-  Future<List<String>> getGymCategories() async {
+  Future<List<String>> getFactoryCategories() async {
     try {
       final categories = await _client.get<List<dynamic>>(
         '/forge/apps/categories',
       );
       return categories.cast<String>();
     } catch (e) {
-      throw Exception('Failed to get gym categories: $e');
+      throw Exception('Failed to get factory categories: $e');
     }
   }
 }

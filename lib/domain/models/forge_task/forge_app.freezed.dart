@@ -32,13 +32,13 @@ mixin _$ForgeApp {
   @JsonKey(includeIfNull: false)
   bool? get seen => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
-  bool? get gymLimitReached => throw _privateConstructorUsedError;
+  bool? get factoryLimitReached => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
-  int? get gymSubmissions => throw _privateConstructorUsedError;
+  int? get factorySubmissions => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
-  String? get gymLimitType => throw _privateConstructorUsedError;
+  String? get factoryLimitType => throw _privateConstructorUsedError;
   @JsonKey(includeIfNull: false)
-  int? get gymLimitValue => throw _privateConstructorUsedError;
+  int? get factoryLimitValue => throw _privateConstructorUsedError;
 
   /// Serializes this ForgeApp to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -64,10 +64,10 @@ abstract class $ForgeAppCopyWith<$Res> {
       List<ForgeTaskItem> tasks,
       @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
       @JsonKey(includeIfNull: false) bool? seen,
-      @JsonKey(includeIfNull: false) bool? gymLimitReached,
-      @JsonKey(includeIfNull: false) int? gymSubmissions,
-      @JsonKey(includeIfNull: false) String? gymLimitType,
-      @JsonKey(includeIfNull: false) int? gymLimitValue});
+      @JsonKey(includeIfNull: false) bool? factoryLimitReached,
+      @JsonKey(includeIfNull: false) int? factorySubmissions,
+      @JsonKey(includeIfNull: false) String? factoryLimitType,
+      @JsonKey(includeIfNull: false) int? factoryLimitValue});
 
   $PoolIdCopyWith<$Res>? get poolId;
 }
@@ -95,10 +95,10 @@ class _$ForgeAppCopyWithImpl<$Res, $Val extends ForgeApp>
     Object? tasks = null,
     Object? poolId = freezed,
     Object? seen = freezed,
-    Object? gymLimitReached = freezed,
-    Object? gymSubmissions = freezed,
-    Object? gymLimitType = freezed,
-    Object? gymLimitValue = freezed,
+    Object? factoryLimitReached = freezed,
+    Object? factorySubmissions = freezed,
+    Object? factoryLimitType = freezed,
+    Object? factoryLimitValue = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -133,21 +133,21 @@ class _$ForgeAppCopyWithImpl<$Res, $Val extends ForgeApp>
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
               as bool?,
-      gymLimitReached: freezed == gymLimitReached
-          ? _value.gymLimitReached
-          : gymLimitReached // ignore: cast_nullable_to_non_nullable
+      factoryLimitReached: freezed == factoryLimitReached
+          ? _value.factoryLimitReached
+          : factoryLimitReached // ignore: cast_nullable_to_non_nullable
               as bool?,
-      gymSubmissions: freezed == gymSubmissions
-          ? _value.gymSubmissions
-          : gymSubmissions // ignore: cast_nullable_to_non_nullable
+      factorySubmissions: freezed == factorySubmissions
+          ? _value.factorySubmissions
+          : factorySubmissions // ignore: cast_nullable_to_non_nullable
               as int?,
-      gymLimitType: freezed == gymLimitType
-          ? _value.gymLimitType
-          : gymLimitType // ignore: cast_nullable_to_non_nullable
+      factoryLimitType: freezed == factoryLimitType
+          ? _value.factoryLimitType
+          : factoryLimitType // ignore: cast_nullable_to_non_nullable
               as String?,
-      gymLimitValue: freezed == gymLimitValue
-          ? _value.gymLimitValue
-          : gymLimitValue // ignore: cast_nullable_to_non_nullable
+      factoryLimitValue: freezed == factoryLimitValue
+          ? _value.factoryLimitValue
+          : factoryLimitValue // ignore: cast_nullable_to_non_nullable
               as int?,
     ) as $Val);
   }
@@ -184,10 +184,10 @@ abstract class _$$ForgeAppImplCopyWith<$Res>
       List<ForgeTaskItem> tasks,
       @JsonKey(name: 'pool_id', includeIfNull: false) PoolId? poolId,
       @JsonKey(includeIfNull: false) bool? seen,
-      @JsonKey(includeIfNull: false) bool? gymLimitReached,
-      @JsonKey(includeIfNull: false) int? gymSubmissions,
-      @JsonKey(includeIfNull: false) String? gymLimitType,
-      @JsonKey(includeIfNull: false) int? gymLimitValue});
+      @JsonKey(includeIfNull: false) bool? factoryLimitReached,
+      @JsonKey(includeIfNull: false) int? factorySubmissions,
+      @JsonKey(includeIfNull: false) String? factoryLimitType,
+      @JsonKey(includeIfNull: false) int? factoryLimitValue});
 
   @override
   $PoolIdCopyWith<$Res>? get poolId;
@@ -214,10 +214,10 @@ class __$$ForgeAppImplCopyWithImpl<$Res>
     Object? tasks = null,
     Object? poolId = freezed,
     Object? seen = freezed,
-    Object? gymLimitReached = freezed,
-    Object? gymSubmissions = freezed,
-    Object? gymLimitType = freezed,
-    Object? gymLimitValue = freezed,
+    Object? factoryLimitReached = freezed,
+    Object? factorySubmissions = freezed,
+    Object? factoryLimitType = freezed,
+    Object? factoryLimitValue = freezed,
   }) {
     return _then(_$ForgeAppImpl(
       id: freezed == id
@@ -252,21 +252,21 @@ class __$$ForgeAppImplCopyWithImpl<$Res>
           ? _value.seen
           : seen // ignore: cast_nullable_to_non_nullable
               as bool?,
-      gymLimitReached: freezed == gymLimitReached
-          ? _value.gymLimitReached
-          : gymLimitReached // ignore: cast_nullable_to_non_nullable
+      factoryLimitReached: freezed == factoryLimitReached
+          ? _value.factoryLimitReached
+          : factoryLimitReached // ignore: cast_nullable_to_non_nullable
               as bool?,
-      gymSubmissions: freezed == gymSubmissions
-          ? _value.gymSubmissions
-          : gymSubmissions // ignore: cast_nullable_to_non_nullable
+      factorySubmissions: freezed == factorySubmissions
+          ? _value.factorySubmissions
+          : factorySubmissions // ignore: cast_nullable_to_non_nullable
               as int?,
-      gymLimitType: freezed == gymLimitType
-          ? _value.gymLimitType
-          : gymLimitType // ignore: cast_nullable_to_non_nullable
+      factoryLimitType: freezed == factoryLimitType
+          ? _value.factoryLimitType
+          : factoryLimitType // ignore: cast_nullable_to_non_nullable
               as String?,
-      gymLimitValue: freezed == gymLimitValue
-          ? _value.gymLimitValue
-          : gymLimitValue // ignore: cast_nullable_to_non_nullable
+      factoryLimitValue: freezed == factoryLimitValue
+          ? _value.factoryLimitValue
+          : factoryLimitValue // ignore: cast_nullable_to_non_nullable
               as int?,
     ));
   }
@@ -284,10 +284,10 @@ class _$ForgeAppImpl implements _ForgeApp {
       final List<ForgeTaskItem> tasks = const [],
       @JsonKey(name: 'pool_id', includeIfNull: false) this.poolId,
       @JsonKey(includeIfNull: false) this.seen,
-      @JsonKey(includeIfNull: false) this.gymLimitReached,
-      @JsonKey(includeIfNull: false) this.gymSubmissions,
-      @JsonKey(includeIfNull: false) this.gymLimitType,
-      @JsonKey(includeIfNull: false) this.gymLimitValue})
+      @JsonKey(includeIfNull: false) this.factoryLimitReached,
+      @JsonKey(includeIfNull: false) this.factorySubmissions,
+      @JsonKey(includeIfNull: false) this.factoryLimitType,
+      @JsonKey(includeIfNull: false) this.factoryLimitValue})
       : _categories = categories,
         _tasks = tasks;
 
@@ -329,20 +329,20 @@ class _$ForgeAppImpl implements _ForgeApp {
   final bool? seen;
   @override
   @JsonKey(includeIfNull: false)
-  final bool? gymLimitReached;
+  final bool? factoryLimitReached;
   @override
   @JsonKey(includeIfNull: false)
-  final int? gymSubmissions;
+  final int? factorySubmissions;
   @override
   @JsonKey(includeIfNull: false)
-  final String? gymLimitType;
+  final String? factoryLimitType;
   @override
   @JsonKey(includeIfNull: false)
-  final int? gymLimitValue;
+  final int? factoryLimitValue;
 
   @override
   String toString() {
-    return 'ForgeApp(id: $id, name: $name, domain: $domain, description: $description, categories: $categories, tasks: $tasks, poolId: $poolId, seen: $seen, gymLimitReached: $gymLimitReached, gymSubmissions: $gymSubmissions, gymLimitType: $gymLimitType, gymLimitValue: $gymLimitValue)';
+    return 'ForgeApp(id: $id, name: $name, domain: $domain, description: $description, categories: $categories, tasks: $tasks, poolId: $poolId, seen: $seen, factoryLimitReached: $factoryLimitReached, factorySubmissions: $factorySubmissions, factoryLimitType: $factoryLimitType, factoryLimitValue: $factoryLimitValue)';
   }
 
   @override
@@ -360,14 +360,14 @@ class _$ForgeAppImpl implements _ForgeApp {
             const DeepCollectionEquality().equals(other._tasks, _tasks) &&
             (identical(other.poolId, poolId) || other.poolId == poolId) &&
             (identical(other.seen, seen) || other.seen == seen) &&
-            (identical(other.gymLimitReached, gymLimitReached) ||
-                other.gymLimitReached == gymLimitReached) &&
-            (identical(other.gymSubmissions, gymSubmissions) ||
-                other.gymSubmissions == gymSubmissions) &&
-            (identical(other.gymLimitType, gymLimitType) ||
-                other.gymLimitType == gymLimitType) &&
-            (identical(other.gymLimitValue, gymLimitValue) ||
-                other.gymLimitValue == gymLimitValue));
+            (identical(other.factoryLimitReached, factoryLimitReached) ||
+                other.factoryLimitReached == factoryLimitReached) &&
+            (identical(other.factorySubmissions, factorySubmissions) ||
+                other.factorySubmissions == factorySubmissions) &&
+            (identical(other.factoryLimitType, factoryLimitType) ||
+                other.factoryLimitType == factoryLimitType) &&
+            (identical(other.factoryLimitValue, factoryLimitValue) ||
+                other.factoryLimitValue == factoryLimitValue));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -382,10 +382,10 @@ class _$ForgeAppImpl implements _ForgeApp {
       const DeepCollectionEquality().hash(_tasks),
       poolId,
       seen,
-      gymLimitReached,
-      gymSubmissions,
-      gymLimitType,
-      gymLimitValue);
+      factoryLimitReached,
+      factorySubmissions,
+      factoryLimitType,
+      factoryLimitValue);
 
   /// Create a copy of ForgeApp
   /// with the given fields replaced by the non-null parameter values.
@@ -413,10 +413,10 @@ abstract class _ForgeApp implements ForgeApp {
           final List<ForgeTaskItem> tasks,
           @JsonKey(name: 'pool_id', includeIfNull: false) final PoolId? poolId,
           @JsonKey(includeIfNull: false) final bool? seen,
-          @JsonKey(includeIfNull: false) final bool? gymLimitReached,
-          @JsonKey(includeIfNull: false) final int? gymSubmissions,
-          @JsonKey(includeIfNull: false) final String? gymLimitType,
-          @JsonKey(includeIfNull: false) final int? gymLimitValue}) =
+          @JsonKey(includeIfNull: false) final bool? factoryLimitReached,
+          @JsonKey(includeIfNull: false) final int? factorySubmissions,
+          @JsonKey(includeIfNull: false) final String? factoryLimitType,
+          @JsonKey(includeIfNull: false) final int? factoryLimitValue}) =
       _$ForgeAppImpl;
 
   factory _ForgeApp.fromJson(Map<String, dynamic> json) =
@@ -443,16 +443,16 @@ abstract class _ForgeApp implements ForgeApp {
   bool? get seen;
   @override
   @JsonKey(includeIfNull: false)
-  bool? get gymLimitReached;
+  bool? get factoryLimitReached;
   @override
   @JsonKey(includeIfNull: false)
-  int? get gymSubmissions;
+  int? get factorySubmissions;
   @override
   @JsonKey(includeIfNull: false)
-  String? get gymLimitType;
+  String? get factoryLimitType;
   @override
   @JsonKey(includeIfNull: false)
-  int? get gymLimitValue;
+  int? get factoryLimitValue;
 
   /// Create a copy of ForgeApp
   /// with the given fields replaced by the non-null parameter values.

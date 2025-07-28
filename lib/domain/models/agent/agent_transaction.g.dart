@@ -75,7 +75,7 @@ _$AgentSearchResponseImpl _$$AgentSearchResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$AgentSearchResponseImpl(
       data: (json['data'] as List<dynamic>)
-          .map((e) => GymAgent.fromJson(e as Map<String, dynamic>))
+          .map((e) => FactoryAgent.fromJson(e as Map<String, dynamic>))
           .toList(),
       pagination:
           AgentPagination.fromJson(json['pagination'] as Map<String, dynamic>),

@@ -801,7 +801,7 @@ AgentSearchResponse _$AgentSearchResponseFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AgentSearchResponse {
-  List<GymAgent> get data => throw _privateConstructorUsedError;
+  List<FactoryAgent> get data => throw _privateConstructorUsedError;
   AgentPagination get pagination => throw _privateConstructorUsedError;
 
   /// Serializes this AgentSearchResponse to a JSON map.
@@ -820,7 +820,7 @@ abstract class $AgentSearchResponseCopyWith<$Res> {
           AgentSearchResponse value, $Res Function(AgentSearchResponse) then) =
       _$AgentSearchResponseCopyWithImpl<$Res, AgentSearchResponse>;
   @useResult
-  $Res call({List<GymAgent> data, AgentPagination pagination});
+  $Res call({List<FactoryAgent> data, AgentPagination pagination});
 
   $AgentPaginationCopyWith<$Res> get pagination;
 }
@@ -847,7 +847,7 @@ class _$AgentSearchResponseCopyWithImpl<$Res, $Val extends AgentSearchResponse>
       data: null == data
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<GymAgent>,
+              as List<FactoryAgent>,
       pagination: null == pagination
           ? _value.pagination
           : pagination // ignore: cast_nullable_to_non_nullable
@@ -874,7 +874,7 @@ abstract class _$$AgentSearchResponseImplCopyWith<$Res>
       __$$AgentSearchResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<GymAgent> data, AgentPagination pagination});
+  $Res call({List<FactoryAgent> data, AgentPagination pagination});
 
   @override
   $AgentPaginationCopyWith<$Res> get pagination;
@@ -900,7 +900,7 @@ class __$$AgentSearchResponseImplCopyWithImpl<$Res>
       data: null == data
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
-              as List<GymAgent>,
+              as List<FactoryAgent>,
       pagination: null == pagination
           ? _value.pagination
           : pagination // ignore: cast_nullable_to_non_nullable
@@ -913,15 +913,15 @@ class __$$AgentSearchResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$AgentSearchResponseImpl implements _AgentSearchResponse {
   const _$AgentSearchResponseImpl(
-      {required final List<GymAgent> data, required this.pagination})
+      {required final List<FactoryAgent> data, required this.pagination})
       : _data = data;
 
   factory _$AgentSearchResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$AgentSearchResponseImplFromJson(json);
 
-  final List<GymAgent> _data;
+  final List<FactoryAgent> _data;
   @override
-  List<GymAgent> get data {
+  List<FactoryAgent> get data {
     if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_data);
@@ -969,14 +969,14 @@ class _$AgentSearchResponseImpl implements _AgentSearchResponse {
 
 abstract class _AgentSearchResponse implements AgentSearchResponse {
   const factory _AgentSearchResponse(
-      {required final List<GymAgent> data,
+      {required final List<FactoryAgent> data,
       required final AgentPagination pagination}) = _$AgentSearchResponseImpl;
 
   factory _AgentSearchResponse.fromJson(Map<String, dynamic> json) =
       _$AgentSearchResponseImpl.fromJson;
 
   @override
-  List<GymAgent> get data;
+  List<FactoryAgent> get data;
   @override
   AgentPagination get pagination;
 

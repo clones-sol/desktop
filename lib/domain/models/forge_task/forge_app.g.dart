@@ -24,10 +24,10 @@ _$ForgeAppImpl _$$ForgeAppImplFromJson(Map<String, dynamic> json) =>
           ? null
           : PoolId.fromJson(json['pool_id'] as Map<String, dynamic>),
       seen: json['seen'] as bool?,
-      gymLimitReached: json['gymLimitReached'] as bool?,
-      gymSubmissions: (json['gymSubmissions'] as num?)?.toInt(),
-      gymLimitType: json['gymLimitType'] as String?,
-      gymLimitValue: (json['gymLimitValue'] as num?)?.toInt(),
+      factoryLimitReached: json['factoryLimitReached'] as bool?,
+      factorySubmissions: (json['factorySubmissions'] as num?)?.toInt(),
+      factoryLimitType: json['factoryLimitType'] as String?,
+      factoryLimitValue: (json['factoryLimitValue'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$ForgeAppImplToJson(_$ForgeAppImpl instance) =>
@@ -40,8 +40,12 @@ Map<String, dynamic> _$$ForgeAppImplToJson(_$ForgeAppImpl instance) =>
       'tasks': instance.tasks,
       if (instance.poolId case final value?) 'pool_id': value,
       if (instance.seen case final value?) 'seen': value,
-      if (instance.gymLimitReached case final value?) 'gymLimitReached': value,
-      if (instance.gymSubmissions case final value?) 'gymSubmissions': value,
-      if (instance.gymLimitType case final value?) 'gymLimitType': value,
-      if (instance.gymLimitValue case final value?) 'gymLimitValue': value,
+      if (instance.factoryLimitReached case final value?)
+        'factoryLimitReached': value,
+      if (instance.factorySubmissions case final value?)
+        'factorySubmissions': value,
+      if (instance.factoryLimitType case final value?)
+        'factoryLimitType': value,
+      if (instance.factoryLimitValue case final value?)
+        'factoryLimitValue': value,
     };
