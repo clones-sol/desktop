@@ -53,7 +53,7 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
               color: Theme.of(context).colorScheme.primaryContainer,
               width: 0.5,
             ),
-            gradient: VMColors.gradientInputFormBackground,
+            gradient: ClonesColors.gradientInputFormBackground,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -66,7 +66,7 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
               maxLines: 5,
               onChanged: (v) =>
                   ref.read(manageTaskNotifierProvider.notifier).setPrompt(v),
-              cursorColor: VMColors.secondaryText,
+              cursorColor: ClonesColors.secondaryText,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 border: InputBorder.none,

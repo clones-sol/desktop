@@ -131,8 +131,8 @@ class _DemoDetailVideoPreviewState
                   allowScrubbing: true,
                   colors: VideoProgressColors(
                     backgroundColor: Colors.transparent,
-                    playedColor: VMColors.secondary,
-                    bufferedColor: VMColors.tertiary.withValues(alpha: 0.3),
+                    playedColor: ClonesColors.secondary,
+                    bufferedColor: ClonesColors.tertiary.withValues(alpha: 0.3),
                   ),
                 ),
                 if (duration.inMilliseconds > 0)
@@ -147,7 +147,8 @@ class _DemoDetailVideoPreviewState
                             width: 8,
                             height: 8,
                             decoration: BoxDecoration(
-                              color: VMColors.getEventTypeColor(event.event),
+                              color:
+                                  ClonesColors.getEventTypeColor(event.event),
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -160,7 +161,7 @@ class _DemoDetailVideoPreviewState
                       width: 10,
                       height: 10,
                       decoration: const BoxDecoration(
-                        color: VMColors.primary,
+                        color: ClonesColors.primary,
                         shape: BoxShape.circle,
                       ),
                     ),

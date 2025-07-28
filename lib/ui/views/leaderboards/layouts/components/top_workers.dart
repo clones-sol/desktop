@@ -61,7 +61,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primary,
+                    color: ClonesColors.primary,
                   ),
                 ),
                 if (widget.onExpand != null) ...[
@@ -69,7 +69,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   IconButton(
                     icon: const Icon(
                       Icons.open_in_full,
-                      color: VMColors.secondary,
+                      color: ClonesColors.secondary,
                     ),
                     onPressed: widget.onExpand,
                   ),
@@ -114,7 +114,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   'Address',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -128,7 +128,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   'Average Grade',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -142,7 +142,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   'Tasks Completed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -156,7 +156,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                   'Tokens Rewards',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -193,13 +193,13 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                             TextSpan(
                               text: _truncateAddress(worker.address),
                               style: const TextStyle(
-                                color: VMColors.primaryText,
+                                color: ClonesColors.primaryText,
                               ),
                             ),
                             const TextSpan(
                               text: '',
                               style: TextStyle(
-                                color: VMColors.secondary,
+                                color: ClonesColors.secondary,
                               ),
                             ),
                           ],
@@ -228,7 +228,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                       Text(
                         '${worker.tasks} Tasks',
                         style: TextStyle(
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],
@@ -241,7 +241,7 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
                       Text(
                         '${worker.rewards} Tokens',
                         style: TextStyle(
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],

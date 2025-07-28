@@ -61,7 +61,7 @@ class _RecordPanelState extends ConsumerState<RecordPanel> {
                   Text(
                     'Up to: ${widget.reward?.maxReward ?? 0} Tokens',
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: VMColors.secondary,
+                      color: ClonesColors.secondary,
                     ),
                   ),
                 ],

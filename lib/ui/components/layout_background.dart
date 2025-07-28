@@ -8,6 +8,7 @@ import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LayoutBackground extends ConsumerWidget {
   const LayoutBackground({
@@ -52,21 +53,51 @@ class LayoutBackground extends ConsumerWidget {
               child: Opacity(
                 opacity: 0.05,
                 child: Text(
-                  session.isConnected == false
-                      ? ''
-                      : currentRoute == HomeView.routeName
-                          ? 'Clones'
-                          : currentRoute == ForgeView.routeName
-                              ? 'forge'
-                              : currentRoute == FactoryView.routeName
-                                  ? 'factory'
-                                  : currentRoute == FactoryHistoryView.routeName
-                                      ? 'factory'
-                                      : '',
+                  currentRoute == HomeView.routeName
+                      ? 'CLONES'
+                      : currentRoute == ForgeView.routeName
+                          ? 'FORGE'
+                          : currentRoute == FactoryView.routeName
+                              ? 'FORGE'
+                              : currentRoute == FactoryHistoryView.routeName
+                                  ? 'FORGE'
+                                  : '',
                   style: const TextStyle(
                     fontSize: 200,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              top: -500,
+              left: -1500,
+              child: Opacity(
+                opacity: 0.04,
+                child: SvgPicture.asset(
+                  Assets.logo,
+                  width: 2000,
+                  height: 2000,
+                  colorFilter: const ColorFilter.mode(
+                    ClonesColors.primary,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -1000,
+              right: -800,
+              child: Opacity(
+                opacity: 0.04,
+                child: SvgPicture.asset(
+                  Assets.logo,
+                  width: 1500,
+                  height: 1500,
+                  colorFilter: const ColorFilter.mode(
+                    ClonesColors.tertiary,
+                    BlendMode.srcIn,
                   ),
                 ),
               ),

@@ -122,7 +122,7 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
                         onPressed: () => widget.onClose(),
                         icon: Icon(
                           Icons.close,
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],

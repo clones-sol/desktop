@@ -76,7 +76,7 @@ class _SearchAndFilters extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primaryContainer,
                 width: 0.5,
               ),
-              gradient: VMColors.gradientInputFormBackground,
+              gradient: ClonesColors.gradientInputFormBackground,
             ),
             child: TextField(
               style: theme.textTheme.bodyMedium,
@@ -92,7 +92,7 @@ class _SearchAndFilters extends StatelessWidget {
                 ),
                 prefixIcon: Icon(
                   Icons.search,
-                  color: VMColors.secondaryText,
+                  color: ClonesColors.secondaryText,
                 ),
                 border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
@@ -118,7 +118,7 @@ class _SearchAndFilters extends StatelessWidget {
               _FilterButton(
                 icon: FontAwesomeIcons.solidCircle,
                 label: 'Status',
-                iconColor: VMColors.rewardInfo,
+                iconColor: ClonesColors.rewardInfo,
               ),
               _FilterButton(
                 icon: FontAwesomeIcons.lock,
@@ -149,7 +149,8 @@ class _FilterButton extends StatelessWidget {
     final theme = Theme.of(context);
     return ElevatedButton.icon(
       onPressed: () {},
-      icon: FaIcon(icon, size: 14, color: iconColor ?? VMColors.secondaryText),
+      icon: FaIcon(icon,
+          size: 14, color: iconColor ?? ClonesColors.secondaryText),
       label: Row(
         children: [
           Text(label, style: theme.textTheme.bodyMedium),
@@ -159,14 +160,14 @@ class _FilterButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: isActive
-            ? VMColors.primary.withValues(alpha: 0.5)
+            ? ClonesColors.primary.withValues(alpha: 0.5)
             : Colors.black.withValues(alpha: 0.2),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
             color: isActive
-                ? VMColors.primary
+                ? ClonesColors.primary
                 : Colors.white.withValues(alpha: 0.2),
           ),
         ),
@@ -199,25 +200,25 @@ class _StatsOverview extends StatelessWidget {
               icon: FontAwesomeIcons.robot,
               value: '47',
               label: 'Active Agents',
-              color: VMColors.containerIcon2,
+              color: ClonesColors.containerIcon2,
             ),
             _StatCard(
               icon: FontAwesomeIcons.coins,
               value: '2.4M',
               label: 'Total Volume',
-              color: VMColors.containerIcon1,
+              color: ClonesColors.containerIcon1,
             ),
             _StatCard(
               icon: FontAwesomeIcons.link,
               value: '89%',
               label: 'HuggingFace Connected',
-              color: VMColors.containerIcon4,
+              color: ClonesColors.containerIcon4,
             ),
             _StatCard(
               icon: FontAwesomeIcons.chartLine,
               value: '+23%',
               label: 'This Week',
-              color: VMColors.containerIcon3,
+              color: ClonesColors.containerIcon3,
             ),
           ],
         );
@@ -395,14 +396,14 @@ class _AgentCard extends StatelessWidget {
       case 'Token Deployed':
       case 'Fully Deployed':
       case 'HuggingFace':
-        return VMColors.rewardInfo;
+        return ClonesColors.rewardInfo;
       case 'Pool Pending':
       case 'Config Pending':
-        return VMColors.containerIcon3;
+        return ClonesColors.containerIcon3;
       case 'Token Gated':
-        return VMColors.primary;
+        return ClonesColors.primary;
       case 'Custom URL':
-        return VMColors.containerIcon2;
+        return ClonesColors.containerIcon2;
       default:
         return Colors.grey;
     }
@@ -425,7 +426,7 @@ class _AgentCard extends StatelessWidget {
                     width: 48,
                     height: 48,
                     decoration: BoxDecoration(
-                      gradient: VMColors.gradientBtnPrimary,
+                      gradient: ClonesColors.gradientBtnPrimary,
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Icon(agent.icon, color: Colors.white),
@@ -443,7 +444,7 @@ class _AgentCard extends StatelessWidget {
                         style: Theme.of(context)
                             .textTheme
                             .bodyMedium
-                            ?.copyWith(color: VMColors.primary),
+                            ?.copyWith(color: ClonesColors.primary),
                       ),
                     ],
                   ),

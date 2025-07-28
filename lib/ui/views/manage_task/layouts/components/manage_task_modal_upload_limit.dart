@@ -60,7 +60,7 @@ class _ManageTaskModalUploadLimitState
               color: Theme.of(context).colorScheme.primaryContainer,
               width: 0.5,
             ),
-            gradient: VMColors.gradientInputFormBackground,
+            gradient: ClonesColors.gradientInputFormBackground,
           ),
           child: TextField(
             focusNode: widget.focusNode,

@@ -105,9 +105,9 @@ class DemoDetailEditor extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),
             decoration: BoxDecoration(
-              color: VMColors.secondaryText.withValues(alpha: 0.1),
+              color: ClonesColors.secondaryText.withValues(alpha: 0.1),
               border: Border.all(
-                color: VMColors.secondaryText.withValues(alpha: 0.3),
+                color: ClonesColors.secondaryText.withValues(alpha: 0.3),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -173,7 +173,7 @@ class DemoDetailEditor extends ConsumerWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: VMColors.secondaryText.withValues(alpha: 0.3),
+                  color: ClonesColors.secondaryText.withValues(alpha: 0.3),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(
@@ -211,7 +211,7 @@ class DemoDetailEditor extends ConsumerWidget {
                         icon: const Icon(
                           Icons.visibility_off_outlined,
                           size: 16,
-                          color: VMColors.primary,
+                          color: ClonesColors.primary,
                         ),
                         tooltip: 'Add privacy range',
                         onPressed: () => ref
@@ -230,7 +230,7 @@ class DemoDetailEditor extends ConsumerWidget {
                               : message.content.toLowerCase().contains('scroll')
                                   ? Icons.swap_vert
                                   : Icons.keyboard,
-                          color: VMColors.tertiary,
+                          color: ClonesColors.tertiary,
                           size: 20,
                         ),
                         const SizedBox(width: 10),

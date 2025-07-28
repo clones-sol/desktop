@@ -20,12 +20,12 @@ class LeaderboardsStatTotalTasks extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: VMColors.containerIcon4.withValues(alpha: 0.2),
+                color: ClonesColors.containerIcon4.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 Icons.task_alt_outlined,
-                color: VMColors.containerIcon4.withValues(alpha: 0.7),
+                color: ClonesColors.containerIcon4.withValues(alpha: 0.7),
                 size: 20,
               ),
             ),

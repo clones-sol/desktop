@@ -30,7 +30,7 @@ class FactoryView extends ConsumerWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w300,
                   letterSpacing: 0.5,
-                  color: VMColors.secondaryText,
+                  color: ClonesColors.secondaryText,
                 ),
               ),
             ],

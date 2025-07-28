@@ -94,14 +94,14 @@ class BtnPrimary extends StatelessWidget {
     switch (btnPrimaryType) {
       case BtnPrimaryType.primary:
         return BoxDecoration(
-          gradient: VMColors.gradientBtnPrimary,
+          gradient: ClonesColors.gradientBtnPrimary,
           borderRadius: BorderRadius.circular(8),
         );
       case BtnPrimaryType.outlinePrimary:
         return BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: GradientBoxBorder(
-            gradient: VMColors.gradientBtnPrimary,
+            gradient: ClonesColors.gradientBtnPrimary,
             width: 2,
           ),
         );

@@ -48,7 +48,7 @@ class PopupTemplate extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: VMColors.secondary,
+                            color: ClonesColors.secondary,
                           ),
                         ),
                         child: popupHeight == null

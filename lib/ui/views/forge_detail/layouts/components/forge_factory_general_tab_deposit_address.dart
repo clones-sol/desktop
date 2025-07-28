@@ -28,12 +28,12 @@ class ForgeFactoryGeneralTabDepositAddress extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: VMColors.containerIcon2.withValues(alpha: 0.2),
+                    color: ClonesColors.containerIcon2.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     Icons.call_received,
-                    color: VMColors.containerIcon2.withValues(alpha: 0.7),
+                    color: ClonesColors.containerIcon2.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
@@ -60,7 +60,7 @@ class ForgeFactoryGeneralTabDepositAddress extends ConsumerWidget {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: VMColors.gradientInputFormBackground,
+                      gradient: ClonesColors.gradientInputFormBackground,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(

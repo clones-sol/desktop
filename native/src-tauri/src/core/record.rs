@@ -368,7 +368,7 @@ pub async fn get_recording_state() -> Result<String, String> {
 /// * `Err` if an error occurred.
 pub async fn start_recording(
     app: tauri::AppHandle,
-    demonstration_demonstration: State<'_, DemonstrationState>,
+    demonstration_state: State<'_, DemonstrationState>,
     demonstration: Option<Demonstration>,
     fps: u32,
 ) -> Result<(), String> {

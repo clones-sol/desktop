@@ -110,15 +110,15 @@ class AnimatedSidebarSection extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: VMColors.secondary.withValues(alpha: 0.2),
+                      color: ClonesColors.secondary.withValues(alpha: 0.2),
                       width: 0.5,
                     ),
                     gradient: LinearGradient(
                       colors: [
-                        VMColors.secondary.withValues(alpha: 0.2),
+                        ClonesColors.secondary.withValues(alpha: 0.2),
                         Colors.transparent,
                         Colors.transparent,
-                        VMColors.secondary.withValues(alpha: 0.2),
+                        ClonesColors.secondary.withValues(alpha: 0.2),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -143,8 +143,8 @@ class AnimatedSidebarSection extends StatelessWidget {
                           shaderCallback: (Rect bounds) {
                             return LinearGradient(
                               colors: [
-                                VMColors.primary.withValues(alpha: 0.5),
-                                VMColors.secondary.withValues(alpha: 0.9),
+                                ClonesColors.primary.withValues(alpha: 0.5),
+                                ClonesColors.secondary.withValues(alpha: 0.9),
                               ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -154,7 +154,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                           child: activeIndex == i
                               ? ColorFiltered(
                                   colorFilter: ColorFilter.mode(
-                                    VMColors.tertiary.withValues(alpha: 1),
+                                    ClonesColors.tertiary.withValues(alpha: 1),
                                     BlendMode.srcATop,
                                   ),
                                   child: Column(
@@ -163,7 +163,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                                       Icon(
                                         button.icon,
                                         size: 30,
-                                        color: VMColors.secondaryText,
+                                        color: ClonesColors.secondaryText,
                                       ),
                                       Text(
                                         button.label,
@@ -177,7 +177,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                                   children: [
                                     Icon(
                                       button.icon,
-                                      color: VMColors.secondaryText,
+                                      color: ClonesColors.secondaryText,
                                       size: 30,
                                     ),
                                     Text(

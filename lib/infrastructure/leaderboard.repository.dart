@@ -11,7 +11,7 @@ class LeaderboardRepositoryImpl {
   Future<Map<String, dynamic>> getLeaderboardData() async {
     try {
       final data = await _client.get<Map<String, dynamic>>(
-        '/factory/leaderboards',
+        '/gym/leaderboards',
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => json as Map<String, dynamic>,
       );

@@ -52,12 +52,14 @@ class DemoDetailEvents extends ConsumerWidget {
               return OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   backgroundColor:
-                      isEnabled ? VMColors.tertiary : Colors.transparent,
+                      isEnabled ? ClonesColors.tertiary : Colors.transparent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                   side: BorderSide(
-                    color: isEnabled ? VMColors.primary : VMColors.tertiary,
+                    color: isEnabled
+                        ? ClonesColors.primary
+                        : ClonesColors.tertiary,
                     width: 0.1,
                   ),
                   padding:
@@ -93,7 +95,7 @@ class DemoDetailEvents extends ConsumerWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: VMColors.rewardInfo.withValues(alpha: 0.3),
+                        color: ClonesColors.rewardInfo.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
@@ -109,7 +111,7 @@ class DemoDetailEvents extends ConsumerWidget {
                       child: Text(
                         event.event,
                         style: theme.textTheme.bodySmall!.copyWith(
-                          color: VMColors.rewardInfo,
+                          color: ClonesColors.rewardInfo,
                         ),
                       ),
                     ),
@@ -131,7 +133,7 @@ class DemoDetailEvents extends ConsumerWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: VMColors.getEventTypeColor(event.event)
+                          color: ClonesColors.getEventTypeColor(event.event)
                               .withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
@@ -148,7 +150,7 @@ class DemoDetailEvents extends ConsumerWidget {
                         child: Text(
                           formatTimeMs(event.time - startTime),
                           style: theme.textTheme.bodySmall!.copyWith(
-                            color: VMColors.getEventTypeColor(event.event),
+                            color: ClonesColors.getEventTypeColor(event.event),
                           ),
                         ),
                       ),

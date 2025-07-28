@@ -46,10 +46,10 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
                     CircularProgressIndicator(
                       value: score / 100,
                       strokeWidth: 10,
-                      backgroundColor:
-                          VMColors.getScoreColor(score).withValues(alpha: 0.2),
+                      backgroundColor: ClonesColors.getScoreColor(score)
+                          .withValues(alpha: 0.2),
                       valueColor: AlwaysStoppedAnimation<Color>(
-                        VMColors.getScoreColor(score),
+                        ClonesColors.getScoreColor(score),
                       ),
                     ),
                     Center(
@@ -57,7 +57,7 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
                         '$score%',
                         style: theme.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: VMColors.getScoreColor(score),
+                          color: ClonesColors.getScoreColor(score),
                         ),
                       ),
                     ),

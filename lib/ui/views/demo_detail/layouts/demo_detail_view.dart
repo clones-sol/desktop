@@ -178,9 +178,10 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                             child: Column(
                               children: [
                                 TabBar(
-                                  labelColor: VMColors.secondary,
-                                  unselectedLabelColor: VMColors.secondaryText,
-                                  dividerColor: VMColors.secondary,
+                                  labelColor: ClonesColors.secondary,
+                                  unselectedLabelColor:
+                                      ClonesColors.secondaryText,
+                                  dividerColor: ClonesColors.secondary,
                                   tabs: const [
                                     Tab(text: 'Editor'),
                                     Tab(text: 'Events'),
@@ -222,9 +223,10 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               TabBar(
-                                labelColor: VMColors.secondary,
-                                unselectedLabelColor: VMColors.secondaryText,
-                                dividerColor: VMColors.secondary,
+                                labelColor: ClonesColors.secondary,
+                                unselectedLabelColor:
+                                    ClonesColors.secondaryText,
+                                dividerColor: ClonesColors.secondary,
                                 tabs: const [
                                   Tab(text: 'Editor'),
                                   Tab(text: 'Events'),
