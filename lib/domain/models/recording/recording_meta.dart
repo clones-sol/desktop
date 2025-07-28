@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recording_meta.freezed.dart';
@@ -18,7 +18,7 @@ class RecordingMeta with _$RecordingMeta {
     required String arch,
     required String version,
     required String locale,
-    Quest? quest,
+    @JsonKey(name: 'quest') required Demonstration demonstration,
   }) = _RecordingMeta;
 
   factory RecordingMeta.fromJson(Map<String, dynamic> json) =>

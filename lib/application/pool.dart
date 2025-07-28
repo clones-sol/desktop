@@ -1,5 +1,5 @@
+import 'package:clones_desktop/domain/models/demonstration/reward_info.dart';
 import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/quest/reward_info.dart';
 import 'package:clones_desktop/domain/models/supported_token.dart';
 import 'package:clones_desktop/domain/models/training_pool.dart';
 import 'package:clones_desktop/domain/models/upload/upload_limit.dart';

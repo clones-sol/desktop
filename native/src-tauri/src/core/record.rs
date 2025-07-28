@@ -1,6 +1,6 @@
-//! Recording and logging core logic for screen, input, and quest data.
+//! Recording and logging core logic for screen, input, and demonstration data.
 //!
-//! This module provides the main types and functions for managing recording sessions, metadata, quests, and file operations.
+//! This module provides the main types and functions for managing recording sessions, metadata, demonstrations, and file operations.
 
 use crate::core::input;
 use crate::tools::axtree;
@@ -22,7 +22,7 @@ use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_opener::OpenerExt;
 use zip::{write::FileOptions, ZipWriter};
 
-/// Metadata for a recording session, including quest, platform, and monitor info.
+/// Metadata for a recording session, including demonstration, platform, and monitor info.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct RecordingMeta {
     id: String,
@@ -37,12 +37,12 @@ pub struct RecordingMeta {
     version: String,
     locale: String,
     primary_monitor: MonitorInfo,
-    quest: Option<Quest>,
+    demonstration: Option<Demonstration>,
 }
 
-/// Metadata for a quest associated with a recording.
+/// Metadata for a demonstration associated with a recording.
 #[derive(Serialize, Deserialize, Clone)]
-pub struct Quest {
+pub struct Demonstration {
     title: String,
     app: String,
     icon_url: String,
@@ -51,14 +51,14 @@ pub struct Quest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pool_id: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    reward: Option<QuestReward>,
+    reward: Option<DemonstrationReward>,
     #[serde(skip_serializing_if = "Option::is_none")]
     task_id: Option<String>,
 }
 
-/// Reward information for a quest.
+/// Reward information for a demonstration.
 #[derive(Serialize, Deserialize, Clone)]
-pub struct QuestReward {
+pub struct DemonstrationReward {
     time: i64,
     max_reward: i64,
 }
@@ -240,12 +240,12 @@ impl Recorder {
     }
 }
 
-/// State for managing the current quest and recording session.
+/// State for managing the current demonstration and recording session.
 #[derive(Default)]
-pub struct QuestState {
+pub struct DemonstrationState {
     pub recording_start_time: Mutex<Option<chrono::DateTime<chrono::Local>>>,
     pub current_recording_id: Mutex<Option<String>>,
-    pub current_quest: Mutex<Option<Quest>>,
+    pub current_demonstration: Mutex<Option<Demonstration>>,
 }
 
 // Global state for recording and logging
@@ -355,12 +355,12 @@ pub async fn get_recording_state() -> Result<String, String> {
         .ok_or_else(|| "Recording state not initialized".to_string())
 }
 
-/// Start a new recording session, including screen, input, and quest data.
+/// Start a new recording session, including screen, input, and demonstration data.
 ///
 /// # Arguments
 /// * `app` - The Tauri application handle.
-/// * `quest_state` - The shared quest state.
-/// * `quest` - Optional quest metadata.
+/// * `demonstration_state` - The shared demonstration state.
+/// * `demonstration` - Optional demonstration metadata.
 /// * `fps` - The frame rate for the recording.
 ///
 /// # Returns
@@ -368,8 +368,8 @@ pub async fn get_recording_state() -> Result<String, String> {
 /// * `Err` if an error occurred.
 pub async fn start_recording(
     app: tauri::AppHandle,
-    quest_state: State<'_, QuestState>,
-    quest: Option<Quest>,
+    demonstration_demonstration: State<'_, DemonstrationState>,
+    demonstration: Option<Demonstration>,
     fps: u32,
 ) -> Result<(), String> {
     // Start screen recording
@@ -384,17 +384,17 @@ pub async fn start_recording(
     // Initialize FFmpeg
     init_ffmpeg()?;
 
-    // Store quest data in state if available
-    if let Some(quest_data) = &quest {
-        // Store in QuestState for later retrieval
-        *quest_state.current_quest.lock().unwrap() = Some(quest_data.clone());
+    // Store demonstration data in state if available
+    if let Some(demonstration_data) = &demonstration {
+        // Store in DemonstrationState for later retrieval
+        *demonstration_state.current_demonstration.lock().unwrap() = Some(demonstration_data.clone());
 
     }
 
     let (session_dir, timestamp) = get_session_path(&app)?;
 
     // Store the recording ID
-    *quest_state.current_recording_id.lock().unwrap() = Some(timestamp.clone());
+    *demonstration_state.current_recording_id.lock().unwrap() = Some(timestamp.clone());
 
     let video_path = session_dir.join("recording.mp4");
 
@@ -422,7 +422,7 @@ pub async fn start_recording(
         timestamp: Local::now().to_rfc3339(),
         duration_seconds: 0,
         status: "recording".to_string(),
-        title: if let Some(q) = &quest {
+        title: if let Some(q) = &demonstration {
             q.title.clone()
         } else {
             "Recording Session".to_string()
@@ -437,7 +437,7 @@ pub async fn start_recording(
             height: physical_height,
         },
         reason: None,
-        quest,
+        demonstration,
     };
 
     fs::write(
@@ -447,7 +447,7 @@ pub async fn start_recording(
     )
     .map_err(|e| format!("Failed to write meta file: {}", e))?;
 
-    *quest_state.recording_start_time.lock().unwrap() = Some(Local::now());
+    *demonstration_state.recording_start_time.lock().unwrap() = Some(Local::now());
 
     set_rec_state(&app, "recording".to_string(), None)?;
 
@@ -474,7 +474,7 @@ pub async fn start_recording(
 ///
 /// # Arguments
 /// * `app` - The Tauri application handle.
-/// * `quest_state` - The shared quest state.
+/// * `demonstration_state` - The shared demonstration state.
 /// * `reason` - Optional reason for stopping.
 ///
 /// # Returns
@@ -482,7 +482,7 @@ pub async fn start_recording(
 /// * `Err` if an error occurred.
 pub async fn stop_recording(
     app: tauri::AppHandle,
-    quest_state: State<'_, QuestState>,
+    demonstration_state: State<'_, DemonstrationState>,
     reason: Option<String>,
 ) -> Result<String, String> {
     // Emit recording stopping event
@@ -504,7 +504,7 @@ pub async fn stop_recording(
     }
 
     // Update meta file with duration
-    if let Some(start_time) = *quest_state.recording_start_time.lock().unwrap() {
+    if let Some(start_time) = *demonstration_state.recording_start_time.lock().unwrap() {
         let duration = Local::now().signed_duration_since(start_time).num_seconds() as u64;
 
         let recordings_dir = get_custom_app_local_data_dir(&app)?.join("recordings");
@@ -550,11 +550,11 @@ pub async fn stop_recording(
 
     entries.sort_by_key(|entry| std::cmp::Reverse(entry.metadata().unwrap().modified().unwrap()));
 
-    // Clear the current quest
-    *quest_state.current_quest.lock().unwrap() = None;
+    // Clear the current demonstration
+    *demonstration_state.current_demonstration.lock().unwrap() = None;
 
     // Get the recording ID from state
-    if let Some(recording_id) = quest_state.current_recording_id.lock().unwrap().take() {
+    if let Some(recording_id) = demonstration_state.current_recording_id.lock().unwrap().take() {
         set_rec_state(&app, "saved".to_string(), Some(recording_id.clone()))?;
         set_rec_state(&app, "off".to_string(), None)?;
 
@@ -1271,13 +1271,13 @@ pub async fn export_recording_zip(id: String, app: tauri::AppHandle) -> Result<S
     }
 }
 
-pub async fn get_current_quest(
-    quest_state: State<'_, QuestState>,
-) -> Result<Option<Quest>, String> {
-    let current_quest = quest_state
-        .current_quest
+pub async fn get_current_demonstration(
+    demonstration_state: State<'_, DemonstrationState>,
+) -> Result<Option<Demonstration>, String> {
+    let current_demonstration = demonstration_state
+        .current_demonstration
         .lock()
         .map_err(|e| e.to_string())?;
-    Ok(current_quest.clone())
+    Ok(current_demonstration.clone())
 }
 

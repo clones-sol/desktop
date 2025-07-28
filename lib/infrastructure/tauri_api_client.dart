@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:clones_desktop/domain/app_info.dart';
-import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/recording/recording_meta.dart';
 import 'package:http/http.dart' as http;
 
@@ -59,12 +59,12 @@ class TauriApiClient {
     }
   }
 
-  Future<void> startRecording({Quest? quest}) async {
+  Future<void> startRecording({Demonstration? demonstration}) async {
     final response = await _client.post(
       Uri.parse('$_baseUrl/recordings/start'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
-        'quest': quest?.toJson(),
+        'demonstration': demonstration?.toJson(),
         'fps': 30,
       }),
     );

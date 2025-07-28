@@ -1,5 +1,5 @@
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/quest/quest_reward.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration_reward.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/components/design_widget/text/app_text.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
@@ -19,7 +19,7 @@ class RecordPanel extends ConsumerStatefulWidget {
   });
 
   final String title;
-  final QuestReward? reward;
+  final DemonstrationReward? reward;
   final List<String> objectives;
   final Function() onStartRecording;
   final VoidCallback onComplete;

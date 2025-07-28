@@ -11,7 +11,7 @@ use tauri::{AppHandle, Manager};
 use tower_http::cors::{Any, CorsLayer};
 
 // Import business logic from the local `core` module
-use crate::core::record::{self, Quest};
+use crate::core::record::{self, Demonstration};
 // Import functions from `commands/general`
 use crate::commands::general::{list_apps, take_screenshot};
 // Import function from `commands/settings`
@@ -57,7 +57,7 @@ pub struct GetFileQuery {
 // Structure for the start_recording request
 #[derive(Deserialize)]
 pub struct StartRecordingPayload {
-    quest: Option<Quest>,
+    demonstration: Option<Demonstration>,
     fps: u32,
 }
 
@@ -232,12 +232,12 @@ async fn start_recording_handler(
     State(state): State<AppState>,
     Json(payload): Json<StartRecordingPayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
-    // We get the "QuestState" from the Tauri state manager via the AppHandle
-    let quest_state: tauri::State<record::QuestState> = state.app_handle.state();
+    // We get the "DemonstrationState" from the Tauri state manager via the AppHandle
+    let demonstration_state: tauri::State<record::DemonstrationState> = state.app_handle.state();
     match record::start_recording(
         state.app_handle.clone(),
-        quest_state,
-        payload.quest,
+        demonstration_state,
+        payload.demonstration,
         payload.fps,
     )
     .await
@@ -252,8 +252,8 @@ async fn stop_recording_handler(
     State(state): State<AppState>,
     Json(payload): Json<StopRecordingPayload>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
-    let quest_state: tauri::State<record::QuestState> = state.app_handle.state();
-    match record::stop_recording(state.app_handle.clone(), quest_state, Some(payload.status)).await {
+    let demonstration_state: tauri::State<record::DemonstrationState> = state.app_handle.state();
+    match record::stop_recording(state.app_handle.clone(), demonstration_state, Some(payload.status)).await {
         Ok(recording_id) => Ok((StatusCode::OK, recording_id)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }

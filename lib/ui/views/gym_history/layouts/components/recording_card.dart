@@ -24,8 +24,8 @@ class RecordingCard extends ConsumerWidget {
     final uploadQueue = ref.watch(uploadQueueProvider);
     final uploadItem = uploadQueue[recording.id];
 
-    final maxReward = recording.quest?.reward?.maxReward ??
-        recording.submission?.meta.quest.reward?.maxReward ??
+    final maxReward = recording.demonstration?.reward?.maxReward ??
+        recording.submission?.meta.demonstration.reward?.maxReward ??
         0;
 
     return Padding(
@@ -55,8 +55,8 @@ class RecordingCard extends ConsumerWidget {
   }
 
   Widget _buildIcon(BuildContext context) {
-    final iconUrl =
-        recording.quest?.iconUrl ?? recording.submission?.meta.quest.iconUrl;
+    final iconUrl = recording.demonstration?.iconUrl ??
+        recording.submission?.meta.demonstration.iconUrl;
     return SizedBox(
       width: 32,
       height: 32,

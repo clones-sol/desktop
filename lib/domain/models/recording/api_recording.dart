@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/recording/monitor_info.dart';
 import 'package:clones_desktop/domain/models/submission/submission_status.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,7 +20,7 @@ class ApiRecording with _$ApiRecording {
     required String version,
     required String locale,
     required MonitorInfo primaryMonitor,
-    Quest? quest,
+    @JsonKey(name: 'quest') Demonstration? demonstration,
     String? location,
     SubmissionStatus? submission,
   }) = _ApiRecording;

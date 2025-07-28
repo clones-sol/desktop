@@ -1,6 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/recording/monitor_info.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -22,7 +22,7 @@ class SubmissionMeta with _$SubmissionMeta {
     required String version,
     required String locale,
     @JsonKey(name: 'primary_monitor') required MonitorInfo primaryMonitor,
-    required Quest quest,
+    @JsonKey(name: 'quest') required Demonstration demonstration,
     String? poolId,
   }) = _SubmissionMeta;
 

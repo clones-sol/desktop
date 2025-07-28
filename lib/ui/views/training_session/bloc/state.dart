@@ -1,10 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:clones_desktop/domain/app_info.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/message/deleted_range.dart';
 import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
-import 'package:clones_desktop/domain/models/quest/quest.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,8 +17,8 @@ class TrainingSessionState with _$TrainingSessionState {
   const factory TrainingSessionState({
     String? prompt,
     String? poolId,
-    Quest? currentQuest,
-    Quest? activeQuest,
+    Demonstration? currentDemonstration,
+    Demonstration? activeDemonstration,
     @Default(false) bool recordingLoading,
     @Default(false) bool recordingProcessing,
     @Default(false) bool showUploadConfirmModal,

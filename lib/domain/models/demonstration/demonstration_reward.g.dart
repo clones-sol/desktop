@@ -1,18 +1,20 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quest_reward.dart';
+part of 'demonstration_reward.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$QuestRewardImpl _$$QuestRewardImplFromJson(Map<String, dynamic> json) =>
-    _$QuestRewardImpl(
+_$DemonstrationRewardImpl _$$DemonstrationRewardImplFromJson(
+        Map<String, dynamic> json) =>
+    _$DemonstrationRewardImpl(
       time: (json['time'] as num).toInt(),
       maxReward: (json['max_reward'] as num).toInt(),
     );
 
-Map<String, dynamic> _$$QuestRewardImplToJson(_$QuestRewardImpl instance) =>
+Map<String, dynamic> _$$DemonstrationRewardImplToJson(
+        _$DemonstrationRewardImpl instance) =>
     <String, dynamic>{
       'time': instance.time,
       'max_reward': instance.maxReward,

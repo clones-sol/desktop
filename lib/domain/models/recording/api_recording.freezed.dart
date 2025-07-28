@@ -31,7 +31,8 @@ mixin _$ApiRecording {
   String get version => throw _privateConstructorUsedError;
   String get locale => throw _privateConstructorUsedError;
   MonitorInfo get primaryMonitor => throw _privateConstructorUsedError;
-  Quest? get quest => throw _privateConstructorUsedError;
+  @JsonKey(name: 'quest')
+  Demonstration? get demonstration => throw _privateConstructorUsedError;
   String? get location => throw _privateConstructorUsedError;
   SubmissionStatus? get submission => throw _privateConstructorUsedError;
 
@@ -63,12 +64,12 @@ abstract class $ApiRecordingCopyWith<$Res> {
       String version,
       String locale,
       MonitorInfo primaryMonitor,
-      Quest? quest,
+      @JsonKey(name: 'quest') Demonstration? demonstration,
       String? location,
       SubmissionStatus? submission});
 
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
-  $QuestCopyWith<$Res>? get quest;
+  $DemonstrationCopyWith<$Res>? get demonstration;
   $SubmissionStatusCopyWith<$Res>? get submission;
 }
 
@@ -98,7 +99,7 @@ class _$ApiRecordingCopyWithImpl<$Res, $Val extends ApiRecording>
     Object? version = null,
     Object? locale = null,
     Object? primaryMonitor = null,
-    Object? quest = freezed,
+    Object? demonstration = freezed,
     Object? location = freezed,
     Object? submission = freezed,
   }) {
@@ -147,10 +148,10 @@ class _$ApiRecordingCopyWithImpl<$Res, $Val extends ApiRecording>
           ? _value.primaryMonitor
           : primaryMonitor // ignore: cast_nullable_to_non_nullable
               as MonitorInfo,
-      quest: freezed == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      demonstration: freezed == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -176,13 +177,13 @@ class _$ApiRecordingCopyWithImpl<$Res, $Val extends ApiRecording>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res>? get quest {
-    if (_value.quest == null) {
+  $DemonstrationCopyWith<$Res>? get demonstration {
+    if (_value.demonstration == null) {
       return null;
     }
 
-    return $QuestCopyWith<$Res>(_value.quest!, (value) {
-      return _then(_value.copyWith(quest: value) as $Val);
+    return $DemonstrationCopyWith<$Res>(_value.demonstration!, (value) {
+      return _then(_value.copyWith(demonstration: value) as $Val);
     });
   }
 
@@ -221,14 +222,14 @@ abstract class _$$ApiRecordingImplCopyWith<$Res>
       String version,
       String locale,
       MonitorInfo primaryMonitor,
-      Quest? quest,
+      @JsonKey(name: 'quest') Demonstration? demonstration,
       String? location,
       SubmissionStatus? submission});
 
   @override
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
   @override
-  $QuestCopyWith<$Res>? get quest;
+  $DemonstrationCopyWith<$Res>? get demonstration;
   @override
   $SubmissionStatusCopyWith<$Res>? get submission;
 }
@@ -257,7 +258,7 @@ class __$$ApiRecordingImplCopyWithImpl<$Res>
     Object? version = null,
     Object? locale = null,
     Object? primaryMonitor = null,
-    Object? quest = freezed,
+    Object? demonstration = freezed,
     Object? location = freezed,
     Object? submission = freezed,
   }) {
@@ -306,10 +307,10 @@ class __$$ApiRecordingImplCopyWithImpl<$Res>
           ? _value.primaryMonitor
           : primaryMonitor // ignore: cast_nullable_to_non_nullable
               as MonitorInfo,
-      quest: freezed == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      demonstration: freezed == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
       location: freezed == location
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
@@ -337,7 +338,7 @@ class _$ApiRecordingImpl implements _ApiRecording {
       required this.version,
       required this.locale,
       required this.primaryMonitor,
-      this.quest,
+      @JsonKey(name: 'quest') this.demonstration,
       this.location,
       this.submission});
 
@@ -367,7 +368,8 @@ class _$ApiRecordingImpl implements _ApiRecording {
   @override
   final MonitorInfo primaryMonitor;
   @override
-  final Quest? quest;
+  @JsonKey(name: 'quest')
+  final Demonstration? demonstration;
   @override
   final String? location;
   @override
@@ -375,7 +377,7 @@ class _$ApiRecordingImpl implements _ApiRecording {
 
   @override
   String toString() {
-    return 'ApiRecording(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, quest: $quest, location: $location, submission: $submission)';
+    return 'ApiRecording(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, demonstration: $demonstration, location: $location, submission: $submission)';
   }
 
   @override
@@ -399,7 +401,8 @@ class _$ApiRecordingImpl implements _ApiRecording {
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.primaryMonitor, primaryMonitor) ||
                 other.primaryMonitor == primaryMonitor) &&
-            (identical(other.quest, quest) || other.quest == quest) &&
+            (identical(other.demonstration, demonstration) ||
+                other.demonstration == demonstration) &&
             (identical(other.location, location) ||
                 other.location == location) &&
             (identical(other.submission, submission) ||
@@ -421,7 +424,7 @@ class _$ApiRecordingImpl implements _ApiRecording {
       version,
       locale,
       primaryMonitor,
-      quest,
+      demonstration,
       location,
       submission);
 
@@ -454,7 +457,7 @@ abstract class _ApiRecording implements ApiRecording {
       required final String version,
       required final String locale,
       required final MonitorInfo primaryMonitor,
-      final Quest? quest,
+      @JsonKey(name: 'quest') final Demonstration? demonstration,
       final String? location,
       final SubmissionStatus? submission}) = _$ApiRecordingImpl;
 
@@ -484,7 +487,8 @@ abstract class _ApiRecording implements ApiRecording {
   @override
   MonitorInfo get primaryMonitor;
   @override
-  Quest? get quest;
+  @JsonKey(name: 'quest')
+  Demonstration? get demonstration;
   @override
   String? get location;
   @override

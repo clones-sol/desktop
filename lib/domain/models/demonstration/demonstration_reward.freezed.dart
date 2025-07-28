@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'quest_reward.dart';
+part of 'demonstration_reward.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,46 +14,46 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
-QuestReward _$QuestRewardFromJson(Map<String, dynamic> json) {
-  return _QuestReward.fromJson(json);
+DemonstrationReward _$DemonstrationRewardFromJson(Map<String, dynamic> json) {
+  return _DemonstrationReward.fromJson(json);
 }
 
 /// @nodoc
-mixin _$QuestReward {
+mixin _$DemonstrationReward {
   int get time => throw _privateConstructorUsedError;
   @JsonKey(name: 'max_reward')
   int get maxReward => throw _privateConstructorUsedError;
 
-  /// Serializes this QuestReward to a JSON map.
+  /// Serializes this DemonstrationReward to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
-  /// Create a copy of QuestReward
+  /// Create a copy of DemonstrationReward
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $QuestRewardCopyWith<QuestReward> get copyWith =>
+  $DemonstrationRewardCopyWith<DemonstrationReward> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $QuestRewardCopyWith<$Res> {
-  factory $QuestRewardCopyWith(
-          QuestReward value, $Res Function(QuestReward) then) =
-      _$QuestRewardCopyWithImpl<$Res, QuestReward>;
+abstract class $DemonstrationRewardCopyWith<$Res> {
+  factory $DemonstrationRewardCopyWith(
+          DemonstrationReward value, $Res Function(DemonstrationReward) then) =
+      _$DemonstrationRewardCopyWithImpl<$Res, DemonstrationReward>;
   @useResult
   $Res call({int time, @JsonKey(name: 'max_reward') int maxReward});
 }
 
 /// @nodoc
-class _$QuestRewardCopyWithImpl<$Res, $Val extends QuestReward>
-    implements $QuestRewardCopyWith<$Res> {
-  _$QuestRewardCopyWithImpl(this._value, this._then);
+class _$DemonstrationRewardCopyWithImpl<$Res, $Val extends DemonstrationReward>
+    implements $DemonstrationRewardCopyWith<$Res> {
+  _$DemonstrationRewardCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of QuestReward
+  /// Create a copy of DemonstrationReward
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -75,25 +75,25 @@ class _$QuestRewardCopyWithImpl<$Res, $Val extends QuestReward>
 }
 
 /// @nodoc
-abstract class _$$QuestRewardImplCopyWith<$Res>
-    implements $QuestRewardCopyWith<$Res> {
-  factory _$$QuestRewardImplCopyWith(
-          _$QuestRewardImpl value, $Res Function(_$QuestRewardImpl) then) =
-      __$$QuestRewardImplCopyWithImpl<$Res>;
+abstract class _$$DemonstrationRewardImplCopyWith<$Res>
+    implements $DemonstrationRewardCopyWith<$Res> {
+  factory _$$DemonstrationRewardImplCopyWith(_$DemonstrationRewardImpl value,
+          $Res Function(_$DemonstrationRewardImpl) then) =
+      __$$DemonstrationRewardImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({int time, @JsonKey(name: 'max_reward') int maxReward});
 }
 
 /// @nodoc
-class __$$QuestRewardImplCopyWithImpl<$Res>
-    extends _$QuestRewardCopyWithImpl<$Res, _$QuestRewardImpl>
-    implements _$$QuestRewardImplCopyWith<$Res> {
-  __$$QuestRewardImplCopyWithImpl(
-      _$QuestRewardImpl _value, $Res Function(_$QuestRewardImpl) _then)
+class __$$DemonstrationRewardImplCopyWithImpl<$Res>
+    extends _$DemonstrationRewardCopyWithImpl<$Res, _$DemonstrationRewardImpl>
+    implements _$$DemonstrationRewardImplCopyWith<$Res> {
+  __$$DemonstrationRewardImplCopyWithImpl(_$DemonstrationRewardImpl _value,
+      $Res Function(_$DemonstrationRewardImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of QuestReward
+  /// Create a copy of DemonstrationReward
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -101,7 +101,7 @@ class __$$QuestRewardImplCopyWithImpl<$Res>
     Object? time = null,
     Object? maxReward = null,
   }) {
-    return _then(_$QuestRewardImpl(
+    return _then(_$DemonstrationRewardImpl(
       time: null == time
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
@@ -116,13 +116,13 @@ class __$$QuestRewardImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$QuestRewardImpl implements _QuestReward {
-  const _$QuestRewardImpl(
+class _$DemonstrationRewardImpl implements _DemonstrationReward {
+  const _$DemonstrationRewardImpl(
       {required this.time,
       @JsonKey(name: 'max_reward') required this.maxReward});
 
-  factory _$QuestRewardImpl.fromJson(Map<String, dynamic> json) =>
-      _$$QuestRewardImplFromJson(json);
+  factory _$DemonstrationRewardImpl.fromJson(Map<String, dynamic> json) =>
+      _$$DemonstrationRewardImplFromJson(json);
 
   @override
   final int time;
@@ -132,14 +132,14 @@ class _$QuestRewardImpl implements _QuestReward {
 
   @override
   String toString() {
-    return 'QuestReward(time: $time, maxReward: $maxReward)';
+    return 'DemonstrationReward(time: $time, maxReward: $maxReward)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$QuestRewardImpl &&
+            other is _$DemonstrationRewardImpl &&
             (identical(other.time, time) || other.time == time) &&
             (identical(other.maxReward, maxReward) ||
                 other.maxReward == maxReward));
@@ -149,30 +149,31 @@ class _$QuestRewardImpl implements _QuestReward {
   @override
   int get hashCode => Object.hash(runtimeType, time, maxReward);
 
-  /// Create a copy of QuestReward
+  /// Create a copy of DemonstrationReward
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$QuestRewardImplCopyWith<_$QuestRewardImpl> get copyWith =>
-      __$$QuestRewardImplCopyWithImpl<_$QuestRewardImpl>(this, _$identity);
+  _$$DemonstrationRewardImplCopyWith<_$DemonstrationRewardImpl> get copyWith =>
+      __$$DemonstrationRewardImplCopyWithImpl<_$DemonstrationRewardImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$QuestRewardImplToJson(
+    return _$$DemonstrationRewardImplToJson(
       this,
     );
   }
 }
 
-abstract class _QuestReward implements QuestReward {
-  const factory _QuestReward(
+abstract class _DemonstrationReward implements DemonstrationReward {
+  const factory _DemonstrationReward(
           {required final int time,
           @JsonKey(name: 'max_reward') required final int maxReward}) =
-      _$QuestRewardImpl;
+      _$DemonstrationRewardImpl;
 
-  factory _QuestReward.fromJson(Map<String, dynamic> json) =
-      _$QuestRewardImpl.fromJson;
+  factory _DemonstrationReward.fromJson(Map<String, dynamic> json) =
+      _$DemonstrationRewardImpl.fromJson;
 
   @override
   int get time;
@@ -180,10 +181,10 @@ abstract class _QuestReward implements QuestReward {
   @JsonKey(name: 'max_reward')
   int get maxReward;
 
-  /// Create a copy of QuestReward
+  /// Create a copy of DemonstrationReward
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$QuestRewardImplCopyWith<_$QuestRewardImpl> get copyWith =>
+  _$$DemonstrationRewardImplCopyWith<_$DemonstrationRewardImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

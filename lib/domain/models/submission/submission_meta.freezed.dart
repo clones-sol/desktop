@@ -34,7 +34,8 @@ mixin _$SubmissionMeta {
   String get locale => throw _privateConstructorUsedError;
   @JsonKey(name: 'primary_monitor')
   MonitorInfo get primaryMonitor => throw _privateConstructorUsedError;
-  Quest get quest => throw _privateConstructorUsedError;
+  @JsonKey(name: 'quest')
+  Demonstration get demonstration => throw _privateConstructorUsedError;
   String? get poolId => throw _privateConstructorUsedError;
 
   /// Serializes this SubmissionMeta to a JSON map.
@@ -66,11 +67,11 @@ abstract class $SubmissionMetaCopyWith<$Res> {
       String version,
       String locale,
       @JsonKey(name: 'primary_monitor') MonitorInfo primaryMonitor,
-      Quest quest,
+      @JsonKey(name: 'quest') Demonstration demonstration,
       String? poolId});
 
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
-  $QuestCopyWith<$Res> get quest;
+  $DemonstrationCopyWith<$Res> get demonstration;
 }
 
 /// @nodoc
@@ -100,7 +101,7 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
     Object? version = null,
     Object? locale = null,
     Object? primaryMonitor = null,
-    Object? quest = null,
+    Object? demonstration = null,
     Object? poolId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -152,10 +153,10 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
           ? _value.primaryMonitor
           : primaryMonitor // ignore: cast_nullable_to_non_nullable
               as MonitorInfo,
-      quest: null == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest,
+      demonstration: null == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration,
       poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
@@ -177,9 +178,9 @@ class _$SubmissionMetaCopyWithImpl<$Res, $Val extends SubmissionMeta>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res> get quest {
-    return $QuestCopyWith<$Res>(_value.quest, (value) {
-      return _then(_value.copyWith(quest: value) as $Val);
+  $DemonstrationCopyWith<$Res> get demonstration {
+    return $DemonstrationCopyWith<$Res>(_value.demonstration, (value) {
+      return _then(_value.copyWith(demonstration: value) as $Val);
     });
   }
 }
@@ -205,13 +206,13 @@ abstract class _$$SubmissionMetaImplCopyWith<$Res>
       String version,
       String locale,
       @JsonKey(name: 'primary_monitor') MonitorInfo primaryMonitor,
-      Quest quest,
+      @JsonKey(name: 'quest') Demonstration demonstration,
       String? poolId});
 
   @override
   $MonitorInfoCopyWith<$Res> get primaryMonitor;
   @override
-  $QuestCopyWith<$Res> get quest;
+  $DemonstrationCopyWith<$Res> get demonstration;
 }
 
 /// @nodoc
@@ -239,7 +240,7 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
     Object? version = null,
     Object? locale = null,
     Object? primaryMonitor = null,
-    Object? quest = null,
+    Object? demonstration = null,
     Object? poolId = freezed,
   }) {
     return _then(_$SubmissionMetaImpl(
@@ -291,10 +292,10 @@ class __$$SubmissionMetaImplCopyWithImpl<$Res>
           ? _value.primaryMonitor
           : primaryMonitor // ignore: cast_nullable_to_non_nullable
               as MonitorInfo,
-      quest: null == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest,
+      demonstration: null == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration,
       poolId: freezed == poolId
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
@@ -319,7 +320,7 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
       required this.version,
       required this.locale,
       @JsonKey(name: 'primary_monitor') required this.primaryMonitor,
-      required this.quest,
+      @JsonKey(name: 'quest') required this.demonstration,
       this.poolId});
 
   factory _$SubmissionMetaImpl.fromJson(Map<String, dynamic> json) =>
@@ -352,13 +353,14 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
   @JsonKey(name: 'primary_monitor')
   final MonitorInfo primaryMonitor;
   @override
-  final Quest quest;
+  @JsonKey(name: 'quest')
+  final Demonstration demonstration;
   @override
   final String? poolId;
 
   @override
   String toString() {
-    return 'SubmissionMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, quest: $quest, poolId: $poolId)';
+    return 'SubmissionMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, primaryMonitor: $primaryMonitor, demonstration: $demonstration, poolId: $poolId)';
   }
 
   @override
@@ -383,7 +385,8 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.primaryMonitor, primaryMonitor) ||
                 other.primaryMonitor == primaryMonitor) &&
-            (identical(other.quest, quest) || other.quest == quest) &&
+            (identical(other.demonstration, demonstration) ||
+                other.demonstration == demonstration) &&
             (identical(other.poolId, poolId) || other.poolId == poolId));
   }
 
@@ -403,7 +406,7 @@ class _$SubmissionMetaImpl implements _SubmissionMeta {
       version,
       locale,
       primaryMonitor,
-      quest,
+      demonstration,
       poolId);
 
   /// Create a copy of SubmissionMeta
@@ -438,7 +441,7 @@ abstract class _SubmissionMeta implements SubmissionMeta {
       required final String locale,
       @JsonKey(name: 'primary_monitor')
       required final MonitorInfo primaryMonitor,
-      required final Quest quest,
+      @JsonKey(name: 'quest') required final Demonstration demonstration,
       final String? poolId}) = _$SubmissionMetaImpl;
 
   factory _SubmissionMeta.fromJson(Map<String, dynamic> json) =
@@ -471,7 +474,8 @@ abstract class _SubmissionMeta implements SubmissionMeta {
   @JsonKey(name: 'primary_monitor')
   MonitorInfo get primaryMonitor;
   @override
-  Quest get quest;
+  @JsonKey(name: 'quest')
+  Demonstration get demonstration;
   @override
   String? get poolId;
 

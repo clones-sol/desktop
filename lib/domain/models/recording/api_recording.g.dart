@@ -20,9 +20,9 @@ _$ApiRecordingImpl _$$ApiRecordingImplFromJson(Map<String, dynamic> json) =>
       locale: json['locale'] as String,
       primaryMonitor:
           MonitorInfo.fromJson(json['primaryMonitor'] as Map<String, dynamic>),
-      quest: json['quest'] == null
+      demonstration: json['quest'] == null
           ? null
-          : Quest.fromJson(json['quest'] as Map<String, dynamic>),
+          : Demonstration.fromJson(json['quest'] as Map<String, dynamic>),
       location: json['location'] as String?,
       submission: json['submission'] == null
           ? null
@@ -43,7 +43,7 @@ Map<String, dynamic> _$$ApiRecordingImplToJson(_$ApiRecordingImpl instance) =>
       'version': instance.version,
       'locale': instance.locale,
       'primaryMonitor': instance.primaryMonitor,
-      'quest': instance.quest,
+      'quest': instance.demonstration,
       'location': instance.location,
       'submission': instance.submission,
     };
