@@ -37,7 +37,8 @@ pub struct RecordingMeta {
     version: String,
     locale: String,
     primary_monitor: MonitorInfo,
-    demonstration: Option<Demonstration>,
+    // TODO: rename to demonstration when backend is updated
+    quest: Option<Demonstration>,
 }
 
 /// Metadata for a demonstration associated with a recording.
@@ -437,7 +438,7 @@ pub async fn start_recording(
             height: physical_height,
         },
         reason: None,
-        demonstration,
+        quest: demonstration,
     };
 
     fs::write(

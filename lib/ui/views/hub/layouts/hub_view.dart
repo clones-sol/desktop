@@ -46,11 +46,11 @@ class _Header extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Agent Hub',
+              'Nexus',
               style: theme.textTheme.titleLarge,
             ),
             Text(
-              'Explore deployed fine-tuned AI agents on Web3',
+              'Tokenizing CUA Agents for the Decentralized Economy',
               style: theme.textTheme.bodyMedium,
             ),
           ],

@@ -41,9 +41,11 @@ class DemoDetailSteps extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    submission.gradeResult?.summary ?? 'No summary provided.',
-                    style: theme.textTheme.bodyMedium,
+                  Expanded(
+                    child: Text(
+                      submission.gradeResult?.summary ?? 'No summary provided.',
+                      style: theme.textTheme.bodyMedium,
+                    ),
                   ),
                 ],
               ),
