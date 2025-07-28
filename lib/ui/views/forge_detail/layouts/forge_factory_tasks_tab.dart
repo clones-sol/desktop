@@ -186,7 +186,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                         Center(
                           child: Text(
                             'No apps available.',
-                            style: TextStyle(color: VMColors.secondaryText),
+                            style: TextStyle(color: ClonesColors.secondaryText),
                           ),
                         )
                       else
@@ -209,7 +209,8 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                             Container(
                                               padding: const EdgeInsets.all(10),
                                               decoration: BoxDecoration(
-                                                color: VMColors.containerIcon5
+                                                color: ClonesColors
+                                                    .containerIcon5
                                                     .withValues(alpha: 0.2),
                                                 borderRadius:
                                                     BorderRadius.circular(10),
@@ -221,7 +222,8 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                 errorBuilder: (_, __, ___) =>
                                                     const Icon(
                                                   Icons.apps,
-                                                  color: VMColors.primaryText,
+                                                  color:
+                                                      ClonesColors.primaryText,
                                                   size: 24,
                                                 ),
                                               ),
@@ -287,7 +289,8 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                 IconButton(
                                                   icon: const Icon(
                                                     Icons.check,
-                                                    color: VMColors.primaryText,
+                                                    color: ClonesColors
+                                                        .primaryText,
                                                   ),
                                                   // TODO(reddwarf03): Add edit app
                                                   onPressed: () {},
@@ -417,7 +420,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                       .textTheme
                                                                       .bodyMedium
                                                                       ?.copyWith(
-                                                                    color: VMColors
+                                                                    color: ClonesColors
                                                                         .uploadLimit,
                                                                   ),
                                                                 ),
@@ -451,7 +454,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                       .textTheme
                                                                       .bodyMedium
                                                                       ?.copyWith(
-                                                                    color: VMColors
+                                                                    color: ClonesColors
                                                                         .rewardInfo,
                                                                   ),
                                                                 ),

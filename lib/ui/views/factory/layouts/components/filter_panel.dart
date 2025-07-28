@@ -63,7 +63,7 @@ class FilterPanel extends ConsumerWidget {
                           color: theme.colorScheme.primaryContainer,
                           width: 0.5,
                         ),
-                        gradient: VMColors.gradientInputFormBackground,
+                        gradient: ClonesColors.gradientInputFormBackground,
                       ),
                       child: TextField(
                         controller: searchController,
@@ -112,7 +112,8 @@ class FilterPanel extends ConsumerWidget {
                                     .primaryContainer,
                                 width: 0.5,
                               ),
-                              gradient: VMColors.gradientInputFormBackground,
+                              gradient:
+                                  ClonesColors.gradientInputFormBackground,
                             ),
                             child: TextField(
                               controller: minPriceController,
@@ -169,7 +170,8 @@ class FilterPanel extends ConsumerWidget {
                                     .primaryContainer,
                                 width: 0.5,
                               ),
-                              gradient: VMColors.gradientInputFormBackground,
+                              gradient:
+                                  ClonesColors.gradientInputFormBackground,
                             ),
                             child: TextField(
                               controller: maxPriceController,
@@ -219,7 +221,7 @@ class FilterPanel extends ConsumerWidget {
                           color: Theme.of(context).colorScheme.primaryContainer,
                           width: 0.5,
                         ),
-                        gradient: VMColors.gradientInputFormBackground,
+                        gradient: ClonesColors.gradientInputFormBackground,
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -268,14 +270,14 @@ class FilterPanel extends ConsumerWidget {
                 style: OutlinedButton.styleFrom(
                   side: BorderSide(
                     color: selectedCategories.isEmpty
-                        ? VMColors.tertiary
-                        : VMColors.tertiary,
+                        ? ClonesColors.tertiary
+                        : ClonesColors.tertiary,
                     width: 0.1,
                   ),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                   backgroundColor: selectedCategories.isEmpty
-                      ? VMColors.tertiary
+                      ? ClonesColors.tertiary
                       : Colors.transparent,
                 ),
                 onPressed: onSelectAllCategories,
@@ -289,14 +291,14 @@ class FilterPanel extends ConsumerWidget {
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(
                       color: selectedCategories.contains(category)
-                          ? VMColors.primary
-                          : VMColors.tertiary,
+                          ? ClonesColors.primary
+                          : ClonesColors.tertiary,
                       width: 0.1,
                     ),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                     backgroundColor: selectedCategories.contains(category)
-                        ? VMColors.tertiary
+                        ? ClonesColors.tertiary
                         : Colors.transparent,
                   ),
                   onPressed: () => onCategorySelected(
@@ -307,7 +309,7 @@ class FilterPanel extends ConsumerWidget {
                     category,
                     style: selectedCategories.contains(category)
                         ? Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: VMColors.primaryText,
+                              color: ClonesColors.primaryText,
                             )
                         : Theme.of(context).textTheme.bodySmall,
                   ),
@@ -319,7 +321,7 @@ class FilterPanel extends ConsumerWidget {
           Row(
             children: [
               Checkbox(
-                checkColor: VMColors.primaryText,
+                checkColor: ClonesColors.primaryText,
                 value: !settings.hideAdult,
                 onChanged: (value) {
                   ref

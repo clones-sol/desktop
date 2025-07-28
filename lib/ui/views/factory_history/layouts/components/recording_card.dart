@@ -64,9 +64,9 @@ class RecordingCard extends ConsumerWidget {
           ? Image.network(
               iconUrl,
               errorBuilder: (context, error, stackTrace) =>
-                  Icon(Icons.apps, color: VMColors.secondaryText),
+                  Icon(Icons.apps, color: ClonesColors.secondaryText),
             )
-          : Icon(Icons.apps, color: VMColors.secondaryText),
+          : Icon(Icons.apps, color: ClonesColors.secondaryText),
     );
   }
 
@@ -83,14 +83,15 @@ class RecordingCard extends ConsumerWidget {
         const SizedBox(height: 4),
         Row(
           children: [
-            Icon(Icons.schedule, size: 12, color: VMColors.secondaryText),
+            Icon(Icons.schedule, size: 12, color: ClonesColors.secondaryText),
             const SizedBox(width: 4),
             Text(
               formatDuration(recording.durationSeconds),
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(width: 8),
-            Icon(Icons.calendar_today, size: 12, color: VMColors.secondaryText),
+            Icon(Icons.calendar_today,
+                size: 12, color: ClonesColors.secondaryText),
             const SizedBox(width: 4),
             Text(
               '${DateFormat.yMd().format(DateTime.parse(recording.timestamp))} ${DateFormat.jm().format(DateTime.parse(recording.timestamp))}',
@@ -102,13 +103,13 @@ class RecordingCard extends ConsumerWidget {
                   ? Icons.folder_outlined
                   : Icons.cloud_outlined,
               size: 12,
-              color: VMColors.secondaryText,
+              color: ClonesColors.secondaryText,
             ),
             const SizedBox(width: 4),
             Text(
               recording.location == 'local' ? 'Local' : 'Cloud',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: VMColors.secondaryText,
+                color: ClonesColors.secondaryText,
               ),
             ),
           ],
@@ -202,7 +203,7 @@ class RecordingCard extends ConsumerWidget {
           Text(
             '${score.toStringAsFixed(0)}%',
             style: theme.textTheme.titleLarge?.copyWith(
-              color: VMColors.secondary,
+              color: ClonesColors.secondary,
             ),
           ),
           Text('Rating', style: theme.textTheme.bodySmall),
@@ -249,7 +250,7 @@ class RecordingCard extends ConsumerWidget {
           ),
         if (recording.location == 'local')
           PopupMenuButton<String>(
-            icon: Icon(Icons.more_vert, color: VMColors.secondaryText),
+            icon: Icon(Icons.more_vert, color: ClonesColors.secondaryText),
             color: Colors.black.withValues(alpha: 0.9),
             onSelected: (value) async {
               switch (value) {
@@ -313,20 +314,22 @@ class RecordingCard extends ConsumerWidget {
               PopupMenuItem<String>(
                 value: 'open_folder',
                 child: ListTile(
-                  leading: Icon(Icons.folder, color: VMColors.secondaryText),
+                  leading:
+                      Icon(Icons.folder, color: ClonesColors.secondaryText),
                   title: Text(
                     'Open Folder',
-                    style: TextStyle(color: VMColors.secondaryText),
+                    style: TextStyle(color: ClonesColors.secondaryText),
                   ),
                 ),
               ),
               PopupMenuItem<String>(
                 value: 'export_zip',
                 child: ListTile(
-                  leading: Icon(Icons.archive, color: VMColors.secondaryText),
+                  leading:
+                      Icon(Icons.archive, color: ClonesColors.secondaryText),
                   title: Text(
                     'Export Zip',
-                    style: TextStyle(color: VMColors.secondaryText),
+                    style: TextStyle(color: ClonesColors.secondaryText),
                   ),
                 ),
               ),

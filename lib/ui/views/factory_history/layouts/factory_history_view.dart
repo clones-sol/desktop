@@ -47,7 +47,7 @@ class FactoryHistoryView extends ConsumerWidget {
             fontSize: 14,
             fontWeight: FontWeight.w300,
             letterSpacing: 0.5,
-            color: VMColors.secondaryText,
+            color: ClonesColors.secondaryText,
           ),
         ),
       ],
@@ -121,7 +121,7 @@ class FactoryHistoryView extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.primaryContainer,
                       width: 0.5,
                     ),
-                    gradient: VMColors.gradientInputFormBackground,
+                    gradient: ClonesColors.gradientInputFormBackground,
                   ),
                   child: TextField(
                     style: theme.textTheme.bodyMedium,
@@ -166,7 +166,7 @@ class FactoryHistoryView extends ConsumerWidget {
                       color: Theme.of(context).colorScheme.primaryContainer,
                       width: 0.5,
                     ),
-                    gradient: VMColors.gradientInputFormBackground,
+                    gradient: ClonesColors.gradientInputFormBackground,
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 10),

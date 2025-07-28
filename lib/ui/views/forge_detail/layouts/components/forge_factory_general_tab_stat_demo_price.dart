@@ -28,25 +28,25 @@ class ForgeFactoryGeneralTabStatDemoPrice extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: VMColors.containerIcon1.withValues(alpha: 0.2),
+                    color: ClonesColors.containerIcon1.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     Icons.card_giftcard,
-                    color: VMColors.containerIcon1.withValues(alpha: 0.7),
+                    color: ClonesColors.containerIcon1.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: VMColors.containerIcon1.withValues(alpha: 0.2),
+                    color: ClonesColors.containerIcon1.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     pool.token.symbol,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: VMColors.containerIcon1.withValues(alpha: 0.7),
+                      color: ClonesColors.containerIcon1.withValues(alpha: 0.7),
                       fontSize: 10,
                     ),
                   ),

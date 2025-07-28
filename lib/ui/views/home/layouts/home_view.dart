@@ -1,5 +1,6 @@
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/card.dart';
+import 'package:clones_desktop/ui/components/svg_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +52,7 @@ class MenuItemWidget extends StatelessWidget {
                   item.imageName,
                   width: mediaQuery.size.width * 0.2,
                   height: mediaQuery.size.height * 0.2,
-                  color: VMColors.tertiary,
+                  color: ClonesColors.tertiary,
                 ),
                 Opacity(
                   opacity: 0.7,
@@ -69,7 +70,7 @@ class MenuItemWidget extends StatelessWidget {
                 Text(
                   item.title,
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: VMColors.primary,
+                    color: ClonesColors.primary,
                   ),
                 ),
                 const SizedBox(height: 5),

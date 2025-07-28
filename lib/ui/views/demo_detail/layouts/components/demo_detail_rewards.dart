@@ -64,7 +64,7 @@ class DemoDetailRewards extends ConsumerWidget {
                       Text(
                         '$reward \$${pool.token.symbol}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: VMColors.getScoreColor(score),
+                          color: ClonesColors.getScoreColor(score),
                         ),
                       ),
                     ],
@@ -80,7 +80,7 @@ class DemoDetailRewards extends ConsumerWidget {
                       Text(
                         '$maxReward \$${pool.token.symbol}',
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: VMColors.getScoreColor(100),
+                          color: ClonesColors.getScoreColor(100),
                         ),
                       ),
                     ],
@@ -133,13 +133,13 @@ class DemoDetailRewards extends ConsumerWidget {
                                         '',
                                     style: TextStyle(
                                       fontFamily: 'monospace',
-                                      color: VMColors.secondaryText,
+                                      color: ClonesColors.secondaryText,
                                     ),
                                   ),
                                   const SizedBox(width: 4),
                                   Icon(
                                     Icons.open_in_new,
-                                    color: VMColors.secondaryText,
+                                    color: ClonesColors.secondaryText,
                                     size: 16,
                                   ),
                                 ],
@@ -172,13 +172,13 @@ class DemoDetailRewards extends ConsumerWidget {
                                         'NC',
                                     style: TextStyle(
                                       fontFamily: 'monospace',
-                                      color: VMColors.secondaryText,
+                                      color: ClonesColors.secondaryText,
                                     ),
                                   ),
                                   const SizedBox(width: 4),
                                   Icon(
                                     Icons.open_in_new,
-                                    color: VMColors.secondaryText,
+                                    color: ClonesColors.secondaryText,
                                     size: 16,
                                   ),
                                 ],
@@ -204,7 +204,7 @@ class DemoDetailRewards extends ConsumerWidget {
                                       )
                                   : 'NC',
                               style: TextStyle(
-                                color: VMColors.secondaryText,
+                                color: ClonesColors.secondaryText,
                               ),
                             ),
                           ],

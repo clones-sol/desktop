@@ -69,13 +69,14 @@ class GenerateFactoryTextFieldFactoryPromptState
                               10,
                             ),
                             border: Border.all(
-                              color: VMColors.tertiary.withValues(alpha: 0.3),
+                              color:
+                                  ClonesColors.tertiary.withValues(alpha: 0.3),
                               width: 0.5,
                             ),
                             gradient: LinearGradient(
                               colors: [
-                                VMColors.primary.withValues(alpha: 0.1),
-                                VMColors.tertiary.withValues(alpha: 0.1),
+                                ClonesColors.primary.withValues(alpha: 0.1),
+                                ClonesColors.tertiary.withValues(alpha: 0.1),
                               ],
                             ),
                           ),
@@ -98,16 +99,16 @@ class GenerateFactoryTextFieldFactoryPromptState
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   width: 0.5,
-                                  color:
-                                      VMColors.secondary.withValues(alpha: 0.1),
+                                  color: ClonesColors.secondary
+                                      .withValues(alpha: 0.1),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   width: 0.5,
-                                  color:
-                                      VMColors.primary.withValues(alpha: 0.1),
+                                  color: ClonesColors.primary
+                                      .withValues(alpha: 0.1),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),

@@ -8,7 +8,7 @@ class Pfp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleAvatar(
       radius: 14,
-      backgroundColor: VMColors.primaryText.withValues(alpha: 0.1),
+      backgroundColor: ClonesColors.primaryText.withValues(alpha: 0.1),
       child: Image.asset(
         Assets.robotIcon,
         width: 24,

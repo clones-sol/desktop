@@ -55,13 +55,13 @@ class _GenerateFactoryModalStep1State
               10,
             ),
             border: Border.all(
-              color: VMColors.secondary.withValues(alpha: 0.3),
+              color: ClonesColors.secondary.withValues(alpha: 0.3),
               width: 0.5,
             ),
             gradient: LinearGradient(
               colors: [
-                VMColors.secondary.withValues(alpha: 0.3),
-                VMColors.secondary.withValues(alpha: 0.1),
+                ClonesColors.secondary.withValues(alpha: 0.3),
+                ClonesColors.secondary.withValues(alpha: 0.1),
               ],
             ),
           ),
@@ -76,7 +76,7 @@ class _GenerateFactoryModalStep1State
               onChanged: (v) => ref
                   .read(generateFactoryNotifierProvider.notifier)
                   .setSkills(v),
-              cursorColor: VMColors.secondaryText,
+              cursorColor: ClonesColors.secondaryText,
               style: theme.textTheme.bodyMedium,
               decoration: InputDecoration(
                 border: InputBorder.none,
@@ -126,7 +126,7 @@ class _GenerateFactoryModalStep1State
               color: theme.colorScheme.primaryContainer,
               width: 0.5,
             ),
-            gradient: VMColors.gradientInputFormBackground,
+            gradient: ClonesColors.gradientInputFormBackground,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -181,7 +181,7 @@ class _GenerateFactoryModalStep1State
             return OutlinedButton(
               style: OutlinedButton.styleFrom(
                 side: const BorderSide(
-                  color: VMColors.tertiary,
+                  color: ClonesColors.tertiary,
                   width: 0.1,
                 ),
                 padding:

@@ -90,8 +90,8 @@ class BtnFooterPrimary extends StatelessWidget {
           return BoxDecoration(
             gradient: const LinearGradient(
               colors: [
-                VMColors.primary,
-                VMColors.secondary,
+                ClonesColors.primary,
+                ClonesColors.secondary,
               ],
             ),
             borderRadius: BorderRadius.circular(20),
@@ -109,8 +109,8 @@ class BtnFooterPrimary extends StatelessWidget {
           border: const GradientBoxBorder(
             gradient: LinearGradient(
               colors: [
-                VMColors.primary,
-                VMColors.secondary,
+                ClonesColors.primary,
+                ClonesColors.secondary,
               ],
             ),
             width: 2,

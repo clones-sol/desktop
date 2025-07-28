@@ -95,9 +95,9 @@ class _PageHeader extends ConsumerWidget {
               Chip(
                 label: Text('${selectedSubmissions.length} selected'),
                 padding: const EdgeInsets.all(4),
-                backgroundColor: VMColors.secondary.withValues(alpha: 0.2),
+                backgroundColor: ClonesColors.secondary.withValues(alpha: 0.2),
                 labelStyle: theme.textTheme.bodySmall
-                    ?.copyWith(color: VMColors.secondary),
+                    ?.copyWith(color: ClonesColors.secondary),
               ),
             ],
           ],
@@ -139,7 +139,7 @@ class _UploadsTable extends ConsumerWidget {
               child: DataTable(
                 dividerThickness: 0,
                 headingRowColor: WidgetStateProperty.all(
-                  VMColors.tertiary.withValues(alpha: 0.1),
+                  ClonesColors.tertiary.withValues(alpha: 0.1),
                 ),
                 columns: [
                   DataColumn(
@@ -200,9 +200,9 @@ class _UploadsTable extends ConsumerWidget {
           Checkbox(
             value: isSelected,
             onChanged: onSelect,
-            activeColor: VMColors.primary,
+            activeColor: ClonesColors.primary,
             checkColor: Colors.white,
-            side: const BorderSide(color: VMColors.primaryText),
+            side: const BorderSide(color: ClonesColors.primaryText),
           ),
         ),
         DataCell(_PlatformCell(submission: submission)),
@@ -304,7 +304,8 @@ class _PlatformCell extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        FaIcon(_getOSIcon(submission), size: 16, color: VMColors.secondaryText),
+        FaIcon(_getOSIcon(submission),
+            size: 16, color: ClonesColors.secondaryText),
         const SizedBox(width: 8),
         Text(
           _getOSName(submission),
@@ -404,7 +405,7 @@ class _RewardCell extends StatelessWidget {
       return Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          gradient: VMColors.gradientBtnPrimary,
+          gradient: ClonesColors.gradientBtnPrimary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(

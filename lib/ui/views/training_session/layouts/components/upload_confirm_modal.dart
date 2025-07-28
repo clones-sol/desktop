@@ -35,7 +35,7 @@ class UploadConfirmModal extends ConsumerWidget {
                 TextSpan(
                   text: 'Privacy Policy.',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: VMColors.secondary,
+                    color: ClonesColors.secondary,
                     decoration: TextDecoration.underline,
                   ),
                   recognizer: TapGestureRecognizer()

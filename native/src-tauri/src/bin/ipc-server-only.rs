@@ -6,9 +6,6 @@
 use clones_desktop_lib::{ipc_server, setup_builder};
 
 fn main() {
-    // Initialize the logger
-    env_logger::init();
-
     // Load .env files for configuration
     dotenvy::from_filename(".env").ok();
     dotenvy::from_filename_override(".env.local").ok();

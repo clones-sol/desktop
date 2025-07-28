@@ -6,6 +6,7 @@ class Assets {
   static const String assetMenuFolder = '${assetFolder}menus/';
 
   static const String background = '${assetFolder}main-background.png';
+  static const String logo = '${assetFolder}Logo-Circle-Transparent.svg';
 
   // Icons
   static const String homeIcon = '${assetIconsFolder}home_icon.png';
@@ -36,7 +37,16 @@ class Assets {
   static const String menuForge = '${assetMenuFolder}forge_menu.png';
 }
 
-class VMColors {
+class ClonesFonts {
+  // font primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif
+  static const String primary =
+      '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", system-ui, sans-serif';
+
+  // font monospace: 'JetBrains Mono', 'Fira Code', Consolas, monospace
+  static const String mono = 'JetBrains Mono, Fira Code, Consolas, monospace';
+}
+
+class ClonesColors {
   static const Color primaryText = Colors.white;
   static Color secondaryText = Colors.white.withValues(alpha: 0.6);
   static Color tertiaryText = Colors.black.withValues(alpha: 0.9);

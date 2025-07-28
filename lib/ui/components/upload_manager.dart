@@ -178,7 +178,7 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
                               IconButton(
                                 icon: Icon(
                                   Icons.close,
-                                  color: VMColors.secondaryText,
+                                  color: ClonesColors.secondaryText,
                                   size: 14,
                                 ),
                                 onPressed: () {
@@ -287,8 +287,8 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
               shaderCallback: (Rect bounds) {
                 return LinearGradient(
                   colors: [
-                    VMColors.primary.withValues(alpha: 0.5),
-                    VMColors.secondary.withValues(alpha: 0.9),
+                    ClonesColors.primary.withValues(alpha: 0.5),
+                    ClonesColors.secondary.withValues(alpha: 0.9),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,

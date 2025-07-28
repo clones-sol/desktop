@@ -41,12 +41,12 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: VMColors.containerIcon5.withValues(alpha: 0.2),
+                color: ClonesColors.containerIcon5.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 Icons.lightbulb_outline,
-                color: VMColors.containerIcon5.withValues(alpha: 0.7),
+                color: ClonesColors.containerIcon5.withValues(alpha: 0.7),
                 size: 20,
               ),
             ),
@@ -70,9 +70,9 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        VMColors.primary.withValues(alpha: 0.3),
-                        VMColors.secondary.withValues(alpha: 0.3),
-                        VMColors.tertiary.withValues(alpha: 0.3),
+                        ClonesColors.primary.withValues(alpha: 0.3),
+                        ClonesColors.secondary.withValues(alpha: 0.3),
+                        ClonesColors.tertiary.withValues(alpha: 0.3),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(3),
@@ -86,8 +86,8 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            VMColors.rewardInfo.withValues(alpha: 0.3),
-                            VMColors.rewardInfo,
+                            ClonesColors.rewardInfo.withValues(alpha: 0.3),
+                            ClonesColors.rewardInfo,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(3),
@@ -102,8 +102,8 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            VMColors.secondary.withValues(alpha: 0.3),
-                            VMColors.secondary,
+                            ClonesColors.secondary.withValues(alpha: 0.3),
+                            ClonesColors.secondary,
                           ],
                         ),
                         borderRadius: BorderRadius.circular(3),

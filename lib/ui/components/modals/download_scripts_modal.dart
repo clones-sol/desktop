@@ -339,9 +339,9 @@ done
                           ),
                           const SizedBox(height: 20),
                           TabBar(
-                            labelColor: VMColors.primaryText,
-                            unselectedLabelColor: VMColors.secondaryText,
-                            indicatorColor: VMColors.primary,
+                            labelColor: ClonesColors.primaryText,
+                            unselectedLabelColor: ClonesColors.secondaryText,
+                            indicatorColor: ClonesColors.primary,
                             indicatorSize: TabBarIndicatorSize.tab,
                             indicatorPadding:
                                 const EdgeInsets.symmetric(horizontal: 10),

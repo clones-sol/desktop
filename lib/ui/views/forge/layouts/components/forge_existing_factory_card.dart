@@ -43,7 +43,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                 Text(
                   '${pool.funds} ${pool.token.symbol}',
                   style: TextStyle(
-                    color: VMColors.secondaryText,
+                    color: ClonesColors.secondaryText,
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
@@ -51,7 +51,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                 Text(
                   'Pool Balance',
                   style: TextStyle(
-                    color: VMColors.secondaryText,
+                    color: ClonesColors.secondaryText,
                     fontSize: 14,
                     fontWeight: FontWeight.w300,
                   ),
@@ -102,7 +102,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  color: VMColors.secondaryText,
+                  color: ClonesColors.secondaryText,
                   fontSize: 12,
                   fontWeight: FontWeight.w300,
                 ),
@@ -112,7 +112,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
             Text(
               '${pool.demonstrations} / $possibleDemos',
               style: TextStyle(
-                color: VMColors.secondaryText,
+                color: ClonesColors.secondaryText,
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
               ),
@@ -127,9 +127,9 @@ class ForgeExistingFactoryCard extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    VMColors.primary.withValues(alpha: 0.3),
-                    VMColors.secondary.withValues(alpha: 0.3),
-                    VMColors.tertiary.withValues(alpha: 0.3),
+                    ClonesColors.primary.withValues(alpha: 0.3),
+                    ClonesColors.secondary.withValues(alpha: 0.3),
+                    ClonesColors.tertiary.withValues(alpha: 0.3),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(3),
@@ -143,8 +143,8 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        VMColors.rewardInfo.withValues(alpha: 0.3),
-                        VMColors.rewardInfo,
+                        ClonesColors.rewardInfo.withValues(alpha: 0.3),
+                        ClonesColors.rewardInfo,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(3),
@@ -159,8 +159,8 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        VMColors.secondary.withValues(alpha: 0.3),
-                        VMColors.secondary,
+                        ClonesColors.secondary.withValues(alpha: 0.3),
+                        ClonesColors.secondary,
                       ],
                     ),
                     borderRadius: BorderRadius.circular(3),

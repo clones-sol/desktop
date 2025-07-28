@@ -28,7 +28,7 @@ class ForgeNewFactoryCard extends ConsumerWidget {
                 return const LinearGradient(
                   colors: [
                     Colors.transparent,
-                    VMColors.secondary,
+                    ClonesColors.secondary,
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -39,7 +39,7 @@ class ForgeNewFactoryCard extends ConsumerWidget {
                 Assets.factoryAddIcon,
                 width: 100,
                 height: 100,
-                color: VMColors.primary,
+                color: ClonesColors.primary,
               ),
             ),
             const SizedBox(height: 5),

@@ -234,7 +234,7 @@ class __AgentCreationFormState extends ConsumerState<_AgentCreationForm> {
           _buildSectionHeader(
             icon: Icons.info_outline,
             title: 'General Information',
-            color: VMColors.containerIcon2,
+            color: ClonesColors.containerIcon2,
           ),
           const SizedBox(height: 24),
           ResponsiveTwoColumnLayout(
@@ -272,7 +272,7 @@ class __AgentCreationFormState extends ConsumerState<_AgentCreationForm> {
           _buildSectionHeader(
             icon: Icons.paid,
             title: 'Token Setup',
-            color: VMColors.containerIcon1,
+            color: ClonesColors.containerIcon1,
           ),
           const SizedBox(height: 24),
           ResponsiveTwoColumnLayout(
@@ -316,7 +316,7 @@ class __AgentCreationFormState extends ConsumerState<_AgentCreationForm> {
           _buildSectionHeader(
             icon: Icons.gavel,
             title: 'Legal',
-            color: VMColors.containerIcon3,
+            color: ClonesColors.containerIcon3,
           ),
           const SizedBox(height: 16),
           Row(
@@ -491,7 +491,7 @@ class _DeploymentStepsIndicator extends StatelessWidget {
             percent: (currentStep + 1) / steps.length,
             lineHeight: 8,
             barRadius: const Radius.circular(4),
-            progressColor: VMColors.primary,
+            progressColor: ClonesColors.primary,
             backgroundColor: Colors.grey.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 12),
@@ -505,7 +505,7 @@ class _DeploymentStepsIndicator extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontWeight: isCompleted ? FontWeight.bold : FontWeight.normal,
-                  color: isCompleted ? VMColors.primary : Colors.grey,
+                  color: isCompleted ? ClonesColors.primary : Colors.grey,
                 ),
               );
             }).toList(),
@@ -596,7 +596,7 @@ class _SignTransactionCard extends ConsumerWidget {
             children: [
               CircleAvatar(
                 radius: 14,
-                backgroundColor: isDone ? VMColors.primary : Colors.grey,
+                backgroundColor: isDone ? ClonesColors.primary : Colors.grey,
                 child: isDone
                     ? const Icon(Icons.check, size: 16, color: Colors.white)
                     : Text(
@@ -649,7 +649,7 @@ class _StatusFeedCard extends ConsumerWidget {
                     ListTile(
                       leading: const Icon(
                         Icons.info_outline,
-                        color: VMColors.primary,
+                        color: ClonesColors.primary,
                       ),
                       title: Text(message.toString()), // Simplified
                       subtitle: Text(DateTime.now().toIso8601String()),
@@ -677,7 +677,7 @@ class _AgentSummaryCard extends StatelessWidget {
           _buildSectionHeader(
             icon: Icons.summarize,
             title: 'Agent Summary',
-            color: VMColors.containerIcon1,
+            color: ClonesColors.containerIcon1,
           ),
           const SizedBox(height: 16),
           ListTile(
@@ -720,7 +720,7 @@ class _ManageVersionsCard extends ConsumerWidget {
           _buildSectionHeader(
             icon: Icons.layers,
             title: 'Manage Versions',
-            color: VMColors.containerIcon3,
+            color: ClonesColors.containerIcon3,
           ),
           const SizedBox(height: 16),
           const Text('Add New Version'),
@@ -786,7 +786,7 @@ class _CostBreakdownCard extends StatelessWidget {
               Text(
                 '~5.15 SOL',
                 style: theme.textTheme.titleSmall?.copyWith(
-                  color: VMColors.primary,
+                  color: ClonesColors.primary,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -856,7 +856,7 @@ class _AgentPreviewCard extends StatelessWidget {
                   height: 64,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    gradient: VMColors.gradientBtnPrimary,
+                    gradient: ClonesColors.gradientBtnPrimary,
                   ),
                   child: const Icon(Icons.adb, color: Colors.white, size: 32),
                 ),
@@ -953,7 +953,7 @@ class _FormTextField extends StatelessWidget {
               color: theme.colorScheme.primaryContainer,
               width: 0.5,
             ),
-            gradient: VMColors.gradientInputFormBackground,
+            gradient: ClonesColors.gradientInputFormBackground,
           ),
           child: TextFormField(
             controller: controller,

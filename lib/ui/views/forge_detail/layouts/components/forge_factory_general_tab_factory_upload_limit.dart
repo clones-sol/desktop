@@ -50,12 +50,12 @@ class _ForgeFactoryGeneralTabFactoryUploadLimitState
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: VMColors.containerIcon3.withValues(alpha: 0.2),
+                    color: ClonesColors.containerIcon3.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     Icons.speed,
-                    color: VMColors.containerIcon3.withValues(alpha: 0.7),
+                    color: ClonesColors.containerIcon3.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
@@ -94,7 +94,7 @@ class _ForgeFactoryGeneralTabFactoryUploadLimitState
                             color: theme.colorScheme.primaryContainer,
                             width: 0.5,
                           ),
-                          gradient: VMColors.gradientInputFormBackground,
+                          gradient: ClonesColors.gradientInputFormBackground,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -163,7 +163,7 @@ class _ForgeFactoryGeneralTabFactoryUploadLimitState
                               color: theme.colorScheme.primaryContainer,
                               width: 0.5,
                             ),
-                            gradient: VMColors.gradientInputFormBackground,
+                            gradient: ClonesColors.gradientInputFormBackground,
                           ),
                           child: TextField(
                             controller: uploadLimitValueController,

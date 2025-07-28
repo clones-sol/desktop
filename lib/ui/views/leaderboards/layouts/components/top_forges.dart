@@ -66,13 +66,13 @@ class _TopForgesState extends ConsumerState<TopForges> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primary,
+                    color: ClonesColors.primary,
                   ),
                 ),
                 const SizedBox(width: 12),
                 IconButton(
-                  icon:
-                      const Icon(Icons.open_in_full, color: VMColors.secondary),
+                  icon: const Icon(Icons.open_in_full,
+                      color: ClonesColors.secondary),
                   onPressed: widget.onExpand,
                 ),
               ],
@@ -116,7 +116,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                   'Name',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -130,7 +130,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                   'Tasks Created',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -144,7 +144,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                   'Tokens Paid',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: VMColors.primaryText,
+                    color: ClonesColors.primaryText,
                   ),
                 ),
               ],
@@ -176,7 +176,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                     forge.name,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: VMColors.primaryText,
+                      color: ClonesColors.primaryText,
                     ),
                   ),
                 ),
@@ -187,7 +187,7 @@ class _TopForgesState extends ConsumerState<TopForges> {
                       Text(
                         '${forge.tasks} Tasks',
                         style: TextStyle(
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],
@@ -200,13 +200,13 @@ class _TopForgesState extends ConsumerState<TopForges> {
                       Text(
                         formatNumberWithSeparator(forge.payout),
                         style: TextStyle(
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                       const Text(
                         ' Tokens',
                         style: TextStyle(
-                          color: VMColors.secondary,
+                          color: ClonesColors.secondary,
                         ),
                       ),
                     ],
@@ -280,7 +280,7 @@ class TopForgesFullscreen extends StatelessWidget {
                     child: IconButton(
                       icon: const Icon(
                         Icons.close_fullscreen,
-                        color: VMColors.secondary,
+                        color: ClonesColors.secondary,
                         size: 32,
                       ),
                       tooltip: 'Close',
@@ -295,7 +295,7 @@ class TopForgesFullscreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: VMColors.primary,
+                        color: ClonesColors.primary,
                       ),
                     ),
                   ),

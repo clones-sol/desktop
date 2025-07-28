@@ -298,7 +298,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                           : message.content.toLowerCase().contains('scroll')
                               ? Icons.swap_vert
                               : Icons.keyboard,
-                      color: VMColors.tertiary,
+                      color: ClonesColors.tertiary,
                       size: 20,
                     ),
                   ],
@@ -325,7 +325,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       return Align(
         alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
         child: Card(
-          color: isUser ? VMColors.primary : VMColors.secondary,
+          color: isUser ? ClonesColors.primary : ClonesColors.secondary,
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Text(

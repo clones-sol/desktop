@@ -239,7 +239,7 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(
-                  color: VMColors.secondary,
+                  color: ClonesColors.secondary,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
@@ -257,12 +257,12 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
             },
             icon: Icon(
               _showFilters ? Icons.keyboard_arrow_up : Icons.filter_list,
-              color: VMColors.secondary,
+              color: ClonesColors.secondary,
             ),
             label: Text(
               'Filters',
               style: theme.textTheme.bodySmall?.copyWith(
-                color: VMColors.secondary,
+                color: ClonesColors.secondary,
               ),
             ),
           ),

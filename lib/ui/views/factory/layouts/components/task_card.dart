@@ -72,7 +72,7 @@ class TaskCard extends StatelessWidget {
                               const Icon(
                             Icons.web,
                             size: 20,
-                            color: VMColors.primaryText,
+                            color: ClonesColors.primaryText,
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -109,7 +109,7 @@ class TaskCard extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: VMColors.rewardInfo.withValues(alpha: 0.3),
+              color: ClonesColors.rewardInfo.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -125,7 +125,7 @@ class TaskCard extends StatelessWidget {
             child: Text(
               rewardText,
               style: theme.textTheme.bodySmall!.copyWith(
-                color: VMColors.rewardInfo,
+                color: ClonesColors.rewardInfo,
               ),
             ),
           ),

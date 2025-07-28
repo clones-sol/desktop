@@ -122,7 +122,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                       '',
                                   style: const TextStyle(
                                     fontFamily: 'monospace',
-                                    color: VMColors.primaryText,
+                                    color: ClonesColors.primaryText,
                                   ),
                                 ),
                               ),
@@ -138,7 +138,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                 },
                                 child: Icon(
                                   Icons.open_in_new,
-                                  color: VMColors.secondaryText,
+                                  color: ClonesColors.secondaryText,
                                   size: 16,
                                 ),
                               ),
@@ -186,7 +186,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                   Text(
                                     '${tokenBalance.balance?.toStringAsFixed(2) ?? 'N/A'} ${tokenBalance.symbol}',
                                     style: theme.textTheme.bodyMedium?.copyWith(
-                                      color: VMColors.secondary,
+                                      color: ClonesColors.secondary,
                                     ),
                                   ),
                               ],
@@ -239,8 +239,8 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                 shaderCallback: (Rect bounds) {
                   return LinearGradient(
                     colors: [
-                      VMColors.primary.withValues(alpha: 0.5),
-                      VMColors.secondary.withValues(alpha: 0.9),
+                      ClonesColors.primary.withValues(alpha: 0.5),
+                      ClonesColors.secondary.withValues(alpha: 0.9),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -264,8 +264,8 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
           shaderCallback: (Rect bounds) {
             return LinearGradient(
               colors: [
-                VMColors.primary.withValues(alpha: 0.5),
-                VMColors.secondary.withValues(alpha: 0.9),
+                ClonesColors.primary.withValues(alpha: 0.5),
+                ClonesColors.secondary.withValues(alpha: 0.9),
               ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

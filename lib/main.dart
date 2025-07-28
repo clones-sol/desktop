@@ -20,7 +20,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:screen_retriever/screen_retriever.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -244,16 +243,35 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
       }
     });
 
-    final textTheme = GoogleFonts.interTextTheme(
-      ThemeData.light().textTheme,
-    ).copyWith(
-      bodySmall: TextStyle(color: VMColors.secondaryText),
-      bodyMedium: TextStyle(color: VMColors.secondaryText),
-      bodyLarge: TextStyle(color: VMColors.secondaryText),
-      titleLarge: const TextStyle(color: VMColors.primaryText),
-      titleMedium: const TextStyle(color: VMColors.primaryText),
-      titleSmall: const TextStyle(color: VMColors.primaryText),
-    );
+    final textTheme = ThemeData.light().textTheme.copyWith(
+          bodySmall: TextStyle(
+            color: ClonesColors.secondaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          bodyMedium: TextStyle(
+            color: ClonesColors.secondaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          bodyLarge: TextStyle(
+            color: ClonesColors.secondaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          titleLarge: const TextStyle(
+            color: ClonesColors.primaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          titleMedium: const TextStyle(
+            color: ClonesColors.primaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          titleSmall: const TextStyle(
+            color: ClonesColors.primaryText,
+            fontFamily: ClonesFonts.primary,
+          ),
+          labelSmall: const TextStyle(
+            fontFamily: ClonesFonts.mono,
+          ),
+        );
 
     final mediaQuery = MediaQuery.of(context);
 
@@ -266,7 +284,7 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
         textTheme: textTheme,
         snackBarTheme: SnackBarThemeData(
           width: mediaQuery.size.width * 0.5,
-          backgroundColor: VMColors.tertiary.withValues(alpha: 0.7),
+          backgroundColor: ClonesColors.tertiary.withValues(alpha: 0.7),
           elevation: 2,
           contentTextStyle: textTheme.bodyMedium,
           insetPadding:
@@ -275,10 +293,10 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
             side: const BorderSide(
-              color: VMColors.tertiary,
+              color: ClonesColors.tertiary,
             ),
           ),
-          closeIconColor: VMColors.primaryText,
+          closeIconColor: ClonesColors.primaryText,
         ),
         useMaterial3: true,
       ),

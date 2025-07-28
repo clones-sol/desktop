@@ -5,6 +5,8 @@ import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/models/leaderboard/forge_leader_board.dart';
 import 'package:clones_desktop/domain/models/leaderboard/stats_leader_board.dart';
 import 'package:clones_desktop/domain/models/leaderboard/worker_leader_board.dart';
+import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/components/leaderboards_stat_active_forges.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/components/leaderboards_stat_total_demos.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/components/leaderboards_stat_total_paid_out.dart';
@@ -13,7 +15,6 @@ import 'package:clones_desktop/ui/views/leaderboards/layouts/components/top_forg
 import 'package:clones_desktop/ui/views/leaderboards/layouts/components/top_workers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LeaderboardsView extends ConsumerStatefulWidget {
   const LeaderboardsView({super.key});
@@ -85,7 +86,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                           fontSize: 14,
                           fontWeight: FontWeight.w300,
                           letterSpacing: 0.5,
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],
@@ -98,31 +99,16 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            FontAwesomeIcons.triangleExclamation,
-                            color: Colors.red[400],
-                            size: 48,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            _error!,
-                            style: TextStyle(
-                              color: Colors.red[400],
-                              fontSize: 16,
+                          MessageBox(
+                            messageBoxType: MessageBoxType.warning,
+                            content: Text(
+                              _error!,
                             ),
-                            textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 24),
-                          ElevatedButton.icon(
-                            onPressed: _loadLeaderboardData,
-                            icon: const Icon(FontAwesomeIcons.rotate),
-                            label: const Text('Retry'),
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                            ),
+                          BtnPrimary(
+                            buttonText: 'Retry',
+                            onTap: _loadLeaderboardData,
                           ),
                         ],
                       ),
@@ -197,13 +183,13 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                                             style: TextStyle(
                                               fontSize: 32,
                                               fontWeight: FontWeight.bold,
-                                              color: VMColors.primary,
+                                              color: ClonesColors.primary,
                                             ),
                                           ),
                                           IconButton(
                                             icon: const Icon(
                                               Icons.close_fullscreen,
-                                              color: VMColors.secondary,
+                                              color: ClonesColors.secondary,
                                               size: 32,
                                             ),
                                             tooltip: 'Close',
@@ -278,13 +264,13 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                                             style: TextStyle(
                                               fontSize: 32,
                                               fontWeight: FontWeight.bold,
-                                              color: VMColors.primary,
+                                              color: ClonesColors.primary,
                                             ),
                                           ),
                                           IconButton(
                                             icon: const Icon(
                                               Icons.close_fullscreen,
-                                              color: VMColors.secondary,
+                                              color: ClonesColors.secondary,
                                               size: 32,
                                             ),
                                             tooltip: 'Close',

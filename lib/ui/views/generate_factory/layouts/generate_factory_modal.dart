@@ -81,7 +81,7 @@ class _GenerateFactoryModalState extends ConsumerState<GenerateFactoryModal> {
                         onPressed: widget.onClose,
                         icon: Icon(
                           Icons.close,
-                          color: VMColors.secondaryText,
+                          color: ClonesColors.secondaryText,
                         ),
                       ),
                     ],
