@@ -1,2 +1,0 @@
-[target.'cfg(windows)'.build]
-target-dir = "C:/temp/cargo-target" 
