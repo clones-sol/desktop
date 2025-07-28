@@ -177,7 +177,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 sliver: SliverToBoxAdapter(child: TypingIndicator()),
               ),
-            if (trainingSession.activeQuest != null)
+            if (trainingSession.activeDemonstration != null)
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 sliver: SliverToBoxAdapter(
@@ -196,10 +196,12 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                               child: MessageBox(
                                 messageBoxType: MessageBoxType.talkLeft,
                                 content: RecordPanel(
-                                  title: trainingSession.activeQuest!.title,
-                                  reward: trainingSession.activeQuest!.reward,
-                                  objectives:
-                                      trainingSession.activeQuest!.objectives,
+                                  title: trainingSession
+                                      .activeDemonstration!.title,
+                                  reward: trainingSession
+                                      .activeDemonstration!.reward,
+                                  objectives: trainingSession
+                                      .activeDemonstration!.objectives,
                                   onStartRecording: () async {
                                     unawaited(
                                       ref

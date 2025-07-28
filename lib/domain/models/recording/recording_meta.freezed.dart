@@ -32,7 +32,8 @@ mixin _$RecordingMeta {
   String get arch => throw _privateConstructorUsedError;
   String get version => throw _privateConstructorUsedError;
   String get locale => throw _privateConstructorUsedError;
-  Quest? get quest => throw _privateConstructorUsedError;
+  @JsonKey(name: 'quest')
+  Demonstration get demonstration => throw _privateConstructorUsedError;
 
   /// Serializes this RecordingMeta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -62,9 +63,9 @@ abstract class $RecordingMetaCopyWith<$Res> {
       String arch,
       String version,
       String locale,
-      Quest? quest});
+      @JsonKey(name: 'quest') Demonstration demonstration});
 
-  $QuestCopyWith<$Res>? get quest;
+  $DemonstrationCopyWith<$Res> get demonstration;
 }
 
 /// @nodoc
@@ -93,7 +94,7 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
     Object? arch = null,
     Object? version = null,
     Object? locale = null,
-    Object? quest = freezed,
+    Object? demonstration = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -140,10 +141,10 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
-      quest: freezed == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      demonstration: null == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration,
     ) as $Val);
   }
 
@@ -151,13 +152,9 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res>? get quest {
-    if (_value.quest == null) {
-      return null;
-    }
-
-    return $QuestCopyWith<$Res>(_value.quest!, (value) {
-      return _then(_value.copyWith(quest: value) as $Val);
+  $DemonstrationCopyWith<$Res> get demonstration {
+    return $DemonstrationCopyWith<$Res>(_value.demonstration, (value) {
+      return _then(_value.copyWith(demonstration: value) as $Val);
     });
   }
 }
@@ -182,10 +179,10 @@ abstract class _$$RecordingMetaImplCopyWith<$Res>
       String arch,
       String version,
       String locale,
-      Quest? quest});
+      @JsonKey(name: 'quest') Demonstration demonstration});
 
   @override
-  $QuestCopyWith<$Res>? get quest;
+  $DemonstrationCopyWith<$Res> get demonstration;
 }
 
 /// @nodoc
@@ -212,7 +209,7 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
     Object? arch = null,
     Object? version = null,
     Object? locale = null,
-    Object? quest = freezed,
+    Object? demonstration = null,
   }) {
     return _then(_$RecordingMetaImpl(
       id: null == id
@@ -259,10 +256,10 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
           ? _value.locale
           : locale // ignore: cast_nullable_to_non_nullable
               as String,
-      quest: freezed == quest
-          ? _value.quest
-          : quest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      demonstration: null == demonstration
+          ? _value.demonstration
+          : demonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration,
     ));
   }
 }
@@ -282,7 +279,7 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       required this.arch,
       required this.version,
       required this.locale,
-      this.quest});
+      @JsonKey(name: 'quest') required this.demonstration});
 
   factory _$RecordingMetaImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecordingMetaImplFromJson(json);
@@ -311,11 +308,12 @@ class _$RecordingMetaImpl implements _RecordingMeta {
   @override
   final String locale;
   @override
-  final Quest? quest;
+  @JsonKey(name: 'quest')
+  final Demonstration demonstration;
 
   @override
   String toString() {
-    return 'RecordingMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, quest: $quest)';
+    return 'RecordingMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, demonstration: $demonstration)';
   }
 
   @override
@@ -338,7 +336,8 @@ class _$RecordingMetaImpl implements _RecordingMeta {
             (identical(other.arch, arch) || other.arch == arch) &&
             (identical(other.version, version) || other.version == version) &&
             (identical(other.locale, locale) || other.locale == locale) &&
-            (identical(other.quest, quest) || other.quest == quest));
+            (identical(other.demonstration, demonstration) ||
+                other.demonstration == demonstration));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -356,7 +355,7 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       arch,
       version,
       locale,
-      quest);
+      demonstration);
 
   /// Create a copy of RecordingMeta
   /// with the given fields replaced by the non-null parameter values.
@@ -376,18 +375,19 @@ class _$RecordingMetaImpl implements _RecordingMeta {
 
 abstract class _RecordingMeta implements RecordingMeta {
   const factory _RecordingMeta(
-      {required final String id,
-      required final String timestamp,
-      @JsonKey(name: 'duration_seconds') required final int durationSeconds,
-      required final String status,
-      final String? reason,
-      required final String title,
-      required final String description,
-      required final String platform,
-      required final String arch,
-      required final String version,
-      required final String locale,
-      final Quest? quest}) = _$RecordingMetaImpl;
+          {required final String id,
+          required final String timestamp,
+          @JsonKey(name: 'duration_seconds') required final int durationSeconds,
+          required final String status,
+          final String? reason,
+          required final String title,
+          required final String description,
+          required final String platform,
+          required final String arch,
+          required final String version,
+          required final String locale,
+          @JsonKey(name: 'quest') required final Demonstration demonstration}) =
+      _$RecordingMetaImpl;
 
   factory _RecordingMeta.fromJson(Map<String, dynamic> json) =
       _$RecordingMetaImpl.fromJson;
@@ -416,7 +416,8 @@ abstract class _RecordingMeta implements RecordingMeta {
   @override
   String get locale;
   @override
-  Quest? get quest;
+  @JsonKey(name: 'quest')
+  Demonstration get demonstration;
 
   /// Create a copy of RecordingMeta
   /// with the given fields replaced by the non-null parameter values.

@@ -248,10 +248,10 @@ String _formatDate(String dateStr) {
 }
 
 String _getTitle(PoolSubmission submission) {
-  if (submission.meta.quest.title.isNotEmpty) {
-    return submission.meta.quest.title;
-  } else if (submission.meta.quest.app.isNotEmpty) {
-    return submission.meta.quest.app;
+  if (submission.meta.demonstration.title.isNotEmpty) {
+    return submission.meta.demonstration.title;
+  } else if (submission.meta.demonstration.app.isNotEmpty) {
+    return submission.meta.demonstration.app;
   }
   return 'Untitled Submission';
 }

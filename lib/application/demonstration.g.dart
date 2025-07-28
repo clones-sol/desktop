@@ -1,30 +1,33 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quest.dart';
+part of 'demonstration.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$questRepositoryHash() => r'20772bbe8143add35d22a5bf9a0a76ef692af27e';
+String _$demonstrationRepositoryHash() =>
+    r'767576a35190991444fe6ee70394bd518d3ccb4b';
 
-/// See also [questRepository].
-@ProviderFor(questRepository)
-final questRepositoryProvider =
-    AutoDisposeProvider<QuestRepositoryImpl>.internal(
-  questRepository,
-  name: r'questRepositoryProvider',
+/// See also [demonstrationRepository].
+@ProviderFor(demonstrationRepository)
+final demonstrationRepositoryProvider =
+    AutoDisposeProvider<DemonstrationRepositoryImpl>.internal(
+  demonstrationRepository,
+  name: r'demonstrationRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$questRepositoryHash,
+      : _$demonstrationRepositoryHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef QuestRepositoryRef = AutoDisposeProviderRef<QuestRepositoryImpl>;
-String _$generateQuestHash() => r'48941140f7d6eabcc953b251d17943e82fe0f478';
+typedef DemonstrationRepositoryRef
+    = AutoDisposeProviderRef<DemonstrationRepositoryImpl>;
+String _$generateDemonstrationHash() =>
+    r'37bd3d646f8631e97d7ee5f75641cbbfe3236475';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -47,23 +50,23 @@ class _SystemHash {
   }
 }
 
-/// See also [generateQuest].
-@ProviderFor(generateQuest)
-const generateQuestProvider = GenerateQuestFamily();
+/// See also [generateDemonstration].
+@ProviderFor(generateDemonstration)
+const generateDemonstrationProvider = GenerateDemonstrationFamily();
 
-/// See also [generateQuest].
-class GenerateQuestFamily extends Family<AsyncValue<Quest>> {
-  /// See also [generateQuest].
-  const GenerateQuestFamily();
+/// See also [generateDemonstration].
+class GenerateDemonstrationFamily extends Family<AsyncValue<Demonstration>> {
+  /// See also [generateDemonstration].
+  const GenerateDemonstrationFamily();
 
-  /// See also [generateQuest].
-  GenerateQuestProvider call({
+  /// See also [generateDemonstration].
+  GenerateDemonstrationProvider call({
     required String prompt,
     required String address,
     String? poolId,
     String? taskId,
   }) {
-    return GenerateQuestProvider(
+    return GenerateDemonstrationProvider(
       prompt: prompt,
       address: address,
       poolId: poolId,
@@ -72,8 +75,8 @@ class GenerateQuestFamily extends Family<AsyncValue<Quest>> {
   }
 
   @override
-  GenerateQuestProvider getProviderOverride(
-    covariant GenerateQuestProvider provider,
+  GenerateDemonstrationProvider getProviderOverride(
+    covariant GenerateDemonstrationProvider provider,
   ) {
     return call(
       prompt: provider.prompt,
@@ -95,41 +98,42 @@ class GenerateQuestFamily extends Family<AsyncValue<Quest>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'generateQuestProvider';
+  String? get name => r'generateDemonstrationProvider';
 }
 
-/// See also [generateQuest].
-class GenerateQuestProvider extends AutoDisposeFutureProvider<Quest> {
-  /// See also [generateQuest].
-  GenerateQuestProvider({
+/// See also [generateDemonstration].
+class GenerateDemonstrationProvider
+    extends AutoDisposeFutureProvider<Demonstration> {
+  /// See also [generateDemonstration].
+  GenerateDemonstrationProvider({
     required String prompt,
     required String address,
     String? poolId,
     String? taskId,
   }) : this._internal(
-          (ref) => generateQuest(
-            ref as GenerateQuestRef,
+          (ref) => generateDemonstration(
+            ref as GenerateDemonstrationRef,
             prompt: prompt,
             address: address,
             poolId: poolId,
             taskId: taskId,
           ),
-          from: generateQuestProvider,
-          name: r'generateQuestProvider',
+          from: generateDemonstrationProvider,
+          name: r'generateDemonstrationProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$generateQuestHash,
-          dependencies: GenerateQuestFamily._dependencies,
+                  : _$generateDemonstrationHash,
+          dependencies: GenerateDemonstrationFamily._dependencies,
           allTransitiveDependencies:
-              GenerateQuestFamily._allTransitiveDependencies,
+              GenerateDemonstrationFamily._allTransitiveDependencies,
           prompt: prompt,
           address: address,
           poolId: poolId,
           taskId: taskId,
         );
 
-  GenerateQuestProvider._internal(
+  GenerateDemonstrationProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -149,12 +153,12 @@ class GenerateQuestProvider extends AutoDisposeFutureProvider<Quest> {
 
   @override
   Override overrideWith(
-    FutureOr<Quest> Function(GenerateQuestRef provider) create,
+    FutureOr<Demonstration> Function(GenerateDemonstrationRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GenerateQuestProvider._internal(
-        (ref) => create(ref as GenerateQuestRef),
+      override: GenerateDemonstrationProvider._internal(
+        (ref) => create(ref as GenerateDemonstrationRef),
         from: from,
         name: null,
         dependencies: null,
@@ -169,13 +173,13 @@ class GenerateQuestProvider extends AutoDisposeFutureProvider<Quest> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<Quest> createElement() {
-    return _GenerateQuestProviderElement(this);
+  AutoDisposeFutureProviderElement<Demonstration> createElement() {
+    return _GenerateDemonstrationProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GenerateQuestProvider &&
+    return other is GenerateDemonstrationProvider &&
         other.prompt == prompt &&
         other.address == address &&
         other.poolId == poolId &&
@@ -196,7 +200,7 @@ class GenerateQuestProvider extends AutoDisposeFutureProvider<Quest> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GenerateQuestRef on AutoDisposeFutureProviderRef<Quest> {
+mixin GenerateDemonstrationRef on AutoDisposeFutureProviderRef<Demonstration> {
   /// The parameter `prompt` of this provider.
   String get prompt;
 
@@ -210,48 +214,49 @@ mixin GenerateQuestRef on AutoDisposeFutureProviderRef<Quest> {
   String? get taskId;
 }
 
-class _GenerateQuestProviderElement
-    extends AutoDisposeFutureProviderElement<Quest> with GenerateQuestRef {
-  _GenerateQuestProviderElement(super.provider);
+class _GenerateDemonstrationProviderElement
+    extends AutoDisposeFutureProviderElement<Demonstration>
+    with GenerateDemonstrationRef {
+  _GenerateDemonstrationProviderElement(super.provider);
 
   @override
-  String get prompt => (origin as GenerateQuestProvider).prompt;
+  String get prompt => (origin as GenerateDemonstrationProvider).prompt;
   @override
-  String get address => (origin as GenerateQuestProvider).address;
+  String get address => (origin as GenerateDemonstrationProvider).address;
   @override
-  String? get poolId => (origin as GenerateQuestProvider).poolId;
+  String? get poolId => (origin as GenerateDemonstrationProvider).poolId;
   @override
-  String? get taskId => (origin as GenerateQuestProvider).taskId;
+  String? get taskId => (origin as GenerateDemonstrationProvider).taskId;
 }
 
-String _$checkQuestProgressHash() =>
-    r'469c184027086872adb276cdf8019e6f83d46ad9';
+String _$checkDemonstrationProgressHash() =>
+    r'881257afb388c035395bb24d50cd28552626a2a7';
 
-/// See also [checkQuestProgress].
-@ProviderFor(checkQuestProgress)
-const checkQuestProgressProvider = CheckQuestProgressFamily();
+/// See also [checkDemonstrationProgress].
+@ProviderFor(checkDemonstrationProgress)
+const checkDemonstrationProgressProvider = CheckDemonstrationProgressFamily();
 
-/// See also [checkQuestProgress].
-class CheckQuestProgressFamily
+/// See also [checkDemonstrationProgress].
+class CheckDemonstrationProgressFamily
     extends Family<AsyncValue<Map<String, dynamic>>> {
-  /// See also [checkQuestProgress].
-  const CheckQuestProgressFamily();
+  /// See also [checkDemonstrationProgress].
+  const CheckDemonstrationProgressFamily();
 
-  /// See also [checkQuestProgress].
-  CheckQuestProgressProvider call({
-    required Quest quest,
+  /// See also [checkDemonstrationProgress].
+  CheckDemonstrationProgressProvider call({
+    required Demonstration demonstration,
   }) {
-    return CheckQuestProgressProvider(
-      quest: quest,
+    return CheckDemonstrationProgressProvider(
+      demonstration: demonstration,
     );
   }
 
   @override
-  CheckQuestProgressProvider getProviderOverride(
-    covariant CheckQuestProgressProvider provider,
+  CheckDemonstrationProgressProvider getProviderOverride(
+    covariant CheckDemonstrationProgressProvider provider,
   ) {
     return call(
-      quest: provider.quest,
+      demonstration: provider.demonstration,
     );
   }
 
@@ -267,77 +272,79 @@ class CheckQuestProgressFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'checkQuestProgressProvider';
+  String? get name => r'checkDemonstrationProgressProvider';
 }
 
-/// See also [checkQuestProgress].
-class CheckQuestProgressProvider
+/// See also [checkDemonstrationProgress].
+class CheckDemonstrationProgressProvider
     extends AutoDisposeFutureProvider<Map<String, dynamic>> {
-  /// See also [checkQuestProgress].
-  CheckQuestProgressProvider({
-    required Quest quest,
+  /// See also [checkDemonstrationProgress].
+  CheckDemonstrationProgressProvider({
+    required Demonstration demonstration,
   }) : this._internal(
-          (ref) => checkQuestProgress(
-            ref as CheckQuestProgressRef,
-            quest: quest,
+          (ref) => checkDemonstrationProgress(
+            ref as CheckDemonstrationProgressRef,
+            demonstration: demonstration,
           ),
-          from: checkQuestProgressProvider,
-          name: r'checkQuestProgressProvider',
+          from: checkDemonstrationProgressProvider,
+          name: r'checkDemonstrationProgressProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$checkQuestProgressHash,
-          dependencies: CheckQuestProgressFamily._dependencies,
+                  : _$checkDemonstrationProgressHash,
+          dependencies: CheckDemonstrationProgressFamily._dependencies,
           allTransitiveDependencies:
-              CheckQuestProgressFamily._allTransitiveDependencies,
-          quest: quest,
+              CheckDemonstrationProgressFamily._allTransitiveDependencies,
+          demonstration: demonstration,
         );
 
-  CheckQuestProgressProvider._internal(
+  CheckDemonstrationProgressProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.quest,
+    required this.demonstration,
   }) : super.internal();
 
-  final Quest quest;
+  final Demonstration demonstration;
 
   @override
   Override overrideWith(
-    FutureOr<Map<String, dynamic>> Function(CheckQuestProgressRef provider)
+    FutureOr<Map<String, dynamic>> Function(
+            CheckDemonstrationProgressRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: CheckQuestProgressProvider._internal(
-        (ref) => create(ref as CheckQuestProgressRef),
+      override: CheckDemonstrationProgressProvider._internal(
+        (ref) => create(ref as CheckDemonstrationProgressRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        quest: quest,
+        demonstration: demonstration,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
-    return _CheckQuestProgressProviderElement(this);
+    return _CheckDemonstrationProgressProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CheckQuestProgressProvider && other.quest == quest;
+    return other is CheckDemonstrationProgressProvider &&
+        other.demonstration == demonstration;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, quest.hashCode);
+    hash = _SystemHash.combine(hash, demonstration.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -345,19 +352,20 @@ class CheckQuestProgressProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CheckQuestProgressRef
+mixin CheckDemonstrationProgressRef
     on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
-  /// The parameter `quest` of this provider.
-  Quest get quest;
+  /// The parameter `demonstration` of this provider.
+  Demonstration get demonstration;
 }
 
-class _CheckQuestProgressProviderElement
+class _CheckDemonstrationProgressProviderElement
     extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
-    with CheckQuestProgressRef {
-  _CheckQuestProgressProviderElement(super.provider);
+    with CheckDemonstrationProgressRef {
+  _CheckDemonstrationProgressProviderElement(super.provider);
 
   @override
-  Quest get quest => (origin as CheckQuestProgressProvider).quest;
+  Demonstration get demonstration =>
+      (origin as CheckDemonstrationProgressProvider).demonstration;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

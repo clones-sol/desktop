@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/quest/quest.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/ui/components/design_widget/text/app_text.dart';
 import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_controls.dart';
@@ -18,13 +18,13 @@ class RecordOverlayObjectives extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final demo = trainingSession.activeQuest;
+    final demo = trainingSession.activeDemonstration;
 
     return Opacity(
       opacity: recordOverlay.focused ? 1.0 : 0.7,
       child: Column(
         children: [
-          if (demo != null) _buildQuestDetails(demo, context),
+          if (demo != null) _buildDemonstrationDetails(demo, context),
           if (demo == null)
             const Padding(
               padding: EdgeInsets.all(8),
@@ -42,20 +42,26 @@ class RecordOverlayObjectives extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuestDetails(Quest quest, BuildContext context) {
+  Widget _buildDemonstrationDetails(
+    Demonstration demonstration,
+    BuildContext context,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(quest.title, style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            demonstration.title,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           const SizedBox(height: 8),
-          if (quest.objectives.isNotEmpty)
+          if (demonstration.objectives.isNotEmpty)
             SizedBox(
               height: 120,
               child: ListView.builder(
                 shrinkWrap: true,
-                itemCount: quest.objectives.length,
+                itemCount: demonstration.objectives.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(left: 8, bottom: 4),
@@ -68,7 +74,7 @@ class RecordOverlayObjectives extends ConsumerWidget {
                         ),
                         Expanded(
                           child: AppText(
-                            text: quest.objectives[index],
+                            text: demonstration.objectives[index],
                             style: Theme.of(context).textTheme.bodySmall,
                           ),
                         ),

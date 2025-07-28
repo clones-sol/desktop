@@ -18,8 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TrainingSessionState {
   String? get prompt => throw _privateConstructorUsedError;
   String? get poolId => throw _privateConstructorUsedError;
-  Quest? get currentQuest => throw _privateConstructorUsedError;
-  Quest? get activeQuest => throw _privateConstructorUsedError;
+  Demonstration? get currentDemonstration => throw _privateConstructorUsedError;
+  Demonstration? get activeDemonstration => throw _privateConstructorUsedError;
   bool get recordingLoading => throw _privateConstructorUsedError;
   bool get recordingProcessing => throw _privateConstructorUsedError;
   bool get showUploadConfirmModal => throw _privateConstructorUsedError;
@@ -55,8 +55,8 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
   $Res call(
       {String? prompt,
       String? poolId,
-      Quest? currentQuest,
-      Quest? activeQuest,
+      Demonstration? currentDemonstration,
+      Demonstration? activeDemonstration,
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
@@ -76,8 +76,8 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       AudioPlayer? toneAudio,
       AudioPlayer? blipAudio});
 
-  $QuestCopyWith<$Res>? get currentQuest;
-  $QuestCopyWith<$Res>? get activeQuest;
+  $DemonstrationCopyWith<$Res>? get currentDemonstration;
+  $DemonstrationCopyWith<$Res>? get activeDemonstration;
   $TypingMessageCopyWith<$Res>? get typingMessage;
   $AppInfoCopyWith<$Res>? get app;
 }
@@ -100,8 +100,8 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   $Res call({
     Object? prompt = freezed,
     Object? poolId = freezed,
-    Object? currentQuest = freezed,
-    Object? activeQuest = freezed,
+    Object? currentDemonstration = freezed,
+    Object? activeDemonstration = freezed,
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
@@ -130,14 +130,14 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentQuest: freezed == currentQuest
-          ? _value.currentQuest
-          : currentQuest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
-      activeQuest: freezed == activeQuest
-          ? _value.activeQuest
-          : activeQuest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      currentDemonstration: freezed == currentDemonstration
+          ? _value.currentDemonstration
+          : currentDemonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
+      activeDemonstration: freezed == activeDemonstration
+          ? _value.activeDemonstration
+          : activeDemonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
       recordingLoading: null == recordingLoading
           ? _value.recordingLoading
           : recordingLoading // ignore: cast_nullable_to_non_nullable
@@ -217,13 +217,13 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res>? get currentQuest {
-    if (_value.currentQuest == null) {
+  $DemonstrationCopyWith<$Res>? get currentDemonstration {
+    if (_value.currentDemonstration == null) {
       return null;
     }
 
-    return $QuestCopyWith<$Res>(_value.currentQuest!, (value) {
-      return _then(_value.copyWith(currentQuest: value) as $Val);
+    return $DemonstrationCopyWith<$Res>(_value.currentDemonstration!, (value) {
+      return _then(_value.copyWith(currentDemonstration: value) as $Val);
     });
   }
 
@@ -231,13 +231,13 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $QuestCopyWith<$Res>? get activeQuest {
-    if (_value.activeQuest == null) {
+  $DemonstrationCopyWith<$Res>? get activeDemonstration {
+    if (_value.activeDemonstration == null) {
       return null;
     }
 
-    return $QuestCopyWith<$Res>(_value.activeQuest!, (value) {
-      return _then(_value.copyWith(activeQuest: value) as $Val);
+    return $DemonstrationCopyWith<$Res>(_value.activeDemonstration!, (value) {
+      return _then(_value.copyWith(activeDemonstration: value) as $Val);
     });
   }
 
@@ -281,8 +281,8 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
   $Res call(
       {String? prompt,
       String? poolId,
-      Quest? currentQuest,
-      Quest? activeQuest,
+      Demonstration? currentDemonstration,
+      Demonstration? activeDemonstration,
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
@@ -303,9 +303,9 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
       AudioPlayer? blipAudio});
 
   @override
-  $QuestCopyWith<$Res>? get currentQuest;
+  $DemonstrationCopyWith<$Res>? get currentDemonstration;
   @override
-  $QuestCopyWith<$Res>? get activeQuest;
+  $DemonstrationCopyWith<$Res>? get activeDemonstration;
   @override
   $TypingMessageCopyWith<$Res>? get typingMessage;
   @override
@@ -327,8 +327,8 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
   $Res call({
     Object? prompt = freezed,
     Object? poolId = freezed,
-    Object? currentQuest = freezed,
-    Object? activeQuest = freezed,
+    Object? currentDemonstration = freezed,
+    Object? activeDemonstration = freezed,
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
@@ -357,14 +357,14 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentQuest: freezed == currentQuest
-          ? _value.currentQuest
-          : currentQuest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
-      activeQuest: freezed == activeQuest
-          ? _value.activeQuest
-          : activeQuest // ignore: cast_nullable_to_non_nullable
-              as Quest?,
+      currentDemonstration: freezed == currentDemonstration
+          ? _value.currentDemonstration
+          : currentDemonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
+      activeDemonstration: freezed == activeDemonstration
+          ? _value.activeDemonstration
+          : activeDemonstration // ignore: cast_nullable_to_non_nullable
+              as Demonstration?,
       recordingLoading: null == recordingLoading
           ? _value.recordingLoading
           : recordingLoading // ignore: cast_nullable_to_non_nullable
@@ -447,8 +447,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   const _$TrainingSessionStateImpl(
       {this.prompt,
       this.poolId,
-      this.currentQuest,
-      this.activeQuest,
+      this.currentDemonstration,
+      this.activeDemonstration,
       this.recordingLoading = false,
       this.recordingProcessing = false,
       this.showUploadConfirmModal = false,
@@ -477,9 +477,9 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   @override
   final String? poolId;
   @override
-  final Quest? currentQuest;
+  final Demonstration? currentDemonstration;
   @override
-  final Quest? activeQuest;
+  final Demonstration? activeDemonstration;
   @override
   @JsonKey()
   final bool recordingLoading;
@@ -552,7 +552,7 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
 
   @override
   String toString() {
-    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentQuest: $currentQuest, activeQuest: $activeQuest, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
+    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentDemonstration: $currentDemonstration, activeDemonstration: $activeDemonstration, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
   }
 
   @override
@@ -562,10 +562,10 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
             other is _$TrainingSessionStateImpl &&
             (identical(other.prompt, prompt) || other.prompt == prompt) &&
             (identical(other.poolId, poolId) || other.poolId == poolId) &&
-            (identical(other.currentQuest, currentQuest) ||
-                other.currentQuest == currentQuest) &&
-            (identical(other.activeQuest, activeQuest) ||
-                other.activeQuest == activeQuest) &&
+            (identical(other.currentDemonstration, currentDemonstration) ||
+                other.currentDemonstration == currentDemonstration) &&
+            (identical(other.activeDemonstration, activeDemonstration) ||
+                other.activeDemonstration == activeDemonstration) &&
             (identical(other.recordingLoading, recordingLoading) ||
                 other.recordingLoading == recordingLoading) &&
             (identical(other.recordingProcessing, recordingProcessing) ||
@@ -608,8 +608,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
         runtimeType,
         prompt,
         poolId,
-        currentQuest,
-        activeQuest,
+        currentDemonstration,
+        activeDemonstration,
         recordingLoading,
         recordingProcessing,
         showUploadConfirmModal,
@@ -645,8 +645,8 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   const factory _TrainingSessionState(
       {final String? prompt,
       final String? poolId,
-      final Quest? currentQuest,
-      final Quest? activeQuest,
+      final Demonstration? currentDemonstration,
+      final Demonstration? activeDemonstration,
       final bool recordingLoading,
       final bool recordingProcessing,
       final bool showUploadConfirmModal,
@@ -672,9 +672,9 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   @override
   String? get poolId;
   @override
-  Quest? get currentQuest;
+  Demonstration? get currentDemonstration;
   @override
-  Quest? get activeQuest;
+  Demonstration? get activeDemonstration;
   @override
   bool get recordingLoading;
   @override

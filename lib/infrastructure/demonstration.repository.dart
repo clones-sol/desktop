@@ -1,15 +1,15 @@
-import 'package:clones_desktop/domain/models/quest/quest.dart';
-import 'package:clones_desktop/domain/models/quest/quest_reward.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration_reward.dart';
 import 'package:clones_desktop/infrastructure/pool.repository.dart';
 import 'package:clones_desktop/infrastructure/tauri_api_client.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 
-class QuestRepositoryImpl {
-  QuestRepositoryImpl(this._client, this._tauriClient);
+class DemonstrationRepositoryImpl {
+  DemonstrationRepositoryImpl(this._client, this._tauriClient);
   final ApiClient _client;
   final TauriApiClient _tauriClient;
   // TODO(reddwarf03): Not used ?
-  Future<Quest> generateQuest({
+  Future<Demonstration> generateDemonstration({
     required String prompt,
     required String address,
     String? poolId,
@@ -18,14 +18,14 @@ class QuestRepositoryImpl {
     final apps = await _tauriClient.listApps();
     final appList = apps.map((app) => app.name).join('\n');
 
-    final quest = await _client.post<Quest>(
+    final demonstration = await _client.post<Demonstration>(
       '/gym/quest',
       data: {
         'installed_applications': appList,
         'address': address,
         'prompt': prompt,
       },
-      fromJson: (json) => Quest.fromJson(json as Map<String, dynamic>),
+      fromJson: (json) => Demonstration.fromJson(json as Map<String, dynamic>),
     );
 
     if (poolId != null) {
@@ -33,9 +33,9 @@ class QuestRepositoryImpl {
         poolId: poolId,
         taskId: taskId,
       );
-      return quest.copyWith(
+      return demonstration.copyWith(
         poolId: poolId,
-        reward: QuestReward(
+        reward: DemonstrationReward(
           time: rewardInfo.time,
           maxReward: rewardInfo.maxReward,
         ),
@@ -43,19 +43,19 @@ class QuestRepositoryImpl {
       );
     }
 
-    return quest;
+    return demonstration;
   }
 
   // TODO(reddwarf03): Not used ?
-  Future<Map<String, dynamic>> checkQuestProgress(
-    Quest quest,
+  Future<Map<String, dynamic>> checkDemonstrationProgress(
+    Demonstration demonstration,
   ) async {
     final screenshot = await _tauriClient.takeScreenshot();
 
     return _client.post<Map<String, dynamic>>(
       '/gym/progress',
       data: {
-        'quest': quest.toJson(),
+        'quest': demonstration.toJson(),
         'screenshots': [screenshot],
       },
     );

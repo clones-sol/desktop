@@ -3,7 +3,7 @@
 //! This module provides commands for managing recording sessions, files, and metadata from the frontend.
 
 use crate::{
-    core::record::{self, Quest, QuestState, RecordingMeta},
+    core::record::{self, Demonstration, DemonstrationState, RecordingMeta},
     utils::settings::get_custom_app_local_data_dir,
 };
 use tauri::{AppHandle, State};
@@ -12,8 +12,8 @@ use tauri::{AppHandle, State};
 ///
 /// # Arguments
 /// * `app` - The Tauri `AppHandle`.
-/// * `quest_state` - The current quest state.
-/// * `quest` - Optional quest information.
+/// * `demonstration_state` - The current demonstration state.
+/// * `demonstration` - Optional demonstration information.
 ///
 /// # Returns
 /// * `Ok(())` if recording started successfully.
@@ -21,18 +21,18 @@ use tauri::{AppHandle, State};
 #[tauri::command]
 pub async fn start_recording(
     app: AppHandle,
-    quest_state: State<'_, QuestState>,
-    quest: Option<Quest>,
+    demonstration_state: State<'_, DemonstrationState>,
+   demonstration: Option<Demonstration>,
     fps: u32,
 ) -> Result<(), String> {
-    record::start_recording(app, quest_state, quest, fps).await
+    record::start_recording(app, demonstration_state, demonstration, fps).await
 }
 
 /// Stops the current recording session.
 ///
 /// # Arguments
 /// * `app` - The Tauri `AppHandle`.
-/// * `quest_state` - The current quest state.
+/// * `demonstration_state` - The current demonstration state.
 /// * `reason` - Optional reason for stopping.
 ///
 /// # Returns
@@ -41,10 +41,10 @@ pub async fn start_recording(
 #[tauri::command]
 pub async fn stop_recording(
     app: AppHandle,
-    quest_state: State<'_, QuestState>,
+    demonstration_state: State<'_, DemonstrationState>,
     reason: Option<String>,
 ) -> Result<String, String> {
-    record::stop_recording(app, quest_state, reason).await
+    record::stop_recording(app, demonstration_state, reason).await
 }
 
 /// Gets the current recording state as a string.
@@ -226,20 +226,20 @@ pub async fn get_app_data_dir(app: AppHandle) -> Result<String, String> {
     Ok(dir.to_string_lossy().to_string())
 }
 
-/// Gets the current quest from the quest state.
+/// Gets the current demonstration from the demonstration state.
 ///
 /// # Arguments
-/// * `quest_state` - The current quest state.
+/// * `demonstration_state` - The current demonstration state.
 ///
 /// # Returns
-/// * `Ok(Some(Quest))` if a quest is active.
-/// * `Ok(None)` if no quest is active.
+/// * `Ok(Some(Demonstration))` if a demonstration is active.
+/// * `Ok(None)` if no demonstration is active.
 /// * `Err` if retrieval failed.
 #[tauri::command]
-pub async fn get_current_quest(
-    quest_state: State<'_, QuestState>,
-) -> Result<Option<Quest>, String> {
-    record::get_current_quest(quest_state).await
+pub async fn get_current_demonstration(
+    demonstration_state: State<'_, DemonstrationState>,
+) -> Result<Option<Demonstration>, String> {
+    record::get_current_demonstration(demonstration_state).await
 }
 
 fn validate_id(id: &str) -> Result<(), String> {

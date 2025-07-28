@@ -1,9 +1,9 @@
 import 'package:clones_desktop/domain/app_info.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/message/deleted_range.dart';
 import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
-import 'package:clones_desktop/domain/models/quest/quest.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -16,12 +16,12 @@ mixin TrainingSessionSetters on AutoDisposeNotifier<TrainingSessionState> {
     state = state.copyWith(poolId: poolId);
   }
 
-  void setCurrentQuest(Quest? quest) {
-    state = state.copyWith(currentQuest: quest);
+  void setCurrentDemonstration(Demonstration? demonstration) {
+    state = state.copyWith(currentDemonstration: demonstration);
   }
 
-  void setActiveQuest(Quest? quest) {
-    state = state.copyWith(activeQuest: quest);
+  void setActiveDemonstration(Demonstration? demonstration) {
+    state = state.copyWith(activeDemonstration: demonstration);
   }
 
   void setRecordingLoading(bool recordingLoading) {

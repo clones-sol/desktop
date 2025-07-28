@@ -33,7 +33,8 @@ class _RecordOverlayViewState extends ConsumerState<RecordOverlayView>
   @override
   void onWindowFocus() {
     unawaited(
-        ref.read(recordOverlayNotifierProvider.notifier).setFocused(true));
+      ref.read(recordOverlayNotifierProvider.notifier).setFocused(true),
+    );
   }
 
   @override

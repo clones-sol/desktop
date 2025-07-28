@@ -31,12 +31,12 @@ class AppsRepositoryImpl {
       final appMap = <String, ForgeApp>{};
 
       for (final recording in recordings) {
-        if (recording.status == 'completed' && recording.quest != null) {
-          final quest = recording.quest!;
-          if (!appMap.containsKey(quest.app)) {
-            appMap[quest.app] = ForgeApp(
-              name: quest.app,
-              domain: quest.iconUrl.split('domain=')[1].split('&')[0],
+        if (recording.status == 'completed') {
+          final demonstration = recording.demonstration;
+          if (!appMap.containsKey(demonstration.app)) {
+            appMap[demonstration.app] = ForgeApp(
+              name: demonstration.app,
+              domain: demonstration.iconUrl.split('domain=')[1].split('&')[0],
               description: '',
               categories: [],
               tasks: [],
@@ -50,17 +50,17 @@ class AppsRepositoryImpl {
             );
           }
 
-          final app = appMap[quest.app]!;
+          final app = appMap[demonstration.app]!;
           final newTasks = app.tasks.toList();
-          if (!newTasks.any((t) => t.prompt == quest.title)) {
+          if (!newTasks.any((t) => t.prompt == demonstration.title)) {
             newTasks.add(
               ForgeTaskItem(
-                prompt: quest.title,
+                prompt: demonstration.title,
                 completed: true,
                 recordingId: recording.id,
               ),
             );
-            appMap[quest.app] = app.copyWith(tasks: newTasks);
+            appMap[demonstration.app] = app.copyWith(tasks: newTasks);
           }
         }
       }

@@ -80,7 +80,7 @@ Future<List<ApiRecording>> mergedRecordings(Ref ref) async {
             version: meta.version,
             locale: meta.locale,
             primaryMonitor: meta.primaryMonitor,
-            quest: meta.quest,
+            demonstration: meta.demonstration,
             submission: s,
             location: 'database',
           );
@@ -111,7 +111,7 @@ Future<List<ApiRecording>> mergedRecordings(Ref ref) async {
             version: rec.version,
             locale: rec.locale,
             primaryMonitor: const MonitorInfo(width: 0, height: 0),
-            quest: rec.quest,
+            demonstration: rec.demonstration,
             submission: submission,
             location: 'local',
           );

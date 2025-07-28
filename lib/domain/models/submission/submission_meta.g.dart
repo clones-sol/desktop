@@ -21,7 +21,8 @@ _$SubmissionMetaImpl _$$SubmissionMetaImplFromJson(Map<String, dynamic> json) =>
       locale: json['locale'] as String,
       primaryMonitor:
           MonitorInfo.fromJson(json['primary_monitor'] as Map<String, dynamic>),
-      quest: Quest.fromJson(json['quest'] as Map<String, dynamic>),
+      demonstration:
+          Demonstration.fromJson(json['quest'] as Map<String, dynamic>),
       poolId: json['poolId'] as String?,
     );
 
@@ -40,6 +41,6 @@ Map<String, dynamic> _$$SubmissionMetaImplToJson(
       'version': instance.version,
       'locale': instance.locale,
       'primary_monitor': instance.primaryMonitor,
-      'quest': instance.quest,
+      'quest': instance.demonstration,
       'poolId': instance.poolId,
     };

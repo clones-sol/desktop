@@ -12,14 +12,14 @@ pub mod ipc_server;
 use std::sync::{Arc, Mutex};
 use tauri::Listener;
 
-use core::record::{QuestState};
+use core::record::{DemonstrationState};
 #[cfg(target_os = "macos")]
 use utils::permissions::{has_ax_perms, has_record_perms, request_ax_perms, request_record_perms};
 
 use crate::commands::general::{greet, list_apps, take_screenshot};
 use crate::commands::record::{
     create_recording_zip, delete_recording, export_recording_zip, get_app_data_dir,
-    get_current_quest, get_recording_file, get_recording_state, list_recordings,
+    get_current_demonstration, get_recording_file, get_recording_state, list_recordings,
     open_recording_folder, process_recording, start_recording, stop_recording, write_file,
     write_recording_file,
 };
@@ -64,7 +64,7 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
         .plugin(tauri_plugin_os::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_dialog::init())
-        .manage(QuestState::default())
+        .manage(DemonstrationState::default())
         .manage(DeepLinkState(Arc::new(Mutex::new(None))))
         .plugin(tauri_plugin_opener::init())
         .invoke_handler(tauri::generate_handler![
@@ -99,7 +99,7 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
             export_recordings,
             delete_recording,
             get_recording_state,
-            get_current_quest,
+            get_current_demonstration,
         ])
 }
 

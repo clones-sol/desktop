@@ -8,12 +8,12 @@ import 'package:clones_desktop/application/submissions.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/upload/provider.dart';
 import 'package:clones_desktop/application/upload/state.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
+import 'package:clones_desktop/domain/models/demonstration/demonstration_reward.dart';
 import 'package:clones_desktop/domain/models/message/deleted_range.dart';
 import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
-import 'package:clones_desktop/domain/models/quest/quest.dart';
-import 'package:clones_desktop/domain/models/quest/quest_reward.dart';
 import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
@@ -69,7 +69,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
         await ref
             .read(tauriApiClientProvider)
-            .startRecording(quest: state.activeQuest);
+            .startRecording(demonstration: state.activeDemonstration);
         setRecordingState(RecordingState.recording);
       }
       setRecordingLoading(false);
@@ -175,21 +175,21 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     }
   }
 
-  Future<void> questData(Quest quest) async {
-    if (quest.content.isNotEmpty) {
-      await addMessage(generateAssistantMessage(quest.content));
+  Future<void> demonstrationData(Demonstration demonstration) async {
+    if (demonstration.content.isNotEmpty) {
+      await addMessage(generateAssistantMessage(demonstration.content));
     }
 
-    if (quest.title.isNotEmpty &&
-        quest.app.isNotEmpty &&
-        quest.iconUrl.isNotEmpty &&
-        quest.objectives.isNotEmpty) {
-      var currentQuest = Quest(
-        title: quest.title,
-        app: quest.app,
-        iconUrl: quest.iconUrl,
-        objectives: quest.objectives,
-        content: quest.content,
+    if (demonstration.title.isNotEmpty &&
+        demonstration.app.isNotEmpty &&
+        demonstration.iconUrl.isNotEmpty &&
+        demonstration.objectives.isNotEmpty) {
+      var currentDemonstration = Demonstration(
+        title: demonstration.title,
+        app: demonstration.app,
+        iconUrl: demonstration.iconUrl,
+        objectives: demonstration.objectives,
+        content: demonstration.content,
       );
 
       if (state.poolId != null) {
@@ -199,9 +199,9 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
           final rewardInfo = await ref.read(
             GetRewardProvider(poolId: state.poolId!, taskId: taskId).future,
           );
-          currentQuest = currentQuest.copyWith(
+          currentDemonstration = currentDemonstration.copyWith(
             poolId: state.poolId,
-            reward: QuestReward(
+            reward: DemonstrationReward(
               time: rewardInfo.time,
               maxReward: rewardInfo.maxReward,
             ),
@@ -212,13 +212,13 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         } catch (error) {
           await addMessage(
             generateAssistantMessage(
-              'Failed to get task reward info.\nWARNING: This quest will not provide rewards.',
+              'Failed to get task reward info.\nWARNING: This demonstration will not provide rewards.',
             ),
           );
           debugPrint('Failed to get reward info: $error');
         }
       }
-      setActiveQuest(currentQuest);
+      setActiveDemonstration(currentDemonstration);
     }
   }
 
@@ -229,11 +229,11 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       if (functionName == null || arguments == null) return;
 
       switch (functionName) {
-        case 'generate_quest':
-        case 'validate_task_request':
-          final _questData = jsonDecode(arguments);
-          final _quest = Quest.fromJson(_questData);
-          await questData(_quest);
+        case 'generate_demonstration':
+        case 'validate_task_demonstration':
+          final _demonstrationData = jsonDecode(arguments);
+          final _demonstration = Demonstration.fromJson(_demonstrationData);
+          await demonstrationData(_demonstration);
           break;
         default:
           debugPrint('Unknown tool call: $functionName');
@@ -425,7 +425,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
     setRecordingLoading(true);
     setRecordingProcessing(true);
-    setActiveQuest(null);
+    setActiveDemonstration(null);
 
     await addMessage(
       generateUserMessage(
@@ -593,11 +593,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         final recordingId =
             await ref.read(tauriApiClientProvider).stopRecording('fail');
 
-        setActiveQuest(null);
+        setActiveDemonstration(null);
         setRecordingState(RecordingState.off);
-
-        // TODO(reddwarf03): To check
-        // await emit('quest-overlay', { 'quest': null });
 
         await addMessage(
           Message(
@@ -700,8 +697,9 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     setIsUploading(true);
 
     try {
-      final questTitle =
-          state.activeQuest?.title ?? state.currentQuest?.title ?? 'Unknown';
+      final demonstrationTitle = state.activeDemonstration?.title ??
+          state.currentDemonstration?.title ??
+          'Unknown';
 
       await addMessage(
         generateAssistantMessage(
@@ -767,7 +765,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
       await ref
           .read(uploadQueueProvider.notifier)
-          .upload(recordingId, questTitle);
+          .upload(recordingId, demonstrationTitle);
     } on Exception catch (e) {
       if (e.toString().contains('Upload data is not allowed')) {
         setShowUploadConfirmModal(true);

@@ -25,7 +25,7 @@ class DemoDetailRewards extends ConsumerWidget {
 
     final recording = ref.watch(demoDetailNotifierProvider).recording;
     final submission = recording?.submission;
-    final poolId = recording?.quest?.poolId;
+    final poolId = recording?.demonstration?.poolId;
 
     if (submission == null || poolId == null) {
       return const SizedBox.shrink();
