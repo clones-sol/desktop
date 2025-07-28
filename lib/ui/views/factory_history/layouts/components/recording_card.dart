@@ -90,8 +90,11 @@ class RecordingCard extends ConsumerWidget {
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(width: 8),
-            Icon(Icons.calendar_today,
-                size: 12, color: ClonesColors.secondaryText),
+            Icon(
+              Icons.calendar_today,
+              size: 12,
+              color: ClonesColors.secondaryText,
+            ),
             const SizedBox(width: 4),
             Text(
               '${DateFormat.yMd().format(DateTime.parse(recording.timestamp))} ${DateFormat.jm().format(DateTime.parse(recording.timestamp))}',
@@ -233,9 +236,11 @@ class RecordingCard extends ConsumerWidget {
             onTap: isUploading || isQueued
                 ? null
                 : () {
-                    ref
-                        .read(uploadQueueProvider.notifier)
-                        .upload(recording.id, recording.title);
+                    ref.read(uploadQueueProvider.notifier).upload(
+                          recording.id,
+                          recording.demonstration?.poolId ?? '',
+                          recording.title,
+                        );
                   },
             isLoading: isUploading,
             icon: Icons.upload,

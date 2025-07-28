@@ -33,7 +33,7 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
     ref.invalidate(isUploadDataAllowedProvider);
   }
 
-  Future<void> upload(String recordingId, String name) async {
+  Future<void> upload(String recordingId, String poolId, String name) async {
     final address = ref.watch(sessionNotifierProvider).address;
     if (address == null) {
       throw Exception('Wallet address is null');
@@ -74,6 +74,7 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
       initUploadProvider(
         UploadMetadata(
           id: recordingId,
+          poolId: poolId,
         ),
         chunks.length,
       ).future,

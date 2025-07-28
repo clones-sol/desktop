@@ -230,7 +230,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
       switch (functionName) {
         case 'generate_demonstration':
-        case 'validate_task_demonstration':
+        case 'validate_task_request':
           final _demonstrationData = jsonDecode(arguments);
           final _demonstration = Demonstration.fromJson(_demonstrationData);
           await demonstrationData(_demonstration);
@@ -763,9 +763,11 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         }
       });
 
-      await ref
-          .read(uploadQueueProvider.notifier)
-          .upload(recordingId, demonstrationTitle);
+      await ref.read(uploadQueueProvider.notifier).upload(
+            recordingId,
+            state.activeDemonstration?.poolId ?? '',
+            demonstrationTitle,
+          );
     } on Exception catch (e) {
       if (e.toString().contains('Upload data is not allowed')) {
         setShowUploadConfirmModal(true);
