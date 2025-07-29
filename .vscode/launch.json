@@ -5,40 +5,59 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "[clones-native] Run IPC Server",
+      "name": "[LEGACY] Run IPC Server Only",
       "type": "node-terminal",
       "request": "launch",
       "command": "PRIMARY_LOGGER=true sleep 2; cargo run --bin ipc-server-only",
-      "cwd": "${workspaceFolder}/native/src-tauri"
+      "cwd": "${workspaceFolder}/src-tauri"
     },
     {
-      "name": "clones-flutter",
+      "name": "[LEGACY] Flutter Desktop",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart"
     },
     {
-      "name": "clones-flutter-profile",
+      "name": "Flutter Web (Development)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",
-      "flutterMode": "profile"
+      "args": [
+        "-d",
+        "web-server",
+        "--web-port",
+        "3000"
+      ]
+    },
+    {
+      "name": "Tauri Development",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "cargo tauri dev",
+      "cwd": "${workspaceFolder}/src-tauri"
+    },
+    {
+      "name": "Build Tauri Release",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "./scripts/build_web_tauri.sh",
+      "cwd": "${workspaceFolder}"
     }
   ],
   "compounds": [
     {
-      "name": "[COMPOUND] Flutter with IPC",
+      "name": "[LEGACY] Flutter Desktop with IPC",
       "configurations": [
-        "[clones-native] Run IPC Server",
-        "clones-flutter"
+        "[LEGACY] Run IPC Server Only",
+        "[LEGACY] Flutter Desktop"
       ],
       "stopAll": true
     },
     {
-      "name": "[COMPOUND] Flutter with IPC Profile",
+      "name": "[NEW] Flutter Web + Tauri Development",
       "configurations": [
-        "[clones-native] Run IPC Server",
-        "clones-flutter-profile"
+        "Flutter Web (Development)",
+        "Tauri Development"
       ],
       "stopAll": true
     }

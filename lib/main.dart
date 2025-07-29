@@ -20,8 +20,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:screen_retriever/screen_retriever.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:clones_desktop/utils/platform_compatibility.dart';
+import 'package:flutter/foundation.dart';
 
 final _router = GoRouter(
   initialLocation: HomeView.routeName,
@@ -148,32 +148,28 @@ Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
 
-  await windowManager.ensureInitialized();
+  // Only initialize window manager for desktop platforms
+  if (!kIsWeb) {
+    await WindowManagerWeb.ensureInitialized();
 
-  final allDisplays = await screenRetriever.getAllDisplays();
-  final smallestDisplay = allDisplays.reduce((a, b) {
-    final areaA = a.size.width * a.size.height;
-    final areaB = b.size.width * b.size.height;
-    return areaA < areaB ? a : b;
-  });
+    final allDisplays = await ScreenRetrieverWeb.getAllDisplays();
+    final smallestDisplay = allDisplays.reduce((a, b) {
+      final areaA = a.size.width * a.size.height;
+      final areaB = b.size.width * b.size.height;
+      return areaA < areaB ? a : b;
+    });
 
-  final initialSize = Size(
-    smallestDisplay.size.width,
-    smallestDisplay.size.height,
-  );
+    final initialSize = Size(
+      smallestDisplay.size.width,
+      smallestDisplay.size.height,
+    );
 
-  final windowOptions = WindowOptions(
-    size: initialSize,
-    center: true,
-    backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
+    await WindowManagerWeb.waitUntilReadyToShow();
+    await WindowManagerWeb.setSize(initialSize);
+    await WindowManagerWeb.center();
+    await WindowManagerWeb.show();
+  }
 
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
   runApp(const ProviderScope(child: ClonesApp()));
 }
 

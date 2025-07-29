@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:clones_desktop/application/session/provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class WalletNotConnected extends ConsumerWidget {
   const WalletNotConnected({
@@ -48,9 +50,14 @@ Future<void> _handleConnect(WidgetRef ref) async {
   await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
   final session = ref.read(sessionNotifierProvider);
 
-  final uri = Uri.parse(session.connectionUrl);
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  final url = session.connectionUrl;
+  debugPrint('url: $url');
+
+  try {
+    await ref.read(tauriApiClientProvider).openExternalUrl(url);
+    debugPrint('Opened external URL via Tauri');
     await ref.read(sessionNotifierProvider.notifier).startPolling();
+  } catch (e) {
+    debugPrint('Failed to open external URL: $e');
   }
 }
