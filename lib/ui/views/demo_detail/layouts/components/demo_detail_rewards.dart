@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/pool.dart';
 import 'package:clones_desktop/application/session/provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/models/submission/grade_result.dart';
 import 'package:clones_desktop/ui/components/card.dart';
@@ -11,7 +12,6 @@ import 'package:clones_desktop/utils/format_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DemoDetailRewards extends ConsumerWidget {
   const DemoDetailRewards({super.key});
@@ -117,13 +117,16 @@ class DemoDetailRewards extends ConsumerWidget {
                               style: theme.textTheme.bodyMedium,
                             ),
                             InkWell(
-                              onTap: () {
-                                launchUrl(
-                                  Uri.parse(
-                                    '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}/?cluster=${Env.solscanCluster}',
-                                  ),
-                                  mode: LaunchMode.externalApplication,
-                                );
+                              onTap: () async {
+                                try {
+                                  await ref
+                                      .read(tauriApiClientProvider)
+                                      .openExternalUrl(
+                                        '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}/?cluster=${Env.solscanCluster}',
+                                      );
+                                } catch (e) {
+                                  debugPrint('Failed to open external URL: $e');
+                                }
                               },
                               child: Row(
                                 children: [
@@ -156,13 +159,16 @@ class DemoDetailRewards extends ConsumerWidget {
                               style: theme.textTheme.bodyMedium,
                             ),
                             InkWell(
-                              onTap: () {
-                                launchUrl(
-                                  Uri.parse(
-                                    '${Env.solscanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}/?cluster=${Env.solscanCluster}',
-                                  ),
-                                  mode: LaunchMode.externalApplication,
-                                );
+                              onTap: () async {
+                                try {
+                                  await ref
+                                      .read(tauriApiClientProvider)
+                                      .openExternalUrl(
+                                        '${Env.solscanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}/?cluster=${Env.solscanCluster}',
+                                      );
+                                } catch (e) {
+                                  debugPrint('Failed to open external URL: $e');
+                                }
                               },
                               child: Row(
                                 children: [

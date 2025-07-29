@@ -99,8 +99,7 @@ pub fn lock_with_timeout<'a, T>(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs::{self, File};
-    use std::io::Write;
+    use std::fs::File;
     use std::path::PathBuf;
     use std::sync::{Arc, Mutex};
     use std::thread;
