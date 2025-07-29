@@ -34,9 +34,9 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
   }
 
   Future<void> _handleConnect() async {
-    await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
-    final session = ref.read(sessionNotifierProvider);
     if (!mounted) return;
+
+    final session = ref.read(sessionNotifierProvider);
 
     try {
       await ref.read(tauriApiClientProvider).openExternalUrl(
