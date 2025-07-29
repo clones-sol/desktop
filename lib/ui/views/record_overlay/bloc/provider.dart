@@ -59,6 +59,7 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
 
   Future<void> toggleLocked() async {
     state = state.copyWith(isLocked: !state.isLocked);
+    // TODO(reddwarf03): Implement this
     /*  if (state.isLocked) {
       await ref.read(tauriApiClientProvider).setResizable(false);
     } else {
