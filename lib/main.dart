@@ -240,32 +240,35 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     });
 
     final textTheme = ThemeData.light().textTheme.copyWith(
-          bodySmall: TextStyle(
+          bodySmall: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.bodySmall!.fontSize,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          bodyMedium: TextStyle(
+          bodyMedium: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.bodyMedium!.fontSize,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          bodyLarge: TextStyle(
+          bodyLarge: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.bodyLarge!.fontSize,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleLarge: const TextStyle(
+          titleLarge: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.titleLarge!.fontSize,
+            fontWeight: ThemeData.light().textTheme.titleLarge!.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleMedium: const TextStyle(
+          titleMedium: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.titleMedium!.fontSize,
+            fontWeight: ThemeData.light().textTheme.titleMedium!.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleSmall: const TextStyle(
+          titleSmall: ClonesFonts.getPrimaryFont(
+            fontSize: ThemeData.light().textTheme.titleSmall!.fontSize,
+            fontWeight: ThemeData.light().textTheme.titleSmall!.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          labelSmall: const TextStyle(
-            fontFamily: ClonesFonts.mono,
+          labelSmall: ClonesFonts.getMonoFont(
+            fontSize: ThemeData.light().textTheme.labelSmall!.fontSize,
           ),
         );
 
