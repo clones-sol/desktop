@@ -305,4 +305,16 @@ class TauriApiClient {
       throw Exception('Failed to get platform: ${response.body}');
     }
   }
+
+  Future<Uint8List> fetchImageViaProxy(String imageUrl) async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/proxy-image?url=$imageUrl'),
+    );
+
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to proxy image: ${response.body}');
+    }
+  }
 }

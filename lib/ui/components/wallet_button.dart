@@ -2,6 +2,7 @@ import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/memory_image_tauri.dart';
 import 'package:clones_desktop/utils/env.dart';
 import 'package:clones_desktop/utils/format_address.dart';
 import 'package:flutter/material.dart';
@@ -164,10 +165,16 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                 Row(
                                   children: [
                                     if (tokenBalance.logoUrl != null)
-                                      Image.network(
-                                        tokenBalance.logoUrl!,
+                                      MemoryImageTauri(
+                                        imageUrl: tokenBalance.logoUrl!,
                                         width: 20,
                                         height: 20,
+                                        errorBuilder: (_, __, ___) =>
+                                            const Icon(
+                                          Icons.apps,
+                                          color: ClonesColors.primaryText,
+                                          size: 20,
+                                        ),
                                       )
                                     else
                                       const Icon(
