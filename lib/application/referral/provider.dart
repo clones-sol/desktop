@@ -24,9 +24,9 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
       
       if (response.success) {
         final referralInfo = ReferralInfo(
-          referralCode: response.referralCode,
-          referralLink: response.referralLink,
-          walletAddress: response.walletAddress,
+          referralCode: response.data.referralCode,
+          referralLink: response.data.referralLink,
+          walletAddress: response.data.walletAddress,
           totalReferrals: 0,
           totalRewards: 0.0,
           isActive: true,
@@ -50,14 +50,14 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
       
       if (response.success) {
         final referralInfo = ReferralInfo(
-          referralCode: response.referralCode,
-          referralLink: response.referralLink,
-          walletAddress: response.walletAddress,
-          totalReferrals: response.totalReferrals,
-          totalRewards: response.totalRewards,
-          isActive: response.isActive,
-          createdAt: response.createdAt,
-          lastUpdated: response.lastUpdated,
+          referralCode: response.data.referralCode,
+          referralLink: '', // Backend doesn't provide this in stats endpoint
+          walletAddress: walletAddress, // Use the requested wallet address
+          totalReferrals: response.data.totalReferrals,
+          totalRewards: response.data.totalRewards,
+          isActive: true, // Assume active if we get data
+          createdAt: DateTime.now(), // Backend doesn't provide this in stats
+          lastUpdated: DateTime.now(),
         );
         
         state = ReferralState.success(referralInfo);
