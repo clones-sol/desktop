@@ -53,6 +53,7 @@ jobs:
         run: |
           flutter pub get
           cd src-tauri && cargo fetch
+          cargo install tauri-cli --version "^2.0.0"
 
       - name: Build Flutter Web
         run: |
