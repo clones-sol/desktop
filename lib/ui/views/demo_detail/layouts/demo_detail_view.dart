@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:clones_desktop/application/session/provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
@@ -29,6 +28,8 @@ class DemoDetailView extends ConsumerStatefulWidget {
 }
 
 class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
+  late String platformOpenFileExplorerName;
+
   @override
   void initState() {
     super.initState();
@@ -36,13 +37,17 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
       await ref
           .read(demoDetailNotifierProvider.notifier)
           .loadRecording(widget.recordingId);
+
+      platformOpenFileExplorerName =
+          await _getPlatformOpenFileExplorerName(ref);
     });
   }
 
-  String _getPlatformOpenFileExplorerName() {
-    if (Platform.isMacOS) {
+  Future<String> _getPlatformOpenFileExplorerName(WidgetRef ref) async {
+    final platform = await ref.read(tauriApiClientProvider).getPlatform();
+    if (platform == 'macos') {
       return 'Finder';
-    } else if (Platform.isWindows) {
+    } else if (platform == 'windows') {
       return 'Explorer';
     }
     return 'Files';
@@ -62,7 +67,7 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
       children: [
         BtnPrimary(
           btnPrimaryType: BtnPrimaryType.outlinePrimary,
-          buttonText: 'Open in ${_getPlatformOpenFileExplorerName()}',
+          buttonText: 'Open in $platformOpenFileExplorerName',
           onTap: demoDetailNotifier.openRecordingFolder,
         ),
         if (recording != null && recording.status == 'completed') ...[
