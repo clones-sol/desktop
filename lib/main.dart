@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/deeplink_provider.dart';
 import 'package:clones_desktop/application/route_provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/main_layout.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
@@ -16,8 +17,7 @@ import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
-import 'package:clones_desktop/utils/platform_compatibility.dart';
-import 'package:flutter/foundation.dart';
+import 'package:clones_desktop/utils/window_alignment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -148,28 +148,6 @@ Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
 
-  // Only initialize window manager for desktop platforms
-  if (!kIsWeb) {
-    await WindowManagerWeb.ensureInitialized();
-
-    final allDisplays = await ScreenRetrieverWeb.getAllDisplays();
-    final smallestDisplay = allDisplays.reduce((a, b) {
-      final areaA = a.size.width * a.size.height;
-      final areaB = b.size.width * b.size.height;
-      return areaA < areaB ? a : b;
-    });
-
-    final initialSize = Size(
-      smallestDisplay.size.width,
-      smallestDisplay.size.height,
-    );
-
-    await WindowManagerWeb.waitUntilReadyToShow();
-    await WindowManagerWeb.setSize(initialSize);
-    await WindowManagerWeb.center();
-    await WindowManagerWeb.show();
-  }
-
   runApp(const ProviderScope(child: ClonesApp()));
 }
 
@@ -187,8 +165,26 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     _router.routeInformationProvider.addListener(_updateRoute);
     // Set initial route
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeWindow();
       _updateRoute();
     });
+  }
+
+  Future<void> _initializeWindow() async {
+    final displays = await ref.read(tauriApiClientProvider).getDisplaysSize();
+    final smallestDisplay = displays.reduce((a, b) {
+      final areaA = a.width * a.height;
+      final areaB = b.width * b.height;
+      return areaA < areaB ? a : b;
+    });
+    await ref.read(tauriApiClientProvider).resizeWindow(
+          smallestDisplay.width,
+          smallestDisplay.height,
+        );
+    await ref.read(tauriApiClientProvider).setWindowPosition(
+          WindowAlignment.topCenter,
+        );
+    await ref.read(tauriApiClientProvider).setWindowResizable(true);
   }
 
   void _updateRoute() {

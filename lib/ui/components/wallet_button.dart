@@ -141,7 +141,8 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                         );
                                   } catch (e) {
                                     debugPrint(
-                                        'Failed to open external URL: $e');
+                                      'Failed to open external URL: $e',
+                                    );
                                   }
                                 },
                                 child: Icon(

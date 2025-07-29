@@ -18,11 +18,11 @@ import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:clones_desktop/utils/env.dart';
+import 'package:clones_desktop/utils/window_alignment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:window_manager/window_manager.dart';
 
 part 'provider.g.dart';
 
@@ -59,12 +59,25 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     try {
       setRecordingLoading(true);
       if (state.recordingState == RecordingState.off) {
-        final originalSize = await windowManager.getSize();
-        state = state.copyWith(originalWindowSize: originalSize);
+        final originalSize =
+            await ref.read(tauriApiClientProvider).getWindowSize();
+        state = state.copyWith(
+          originalWindowSize: Size(
+            originalSize.width,
+            originalSize.height,
+          ),
+        );
 
-        unawaited(windowManager.setSize(kRecordOverlaySize));
         unawaited(
-          windowManager.setAlignment(Alignment.topRight, animate: true),
+          ref.read(tauriApiClientProvider).resizeWindow(
+                kRecordOverlaySize.width,
+                kRecordOverlaySize.height,
+              ),
+        );
+        unawaited(
+          ref.read(tauriApiClientProvider).setWindowPosition(
+                WindowAlignment.topRight,
+              ),
         );
 
         await ref
@@ -438,8 +451,17 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     if (state.recordingState == RecordingState.recording) {
       try {
         if (state.originalWindowSize != null) {
-          unawaited(windowManager.setSize(state.originalWindowSize!));
-          unawaited(windowManager.center(animate: true));
+          unawaited(
+            ref.read(tauriApiClientProvider).resizeWindow(
+                  state.originalWindowSize!.width,
+                  state.originalWindowSize!.height,
+                ),
+          );
+          unawaited(
+            ref.read(tauriApiClientProvider).setWindowPosition(
+                  WindowAlignment.topCenter,
+                ),
+          );
         }
         final recordingId =
             await ref.read(tauriApiClientProvider).stopRecording('done');
@@ -586,8 +608,17 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     if (state.recordingState == RecordingState.recording) {
       try {
         if (state.originalWindowSize != null) {
-          unawaited(windowManager.setSize(state.originalWindowSize!));
-          unawaited(windowManager.center(animate: true));
+          unawaited(
+            ref.read(tauriApiClientProvider).resizeWindow(
+                  state.originalWindowSize!.width,
+                  state.originalWindowSize!.height,
+                ),
+          );
+          unawaited(
+            ref.read(tauriApiClientProvider).setWindowPosition(
+                  WindowAlignment.topCenter,
+                ),
+          );
         }
 
         final recordingId =
