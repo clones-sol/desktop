@@ -1,11 +1,9 @@
 // Platform-specific implementations for desktop
 import 'dart:ui' show Size;
 
-import 'package:path_provider/path_provider.dart' as pp;
 import 'package:screen_retriever/screen_retriever.dart' as sr;
 import 'package:window_manager/window_manager.dart' as wm;
 
-export 'package:path_provider/path_provider.dart';
 export 'package:screen_retriever/screen_retriever.dart';
 export 'package:window_manager/window_manager.dart';
 
@@ -32,16 +30,4 @@ class ScreenRetrieverWeb {
       sr.screenRetriever.getAllDisplays();
   static Future<sr.Display> getPrimaryDisplay() =>
       sr.screenRetriever.getPrimaryDisplay();
-}
-
-class PathProviderWeb {
-  static Future<String> getApplicationDocumentsDirectory() async {
-    final dir = await pp.getApplicationDocumentsDirectory();
-    return dir.path;
-  }
-
-  static Future<String> getTemporaryDirectory() async {
-    final dir = await pp.getTemporaryDirectory();
-    return dir.path;
-  }
 }

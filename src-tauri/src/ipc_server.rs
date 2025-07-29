@@ -174,6 +174,8 @@ pub async fn init(app_handle: AppHandle) {
         // POST /open-url: Open an external URL.
         // Action that opens an external URL.
         .route("/open-url", post(open_external_url_handler))
+        // GET /platform: Get the platform of the current system.
+        .route("/platform", get(get_platform_handler))
         .with_state(state)
         .layer(cors);
 
@@ -491,5 +493,18 @@ pub async fn open_external_url_handler(
             StatusCode::INTERNAL_SERVER_ERROR,
             format!("Failed to open URL '{}': {}", payload.url, e),
         )),
+    }
+}
+
+// Get the platform of the current system
+pub async fn get_platform_handler(State(_state): State<AppState>) -> String {
+    if cfg!(target_os = "macos") {
+        "macos".to_string()
+    } else if cfg!(target_os = "windows") {
+        "windows".to_string()
+    } else if cfg!(target_os = "linux") {
+        "linux".to_string()
+    } else {
+        "unknown".to_string()
     }
 }

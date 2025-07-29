@@ -296,4 +296,13 @@ class TauriApiClient {
       throw Exception('Failed to open external URL: ${response.body}');
     }
   }
+
+  Future<String> getPlatform() async {
+    final response = await _client.get(Uri.parse('$_baseUrl/platform'));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to get platform: ${response.body}');
+    }
+  }
 }
