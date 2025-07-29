@@ -10,6 +10,7 @@ import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,6 +52,11 @@ class Sidebar extends ConsumerWidget {
         path: LeaderboardsView.routeName,
         imagePath: Assets.statsIcon,
         label: 'Leaderboards',
+      ),
+      SidebarButtonData(
+        path: ReferralView.routeName,
+        imagePath: Assets.statsIcon, // Temporarily use stats icon until referral icon is created
+        label: 'Referral',
       ),
       SidebarButtonData(
         path: ForgeView.routeName,
