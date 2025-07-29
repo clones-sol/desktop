@@ -32,6 +32,9 @@ class Assets {
   static const String uploadIcon = '${assetIconsFolder}upload_icon.png';
   static const String robotIcon = '${assetIconsFolder}robot_icon.png';
 
+  // Referral
+  static const String referralIcon = 'assets/icons/referral_icon.png';
+
   // Menu
   static const String menuFarm = '${assetMenuFolder}farmer_menu.png';
   static const String menuForge = '${assetMenuFolder}forge_menu.png';
