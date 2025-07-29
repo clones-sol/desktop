@@ -5,9 +5,11 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use http::header::{ACCEPT, CONTENT_TYPE};
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 use tauri::{AppHandle, Manager};
+use tauri_plugin_opener::OpenerExt;
 use tower_http::cors::{Any, CorsLayer};
 
 // Import business logic from the local `core` module
@@ -23,7 +25,7 @@ use crate::commands::recordings::export_recordings;
 // Import functions from `commands/tools`
 use crate::commands::tools::{check_tools, init_tools};
 // Import functions from `core/record`
-use crate::core::record::{open_recording_folder, process_recording, export_recording_zip};
+use crate::core::record::{export_recording_zip, open_recording_folder, process_recording};
 // Import functions from `utils/permissions`
 use crate::utils::permissions::{has_record_perms, request_record_perms};
 // Import functions from `commands/settings`
@@ -91,7 +93,8 @@ pub async fn init(app_handle: AppHandle) {
 
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST, Method::DELETE])
-        .allow_origin(Any);
+        .allow_origin(Any)
+        .allow_headers([ACCEPT, CONTENT_TYPE]);
 
     let app = Router::new()
         // GET /recordings: Retrieve a list of all recordings.
@@ -99,7 +102,10 @@ pub async fn init(app_handle: AppHandle) {
         .route("/recordings", get(list_recordings_handler))
         // POST /recordings/:id/files: Create a new file within a specific recording.
         // This is a create operation on a sub-resource, making POST suitable.
-        .route("/recordings/:id/files", post(write_recording_file_handler).get(get_recording_file_handler))
+        .route(
+            "/recordings/:id/files",
+            post(write_recording_file_handler).get(get_recording_file_handler),
+        )
         // POST /recordings/start: Initiate a new recording session.
         // This is an action that changes server state, so POST is used.
         .route("/recordings/start", post(start_recording_handler))
@@ -108,7 +114,10 @@ pub async fn init(app_handle: AppHandle) {
         .route("/recordings/stop", post(stop_recording_handler))
         // DELETE /recordings/:id: Remove a specific recording.
         // Standard RESTful method for resource deletion.
-        .route("/recordings/:id", axum::routing::delete(delete_recording_handler))
+        .route(
+            "/recordings/:id",
+            axum::routing::delete(delete_recording_handler),
+        )
         // GET /recordings/:id/zip: Retrieve a zip archive of a specific recording.
         // Though it involves creation, the primary action is data retrieval, so GET is acceptable.
         .route("/recordings/:id/zip", get(create_recording_zip_handler))
@@ -132,10 +141,16 @@ pub async fn init(app_handle: AppHandle) {
         .route("/permissions/record", get(has_record_perms_handler))
         // POST /permissions/record/request: Trigger a request for screen recording permissions.
         // Action that initiates a system prompt.
-        .route("/permissions/record/request", post(request_record_perms_handler))
+        .route(
+            "/permissions/record/request",
+            post(request_record_perms_handler),
+        )
         // GET & POST /onboarding/complete: GET to read, POST to update onboarding status.
         // Standard resource state management.
-        .route("/onboarding/complete", get(get_onboarding_complete_handler).post(set_onboarding_complete_handler))
+        .route(
+            "/onboarding/complete",
+            get(get_onboarding_complete_handler).post(set_onboarding_complete_handler),
+        )
         // POST /tools/init: Trigger the initialization of external tools.
         // Action that changes server state.
         .route("/tools/init", post(init_tools_handler))
@@ -156,6 +171,9 @@ pub async fn init(app_handle: AppHandle) {
         .route("/recordings/export", post(export_recordings_handler))
         // GET /deeplink: Retrieve the latest deep link URL received by the application.
         .route("/deeplink", get(get_deeplink_handler))
+        // POST /open-url: Open an external URL.
+        // Action that opens an external URL.
+        .route("/open-url", post(open_external_url_handler))
         .with_state(state)
         .layer(cors);
 
@@ -194,13 +212,8 @@ async fn write_recording_file_handler(
     axum::extract::Path(id): axum::extract::Path<String>,
     Json(payload): Json<WriteFilePayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
-    match record::write_recording_file(
-        state.app_handle,
-        id,
-        payload.filename,
-        payload.content,
-    )
-    .await
+    match record::write_recording_file(state.app_handle, id, payload.filename, payload.content)
+        .await
     {
         Ok(_) => Ok(StatusCode::OK),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
@@ -253,7 +266,13 @@ async fn stop_recording_handler(
     Json(payload): Json<StopRecordingPayload>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
     let demonstration_state: tauri::State<record::DemonstrationState> = state.app_handle.state();
-    match record::stop_recording(state.app_handle.clone(), demonstration_state, Some(payload.status)).await {
+    match record::stop_recording(
+        state.app_handle.clone(),
+        demonstration_state,
+        Some(payload.status),
+    )
+    .await
+    {
         Ok(recording_id) => Ok((StatusCode::OK, recording_id)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
@@ -380,7 +399,9 @@ async fn set_onboarding_complete_handler(
 
 // --- Handlers for tools ---
 
-async fn init_tools_handler(State(state): State<AppState>) -> Result<StatusCode, (StatusCode, String)> {
+async fn init_tools_handler(
+    State(state): State<AppState>,
+) -> Result<StatusCode, (StatusCode, String)> {
     match init_tools(state.app_handle).await {
         Ok(_) => Ok(StatusCode::OK),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
@@ -426,25 +447,49 @@ async fn export_recording_handler(
     }
 }
 
-async fn export_recordings_handler(State(state): State<AppState>) -> Result<impl IntoResponse, (StatusCode, String)> {
+async fn export_recordings_handler(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
     match export_recordings(state.app_handle).await {
         Ok(path) => Ok((StatusCode::OK, path)),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 }
 
-// --- Handler for deep links ---
-
+// Handler to get the deep link URL
 async fn get_deeplink_handler(
     State(state): State<AppState>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
     let deeplink_state = state.app_handle.state::<DeepLinkState>();
     let mut url = deeplink_state.0.lock().unwrap();
-    
+
     // Take the URL from the state, leaving `None` in its place.
     if let Some(url_str) = url.take() {
         Ok((StatusCode::OK, Json(serde_json::json!({ "url": url_str }))))
     } else {
         Ok((StatusCode::OK, Json(serde_json::json!({ "url": null }))))
     }
-} 
+}
+
+#[derive(Deserialize)]
+pub struct OpenUrlPayload {
+    url: String,
+}
+
+// Handler to open an external URL
+pub async fn open_external_url_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<OpenUrlPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    match state
+        .app_handle
+        .opener()
+        .open_url(&payload.url, None::<&str>)
+    {
+        Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            format!("Failed to open URL '{}': {}", payload.url, e),
+        )),
+    }
+}

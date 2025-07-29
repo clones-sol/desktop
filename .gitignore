@@ -47,6 +47,6 @@ node_modules
 .env
 .env.*
 !.env.example
-native/src-tauri/target/
+src-tauri/target/
 vendor/
 
