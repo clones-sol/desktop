@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Assets {
   static const String assetFolder = 'assets/';
@@ -44,6 +46,69 @@ class ClonesFonts {
 
   // font monospace: 'JetBrains Mono', 'Fira Code', Consolas, monospace
   static const String mono = 'JetBrains Mono, Fira Code, Consolas, monospace';
+
+  // Google Fonts for Flutter Web
+  static TextStyle get primaryGoogleFont => GoogleFonts.inter(
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+      );
+
+  static TextStyle get primaryGoogleFontBold => GoogleFonts.inter(
+        fontSize: 16,
+        fontWeight: FontWeight.bold,
+      );
+
+  static TextStyle get monoGoogleFont => GoogleFonts.jetBrainsMono(
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+      );
+
+  static TextStyle get monoGoogleFontBold => GoogleFonts.jetBrainsMono(
+        fontSize: 14,
+        fontWeight: FontWeight.bold,
+      );
+
+  static TextStyle getPrimaryFont({
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+  }) {
+    if (kIsWeb) {
+      return GoogleFonts.inter(
+        fontSize: fontSize ?? 16,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        color: color,
+      );
+    } else {
+      return TextStyle(
+        fontFamily: primary,
+        fontSize: fontSize ?? 16,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        color: color,
+      );
+    }
+  }
+
+  static TextStyle getMonoFont({
+    double? fontSize,
+    FontWeight? fontWeight,
+    Color? color,
+  }) {
+    if (kIsWeb) {
+      return GoogleFonts.jetBrainsMono(
+        fontSize: fontSize ?? 14,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        color: color,
+      );
+    } else {
+      return TextStyle(
+        fontFamily: mono,
+        fontSize: fontSize ?? 14,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        color: color,
+      );
+    }
+  }
 }
 
 class ClonesColors {
