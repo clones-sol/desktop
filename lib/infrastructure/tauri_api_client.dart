@@ -284,4 +284,16 @@ class TauriApiClient {
       throw Exception('Failed to get deep link: ${response.body}');
     }
   }
+
+  Future<void> openExternalUrl(String url) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/open-url'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'url': url}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to open external URL: ${response.body}');
+    }
+  }
 }
