@@ -17,7 +17,7 @@ class ReferralRepositoryImpl implements ReferralRepository {
     try {
       final request = CreateReferralRequest(walletAddress: walletAddress);
       final response = await _apiClient.post<Map<String, dynamic>>(
-        '/referral/create',
+        '/referral/generate-code',
         data: request.toJson(),
       );
 
@@ -31,7 +31,7 @@ class ReferralRepositoryImpl implements ReferralRepository {
   Future<GetReferralInfoResponse> getReferralInfo(String walletAddress) async {
     try {
       final response = await _apiClient.get<Map<String, dynamic>>(
-        '/referral/info/$walletAddress',
+        '/referral/stats/$walletAddress',
       );
 
       return GetReferralInfoResponse.fromJson(response);
