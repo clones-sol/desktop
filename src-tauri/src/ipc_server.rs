@@ -6,6 +6,7 @@ use axum::{
     Router,
 };
 use http::header::{ACCEPT, CONTENT_TYPE};
+use http::{HeaderMap, HeaderValue};
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 use tauri::{AppHandle, Manager};
@@ -134,48 +135,39 @@ pub async fn init(app_handle: AppHandle) {
             get(get_upload_data_allowed_handler).post(set_upload_data_allowed_handler),
         )
         // GET /permissions/ax: Check accessibility permissions status.
-        // Read-only check.
         .route("/permissions/ax", get(has_ax_perms_handler))
         // GET /permissions/record: Check screen recording permissions status.
-        // Read-only check.
         .route("/permissions/record", get(has_record_perms_handler))
         // POST /permissions/record/request: Trigger a request for screen recording permissions.
-        // Action that initiates a system prompt.
         .route(
             "/permissions/record/request",
             post(request_record_perms_handler),
         )
         // GET & POST /onboarding/complete: GET to read, POST to update onboarding status.
-        // Standard resource state management.
         .route(
             "/onboarding/complete",
             get(get_onboarding_complete_handler).post(set_onboarding_complete_handler),
         )
         // POST /tools/init: Trigger the initialization of external tools.
-        // Action that changes server state.
         .route("/tools/init", post(init_tools_handler))
         // GET /tools/check: Check the status of external tools.
-        // Read-only check.
         .route("/tools/check", get(check_tools_handler))
         // POST /recordings/:id/process: Trigger post-processing for a specific recording.
-        // Action performed on a specific resource.
         .route("/recordings/:id/process", post(process_recording_handler))
         // POST /recordings/:id/open: Trigger opening the folder of a specific recording.
-        // Action performed on a specific resource.
         .route("/recordings/:id/open", post(open_recording_folder_handler))
         // POST /recordings/:id/export: Trigger an export of a specific recording.
-        // Action that creates a file for the user to download.
         .route("/recordings/:id/export", post(export_recording_handler))
         // POST /recordings/export: Trigger an export of all recordings.
-        // Action that creates a file for the user to download.
         .route("/recordings/export", post(export_recordings_handler))
         // GET /deeplink: Retrieve the latest deep link URL received by the application.
         .route("/deeplink", get(get_deeplink_handler))
         // POST /open-url: Open an external URL.
-        // Action that opens an external URL.
         .route("/open-url", post(open_external_url_handler))
         // GET /platform: Get the platform of the current system.
         .route("/platform", get(get_platform_handler))
+        // GET /proxy-image: Proxy an image from the internet.
+        .route("/proxy-image", get(proxy_image_handler))
         .with_state(state)
         .layer(cors);
 
@@ -506,5 +498,52 @@ pub async fn get_platform_handler(State(_state): State<AppState>) -> String {
         "linux".to_string()
     } else {
         "unknown".to_string()
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ProxyImageQuery {
+    url: String,
+}
+
+// Handler to proxy an image from the internet
+async fn proxy_image_handler(
+    Query(query): Query<ProxyImageQuery>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    let client = reqwest::Client::new();
+
+    match client.get(&query.url).send().await {
+        Ok(resp) => {
+            if !resp.status().is_success() {
+                return Err((
+                    StatusCode::BAD_REQUEST,
+                    format!("Failed to fetch image: {}", resp.status()),
+                ));
+            }
+
+            // Convert reqwest header value into http::HeaderValue
+            let content_type_str = resp
+                .headers()
+                .get("content-type")
+                .and_then(|v| v.to_str().ok())
+                .unwrap_or("image/png");
+
+            let content_type = HeaderValue::from_str(content_type_str)
+                .unwrap_or_else(|_| HeaderValue::from_static("image/png"));
+
+            match resp.bytes().await {
+                Ok(bytes) => {
+                    let mut headers = HeaderMap::new();
+                    headers.insert("Content-Type", content_type);
+                    headers.insert("Access-Control-Allow-Origin", HeaderValue::from_static("*"));
+                    Ok((headers, bytes))
+                }
+                Err(e) => Err((
+                    StatusCode::BAD_REQUEST,
+                    format!("Failed to read image bytes: {}", e),
+                )),
+            }
+        }
+        Err(e) => Err((StatusCode::BAD_REQUEST, format!("Request failed: {}", e))),
     }
 }

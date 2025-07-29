@@ -51,7 +51,6 @@ Future<void> _handleConnect(WidgetRef ref) async {
   final session = ref.read(sessionNotifierProvider);
 
   final url = session.connectionUrl;
-  debugPrint('url: $url');
 
   try {
     await ref.read(tauriApiClientProvider).openExternalUrl(url);
