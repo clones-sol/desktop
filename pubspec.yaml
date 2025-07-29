@@ -37,10 +37,8 @@ dependencies:
   percent_indicator: ^4.2.5
   riverpod: any
   riverpod_annotation: ^2.6.1
-  screen_retriever: ^0.2.0
   shared_preferences: ^2.2.2
   video_player: ^2.10.0
-  window_manager: ^0.5.1
 dev_dependencies:
   build_runner: ^2.4.6
   custom_lint: ^0.7.0

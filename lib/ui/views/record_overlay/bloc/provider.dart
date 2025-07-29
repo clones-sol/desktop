@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/ui/views/record_overlay/bloc/state.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:window_manager/window_manager.dart';
 
 part 'provider.g.dart';
 
@@ -45,28 +45,25 @@ class RecordOverlayNotifier extends _$RecordOverlayNotifier {
   Future<void> toggleCollapsed() async {
     state = state.copyWith(isCollapsed: !state.isCollapsed);
     if (state.isCollapsed) {
-      await windowManager.setSize(kRecordOverlayCollapsedSize);
+      await ref.read(tauriApiClientProvider).resizeWindow(
+            kRecordOverlayCollapsedSize.width,
+            kRecordOverlayCollapsedSize.height,
+          );
     } else {
-      await windowManager.setSize(kRecordOverlaySize);
+      await ref.read(tauriApiClientProvider).resizeWindow(
+            kRecordOverlaySize.width,
+            kRecordOverlaySize.height,
+          );
     }
   }
 
   Future<void> toggleLocked() async {
     state = state.copyWith(isLocked: !state.isLocked);
-    if (state.isLocked) {
-      await windowManager.setResizable(false);
+    /*  if (state.isLocked) {
+      await ref.read(tauriApiClientProvider).setResizable(false);
     } else {
-      await windowManager.setResizable(true);
-    }
-  }
-
-  Future<void> setFocused(bool focused) async {
-    state = state.copyWith(focused: focused);
-    if (focused) {
-      await windowManager.setOpacity(1);
-    } else {
-      await windowManager.setOpacity(0.3);
-    }
+      await ref.read(tauriApiClientProvider).setResizable(true);
+    }*/
   }
 
   void setSeconds(int seconds) {

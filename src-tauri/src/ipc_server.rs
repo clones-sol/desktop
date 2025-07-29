@@ -6,11 +6,10 @@ use axum::{
     Router,
 };
 use http::header::{ACCEPT, CONTENT_TYPE};
-use http::{HeaderMap, HeaderValue};
+
 use serde::{Deserialize, Serialize};
 use std::net::SocketAddr;
 use tauri::{AppHandle, Manager};
-use tauri_plugin_opener::OpenerExt;
 use tower_http::cors::{Any, CorsLayer};
 
 // Import business logic from the local `core` module
@@ -31,6 +30,17 @@ use crate::core::record::{export_recording_zip, open_recording_folder, process_r
 use crate::utils::permissions::{has_record_perms, request_record_perms};
 // Import functions from `commands/settings`
 use crate::commands::settings::{get_onboarding_complete, set_onboarding_complete};
+// Import functions from `utils/windows`
+use crate::utils::windows::{
+    get_all_displays_size, get_window_size, resize_window, set_window_position,
+    set_window_resizable, ResizeWindowPayload, SetWindowAlignmentPayload,
+};
+// Import functions from `utils/platform`
+use crate::utils::platform::get_platform;
+// Import functions from `utils/url`
+use crate::utils::url::{open_external_url, OpenUrlPayload};
+// Import functions from `utils/proxy`
+use crate::utils::proxy::{proxy_image, ProxyImageQuery};
 // Import our new DeepLinkState
 use crate::DeepLinkState;
 
@@ -86,6 +96,12 @@ pub struct PermissionStatus {
 #[derive(Deserialize)]
 pub struct SetOnboardingCompletePayload {
     complete: bool,
+}
+
+// Structure for the `set_window_resizable` payload
+#[derive(Deserialize)]
+pub struct SetWindowResizablePayload {
+    resizable: bool,
 }
 
 // Main function to start the server
@@ -168,6 +184,16 @@ pub async fn init(app_handle: AppHandle) {
         .route("/platform", get(get_platform_handler))
         // GET /proxy-image: Proxy an image from the internet.
         .route("/proxy-image", get(proxy_image_handler))
+        // POST /resize-window: Resize the window.
+        .route("/window/resize", post(resize_window_handler))
+        // GET /window/size: Get the size of the window.
+        .route("/window/size", get(get_window_size_handler))
+        // POST /window/position: Set the position of the window.
+        .route("/window/position", post(set_window_position_handler))
+        // POST /window/resizable: Set the resizability of the window.
+        .route("/window/resizable", post(set_window_resizable_handler))
+        // GET /displays/size: Get the size of all displays.
+        .route("/displays/size", get(get_all_displays_size_handler))
         .with_state(state)
         .layer(cors);
 
@@ -465,85 +491,79 @@ async fn get_deeplink_handler(
     }
 }
 
-#[derive(Deserialize)]
-pub struct OpenUrlPayload {
-    url: String,
-}
-
 // Handler to open an external URL
 pub async fn open_external_url_handler(
     State(state): State<AppState>,
     Json(payload): Json<OpenUrlPayload>,
 ) -> Result<StatusCode, (StatusCode, String)> {
-    match state
-        .app_handle
-        .opener()
-        .open_url(&payload.url, None::<&str>)
-    {
+    match open_external_url(&state.app_handle, &payload) {
         Ok(_) => Ok(StatusCode::OK),
-        Err(e) => Err((
-            StatusCode::INTERNAL_SERVER_ERROR,
-            format!("Failed to open URL '{}': {}", payload.url, e),
-        )),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
     }
 }
 
 // Get the platform of the current system
 pub async fn get_platform_handler(State(_state): State<AppState>) -> String {
-    if cfg!(target_os = "macos") {
-        "macos".to_string()
-    } else if cfg!(target_os = "windows") {
-        "windows".to_string()
-    } else if cfg!(target_os = "linux") {
-        "linux".to_string()
-    } else {
-        "unknown".to_string()
-    }
-}
-
-#[derive(Deserialize)]
-pub struct ProxyImageQuery {
-    url: String,
+    get_platform()
 }
 
 // Handler to proxy an image from the internet
 async fn proxy_image_handler(
     Query(query): Query<ProxyImageQuery>,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
-    let client = reqwest::Client::new();
+    match proxy_image(&query).await {
+        Ok((headers, bytes)) => Ok((headers, bytes)),
+        Err(e) => Err((StatusCode::BAD_REQUEST, e)),
+    }
+}
 
-    match client.get(&query.url).send().await {
-        Ok(resp) => {
-            if !resp.status().is_success() {
-                return Err((
-                    StatusCode::BAD_REQUEST,
-                    format!("Failed to fetch image: {}", resp.status()),
-                ));
-            }
+// Handler to resize the window
+async fn resize_window_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<ResizeWindowPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    match resize_window(&state.app_handle, &payload) {
+        Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
 
-            // Convert reqwest header value into http::HeaderValue
-            let content_type_str = resp
-                .headers()
-                .get("content-type")
-                .and_then(|v| v.to_str().ok())
-                .unwrap_or("image/png");
+// Handler to set the position of the window
+async fn set_window_position_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<SetWindowAlignmentPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    match set_window_position(&state.app_handle, &payload) {
+        Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
 
-            let content_type = HeaderValue::from_str(content_type_str)
-                .unwrap_or_else(|_| HeaderValue::from_static("image/png"));
+// Handler to get the size of the window
+pub async fn get_window_size_handler(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match get_window_size(&state.app_handle) {
+        Ok(size) => Ok((StatusCode::OK, Json(size))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
 
-            match resp.bytes().await {
-                Ok(bytes) => {
-                    let mut headers = HeaderMap::new();
-                    headers.insert("Content-Type", content_type);
-                    headers.insert("Access-Control-Allow-Origin", HeaderValue::from_static("*"));
-                    Ok((headers, bytes))
-                }
-                Err(e) => Err((
-                    StatusCode::BAD_REQUEST,
-                    format!("Failed to read image bytes: {}", e),
-                )),
-            }
-        }
-        Err(e) => Err((StatusCode::BAD_REQUEST, format!("Request failed: {}", e))),
+// Handler to set the resizability of the window
+async fn set_window_resizable_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<SetWindowResizablePayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    match set_window_resizable(&state.app_handle, payload.resizable) {
+        Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to get the size of all displays
+async fn get_all_displays_size_handler() -> Result<impl IntoResponse, (StatusCode, String)> {
+    match get_all_displays_size() {
+        Ok(size) => Ok((StatusCode::OK, Json(size))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
     }
 }

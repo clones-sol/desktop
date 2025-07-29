@@ -52,7 +52,7 @@ class _MemoryImageTauriState extends ConsumerState<MemoryImageTauri> {
             height: widget.height,
             child: const CircularProgressIndicator(
               color: ClonesColors.primaryText,
-              strokeWidth: 1,
+              strokeWidth: 0.5,
             ),
           );
   }
