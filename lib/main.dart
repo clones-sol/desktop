@@ -239,36 +239,41 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
       }
     });
 
-    final textTheme = ThemeData.light().textTheme.copyWith(
+    final textTheme = Theme.of(context).textTheme.copyWith(
           bodySmall: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.bodySmall!.fontSize,
+            fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
             color: ClonesColors.secondaryText,
           ),
           bodyMedium: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.bodyMedium!.fontSize,
+            fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodyMedium?.fontWeight,
             color: ClonesColors.secondaryText,
           ),
           bodyLarge: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.bodyLarge!.fontSize,
+            fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
             color: ClonesColors.secondaryText,
           ),
           titleLarge: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.titleLarge!.fontSize,
-            fontWeight: ThemeData.light().textTheme.titleLarge!.fontWeight,
+            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleLarge?.fontWeight,
             color: ClonesColors.primaryText,
           ),
           titleMedium: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.titleMedium!.fontSize,
-            fontWeight: ThemeData.light().textTheme.titleMedium!.fontWeight,
+            fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
             color: ClonesColors.primaryText,
           ),
           titleSmall: ClonesFonts.getPrimaryFont(
-            fontSize: ThemeData.light().textTheme.titleSmall!.fontSize,
-            fontWeight: ThemeData.light().textTheme.titleSmall!.fontWeight,
+            fontSize: Theme.of(context).textTheme.titleSmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleSmall?.fontWeight,
             color: ClonesColors.primaryText,
           ),
           labelSmall: ClonesFonts.getMonoFont(
-            fontSize: ThemeData.light().textTheme.labelSmall!.fontSize,
+            fontSize: Theme.of(context).textTheme.labelSmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.labelSmall?.fontWeight,
+            color: ClonesColors.primaryText,
           ),
         );
 
@@ -297,7 +302,6 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
           ),
           closeIconColor: ClonesColors.primaryText,
         ),
-        useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,

@@ -28,7 +28,7 @@ class DemoDetailView extends ConsumerStatefulWidget {
 }
 
 class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
-  late String platformOpenFileExplorerName;
+  String platformOpenFileExplorerName = '';
 
   @override
   void initState() {
@@ -38,13 +38,16 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
           .read(demoDetailNotifierProvider.notifier)
           .loadRecording(widget.recordingId);
 
-      platformOpenFileExplorerName =
-          await _getPlatformOpenFileExplorerName(ref);
+      final platformName = await _getPlatformOpenFileExplorerName(ref);
+      setState(() {
+        platformOpenFileExplorerName = platformName;
+      });
     });
   }
 
   Future<String> _getPlatformOpenFileExplorerName(WidgetRef ref) async {
     final platform = await ref.read(tauriApiClientProvider).getPlatform();
+    debugPrint('platform: $platform');
     if (platform == 'macos') {
       return 'Finder';
     } else if (platform == 'windows') {
