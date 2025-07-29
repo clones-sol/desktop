@@ -55,7 +55,6 @@ Future<void> _handleConnect(WidgetRef ref) async {
 
   try {
     await ref.read(tauriApiClientProvider).openExternalUrl(url);
-    debugPrint('Opened external URL via Tauri');
     await ref.read(sessionNotifierProvider.notifier).startPolling();
   } catch (e) {
     debugPrint('Failed to open external URL: $e');

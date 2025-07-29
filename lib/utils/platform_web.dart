@@ -46,10 +46,16 @@ class ScreenRetrieverWeb {
       Display(
         id: 0,
         name: 'Web Display',
-        size: Size(html.window.screen!.width!.toDouble(),
-            html.window.screen!.height!.toDouble()),
-        workArea: Rect.fromLTWH(0, 0, html.window.screen!.width!.toDouble(),
-            html.window.screen!.height!.toDouble()),
+        size: Size(
+          html.window.screen!.width!.toDouble(),
+          html.window.screen!.height!.toDouble(),
+        ),
+        workArea: Rect.fromLTWH(
+          0,
+          0,
+          html.window.screen!.width!.toDouble(),
+          html.window.screen!.height!.toDouble(),
+        ),
         scaleFactor: html.window.devicePixelRatio.toDouble(),
         rotation: 0,
       ),
@@ -76,28 +82,20 @@ class PathProviderWeb {
 
 // Mock classes for web compatibility
 class Size {
+  const Size(this.width, this.height);
   final double width;
   final double height;
-  const Size(this.width, this.height);
 }
 
 class Rect {
+  const Rect.fromLTWH(this.left, this.top, this.width, this.height);
   final double left;
   final double top;
   final double width;
   final double height;
-
-  const Rect.fromLTWH(this.left, this.top, this.width, this.height);
 }
 
 class Display {
-  final int id;
-  final String name;
-  final Size size;
-  final Rect workArea;
-  final double scaleFactor;
-  final int rotation;
-
   const Display({
     required this.id,
     required this.name,
@@ -106,4 +104,10 @@ class Display {
     required this.scaleFactor,
     required this.rotation,
   });
+  final int id;
+  final String name;
+  final Size size;
+  final Rect workArea;
+  final double scaleFactor;
+  final int rotation;
 }

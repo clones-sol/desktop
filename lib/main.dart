@@ -16,12 +16,12 @@ import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
+import 'package:clones_desktop/utils/platform_compatibility.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:clones_desktop/utils/platform_compatibility.dart';
-import 'package:flutter/foundation.dart';
 
 final _router = GoRouter(
   initialLocation: HomeView.routeName,

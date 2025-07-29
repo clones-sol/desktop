@@ -304,8 +304,11 @@ class _PlatformCell extends StatelessWidget {
     final theme = Theme.of(context);
     return Row(
       children: [
-        FaIcon(_getOSIcon(submission),
-            size: 16, color: ClonesColors.secondaryText),
+        FaIcon(
+          _getOSIcon(submission),
+          size: 16,
+          color: ClonesColors.secondaryText,
+        ),
         const SizedBox(width: 8),
         Text(
           _getOSName(submission),
