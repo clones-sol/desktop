@@ -33,14 +33,31 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
   }
 
   Future<void> _handleConnect() async {
-    await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
-    final session = ref.read(sessionNotifierProvider);
     if (!mounted) return;
+    
+    try {
+      await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
+      if (!mounted) return;
+      
+      final session = ref.read(sessionNotifierProvider);
+      if (!mounted) return;
 
-    final uri = Uri.parse(session.connectionUrl);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-      await ref.read(sessionNotifierProvider.notifier).startPolling();
+      final uri = Uri.parse(session.connectionUrl);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+        if (!mounted) return;
+        await ref.read(sessionNotifierProvider.notifier).startPolling();
+      }
+    } catch (e) {
+      // Handle any errors gracefully
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to connect wallet: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
