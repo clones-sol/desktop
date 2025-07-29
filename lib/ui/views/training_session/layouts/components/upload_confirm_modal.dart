@@ -1,3 +1,4 @@
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/upload/provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
@@ -6,7 +7,6 @@ import 'package:clones_desktop/utils/env.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class UploadConfirmModal extends ConsumerWidget {
   const UploadConfirmModal({
@@ -39,8 +39,14 @@ class UploadConfirmModal extends ConsumerWidget {
                     decoration: TextDecoration.underline,
                   ),
                   recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrl(Uri.parse(Env.privacyPolicyUrl));
+                    ..onTap = () async {
+                      try {
+                        await ref
+                            .read(tauriApiClientProvider)
+                            .openExternalUrl(Env.privacyPolicyUrl);
+                      } catch (e) {
+                        debugPrint('Failed to open external URL: $e');
+                      }
                     },
                 ),
               ],
