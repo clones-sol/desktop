@@ -6,6 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 
+// Provider to track if we've already tried loading referral info
+final _hasTriedLoadingProvider = StateProvider<bool>((ref) => false);
+
+// Provider to track the previous wallet address
+final _previousWalletAddressProvider = StateProvider<String?>((ref) => null);
+
+// Provider to track if we've already shown the success confirmation
+final _hasShownConfirmationProvider = StateProvider<bool>((ref) => false);
+
 class ReferralContent extends ConsumerWidget {
   const ReferralContent({
     super.key,
@@ -18,6 +27,18 @@ class ReferralContent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Reset the loading flag when wallet address changes
+    final currentWalletAddress = sessionState.address;
+    final previousWalletAddress = ref.read(_previousWalletAddressProvider);
+    
+    if (currentWalletAddress != previousWalletAddress) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(_hasTriedLoadingProvider.notifier).state = false;
+        ref.read(_hasShownConfirmationProvider.notifier).state = false;
+        ref.read(_previousWalletAddressProvider.notifier).state = currentWalletAddress;
+      });
+    }
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -117,11 +138,16 @@ class ReferralContent extends ConsumerWidget {
     // Auto-load existing referral info when wallet is connected
     final walletAddress = sessionState.address;
     if (walletAddress != null) {
-      // Use FutureBuilder to avoid calling the provider during build
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        debugPrint('🔍 [ReferralContent] Auto-loading referral info for wallet: $walletAddress');
-        ref.read(referralNotifierProvider.notifier).getReferralInfo(walletAddress);
-      });
+      // Use a flag to prevent infinite loops
+      final hasTriedLoading = ref.read(_hasTriedLoadingProvider);
+      if (!hasTriedLoading) {
+        // Use FutureBuilder to avoid calling the provider during build
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          debugPrint('🔍 [ReferralContent] Auto-loading referral info for wallet: $walletAddress');
+          ref.read(_hasTriedLoadingProvider.notifier).state = true;
+          ref.read(referralNotifierProvider.notifier).getReferralInfo(walletAddress);
+        });
+      }
     }
 
     return Center(
@@ -207,6 +233,48 @@ class ReferralContent extends ConsumerWidget {
   }
 
   Widget _buildSuccessState(BuildContext context, WidgetRef ref, referralInfo) {
+    // Show success confirmation when this state is first displayed
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final successState = referralState as Success;
+      final hasShownConfirmation = ref.read(_hasShownConfirmationProvider);
+      
+      if (successState.showConfirmation && !hasShownConfirmation) {
+        ref.read(_hasShownConfirmationProvider.notifier).state = true;
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Referral code successfully linked to your wallet!',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            backgroundColor: Colors.green,
+            duration: const Duration(seconds: 4),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            margin: const EdgeInsets.all(16),
+          ),
+        );
+      }
+    });
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
