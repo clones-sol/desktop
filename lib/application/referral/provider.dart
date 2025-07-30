@@ -3,6 +3,7 @@ import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/infrastructure/referral.repository.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/foundation.dart';
 
 // Repository provider
 final referralRepositoryProvider = Provider<ReferralRepository>((ref) {
@@ -17,10 +18,13 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
   ReferralNotifier(this._repository) : super(const ReferralState.initial());
 
   Future<void> createReferral(String walletAddress) async {
+    debugPrint('🔍 [ReferralNotifier] createReferral called with walletAddress: $walletAddress');
     state = const ReferralState.loading();
     
     try {
+      debugPrint('🔍 [ReferralNotifier] Calling repository.createReferral...');
       final response = await _repository.createReferral(walletAddress);
+      debugPrint('🔍 [ReferralNotifier] Repository response: $response');
       
       if (response.success) {
         final referralInfo = ReferralInfo(
@@ -33,11 +37,14 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
           createdAt: DateTime.now(),
         );
         
+        debugPrint('🔍 [ReferralNotifier] Setting success state with referralInfo: $referralInfo');
         state = ReferralState.success(referralInfo);
       } else {
+        debugPrint('🔍 [ReferralNotifier] Setting error state: ${response.message}');
         state = ReferralState.error(response.message ?? 'Failed to create referral');
       }
     } catch (e) {
+      debugPrint('🔍 [ReferralNotifier] Exception caught: $e');
       state = ReferralState.error(e.toString());
     }
   }
@@ -46,12 +53,17 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
     state = const ReferralState.loading();
     
     try {
+      debugPrint('🔍 [ReferralNotifier] getReferralInfo called with walletAddress: $walletAddress');
       final response = await _repository.getReferralInfo(walletAddress);
+      debugPrint('🔍 [ReferralNotifier] getReferralInfo response: $response');
       
       if (response.success) {
+        // Construct the referral link using the referral code
+        final referralLink = 'https://clones-ai.com/ref/${response.data.referralCode}';
+        
         final referralInfo = ReferralInfo(
           referralCode: response.data.referralCode,
-          referralLink: '', // Backend doesn't provide this in stats endpoint
+          referralLink: referralLink, // Use the constructed link
           walletAddress: walletAddress, // Use the requested wallet address
           totalReferrals: response.data.totalReferrals,
           totalRewards: response.data.totalRewards,
@@ -60,12 +72,22 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
           lastUpdated: DateTime.now(),
         );
         
+        debugPrint('🔍 [ReferralNotifier] Setting success state with referralInfo: $referralInfo');
         state = ReferralState.success(referralInfo);
       } else {
+        debugPrint('🔍 [ReferralNotifier] Setting error state: ${response.message}');
         state = ReferralState.error(response.message ?? 'Failed to get referral info');
       }
     } catch (e) {
-      state = ReferralState.error(e.toString());
+      debugPrint('🔍 [ReferralNotifier] Exception in getReferralInfo: $e');
+      
+      // If it's a 404 error (wallet doesn't have referral code), show initial state instead of error
+      if (e.toString().contains('404') || e.toString().contains('not found')) {
+        debugPrint('🔍 [ReferralNotifier] Wallet has no referral code, showing initial state');
+        state = const ReferralState.initial();
+      } else {
+        state = ReferralState.error(e.toString());
+      }
     }
   }
 
