@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:clones_desktop/domain/app_info.dart';
 import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/recording/recording_meta.dart';
+import 'package:clones_desktop/utils/window_alignment.dart';
 import 'package:http/http.dart' as http;
 
 class TauriApiClient {
@@ -282,6 +283,103 @@ class TauriApiClient {
       return data['url'];
     } else {
       throw Exception('Failed to get deep link: ${response.body}');
+    }
+  }
+
+  Future<void> openExternalUrl(String url) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/open-url'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'url': url}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to open external URL: ${response.body}');
+    }
+  }
+
+  Future<String> getPlatform() async {
+    final response = await _client.get(Uri.parse('$_baseUrl/platform'));
+    if (response.statusCode == 200) {
+      return response.body;
+    } else {
+      throw Exception('Failed to get platform: ${response.body}');
+    }
+  }
+
+  Future<Uint8List> fetchImageViaProxy(String imageUrl) async {
+    final response = await _client.get(
+      Uri.parse('$_baseUrl/proxy-image?url=$imageUrl'),
+    );
+
+    if (response.statusCode == 200) {
+      return response.bodyBytes;
+    } else {
+      throw Exception('Failed to proxy image: ${response.body}');
+    }
+  }
+
+  Future<void> resizeWindow(
+    double width,
+    double height,
+  ) async {
+    await _client.post(
+      Uri.parse('$_baseUrl/window/resize'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'width': width,
+        'height': height,
+      }),
+    );
+  }
+
+  Future<void> setWindowPosition(WindowAlignment alignment) async {
+    await _client.post(
+      Uri.parse('$_baseUrl/window/position'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'alignment': alignment.name}),
+    );
+  }
+
+  Future<({double width, double height})> getWindowSize() async {
+    final response = await _client.get(Uri.parse('$_baseUrl/window/size'));
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      return (
+        width: data['width'] as double,
+        height: data['height'] as double,
+      );
+    } else {
+      throw Exception('Failed to get window size: ${response.body}');
+    }
+  }
+
+  Future<void> setWindowResizable(bool resizable) async {
+    final response = await _client.post(
+      Uri.parse('$_baseUrl/window/resizable'),
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({'resizable': resizable}),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to set window resizable: ${response.body}');
+    }
+  }
+
+  Future<List<({double width, double height})>> getDisplaysSize() async {
+    final response = await _client.get(Uri.parse('$_baseUrl/displays/size'));
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+      return data
+          .map(
+            (json) => (
+              width: json['width'] as double,
+              height: json['height'] as double,
+            ),
+          )
+          .toList();
+    } else {
+      throw Exception('Failed to get displays size: ${response.body}');
     }
   }
 }

@@ -1,11 +1,7 @@
-import 'dart:async';
-
-import 'package:clones_desktop/ui/views/record_overlay/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_header.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/components/record_overlay_objectives.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:window_manager/window_manager.dart';
 
 class RecordOverlayView extends ConsumerStatefulWidget {
   const RecordOverlayView({super.key});
@@ -16,34 +12,7 @@ class RecordOverlayView extends ConsumerStatefulWidget {
   ConsumerState<RecordOverlayView> createState() => _RecordOverlayViewState();
 }
 
-class _RecordOverlayViewState extends ConsumerState<RecordOverlayView>
-    with WindowListener {
-  @override
-  void initState() {
-    super.initState();
-    windowManager.addListener(this);
-  }
-
-  @override
-  void dispose() {
-    windowManager.removeListener(this);
-    super.dispose();
-  }
-
-  @override
-  void onWindowFocus() {
-    unawaited(
-      ref.read(recordOverlayNotifierProvider.notifier).setFocused(true),
-    );
-  }
-
-  @override
-  void onWindowBlur() {
-    unawaited(
-      ref.read(recordOverlayNotifierProvider.notifier).setFocused(false),
-    );
-  }
-
+class _RecordOverlayViewState extends ConsumerState<RecordOverlayView> {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -52,7 +21,7 @@ class _RecordOverlayViewState extends ConsumerState<RecordOverlayView>
       width: mediaQuery.size.width,
       height: mediaQuery.size.height,
       decoration: BoxDecoration(
-        color: Colors.white.withValues(alpha: 0.1),
+        color: Colors.black,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
@@ -62,12 +31,9 @@ class _RecordOverlayViewState extends ConsumerState<RecordOverlayView>
           ),
         ],
       ),
-      child: const Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [RecordOverlayHeader(), RecordOverlayObjectives()],
-        ),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [RecordOverlayHeader(), RecordOverlayObjectives()],
       ),
     );
   }

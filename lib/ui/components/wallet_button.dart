@@ -1,12 +1,13 @@
 import 'package:clones_desktop/application/session/provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/memory_image_tauri.dart';
 import 'package:clones_desktop/utils/env.dart';
 import 'package:clones_desktop/utils/format_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class WalletButton extends ConsumerStatefulWidget {
   const WalletButton({
@@ -42,12 +43,11 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
       final session = ref.read(sessionNotifierProvider);
       if (!mounted) return;
 
-      final uri = Uri.parse(session.connectionUrl);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(uri, mode: LaunchMode.externalApplication);
-        if (!mounted) return;
-        await ref.read(sessionNotifierProvider.notifier).startPolling();
-      }
+      await ref.read(tauriApiClientProvider).openExternalUrl(
+        session.connectionUrl,
+      );
+      if (!mounted) return;
+      await ref.read(sessionNotifierProvider.notifier).startPolling();
     } catch (e) {
       // Handle any errors gracefully
       if (mounted) {
@@ -58,6 +58,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
           ),
         );
       }
+      debugPrint('Failed to open external URL: $e');
     }
   }
 
@@ -145,13 +146,18 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                               ),
                               const SizedBox(width: 8),
                               InkWell(
-                                onTap: () {
-                                  launchUrl(
-                                    Uri.parse(
-                                      '${Env.solscanBaseUrl}/address/${session.address}',
-                                    ),
-                                    mode: LaunchMode.externalApplication,
-                                  );
+                                onTap: () async {
+                                  try {
+                                    await ref
+                                        .read(tauriApiClientProvider)
+                                        .openExternalUrl(
+                                          '${Env.solscanBaseUrl}/address/${session.address}',
+                                        );
+                                  } catch (e) {
+                                    debugPrint(
+                                      'Failed to open external URL: $e',
+                                    );
+                                  }
                                 },
                                 child: Icon(
                                   Icons.open_in_new,
@@ -174,10 +180,16 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
                                 Row(
                                   children: [
                                     if (tokenBalance.logoUrl != null)
-                                      Image.network(
-                                        tokenBalance.logoUrl!,
+                                      MemoryImageTauri(
+                                        imageUrl: tokenBalance.logoUrl!,
                                         width: 20,
                                         height: 20,
+                                        errorBuilder: (_, __, ___) =>
+                                            const Icon(
+                                          Icons.apps,
+                                          color: ClonesColors.primaryText,
+                                          size: 20,
+                                        ),
                                       )
                                     else
                                       const Icon(

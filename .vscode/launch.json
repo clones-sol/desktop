@@ -5,40 +5,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "[clones-native] Run IPC Server",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "PRIMARY_LOGGER=true sleep 2; cargo run --bin ipc-server-only",
-      "cwd": "${workspaceFolder}/native/src-tauri"
-    },
-    {
-      "name": "clones-flutter",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart"
-    },
-    {
-      "name": "clones-flutter-profile",
+      "name": "Flutter Web (Development)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",
-      "flutterMode": "profile"
+      "args": [
+        "-d",
+        "web-server",
+        "--web-port",
+        "3000"
+      ]
+    },
+    {
+      "name": "Tauri Development",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "cargo tauri dev",
+      "cwd": "${workspaceFolder}/src-tauri"
     }
   ],
   "compounds": [
     {
-      "name": "[COMPOUND] Flutter with IPC",
+      "name": "[NEW] Flutter Web + Tauri Development",
       "configurations": [
-        "[clones-native] Run IPC Server",
-        "clones-flutter"
-      ],
-      "stopAll": true
-    },
-    {
-      "name": "[COMPOUND] Flutter with IPC Profile",
-      "configurations": [
-        "[clones-native] Run IPC Server",
-        "clones-flutter-profile"
+        "Flutter Web (Development)",
+        "Tauri Development"
       ],
       "stopAll": true
     }

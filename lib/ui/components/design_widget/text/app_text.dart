@@ -68,8 +68,11 @@ class AppText extends StatelessWidget {
                   faviconUrl,
                   width: 16,
                   height: 16,
-                  errorBuilder: (context, error, stackTrace) => Icon(Icons.apps,
-                      size: 16, color: ClonesColors.secondaryText),
+                  errorBuilder: (context, error, stackTrace) => Icon(
+                    Icons.apps,
+                    size: 16,
+                    color: ClonesColors.secondaryText,
+                  ),
                 ),
                 const SizedBox(width: 4),
                 Text(

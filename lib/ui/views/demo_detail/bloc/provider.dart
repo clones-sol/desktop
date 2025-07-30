@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:clones_desktop/application/recording.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
@@ -8,7 +7,6 @@ import 'package:clones_desktop/domain/models/message/sft_message.dart';
 import 'package:clones_desktop/domain/models/recording/recording_event.dart';
 import 'package:clones_desktop/ui/views/demo_detail/bloc/state.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:video_player/video_player.dart';
 
@@ -50,14 +48,12 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
 
   Future<void> initializeVideoPlayer(String recordingId) async {
     try {
-      // 1. Fetch the video as a Base64 string
       final videoData = await ref.read(tauriApiClientProvider).getRecordingFile(
             recordingId: recordingId,
             filename: 'recording.mp4',
             asBase64: true,
           );
 
-      // 2. Decode the Base64 string
       // The string is a data URI: "data:video/mp4;base64,...."
       final parts = videoData.split(',');
       if (parts.length != 2) {
@@ -66,29 +62,15 @@ class DemoDetailNotifier extends _$DemoDetailNotifier {
       final base64String = parts[1];
       final videoBytes = base64Decode(base64String);
 
-      // 3. Save to a temporary file
-      final tempDir = await getTemporaryDirectory();
-      final tempFile = File('${tempDir.path}/$recordingId.mp4');
-      await tempFile.writeAsBytes(videoBytes);
-
-      // 4. Use the temporary file with the VideoPlayerController
-      final controller = VideoPlayerController.file(tempFile);
+      final videoUri = Uri.dataFromBytes(
+        videoBytes,
+        mimeType: 'video/mp4',
+      );
+      final controller = VideoPlayerController.networkUrl(videoUri);
       await controller.initialize();
 
-      // Clean up the old controller if it exists
       await state.videoController?.dispose();
-
       state = state.copyWith(videoController: controller);
-
-      // Optional: Delete the file when the controller is disposed
-      controller.addListener(() {
-        if (controller.value.isInitialized == false) {
-          final exists = tempFile.existsSync();
-          if (exists) {
-            tempFile.deleteSync();
-          }
-        }
-      });
     } catch (e, s) {
       debugPrint('Failed to initialize video player: $e');
       debugPrint(s.toString());

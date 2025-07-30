@@ -71,8 +71,10 @@ class _TopForgesState extends ConsumerState<TopForges> {
                 ),
                 const SizedBox(width: 12),
                 IconButton(
-                  icon: const Icon(Icons.open_in_full,
-                      color: ClonesColors.secondary),
+                  icon: const Icon(
+                    Icons.open_in_full,
+                    color: ClonesColors.secondary,
+                  ),
                   onPressed: widget.onExpand,
                 ),
               ],

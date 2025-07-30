@@ -149,8 +149,11 @@ class _FilterButton extends StatelessWidget {
     final theme = Theme.of(context);
     return ElevatedButton.icon(
       onPressed: () {},
-      icon: FaIcon(icon,
-          size: 14, color: iconColor ?? ClonesColors.secondaryText),
+      icon: FaIcon(
+        icon,
+        size: 14,
+        color: iconColor ?? ClonesColors.secondaryText,
+      ),
       label: Row(
         children: [
           Text(label, style: theme.textTheme.bodyMedium),

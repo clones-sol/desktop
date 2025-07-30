@@ -5,6 +5,7 @@ import 'package:clones_desktop/domain/app_info.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/components/design_widget/dialog/dialog.dart';
+import 'package:clones_desktop/ui/components/memory_image_tauri.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/available_tasks.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/state.dart';
@@ -215,8 +216,9 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
-                                              child: Image.network(
-                                                getFaviconUrl(app.domain),
+                                              child: MemoryImageTauri(
+                                                imageUrl:
+                                                    getFaviconUrl(app.domain),
                                                 width: 24,
                                                 height: 24,
                                                 errorBuilder: (_, __, ___) =>

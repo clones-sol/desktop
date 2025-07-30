@@ -1,20 +1,4 @@
-// Platform utilities for Flutter
-//
-// Migrated from src/lib/utils/platform.ts
-
-import 'dart:io';
-
 import 'package:clones_desktop/utils/env.dart';
-
-/// Gets the current platform as a string ('macos', 'windows', 'linux', 'android', 'ios', etc.)
-String getPlatform() {
-  if (Platform.isMacOS) return 'macos';
-  if (Platform.isWindows) return 'windows';
-  if (Platform.isLinux) return 'linux';
-  if (Platform.isAndroid) return 'android';
-  if (Platform.isIOS) return 'ios';
-  return 'unknown';
-}
 
 /// API URL based on environment (adapt as needed)
 final String apiBackendUrl = Env.apiBackendUrl;

@@ -1,5 +1,4 @@
 import 'package:clones_desktop/application/route_provider.dart';
-import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/sidebar.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
@@ -22,7 +21,6 @@ class LayoutBackground extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(sessionNotifierProvider);
     return LayoutBuilder(
       builder: (context, constraints) {
         final screenHeight = constraints.maxHeight;

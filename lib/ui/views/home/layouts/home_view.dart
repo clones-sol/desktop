@@ -1,6 +1,5 @@
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/card.dart';
-import 'package:clones_desktop/ui/components/svg_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

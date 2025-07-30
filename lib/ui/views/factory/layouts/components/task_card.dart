@@ -7,6 +7,7 @@ import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
 import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/memory_image_tauri.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:clones_desktop/utils/fav_tools.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +65,8 @@ class TaskCard extends StatelessWidget {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Row(
                       children: [
-                        Image.network(
-                          getFaviconUrl(app.domain),
+                        MemoryImageTauri(
+                          imageUrl: getFaviconUrl(app.domain),
                           width: 20,
                           height: 20,
                           errorBuilder: (context, error, stackTrace) =>

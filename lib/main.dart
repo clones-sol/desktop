@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/deeplink_provider.dart';
 import 'package:clones_desktop/application/route_provider.dart';
+import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/main_layout.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
@@ -17,12 +18,11 @@ import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.d
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
+import 'package:clones_desktop/utils/window_alignment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:screen_retriever/screen_retriever.dart';
-import 'package:window_manager/window_manager.dart';
 
 final _router = GoRouter(
   initialLocation: HomeView.routeName,
@@ -155,32 +155,6 @@ Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load();
 
-  await windowManager.ensureInitialized();
-
-  final allDisplays = await screenRetriever.getAllDisplays();
-  final smallestDisplay = allDisplays.reduce((a, b) {
-    final areaA = a.size.width * a.size.height;
-    final areaB = b.size.width * b.size.height;
-    return areaA < areaB ? a : b;
-  });
-
-  final initialSize = Size(
-    smallestDisplay.size.width,
-    smallestDisplay.size.height,
-  );
-
-  final windowOptions = WindowOptions(
-    size: initialSize,
-    center: true,
-    backgroundColor: Colors.transparent,
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
-
-  await windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
   runApp(const ProviderScope(child: ClonesApp()));
 }
 
@@ -198,8 +172,26 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     _router.routeInformationProvider.addListener(_updateRoute);
     // Set initial route
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _initializeWindow();
       _updateRoute();
     });
+  }
+
+  Future<void> _initializeWindow() async {
+    final displays = await ref.read(tauriApiClientProvider).getDisplaysSize();
+    final smallestDisplay = displays.reduce((a, b) {
+      final areaA = a.width * a.height;
+      final areaB = b.width * b.height;
+      return areaA < areaB ? a : b;
+    });
+    await ref.read(tauriApiClientProvider).resizeWindow(
+          smallestDisplay.width,
+          smallestDisplay.height,
+        );
+    await ref.read(tauriApiClientProvider).setWindowPosition(
+          WindowAlignment.topCenter,
+        );
+    await ref.read(tauriApiClientProvider).setWindowResizable(true);
   }
 
   void _updateRoute() {
@@ -250,33 +242,41 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
       }
     });
 
-    final textTheme = ThemeData.light().textTheme.copyWith(
-          bodySmall: TextStyle(
+    final textTheme = Theme.of(context).textTheme.copyWith(
+          bodySmall: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.bodySmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          bodyMedium: TextStyle(
+          bodyMedium: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.bodyMedium?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodyMedium?.fontWeight,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          bodyLarge: TextStyle(
+          bodyLarge: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+            fontWeight: Theme.of(context).textTheme.bodyLarge?.fontWeight,
             color: ClonesColors.secondaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleLarge: const TextStyle(
+          titleLarge: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.titleLarge?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleLarge?.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleMedium: const TextStyle(
+          titleMedium: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.titleMedium?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleMedium?.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          titleSmall: const TextStyle(
+          titleSmall: ClonesFonts.getPrimaryFont(
+            fontSize: Theme.of(context).textTheme.titleSmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.titleSmall?.fontWeight,
             color: ClonesColors.primaryText,
-            fontFamily: ClonesFonts.primary,
           ),
-          labelSmall: const TextStyle(
-            fontFamily: ClonesFonts.mono,
+          labelSmall: ClonesFonts.getMonoFont(
+            fontSize: Theme.of(context).textTheme.labelSmall?.fontSize,
+            fontWeight: Theme.of(context).textTheme.labelSmall?.fontWeight,
+            color: ClonesColors.primaryText,
           ),
         );
 
@@ -305,7 +305,6 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
           ),
           closeIconColor: ClonesColors.primaryText,
         ),
-        useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
       routerConfig: _router,
