@@ -5,19 +5,6 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "[LEGACY] Run IPC Server Only",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "PRIMARY_LOGGER=true sleep 2; cargo run --bin ipc-server-only",
-      "cwd": "${workspaceFolder}/src-tauri"
-    },
-    {
-      "name": "[LEGACY] Flutter Desktop",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart"
-    },
-    {
       "name": "Flutter Web (Development)",
       "request": "launch",
       "type": "dart",
@@ -35,24 +22,9 @@
       "request": "launch",
       "command": "cargo tauri dev",
       "cwd": "${workspaceFolder}/src-tauri"
-    },
-    {
-      "name": "Build Tauri Release",
-      "type": "node-terminal",
-      "request": "launch",
-      "command": "./scripts/build_web_tauri.sh",
-      "cwd": "${workspaceFolder}"
     }
   ],
   "compounds": [
-    {
-      "name": "[LEGACY] Flutter Desktop with IPC",
-      "configurations": [
-        "[LEGACY] Run IPC Server Only",
-        "[LEGACY] Flutter Desktop"
-      ],
-      "stopAll": true
-    },
     {
       "name": "[NEW] Flutter Web + Tauri Development",
       "configurations": [

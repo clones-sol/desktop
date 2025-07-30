@@ -40,7 +40,7 @@ mod macos_permissions {
     /// * `false` otherwise.
     #[tauri::command]
     pub fn has_record_perms() -> bool {
-        ScreenCaptureAccess.preflight();
+        return ScreenCaptureAccess.preflight();
     }
 
     /// Prompts the user to grant screen recording permissions.
