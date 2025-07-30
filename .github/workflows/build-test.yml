@@ -125,7 +125,7 @@ jobs:
         shell: bash
         run: |
           echo "🌐 Building Flutter Web..."
-          flutter build web --release --web-renderer canvaskit
+          flutter build web --release
           
           # Vérifier que le build web existe
           if [ ! -d "build/web" ]; then
