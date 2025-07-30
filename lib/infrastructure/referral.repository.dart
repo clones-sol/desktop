@@ -1,4 +1,8 @@
-import 'package:clones_desktop/domain/models/api/referral_api.dart';
+import 'package:clones_desktop/domain/models/api/create_referral_request.dart';
+import 'package:clones_desktop/domain/models/api/create_referral_response.dart';
+import 'package:clones_desktop/domain/models/api/create_referral_data.dart';
+import 'package:clones_desktop/domain/models/api/get_referral_info_response.dart';
+import 'package:clones_desktop/domain/models/api/get_referral_info_data.dart';
 import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/domain/models/api/request_options.dart';
 import 'package:clones_desktop/utils/api_client.dart';
