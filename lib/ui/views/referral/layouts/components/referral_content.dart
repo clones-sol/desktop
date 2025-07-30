@@ -45,7 +45,7 @@ class ReferralContent extends ConsumerWidget {
           const SizedBox(height: 32),
 
           // Content based on wallet connection status
-          if (sessionState.connectionToken == null || sessionState.connectionToken!.isEmpty)
+          if (!sessionState.isConnected)
             _buildWalletConnectionSection(context, ref)
           else
             _buildReferralInfoSection(context, ref),
@@ -114,6 +114,16 @@ class ReferralContent extends ConsumerWidget {
   }
 
   Widget _buildInitialState(BuildContext context, WidgetRef ref) {
+    // Auto-load existing referral info when wallet is connected
+    final walletAddress = sessionState.address;
+    if (walletAddress != null) {
+      // Use FutureBuilder to avoid calling the provider during build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        debugPrint('🔍 [ReferralContent] Auto-loading referral info for wallet: $walletAddress');
+        ref.read(referralNotifierProvider.notifier).getReferralInfo(walletAddress);
+      });
+    }
+
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -144,9 +154,17 @@ class ReferralContent extends ConsumerWidget {
           const SizedBox(height: 32),
           ElevatedButton(
             onPressed: () {
+              debugPrint('🔍 [ReferralContent] Generate Referral Code button pressed');
               final walletAddress = sessionState.address;
+              debugPrint('🔍 [ReferralContent] sessionState.address: $walletAddress');
+              debugPrint('🔍 [ReferralContent] sessionState.connectionToken: ${sessionState.connectionToken}');
+              debugPrint('🔍 [ReferralContent] sessionState.isConnected: ${sessionState.isConnected}');
+              
               if (walletAddress != null) {
+                debugPrint('🔍 [ReferralContent] Calling createReferral with walletAddress: $walletAddress');
                 ref.read(referralNotifierProvider.notifier).createReferral(walletAddress);
+              } else {
+                debugPrint('🔍 [ReferralContent] walletAddress is null, cannot create referral');
               }
             },
             style: ElevatedButton.styleFrom(
