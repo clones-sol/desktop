@@ -80,6 +80,17 @@ pub struct StopRecordingPayload {
     status: String,
 }
 
+#[derive(Deserialize)]
+pub struct Segment {
+    start: f64,
+    end: f64,
+}
+
+#[derive(Deserialize)]
+pub struct ApplyEditsPayload {
+    segments: Vec<Segment>,
+}
+
 // Structure for the `set_upload_data_allowed` payload
 #[derive(Deserialize)]
 pub struct SetUploadAllowedPayload {
@@ -194,6 +205,7 @@ pub async fn init(app_handle: AppHandle) {
         .route("/window/resizable", post(set_window_resizable_handler))
         // GET /displays/size: Get the size of all displays.
         .route("/displays/size", get(get_all_displays_size_handler))
+        .route("/recordings/:id/apply-edits", post(apply_edits_handler))
         .with_state(state)
         .layer(cors);
 
@@ -472,6 +484,22 @@ async fn export_recordings_handler(
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
     match export_recordings(state.app_handle).await {
         Ok(path) => Ok((StatusCode::OK, path)),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
+    }
+}
+
+async fn apply_edits_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(id): axum::extract::Path<String>,
+    Json(payload): Json<ApplyEditsPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    let segments_to_keep: Vec<(f64, f64)> = payload
+        .segments
+        .into_iter()
+        .map(|s| (s.start, s.end))
+        .collect();
+    match record::apply_edits(state.app_handle, id, segments_to_keep).await {
+        Ok(_) => Ok(StatusCode::OK),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e.to_string())),
     }
 }

@@ -21,8 +21,7 @@ use tauri::{Emitter, State};
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_opener::OpenerExt;
 use zip::{write::FileOptions, ZipWriter};
-
-/// Metadata for a recording session, including demonstration, platform, and monitor info.
+/// Metadata for a recording session, including quest, platform, and monitor info.
 #[derive(Serialize, Deserialize, Clone)]
 pub struct RecordingMeta {
     id: String,
@@ -388,8 +387,8 @@ pub async fn start_recording(
     // Store demonstration data in state if available
     if let Some(demonstration_data) = &demonstration {
         // Store in DemonstrationState for later retrieval
-        *demonstration_state.current_demonstration.lock().unwrap() = Some(demonstration_data.clone());
-
+        *demonstration_state.current_demonstration.lock().unwrap() =
+            Some(demonstration_data.clone());
     }
 
     let (session_dir, timestamp) = get_session_path(&app)?;
@@ -555,7 +554,12 @@ pub async fn stop_recording(
     *demonstration_state.current_demonstration.lock().unwrap() = None;
 
     // Get the recording ID from state
-    if let Some(recording_id) = demonstration_state.current_recording_id.lock().unwrap().take() {
+    if let Some(recording_id) = demonstration_state
+        .current_recording_id
+        .lock()
+        .unwrap()
+        .take()
+    {
         set_rec_state(&app, "saved".to_string(), Some(recording_id.clone()))?;
         set_rec_state(&app, "off".to_string(), None)?;
 
@@ -1089,8 +1093,9 @@ pub async fn create_recording_zip(
         recording_id
     );
 
-    let recordings_dir =
-        get_custom_app_local_data_dir(&app)?.join("recordings").join(&recording_id);
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
+        .join("recordings")
+        .join(&recording_id);
 
     log::info!(
         "[create_recording_zip] Recording directory: {}",
@@ -1253,9 +1258,11 @@ pub async fn create_recording_zip(
 
 pub async fn export_recording_zip(id: String, app: tauri::AppHandle) -> Result<String, String> {
     let buf = create_recording_zip(app.clone(), id.clone()).await;
-    let selected_dir = app.dialog().file()
-    .set_file_name(&format!("export_recording_{}.zip", id))
-    .blocking_save_file();
+    let selected_dir = app
+        .dialog()
+        .file()
+        .set_file_name(&format!("export_recording_{}.zip", id))
+        .blocking_save_file();
 
     // If user cancels the dialog, selected_dir will be None
     if let Some(dir_path) = selected_dir {
@@ -1282,3 +1289,128 @@ pub async fn get_current_demonstration(
     Ok(current_demonstration.clone())
 }
 
+pub async fn trim_recording(
+    app: tauri::AppHandle,
+    recording_id: String,
+    start_time: f64,
+    end_time: f64,
+) -> Result<(), String> {
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
+        .join("recordings")
+        .join(&recording_id);
+    let video_path = recordings_dir.join("recording.mp4");
+    let temp_output_path = recordings_dir.join("recording_trimmed.mp4");
+
+    if !video_path.exists() {
+        return Err("Original video file not found.".to_string());
+    }
+
+    let ffmpeg_path = FFMPEG_PATH
+        .get()
+        .ok_or_else(|| "FFmpeg path not initialized.".to_string())?;
+
+    let mut command = Command::new(ffmpeg_path);
+    #[cfg(windows)]
+    {
+        use std::os::windows::process::CommandExt;
+        command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+    }
+
+    let output = command
+        .arg("-i")
+        .arg(&video_path)
+        .arg("-ss")
+        .arg(start_time.to_string())
+        .arg("-to")
+        .arg(end_time.to_string())
+        .arg(&temp_output_path)
+        .arg("-y") // Overwrite output file if it exists
+        .output()
+        .map_err(|e| format!("Failed to execute FFmpeg command: {}", e))?;
+
+    if !output.status.success() {
+        let error_message = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("FFmpeg command failed: {}", error_message));
+    }
+
+    // Replace the original file with the trimmed one
+    fs::rename(&temp_output_path, &video_path)
+        .map_err(|e| format!("Failed to replace original video file: {}", e))?;
+
+    Ok(())
+}
+
+pub async fn apply_edits(
+    app: tauri::AppHandle,
+    recording_id: String,
+    segments: Vec<(f64, f64)>,
+) -> Result<(), String> {
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
+        .join("recordings")
+        .join(&recording_id);
+    let video_path = recordings_dir.join("recording.mp4");
+    let temp_output_path = recordings_dir.join("recording_edited.mp4");
+
+    if !video_path.exists() {
+        return Err("Original video file not found.".to_string());
+    }
+    if segments.is_empty() {
+        // No segments to keep, so create an empty video file
+        fs::write(&temp_output_path, []).map_err(|e| e.to_string())?;
+        fs::rename(&temp_output_path, &video_path).map_err(|e| e.to_string())?;
+        return Ok(());
+    }
+
+    let ffmpeg_path = FFMPEG_PATH
+        .get()
+        .ok_or_else(|| "FFmpeg path not initialized.".to_string())?;
+
+    let mut filter_complex = String::new();
+    let mut concat_inputs = String::new();
+
+    for (i, (start, end)) in segments.iter().enumerate() {
+        filter_complex.push_str(&format!(
+            "[0:v]trim=start={}:end={},setpts=PTS-STARTPTS[v{}];",
+            start, end, i
+        ));
+        concat_inputs.push_str(&format!("[v{}]", i));
+    }
+
+    filter_complex.push_str(&format!(
+        "{}concat=n={}:v=1:a=0[outv]",
+        concat_inputs,
+        segments.len()
+    ));
+
+    let mut command = Command::new(ffmpeg_path);
+    #[cfg(windows)]
+    {
+        use std::os::windows::process::CommandExt;
+        command.creation_flags(0x08000000);
+    }
+
+    let output = command
+        .arg("-i")
+        .arg(&video_path)
+        .arg("-filter_complex")
+        .arg(&filter_complex)
+        .arg("-map")
+        .arg("[outv]")
+        .arg(&temp_output_path)
+        .arg("-y")
+        .output()
+        .map_err(|e| format!("Failed to execute FFmpeg command: {}", e))?;
+
+    if !output.status.success() {
+        let error_message = String::from_utf8_lossy(&output.stderr);
+        return Err(format!(
+            "FFmpeg command failed: {}\nFilter Complex: {}",
+            error_message, filter_complex
+        ));
+    }
+
+    fs::rename(&temp_output_path, &video_path)
+        .map_err(|e| format!("Failed to replace original video file: {}", e))?;
+
+    Ok(())
+}
