@@ -15,7 +15,7 @@ cd desktop
 
 ## Development
 
-This project is a monorepo containing the Flutter application and the Rust backend.
+This project is a monorepo containing the Flutter Web application and the Rust backend integrated with Tauri.
 
 ### Prerequisites
 
@@ -26,7 +26,7 @@ This project is a monorepo containing the Flutter application and the Rust backe
     -   [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
 -   The [backend server](../projects/backend.mdx) and [website](../projects/website.mdx) must be running. Using the recommended Docker setup for both is advised.
 
-### Application Setup (Flutter + Rust)
+### Application Setup (Flutter Web + Tauri)
 
 #### 1. Configure Environment Variables
 
@@ -40,11 +40,49 @@ For local development, the default values in this file do not need to be changed
 
 #### 2. Run the Application
 
-The recommended way to run the application in development mode is to use the provided `launch.json` configuration in your IDE.
+There are several ways to run the application in development mode:
+
+##### Option 1: Automated Script (Recommended)
+
+Use the provided development script that handles both Flutter Web and Tauri:
+
+```bash
+./scripts/dev_web_tauri.sh
+```
+
+This script will:
+- Start Flutter Web development server on port 3000
+- Wait for Flutter to be ready
+- Start Tauri development server
+- Provide real-time logs
+
+##### Option 2: VS Code Launch Configuration
 
 1.  Open the project in your IDE.
 2.  Go to the "Run and Debug" panel (Shortcut: `Cmd+Shift+D` or `Ctrl+Shift+D` with Cursor/VS Code).
-3.  Select the **[COMPOUND] Flutter with IPC** configuration from the dropdown menu.
+3.  Select the **[NEW] Flutter Web + Tauri Development** configuration from the dropdown menu.
 4.  Start debugging.
 
-This will launch both the Flutter application and the Rust backend with the Inter-Process Communication (IPC) server, enabling them to work together.
+##### Option 3: Manual Setup
+
+Run the following commands in separate terminals:
+
+```bash
+# Terminal 1: Start Flutter Web development server
+flutter run -d web-server --web-port 3000 --web-hostname 127.0.0.1
+
+# Terminal 2: Start Tauri development server
+cd src-tauri
+cargo tauri dev
+```
+
+### Architecture Overview
+
+The application now uses a unified architecture:
+- **Flutter Web** application served on `http://localhost:3000`
+- **Tauri** desktop wrapper with integrated Rust backend
+- **IPC Server** runs within the Tauri process on port 19847
+- **Hot Reload** preserved for development
+- **Native distribution** via Tauri for production
+
+This architecture provides a consistent development and production experience while maintaining all existing functionality.
