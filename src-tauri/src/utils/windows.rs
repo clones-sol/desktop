@@ -105,10 +105,11 @@ pub fn set_window_position(
 
     let scale_factor = monitor.scale_factor();
     let screen_size = monitor.size();
+
     let screen_width = screen_size.width as f64 / scale_factor;
     let screen_height = screen_size.height as f64 / scale_factor;
-    let window_width = window_size.width as f64;
-    let window_height = window_size.height as f64;
+    let window_width = window_size.width as f64 / scale_factor;
+    let window_height = window_size.height as f64 / scale_factor;
 
     let (x, y) = match payload.alignment.as_str() {
         "topLeft" => (0.0, 0.0),

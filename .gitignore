@@ -49,4 +49,5 @@ node_modules
 !.env.example
 src-tauri/target/
 vendor/
+.dev_lock
 
