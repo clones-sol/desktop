@@ -1,0 +1,121 @@
+name: Build macOS Dev/Test App (Unsigned)
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-macos-test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: 'macos-latest'
+            args: '--target aarch64-apple-darwin'
+            artifact_name: 'desktop-app-macos-arm64-test'
+            target: 'aarch64-apple-darwin'
+          - platform: 'macos-latest'
+            args: '--target x86_64-apple-darwin'
+            artifact_name: 'desktop-app-macos-x64-test'
+            target: 'x86_64-apple-darwin'
+
+    runs-on: ${{ matrix.platform }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.3'
+          channel: 'stable'
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Create development environment files
+        run: |
+          # Create .env from GitHub secret
+          echo "${{ secrets.ENV_FILE_TEST }}" > .env
+      - name: Build Flutter Web
+        run: flutter build web --base-href /
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version "^2.0"
+
+      - name: Build Tauri Test App (Unsigned)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Disable signing for test builds
+          TAURI_SIGNING_PRIVATE_KEY: ""
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ""
+        run: |
+          cd src-tauri
+          # Build without signing in dev mode
+          cargo tauri build ${{ matrix.args }} --config tauri.conf.json
+
+      - name: List build artifacts (debug)
+        run: |
+          echo "=== Build artifacts ==="
+          # Check both possible locations
+          find src-tauri/target/${{ matrix.target }}/release/bundle -type f -name "*.app" -o -name "*.dmg" 2>/dev/null || true
+          find src-tauri/\$TEMP/cargo-target/${{ matrix.target }}/release/bundle -type f -name "*.app" -o -name "*.dmg" 2>/dev/null || true
+          
+          # List directories to see actual structure
+          echo "--- Target directory structure ---"
+          ls -la src-tauri/target/${{ matrix.target }}/release/ 2>/dev/null || echo "Standard target dir not found"
+          
+          echo "--- Temp directory structure ---"
+          find src-tauri -name "bundle" -type d 2>/dev/null || echo "No bundle directories found"
+
+      - name: Create ZIP of .app for easy download
+        run: |
+          # Find the actual bundle location
+          BUNDLE_DIR=""
+          
+          # Check standard location first
+          if [ -d "src-tauri/target/${{ matrix.target }}/release/bundle/macos" ]; then
+            BUNDLE_DIR="src-tauri/target/${{ matrix.target }}/release/bundle/macos"
+          else
+            # Find bundle directory wherever it is
+            BUNDLE_DIR=$(find src-tauri -name "macos" -path "*/bundle/macos" -type d | head -1)
+          fi
+          
+          if [ -n "$BUNDLE_DIR" ] && [ -d "$BUNDLE_DIR" ]; then
+            echo "Found bundle directory: $BUNDLE_DIR"
+            cd "$BUNDLE_DIR"
+            if [ -d "clones-desktop.app" ]; then
+              zip -r "clones-desktop-${{ matrix.target }}-test.zip" "clones-desktop.app"
+              echo "Created ZIP file successfully"
+            else
+              echo "No .app file found in $BUNDLE_DIR"
+              ls -la
+            fi
+          else
+            echo "No bundle directory found"
+          fi
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            src-tauri/**/bundle/macos/*.zip
+            src-tauri/**/bundle/dmg/*.dmg
+            src-tauri/**/bundle/macos/*.app
+          if-no-files-found: warn
