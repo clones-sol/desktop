@@ -11,7 +11,6 @@ use tauri::{AppHandle, LogicalPosition, LogicalSize, Manager};
 pub struct ResizeWindowPayload {
     pub width: u32,
     pub height: u32,
-    pub alignment: Option<String>, // "topRight", "center", etc.
 }
 
 /// Payload for setting window alignment
