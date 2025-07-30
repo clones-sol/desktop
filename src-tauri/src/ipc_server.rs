@@ -205,7 +205,6 @@ pub async fn init(app_handle: AppHandle) {
         .route("/window/resizable", post(set_window_resizable_handler))
         // GET /displays/size: Get the size of all displays.
         .route("/displays/size", get(get_all_displays_size_handler))
-        .route("/recordings/:id/trim", post(trim_recording_handler))
         .route("/recordings/:id/apply-edits", post(apply_edits_handler))
         .with_state(state)
         .layer(cors);
