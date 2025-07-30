@@ -34,11 +34,11 @@ pub struct DisplaySize {
     pub height: u32,
 }
 
-/// Resizes a window and optionally positions it based on alignment
+/// Resizes a window
 ///
 /// # Arguments
 /// * `app_handle` - The Tauri app handle
-/// * `payload` - The resize payload containing width, height, and optional alignment
+/// * `payload` - The resize payload containing width, height
 ///
 /// # Returns
 /// * `Ok(())` if the operation succeeded
@@ -54,24 +54,6 @@ pub fn resize_window(app_handle: &AppHandle, payload: &ResizeWindowPayload) -> R
         height: payload.height as f64,
     })) {
         return Err(format!("Resize failed: {}", e));
-    }
-
-    // Move based on alignment (simplified example for "topRight" on 1920x1080 screen)
-    if let Some(align) = payload.alignment.as_deref() {
-        if align == "topRight" {
-            if let Ok(monitor) = window.current_monitor() {
-                if let Some(monitor) = monitor {
-                    let screen_size = monitor.size();
-                    let x = (screen_size.width as f64) - (payload.width as f64);
-                    let y = 0.0;
-                    if let Err(e) = window
-                        .set_position(tauri::Position::Logical(tauri::LogicalPosition::new(x, y)))
-                    {
-                        return Err(format!("Positioning failed: {}", e));
-                    }
-                }
-            }
-        }
     }
 
     Ok(())
