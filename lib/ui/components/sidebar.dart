@@ -55,7 +55,7 @@ class Sidebar extends ConsumerWidget {
       ),
       SidebarButtonData(
         path: ReferralView.routeName,
-        imagePath: Assets.statsIcon, // Temporarily use stats icon until referral icon is created
+        imagePath: Assets.referralIcon,
         label: 'Referral',
       ),
       SidebarButtonData(

@@ -19,6 +19,7 @@ class Assets {
   static const String factoryAddIcon =
       '${assetIconsFolder}add_factory_icon.png';
   static const String statsIcon = '${assetIconsFolder}stats_icon.png';
+  static const String referralIcon = '${assetIconsFolder}referral_icon.png';
   static const String skillsTreeIcon =
       '${assetIconsFolder}skills_tree_icon.png';
   static const String walletToConnectIcon =
