@@ -1,4 +1,4 @@
-import 'package:clones_desktop/application/referral/provider.dart';
+import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_content.dart';
 import 'package:flutter/material.dart';
