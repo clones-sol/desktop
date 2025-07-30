@@ -6,13 +6,13 @@ use tauri::Manager;
 #[cfg(any(target_os = "macos"))]
 mod commands;
 mod core;
+pub mod ipc_server;
 mod tools;
 mod utils;
-pub mod ipc_server;
 use std::sync::{Arc, Mutex};
 use tauri::Listener;
 
-use core::record::{DemonstrationState};
+use core::record::DemonstrationState;
 #[cfg(target_os = "macos")]
 use utils::permissions::{has_ax_perms, has_record_perms, request_ax_perms, request_record_perms};
 
@@ -109,30 +109,33 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let app = setup_builder()
-    .setup(|app| {
-        let app_handle = app.handle();
-        let listen_handle = app_handle.clone();
-    
-        // Always start the IPC server in the main process
-        tauri::async_runtime::spawn({
-            let app_handle = app_handle.clone();
-            async move {
-                ipc_server::init(app_handle).await;
-            }
-        });
-    
-        listen_handle.clone().listen("deep-link", move |event| {
-            let url = event.payload();
-            let state = listen_handle.state::<DeepLinkState>();
-            let mut lock = state.0.lock().unwrap();
-            *lock = Some(url.to_string().trim_matches('"').to_string());
-        });
-    
-        Ok(())  
-    })
-    .build(tauri::generate_context!())
-    .expect("error while building tauri application");
-    
+        .setup(|app| {
+            let app_handle = app.handle();
+            let listen_handle = app_handle.clone();
+
+            // The IPC server must always be started in the main process to ensure proper communication
+            // between the main process and the renderer process in Tauri's architecture. Starting it
+            // elsewhere could lead to communication failures or runtime errors, as the main process
+            // is responsible for managing the application's state and handling IPC events.
+            tauri::async_runtime::spawn({
+                let app_handle = app_handle.clone();
+                async move {
+                    ipc_server::init(app_handle).await;
+                }
+            });
+
+            listen_handle.clone().listen("deep-link", move |event| {
+                let url = event.payload();
+                let state = listen_handle.state::<DeepLinkState>();
+                let mut lock = state.0.lock().unwrap();
+                *lock = Some(url.to_string().trim_matches('"').to_string());
+            });
+
+            Ok(())
+        })
+        .build(tauri::generate_context!())
+        .expect("error while building tauri application");
+
     app.run(|_app_handle, event| {
         if let tauri::RunEvent::ExitRequested { api, .. } = event {
             api.prevent_exit();

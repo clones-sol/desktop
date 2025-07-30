@@ -1,8 +1,4 @@
-//! Utilities for platform detection and system information.
-//!
-//! This module provides functions to detect the current operating system platform.
-
-/// Gets the current platform/operating system
+/// This function uses compile-time detection to determine the platform based on the target operating system.
 ///
 /// # Returns
 /// * `String` representing the platform: "macos", "windows", "linux", or "unknown"
