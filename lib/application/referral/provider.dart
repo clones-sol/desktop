@@ -38,7 +38,7 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
         );
         
         debugPrint('🔍 [ReferralNotifier] Setting success state with referralInfo: $referralInfo');
-        state = ReferralState.success(referralInfo);
+        state = ReferralState.success(referralInfo, showConfirmation: true);
       } else {
         debugPrint('🔍 [ReferralNotifier] Setting error state: ${response.message}');
         state = ReferralState.error(response.message ?? 'Failed to create referral');
@@ -56,8 +56,17 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
       debugPrint('🔍 [ReferralNotifier] getReferralInfo called with walletAddress: $walletAddress');
       final response = await _repository.getReferralInfo(walletAddress);
       debugPrint('🔍 [ReferralNotifier] getReferralInfo response: $response');
+      debugPrint('🔍 [ReferralNotifier] response.success: ${response.success}');
+      debugPrint('🔍 [ReferralNotifier] response.data: ${response.data}');
       
       if (response.success) {
+        // Check if the referral code is empty or null
+        if (response.data.referralCode == null || response.data.referralCode.isEmpty) {
+          debugPrint('🔍 [ReferralNotifier] Referral code is empty/null, showing initial state');
+          state = const ReferralState.initial();
+          return;
+        }
+        
         // Construct the referral link using the referral code
         final referralLink = 'https://clones-ai.com/ref/${response.data.referralCode}';
         
@@ -73,7 +82,7 @@ class ReferralNotifier extends StateNotifier<ReferralState> {
         );
         
         debugPrint('🔍 [ReferralNotifier] Setting success state with referralInfo: $referralInfo');
-        state = ReferralState.success(referralInfo);
+        state = ReferralState.success(referralInfo, showConfirmation: false);
       } else {
         debugPrint('🔍 [ReferralNotifier] Setting error state: ${response.message}');
         state = ReferralState.error(response.message ?? 'Failed to get referral info');
@@ -102,7 +111,7 @@ sealed class ReferralState {
 
   const factory ReferralState.initial() = Initial;
   const factory ReferralState.loading() = Loading;
-  const factory ReferralState.success(ReferralInfo referralInfo) = Success;
+  const factory ReferralState.success(ReferralInfo referralInfo, {bool showConfirmation}) = Success;
   const factory ReferralState.error(String message) = Error;
 }
 
@@ -116,7 +125,8 @@ class Loading extends ReferralState {
 
 class Success extends ReferralState {
   final ReferralInfo referralInfo;
-  const Success(this.referralInfo);
+  final bool showConfirmation;
+  const Success(this.referralInfo, {this.showConfirmation = false});
 }
 
 class Error extends ReferralState {
