@@ -5,7 +5,6 @@
 use crate::tools::ffmpeg::{get_ffmpeg_dir, get_ffprobe_dir};
 use crate::utils::settings::get_custom_app_local_data_dir;
 use log::info;
-#[cfg(unix)]
 use std::path::PathBuf;
 use std::process::Command;
 use std::sync::OnceLock;
