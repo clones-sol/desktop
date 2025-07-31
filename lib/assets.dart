@@ -42,6 +42,23 @@ class Assets {
   static const String menuForge = '${assetMenuFolder}forge_menu.png';
 }
 
+class ClonesSpacing {
+  static const SizedBox space4 = SizedBox(height: 4);
+  static const SizedBox space8 = SizedBox(height: 8);
+  static const SizedBox space12 = SizedBox(height: 12);
+  static const SizedBox space16 = SizedBox(height: 16);
+  static const SizedBox space24 = SizedBox(height: 24);
+  static const SizedBox space32 = SizedBox(height: 32);
+  
+  // Width spacing utilities
+  static const SizedBox width4 = SizedBox(width: 4);
+  static const SizedBox width8 = SizedBox(width: 8);
+  static const SizedBox width12 = SizedBox(width: 12);
+  static const SizedBox width16 = SizedBox(width: 16);
+  static const SizedBox width20 = SizedBox(width: 20);
+  static const SizedBox width24 = SizedBox(width: 24);
+}
+
 class ClonesFonts {
   // font primary: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, sans-serif
   static const String primary =

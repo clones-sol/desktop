@@ -21,9 +21,10 @@ GetReferralInfoResponse _$GetReferralInfoResponseFromJson(
 
 /// @nodoc
 mixin _$GetReferralInfoResponse {
-  bool get success => throw _privateConstructorUsedError;
-  GetReferralInfoData get data => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
+  int get totalReferrals => throw _privateConstructorUsedError;
+  double get totalRewards => throw _privateConstructorUsedError;
+  String get referralCode => throw _privateConstructorUsedError;
+  List<dynamic> get referrals => throw _privateConstructorUsedError;
 
   /// Serializes this GetReferralInfoResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,9 +42,11 @@ abstract class $GetReferralInfoResponseCopyWith<$Res> {
           $Res Function(GetReferralInfoResponse) then) =
       _$GetReferralInfoResponseCopyWithImpl<$Res, GetReferralInfoResponse>;
   @useResult
-  $Res call({bool success, GetReferralInfoData data, String? message});
-
-  $GetReferralInfoDataCopyWith<$Res> get data;
+  $Res call(
+      {int totalReferrals,
+      double totalRewards,
+      String referralCode,
+      List<dynamic> referrals});
 }
 
 /// @nodoc
@@ -62,34 +65,29 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
-    Object? data = null,
-    Object? message = freezed,
+    Object? totalReferrals = null,
+    Object? totalRewards = null,
+    Object? referralCode = null,
+    Object? referrals = null,
   }) {
     return _then(_value.copyWith(
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as GetReferralInfoData,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+      totalReferrals: null == totalReferrals
+          ? _value.totalReferrals
+          : totalReferrals // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalRewards: null == totalRewards
+          ? _value.totalRewards
+          : totalRewards // ignore: cast_nullable_to_non_nullable
+              as double,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      referrals: null == referrals
+          ? _value.referrals
+          : referrals // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ) as $Val);
-  }
-
-  /// Create a copy of GetReferralInfoResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $GetReferralInfoDataCopyWith<$Res> get data {
-    return $GetReferralInfoDataCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -102,10 +100,11 @@ abstract class _$$GetReferralInfoResponseImplCopyWith<$Res>
       __$$GetReferralInfoResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool success, GetReferralInfoData data, String? message});
-
-  @override
-  $GetReferralInfoDataCopyWith<$Res> get data;
+  $Res call(
+      {int totalReferrals,
+      double totalRewards,
+      String referralCode,
+      List<dynamic> referrals});
 }
 
 /// @nodoc
@@ -123,23 +122,28 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
-    Object? data = null,
-    Object? message = freezed,
+    Object? totalReferrals = null,
+    Object? totalRewards = null,
+    Object? referralCode = null,
+    Object? referrals = null,
   }) {
     return _then(_$GetReferralInfoResponseImpl(
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as GetReferralInfoData,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+      totalReferrals: null == totalReferrals
+          ? _value.totalReferrals
+          : totalReferrals // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalRewards: null == totalRewards
+          ? _value.totalRewards
+          : totalRewards // ignore: cast_nullable_to_non_nullable
+              as double,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      referrals: null == referrals
+          ? _value._referrals
+          : referrals // ignore: cast_nullable_to_non_nullable
+              as List<dynamic>,
     ));
   }
 }
@@ -148,21 +152,32 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
   const _$GetReferralInfoResponseImpl(
-      {required this.success, required this.data, this.message});
+      {required this.totalReferrals,
+      required this.totalRewards,
+      required this.referralCode,
+      required final List<dynamic> referrals})
+      : _referrals = referrals;
 
   factory _$GetReferralInfoResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$GetReferralInfoResponseImplFromJson(json);
 
   @override
-  final bool success;
+  final int totalReferrals;
   @override
-  final GetReferralInfoData data;
+  final double totalRewards;
   @override
-  final String? message;
+  final String referralCode;
+  final List<dynamic> _referrals;
+  @override
+  List<dynamic> get referrals {
+    if (_referrals is EqualUnmodifiableListView) return _referrals;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_referrals);
+  }
 
   @override
   String toString() {
-    return 'GetReferralInfoResponse(success: $success, data: $data, message: $message)';
+    return 'GetReferralInfoResponse(totalReferrals: $totalReferrals, totalRewards: $totalRewards, referralCode: $referralCode, referrals: $referrals)';
   }
 
   @override
@@ -170,14 +185,20 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetReferralInfoResponseImpl &&
-            (identical(other.success, success) || other.success == success) &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.totalReferrals, totalReferrals) ||
+                other.totalReferrals == totalReferrals) &&
+            (identical(other.totalRewards, totalRewards) ||
+                other.totalRewards == totalRewards) &&
+            (identical(other.referralCode, referralCode) ||
+                other.referralCode == referralCode) &&
+            const DeepCollectionEquality()
+                .equals(other._referrals, _referrals));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, success, data, message);
+  int get hashCode => Object.hash(runtimeType, totalReferrals, totalRewards,
+      referralCode, const DeepCollectionEquality().hash(_referrals));
 
   /// Create a copy of GetReferralInfoResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -198,19 +219,22 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
 
 abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
   const factory _GetReferralInfoResponse(
-      {required final bool success,
-      required final GetReferralInfoData data,
-      final String? message}) = _$GetReferralInfoResponseImpl;
+      {required final int totalReferrals,
+      required final double totalRewards,
+      required final String referralCode,
+      required final List<dynamic> referrals}) = _$GetReferralInfoResponseImpl;
 
   factory _GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =
       _$GetReferralInfoResponseImpl.fromJson;
 
   @override
-  bool get success;
+  int get totalReferrals;
   @override
-  GetReferralInfoData get data;
+  double get totalRewards;
   @override
-  String? get message;
+  String get referralCode;
+  @override
+  List<dynamic> get referrals;
 
   /// Create a copy of GetReferralInfoResponse
   /// with the given fields replaced by the non-null parameter values.
