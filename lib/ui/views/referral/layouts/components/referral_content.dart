@@ -24,9 +24,11 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
   bool _hasShownConfirmation = false;
 
   @override
-  void initState() {
-    super.initState();
-    // Listen to session changes
+  Widget build(BuildContext context) {
+    final sessionState = ref.watch(sessionNotifierProvider);
+    final referralState = ref.watch(referralNotifierProvider);
+
+    // Listen to session changes within the build method
     ref.listen(sessionNotifierProvider, (previous, next) {
       final currentWalletAddress = next.address;
       if (currentWalletAddress != _previousWalletAddress) {
@@ -43,12 +45,6 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
         }
       }
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final sessionState = ref.watch(sessionNotifierProvider);
-    final referralState = ref.watch(referralNotifierProvider);
 
     return Padding(
       padding: const EdgeInsets.all(24),
