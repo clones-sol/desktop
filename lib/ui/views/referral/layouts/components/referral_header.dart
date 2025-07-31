@@ -16,7 +16,7 @@ class ReferralHeader extends StatelessWidget {
         const SizedBox(width: 16),
         Text(
           'Referral Program',
-          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: ClonesColors.primaryText,
             fontWeight: FontWeight.bold,
           ),

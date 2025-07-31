@@ -11,9 +11,6 @@ class ReferralView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sessionState = ref.watch(sessionNotifierProvider);
-    final referralState = ref.watch(referralNotifierProvider);
-
     return Container(
       margin: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -24,10 +21,7 @@ class ReferralView extends ConsumerWidget {
           width: 1,
         ),
       ),
-      child: ReferralContent(
-        sessionState: sessionState,
-        referralState: referralState,
-      ),
+      child: const ReferralContent(),
     );
   }
 } 

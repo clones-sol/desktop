@@ -17,10 +17,10 @@ class ReferralCodeCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: ClonesColors.containerIcon2.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
+          color: ClonesColors.containerIcon2.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -49,10 +49,10 @@ class ReferralCodeCard extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.3),
+              color: ClonesColors.containerIcon2.withOpacity(0.3),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
-                color: Colors.white.withOpacity(0.1),
+                color: ClonesColors.containerIcon2.withOpacity(0.1),
                 width: 1,
               ),
             ),
