@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$referralRepositoryHash() =>
-    r'85155073f81c9cbc4c0585d9d835eb4c6289edaa';
+    r'27f8f29f6bfe8a3e5835ab232311c721ad29f4d1';
 
 /// See also [referralRepository].
 @ProviderFor(referralRepository)
@@ -25,7 +25,7 @@ final referralRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ReferralRepositoryRef = AutoDisposeProviderRef<ReferralRepository>;
-String _$referralNotifierHash() => r'f93d9d32282c027846e322c2c9083d1eb959bc18';
+String _$referralNotifierHash() => r'd886493526771d593d4d4bc8ed6aa67cbb867e33';
 
 /// See also [ReferralNotifier].
 @ProviderFor(ReferralNotifier)

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-echo "ðŸš€ Starting Flutter Web + Tauri Development"
+echo "🚀 Starting Flutter Web + Tauri Development"
 
 ROOT_DIR=$(pwd)
 LOCK_FILE="$ROOT_DIR/.dev_lock"
@@ -45,11 +45,11 @@ detect_os() {
 }
 
 OS=$(detect_os)
-echo "ðŸ–¥ï¸  Detected OS: $OS"
+echo "🖥️  Detected OS: $OS"
 
 # Windows-specific temp directory setup
 setup_windows_temp() {
-    echo "ðŸªŸ Windows detected - using temporary build directory to avoid file locks"
+    echo "🪟 Windows detected - using temporary build directory to avoid file locks"
     
     # Use system temp directory
     if [ -n "${TEMP:-}" ]; then
@@ -63,12 +63,12 @@ setup_windows_temp() {
         TEMP_TARGET_DIR="/tmp/clones-desktop-target"
     fi
     
-    echo "ðŸ“ Temporary build directory: $TEMP_BUILD_DIR"
-    echo "ðŸŽ¯ Temporary target directory: $TEMP_TARGET_DIR"
+    echo "📁 Temporary build directory: $TEMP_BUILD_DIR"
+    echo "🎯 Temporary target directory: $TEMP_TARGET_DIR"
     
     # Clean up existing temp directory
     if [ -d "$TEMP_BUILD_DIR" ]; then
-        echo "ðŸ§¹ Cleaning existing temp build directory..."
+        echo "🧹 Cleaning existing temp build directory..."
         rm -rf "$TEMP_BUILD_DIR"
     fi
     
@@ -77,7 +77,7 @@ setup_windows_temp() {
     mkdir -p "$TEMP_TARGET_DIR"
     
     # Copy necessary files to temp directory
-    echo "ðŸ“‹ Copying project files to temporary directory..."
+    echo "📋 Copying project files to temporary directory..."
     cp "$ROOT_DIR/src-tauri/Cargo.toml" "$TEMP_BUILD_DIR/"
     cp "$ROOT_DIR/src-tauri/Cargo.lock" "$TEMP_BUILD_DIR/"
     cp "$ROOT_DIR/src-tauri/tauri.conf.json" "$TEMP_BUILD_DIR/"
@@ -97,11 +97,11 @@ setup_windows_temp() {
     
     # Set environment variable for Cargo target directory
     export CARGO_TARGET_DIR="$TEMP_TARGET_DIR"
-    echo "ðŸŽ¯ Set CARGO_TARGET_DIR to: $CARGO_TARGET_DIR"
+    echo "🎯 Set CARGO_TARGET_DIR to: $CARGO_TARGET_DIR"
 }
 
 cleanup() {
-    echo "ðŸ§¹ Cleaning up..."
+    echo "🧹 Cleaning up..."
     if [ -n "${FLUTTER_PID:-}" ] && kill -0 $FLUTTER_PID 2>/dev/null; then
         kill $FLUTTER_PID
     fi
@@ -119,7 +119,7 @@ cleanup() {
     
     # Clean up Windows temp directory if it exists
     if [ "$OS" = "windows" ] && [ -n "${TEMP_BUILD_DIR:-}" ] && [ -d "$TEMP_BUILD_DIR" ]; then
-        echo "ðŸ§¹ Cleaning up Windows temp directory..."
+        echo "🧹 Cleaning up Windows temp directory..."
         rm -rf "$TEMP_BUILD_DIR"
     fi
 }
@@ -127,7 +127,7 @@ trap cleanup EXIT INT TERM
 
 # Check if already running
 if [ -f "$LOCK_FILE" ]; then
-    echo "âŒ Development server already running. Please stop it first."
+    echo "❌ Development server already running. Please stop it first."
     echo "   Lock file found: $LOCK_FILE"
     exit 1
 fi
@@ -136,7 +136,7 @@ fi
 echo $$ > "$LOCK_FILE"
 
 # Clean up any existing processes first
-echo "ðŸ§¹ Cleaning up existing processes..."
+echo "🧹 Cleaning up existing processes..."
 pkill -f "flutter run" 2>/dev/null || true
 pkill -f "tail -f.*flutter.log" 2>/dev/null || true
 pkill -f "dartaotruntime.*flutter_web_sdk" 2>/dev/null || true
@@ -194,12 +194,24 @@ fi
 echo "📱 Starting Flutter Web development server..."
 echo "📁 Flutter will output to: $LOG_FILE"
 
-# Check if web-server device is available
+# Check if web-server device is available and start it if needed
+echo "🔍 Checking for web-server device..."
 if ! $FLUTTER_CMD devices | grep -q "web-server"; then
-    echo "❌ Web server device not available. Available devices:"
-    $FLUTTER_CMD devices
-    exit 1
+    echo "⚠️  Web server device not found. Attempting to start it..."
+    
+    # Try to start the web-server device
+    $FLUTTER_CMD config --enable-web
+    $FLUTTER_CMD devices --machine | grep -q "web-server" || {
+        echo "❌ Failed to start web-server device. Available devices:"
+        $FLUTTER_CMD devices
+        echo ""
+        echo "💡 Try running: flutter config --enable-web"
+        echo "💡 Then restart this script"
+        exit 1
+    }
 fi
+
+echo "✅ Web server device is available"
 
 $FLUTTER_CMD run -d web-server --web-port 3000 --web-hostname 127.0.0.1 > "$LOG_FILE" 2>&1 &
 FLUTTER_PID=$!
@@ -243,11 +255,11 @@ fi
 sleep 2
 
 # 3. Start Tauri
-echo "ðŸ¦€ Starting Tauri development..."
+echo "⚙️ Starting Tauri development..."
 if [ "$OS" = "windows" ]; then
     # Use temp directory for Windows
     cd "$TEMP_BUILD_DIR"
-    echo "ðŸªŸ Running Tauri from temp directory: $TEMP_BUILD_DIR"
+    echo "🪟 Running Tauri from temp directory: $TEMP_BUILD_DIR"
 else
     # Use original directory for macOS/Linux
     cd "$ROOT_DIR/src-tauri"
@@ -256,14 +268,14 @@ fi
 cargo tauri dev --config tauri.conf.json &
 TAURI_PID=$!
 
-echo "âœ… Development servers started!"
-echo "ðŸŒ Flutter Web: http://localhost:3000"
-echo "ðŸ–¥ï¸  Tauri App: Starting..."
+echo "✅ Development servers started!"
+echo "🌐 Flutter Web: http://localhost:3000"
+echo "🖥️  Tauri App: Starting..."
 if [ "$OS" = "windows" ]; then
-    echo "ðŸªŸ Using temporary build directory: $TEMP_BUILD_DIR"
-    echo "ðŸŽ¯ Using temporary target directory: $TEMP_TARGET_DIR"
+    echo "🪟 Using temporary build directory: $TEMP_BUILD_DIR"
+    echo "🎯 Using temporary target directory: $TEMP_TARGET_DIR"
 fi
-echo "ðŸ›‘ Press Ctrl+C to stop all servers"
+echo "🛑 Press Ctrl+C to stop all servers"
 
 # 4. Tail logs for visibility (optional) - only one instance
 tail -f "$LOG_FILE" &

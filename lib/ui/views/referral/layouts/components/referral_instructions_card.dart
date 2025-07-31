@@ -37,21 +37,21 @@ class ReferralInstructionsCard extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             1,
             'Share your referral link with friends',
             'Send your unique referral link to people you know who might be interested in Clones.',
           ),
-          const SizedBox(height: 16),
+          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             2,
             'They sign up using your link',
             'When someone uses your referral link to sign up, they\'ll be automatically linked to your account.',
           ),
-          const SizedBox(height: 16),
+          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             3,
@@ -102,7 +102,7 @@ class ReferralInstructionsCard extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              const SizedBox(height: 4),
+              ClonesSpacing.space4,
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

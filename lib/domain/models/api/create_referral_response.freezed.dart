@@ -21,9 +21,9 @@ CreateReferralResponse _$CreateReferralResponseFromJson(
 
 /// @nodoc
 mixin _$CreateReferralResponse {
-  bool get success => throw _privateConstructorUsedError;
-  CreateReferralData get data => throw _privateConstructorUsedError;
-  String? get message => throw _privateConstructorUsedError;
+  String get referralCode => throw _privateConstructorUsedError;
+  String get referralLink => throw _privateConstructorUsedError;
+  String get walletAddress => throw _privateConstructorUsedError;
 
   /// Serializes this CreateReferralResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,9 +41,7 @@ abstract class $CreateReferralResponseCopyWith<$Res> {
           $Res Function(CreateReferralResponse) then) =
       _$CreateReferralResponseCopyWithImpl<$Res, CreateReferralResponse>;
   @useResult
-  $Res call({bool success, CreateReferralData data, String? message});
-
-  $CreateReferralDataCopyWith<$Res> get data;
+  $Res call({String referralCode, String referralLink, String walletAddress});
 }
 
 /// @nodoc
@@ -62,34 +60,24 @@ class _$CreateReferralResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
-    Object? data = null,
-    Object? message = freezed,
+    Object? referralCode = null,
+    Object? referralLink = null,
+    Object? walletAddress = null,
   }) {
     return _then(_value.copyWith(
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as CreateReferralData,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      referralLink: null == referralLink
+          ? _value.referralLink
+          : referralLink // ignore: cast_nullable_to_non_nullable
+              as String,
+      walletAddress: null == walletAddress
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
-  }
-
-  /// Create a copy of CreateReferralResponse
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @pragma('vm:prefer-inline')
-  $CreateReferralDataCopyWith<$Res> get data {
-    return $CreateReferralDataCopyWith<$Res>(_value.data, (value) {
-      return _then(_value.copyWith(data: value) as $Val);
-    });
   }
 }
 
@@ -102,10 +90,7 @@ abstract class _$$CreateReferralResponseImplCopyWith<$Res>
       __$$CreateReferralResponseImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool success, CreateReferralData data, String? message});
-
-  @override
-  $CreateReferralDataCopyWith<$Res> get data;
+  $Res call({String referralCode, String referralLink, String walletAddress});
 }
 
 /// @nodoc
@@ -123,23 +108,23 @@ class __$$CreateReferralResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? success = null,
-    Object? data = null,
-    Object? message = freezed,
+    Object? referralCode = null,
+    Object? referralLink = null,
+    Object? walletAddress = null,
   }) {
     return _then(_$CreateReferralResponseImpl(
-      success: null == success
-          ? _value.success
-          : success // ignore: cast_nullable_to_non_nullable
-              as bool,
-      data: null == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
-              as CreateReferralData,
-      message: freezed == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
-              as String?,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      referralLink: null == referralLink
+          ? _value.referralLink
+          : referralLink // ignore: cast_nullable_to_non_nullable
+              as String,
+      walletAddress: null == walletAddress
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -148,21 +133,23 @@ class __$$CreateReferralResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CreateReferralResponseImpl implements _CreateReferralResponse {
   const _$CreateReferralResponseImpl(
-      {required this.success, required this.data, this.message});
+      {required this.referralCode,
+      required this.referralLink,
+      required this.walletAddress});
 
   factory _$CreateReferralResponseImpl.fromJson(Map<String, dynamic> json) =>
       _$$CreateReferralResponseImplFromJson(json);
 
   @override
-  final bool success;
+  final String referralCode;
   @override
-  final CreateReferralData data;
+  final String referralLink;
   @override
-  final String? message;
+  final String walletAddress;
 
   @override
   String toString() {
-    return 'CreateReferralResponse(success: $success, data: $data, message: $message)';
+    return 'CreateReferralResponse(referralCode: $referralCode, referralLink: $referralLink, walletAddress: $walletAddress)';
   }
 
   @override
@@ -170,14 +157,18 @@ class _$CreateReferralResponseImpl implements _CreateReferralResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CreateReferralResponseImpl &&
-            (identical(other.success, success) || other.success == success) &&
-            (identical(other.data, data) || other.data == data) &&
-            (identical(other.message, message) || other.message == message));
+            (identical(other.referralCode, referralCode) ||
+                other.referralCode == referralCode) &&
+            (identical(other.referralLink, referralLink) ||
+                other.referralLink == referralLink) &&
+            (identical(other.walletAddress, walletAddress) ||
+                other.walletAddress == walletAddress));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, success, data, message);
+  int get hashCode =>
+      Object.hash(runtimeType, referralCode, referralLink, walletAddress);
 
   /// Create a copy of CreateReferralResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -198,19 +189,19 @@ class _$CreateReferralResponseImpl implements _CreateReferralResponse {
 
 abstract class _CreateReferralResponse implements CreateReferralResponse {
   const factory _CreateReferralResponse(
-      {required final bool success,
-      required final CreateReferralData data,
-      final String? message}) = _$CreateReferralResponseImpl;
+      {required final String referralCode,
+      required final String referralLink,
+      required final String walletAddress}) = _$CreateReferralResponseImpl;
 
   factory _CreateReferralResponse.fromJson(Map<String, dynamic> json) =
       _$CreateReferralResponseImpl.fromJson;
 
   @override
-  bool get success;
+  String get referralCode;
   @override
-  CreateReferralData get data;
+  String get referralLink;
   @override
-  String? get message;
+  String get walletAddress;
 
   /// Create a copy of CreateReferralResponse
   /// with the given fields replaced by the non-null parameter values.

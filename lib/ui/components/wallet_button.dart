@@ -34,26 +34,24 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
   }
 
   Future<void> _handleConnect() async {
-    if (!mounted) return;
-    
     try {
       await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
-      if (!mounted) return;
       
       final session = ref.read(sessionNotifierProvider);
-      if (!mounted) return;
 
       await ref.read(tauriApiClientProvider).openExternalUrl(
         session.connectionUrl,
       );
-      if (!mounted) return;
       await ref.read(sessionNotifierProvider.notifier).startPolling();
     } catch (e) {
       // Handle any errors gracefully
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to connect wallet: $e'),
+            content: Text(
+              'Failed to connect wallet: $e',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
             backgroundColor: Colors.red,
           ),
         );

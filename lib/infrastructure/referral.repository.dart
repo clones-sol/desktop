@@ -1,12 +1,8 @@
 import 'package:clones_desktop/domain/models/api/create_referral_request.dart';
 import 'package:clones_desktop/domain/models/api/create_referral_response.dart';
-import 'package:clones_desktop/domain/models/api/create_referral_data.dart';
 import 'package:clones_desktop/domain/models/api/get_referral_info_response.dart';
-import 'package:clones_desktop/domain/models/api/get_referral_info_data.dart';
-import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/domain/models/api/request_options.dart';
 import 'package:clones_desktop/utils/api_client.dart';
-import 'package:flutter/foundation.dart';
 
 abstract class ReferralRepository {
   Future<CreateReferralResponse> createReferral(String walletAddress);
@@ -14,16 +10,14 @@ abstract class ReferralRepository {
 }
 
 class ReferralRepositoryImpl implements ReferralRepository {
-  final ApiClient _apiClient;
+  const ReferralRepositoryImpl(this._apiClient);
 
-  ReferralRepositoryImpl(this._apiClient);
+  final ApiClient _apiClient;
 
   @override
   Future<CreateReferralResponse> createReferral(String walletAddress) async {
     try {
-      debugPrint('🔍 [ReferralRepository] createReferral called with walletAddress: $walletAddress');
       final request = CreateReferralRequest(walletAddress: walletAddress);
-      debugPrint('🔍 [ReferralRepository] Request data: ${request.toJson()}');
       
       final responseData = await _apiClient.post<Map<String, dynamic>>(
         '/referral/generate-code',
@@ -31,19 +25,9 @@ class ReferralRepositoryImpl implements ReferralRepository {
         options: const RequestOptions(requiresAuth: true),
       );
       
-      debugPrint('🔍 [ReferralRepository] API response: $responseData');
-      
       // The API client already handles the success/data wrapper, so we get the data directly
-      final referralData = CreateReferralData.fromJson(responseData);
-      
-      // Create the response object with success=true since the API client already validated it
-      return CreateReferralResponse(
-        success: true,
-        data: referralData,
-        message: null,
-      );
+      return CreateReferralResponse.fromJson(responseData);
     } catch (e) {
-      debugPrint('🔍 [ReferralRepository] Exception in createReferral: $e');
       throw Exception('Failed to create referral: $e');
     }
   }
@@ -51,26 +35,14 @@ class ReferralRepositoryImpl implements ReferralRepository {
   @override
   Future<GetReferralInfoResponse> getReferralInfo(String walletAddress) async {
     try {
-      debugPrint('🔍 [ReferralRepository] getReferralInfo called with walletAddress: $walletAddress');
-      
       final responseData = await _apiClient.get<Map<String, dynamic>>(
         '/referral/stats/$walletAddress',
         options: const RequestOptions(requiresAuth: true),
       );
 
-      debugPrint('🔍 [ReferralRepository] getReferralInfo API response: $responseData');
-      
       // The API client already handles the success/data wrapper, so we get the data directly
-      final referralData = GetReferralInfoData.fromJson(responseData);
-      
-      // Create the response object with success=true since the API client already validated it
-      return GetReferralInfoResponse(
-        success: true,
-        data: referralData,
-        message: null,
-      );
+      return GetReferralInfoResponse.fromJson(responseData);
     } catch (e) {
-      debugPrint('🔍 [ReferralRepository] Exception in getReferralInfo: $e');
       throw Exception('Failed to get referral info: $e');
     }
   }

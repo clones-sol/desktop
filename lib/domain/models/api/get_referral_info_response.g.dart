@@ -9,15 +9,17 @@ part of 'get_referral_info_response.dart';
 _$GetReferralInfoResponseImpl _$$GetReferralInfoResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$GetReferralInfoResponseImpl(
-      success: json['success'] as bool,
-      data: GetReferralInfoData.fromJson(json['data'] as Map<String, dynamic>),
-      message: json['message'] as String?,
+      totalReferrals: (json['totalReferrals'] as num).toInt(),
+      totalRewards: (json['totalRewards'] as num).toDouble(),
+      referralCode: json['referralCode'] as String,
+      referrals: json['referrals'] as List<dynamic>,
     );
 
 Map<String, dynamic> _$$GetReferralInfoResponseImplToJson(
         _$GetReferralInfoResponseImpl instance) =>
     <String, dynamic>{
-      'success': instance.success,
-      'data': instance.data,
-      'message': instance.message,
+      'totalReferrals': instance.totalReferrals,
+      'totalRewards': instance.totalRewards,
+      'referralCode': instance.referralCode,
+      'referrals': instance.referrals,
     };

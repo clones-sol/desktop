@@ -9,15 +9,15 @@ part of 'create_referral_response.dart';
 _$CreateReferralResponseImpl _$$CreateReferralResponseImplFromJson(
         Map<String, dynamic> json) =>
     _$CreateReferralResponseImpl(
-      success: json['success'] as bool,
-      data: CreateReferralData.fromJson(json['data'] as Map<String, dynamic>),
-      message: json['message'] as String?,
+      referralCode: json['referralCode'] as String,
+      referralLink: json['referralLink'] as String,
+      walletAddress: json['walletAddress'] as String,
     );
 
 Map<String, dynamic> _$$CreateReferralResponseImplToJson(
         _$CreateReferralResponseImpl instance) =>
     <String, dynamic>{
-      'success': instance.success,
-      'data': instance.data,
-      'message': instance.message,
+      'referralCode': instance.referralCode,
+      'referralLink': instance.referralLink,
+      'walletAddress': instance.walletAddress,
     };
