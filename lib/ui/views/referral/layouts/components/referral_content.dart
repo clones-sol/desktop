@@ -1,11 +1,7 @@
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:clones_desktop/ui/components/menu_item.dart';
 import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
-import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_code_card.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/referral_header.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_instructions_card.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_stats_card.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +20,21 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
   bool _hasShownConfirmation = false;
 
   @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      final walletAddress = ref.read(sessionNotifierProvider).address;
+      if (walletAddress != null) {
+        await ref
+            .read(referralNotifierProvider.notifier)
+            .getReferralInfo(walletAddress);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final referralState = ref.watch(referralNotifierProvider);
     // Listen to session changes within the build method
     ref.listen(sessionNotifierProvider, (previous, next) {
       final currentWalletAddress = next.address;
@@ -45,92 +55,7 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
       }
     });
 
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 20,
-        children: [
-          const ReferralHeader(),
-          Expanded(
-            child: _buildReferralStateWidget(context),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildReferralStateWidget(
-    BuildContext context,
-  ) {
-    final referralState = ref.watch(referralNotifierProvider);
-    switch (referralState) {
-      case Initial():
-        return _buildInitialState(context);
-      case Loading():
-        return _buildLoadingState();
-      case Success():
-        return _buildSuccessState(
-          context,
-          referralState.referralInfo,
-          referralState.showConfirmation,
-        );
-      case Error():
-        return _buildErrorState(context, referralState.message);
-      default:
-        return _buildInitialState(context);
-    }
-  }
-
-  Widget _buildInitialState(BuildContext context) {
-    final mediaQuery = MediaQuery.of(context);
-
-    final menuItem = MenuItem(
-      'Get Your Referral Code',
-      'Generate your unique referral code to start earning rewards.',
-      Assets.getReferralCodeMenu,
-      () async {
-        await ref.read(referralNotifierProvider.notifier).createReferral();
-      },
-    );
-
-    return Center(
-      child: SizedBox(
-        width: mediaQuery.size.width * 0.25,
-        height: mediaQuery.size.height * 0.4,
-        child: MenuItemWidget(item: menuItem),
-      ),
-    );
-  }
-
-  Widget _buildLoadingState() {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(
-            color: ClonesColors.primaryText,
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Loading referral information...',
-            style: TextStyle(
-              color: ClonesColors.primaryText,
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSuccessState(
-    BuildContext context,
-    referralInfo,
-    bool showConfirmation,
-  ) {
-    // Show success confirmation when this state is first displayed
-    if (showConfirmation && !_hasShownConfirmation) {
+    if (referralState.showConfirmation && !_hasShownConfirmation) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _hasShownConfirmation = true;
 
@@ -167,60 +92,24 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
       });
     }
 
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
+        spacing: 24,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Referral Code Section
-          ReferralCodeCard(referralInfo: referralInfo),
-          const SizedBox(height: 24),
-
-          // Stats Section
-          ReferralStatsCard(referralInfo: referralInfo),
-          const SizedBox(height: 24),
-
-          // Instructions Section
-          const ReferralInstructionsCard(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(BuildContext context, String message) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.error_outline,
-            color: ClonesColors.lowScore,
-            size: 80,
+          SizedBox(
+            child: SizedBox(
+              height: 160,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ReferralCodeCard(),
+                ],
+              ),
+            ),
           ),
-          const SizedBox(height: 24),
-          Text(
-            'Error Loading Referral',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  color: ClonesColors.primaryText,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            message,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: ClonesColors.secondaryText,
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 32),
-          BtnPrimary(
-            buttonText: 'Try Again',
-            onTap: () async {
-              await ref
-                  .read(referralNotifierProvider.notifier)
-                  .createReferral();
-            },
-          ),
+          ReferralStatsCard(),
+          ReferralInstructionsCard(),
         ],
       ),
     );

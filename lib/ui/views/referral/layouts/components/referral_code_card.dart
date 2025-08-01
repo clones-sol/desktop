@@ -1,104 +1,116 @@
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/referral/referral_info.dart';
+import 'package:clones_desktop/ui/components/card.dart';
+import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ReferralCodeCard extends StatelessWidget {
-  const ReferralCodeCard({
-    super.key,
-    required this.referralInfo,
-  });
-  final ReferralInfo referralInfo;
+class ReferralCodeCard extends ConsumerWidget {
+  const ReferralCodeCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: ClonesColors.containerIcon2.withValues(alpha: 0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: ClonesColors.containerIcon2.withValues(alpha: 0.1),
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.link,
-                color: ClonesColors.containerIcon2,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'Your Referral Link',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: ClonesColors.primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: ClonesColors.containerIcon2.withValues(alpha: 0.3),
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: ClonesColors.containerIcon2.withValues(alpha: 0.1),
-              ),
-            ),
-            child: Row(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final referralState = ref.watch(referralNotifierProvider);
+    if (referralState.referralInfo == null) {
+      return const SizedBox.shrink();
+    }
+
+    final theme = Theme.of(context);
+    return Expanded(
+      child: CardWidget(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
               children: [
-                Expanded(
-                  child: Text(
-                    referralInfo.referralLink,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: ClonesColors.secondaryText,
-                          fontFamily: ClonesFonts.mono,
-                        ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: ClonesColors.containerIcon2.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                ),
-                const SizedBox(width: 12),
-                IconButton(
-                  onPressed: () {
-                    Clipboard.setData(
-                      ClipboardData(text: referralInfo.referralLink),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Referral link copied to clipboard!',
-                          style: TextStyle(color: ClonesColors.primaryText),
-                        ),
-                        backgroundColor: ClonesColors.rewardInfo,
-                      ),
-                    );
-                  },
-                  icon: const Icon(
-                    Icons.copy,
-                    color: ClonesColors.containerIcon2,
+                  child: Icon(
+                    Icons.call_received,
+                    color: ClonesColors.containerIcon2.withValues(alpha: 0.7),
                     size: 20,
                   ),
-                  tooltip: 'Copy link',
+                ),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Referral Code',
+                      style: theme.textTheme.titleSmall,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Share your referral code ',
+                            style: theme.textTheme.bodySmall,
+                          ),
+                          TextSpan(
+                            text: referralState.referralInfo!.referralCode,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: ClonesColors.secondaryText,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: ' with your friends and earn rewards',
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 12),
-          Text(
-            'Referral Code: ${referralInfo.referralCode}',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ClonesColors.secondaryText,
-                  fontFamily: ClonesFonts.mono,
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: ClonesColors.gradientInputFormBackground,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 12,
+                      ),
+                      child: SelectableText(
+                        referralState.referralInfo!.referralLink,
+                        style: theme.textTheme.bodyMedium,
+                      ),
+                    ),
+                  ),
                 ),
-          ),
-        ],
+                const SizedBox(width: 8),
+                BtnPrimary(
+                  buttonText: 'Copy',
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: referralState.referralInfo!.referralLink,
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Referral link copied!'),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

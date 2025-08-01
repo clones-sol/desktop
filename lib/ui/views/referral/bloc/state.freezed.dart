@@ -16,57 +16,15 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$ReferralState {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ReferralInfo referralInfo, bool showConfirmation)
-        success,
-    required TResult Function(String message) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ReferralInfo referralInfo, bool showConfirmation)?
-        success,
-    TResult? Function(String message)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ReferralInfo referralInfo, bool showConfirmation)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(Success value) success,
-    required TResult Function(Error value) error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(Success value)? success,
-    TResult? Function(Error value)? error,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(Success value)? success,
-    TResult Function(Error value)? error,
-    required TResult orElse(),
-  }) =>
+  ReferralInfo? get referralInfo => throw _privateConstructorUsedError;
+  bool get showConfirmation => throw _privateConstructorUsedError;
+  bool get isLoading => throw _privateConstructorUsedError;
+  String get errorMessage => throw _privateConstructorUsedError;
+
+  /// Create a copy of ReferralState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ReferralStateCopyWith<ReferralState> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
@@ -75,6 +33,14 @@ abstract class $ReferralStateCopyWith<$Res> {
   factory $ReferralStateCopyWith(
           ReferralState value, $Res Function(ReferralState) then) =
       _$ReferralStateCopyWithImpl<$Res, ReferralState>;
+  @useResult
+  $Res call(
+      {ReferralInfo? referralInfo,
+      bool showConfirmation,
+      bool isLoading,
+      String errorMessage});
+
+  $ReferralInfoCopyWith<$Res>? get referralInfo;
 }
 
 /// @nodoc
@@ -89,440 +55,73 @@ class _$ReferralStateCopyWithImpl<$Res, $Val extends ReferralState>
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-abstract class _$$InitialImplCopyWith<$Res> {
-  factory _$$InitialImplCopyWith(
-          _$InitialImpl value, $Res Function(_$InitialImpl) then) =
-      __$$InitialImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$InitialImplCopyWithImpl<$Res>
-    extends _$ReferralStateCopyWithImpl<$Res, _$InitialImpl>
-    implements _$$InitialImplCopyWith<$Res> {
-  __$$InitialImplCopyWithImpl(
-      _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ReferralState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$InitialImpl implements Initial {
-  const _$InitialImpl();
-
-  @override
-  String toString() {
-    return 'ReferralState.initial()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$InitialImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ReferralInfo referralInfo, bool showConfirmation)
-        success,
-    required TResult Function(String message) error,
-  }) {
-    return initial();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ReferralInfo referralInfo, bool showConfirmation)?
-        success,
-    TResult? Function(String message)? error,
-  }) {
-    return initial?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ReferralInfo referralInfo, bool showConfirmation)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(Success value) success,
-    required TResult Function(Error value) error,
-  }) {
-    return initial(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(Success value)? success,
-    TResult? Function(Error value)? error,
-  }) {
-    return initial?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(Success value)? success,
-    TResult Function(Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (initial != null) {
-      return initial(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Initial implements ReferralState {
-  const factory Initial() = _$InitialImpl;
-}
-
-/// @nodoc
-abstract class _$$LoadingImplCopyWith<$Res> {
-  factory _$$LoadingImplCopyWith(
-          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
-      __$$LoadingImplCopyWithImpl<$Res>;
-}
-
-/// @nodoc
-class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$ReferralStateCopyWithImpl<$Res, _$LoadingImpl>
-    implements _$$LoadingImplCopyWith<$Res> {
-  __$$LoadingImplCopyWithImpl(
-      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ReferralState
-  /// with the given fields replaced by the non-null parameter values.
-}
-
-/// @nodoc
-
-class _$LoadingImpl implements Loading {
-  const _$LoadingImpl();
-
-  @override
-  String toString() {
-    return 'ReferralState.loading()';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$LoadingImpl);
-  }
-
-  @override
-  int get hashCode => runtimeType.hashCode;
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ReferralInfo referralInfo, bool showConfirmation)
-        success,
-    required TResult Function(String message) error,
-  }) {
-    return loading();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ReferralInfo referralInfo, bool showConfirmation)?
-        success,
-    TResult? Function(String message)? error,
-  }) {
-    return loading?.call();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ReferralInfo referralInfo, bool showConfirmation)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading();
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(Success value) success,
-    required TResult Function(Error value) error,
-  }) {
-    return loading(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(Success value)? success,
-    TResult? Function(Error value)? error,
-  }) {
-    return loading?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(Success value)? success,
-    TResult Function(Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (loading != null) {
-      return loading(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Loading implements ReferralState {
-  const factory Loading() = _$LoadingImpl;
-}
-
-/// @nodoc
-abstract class _$$SuccessImplCopyWith<$Res> {
-  factory _$$SuccessImplCopyWith(
-          _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
-      __$$SuccessImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({ReferralInfo referralInfo, bool showConfirmation});
-
-  $ReferralInfoCopyWith<$Res> get referralInfo;
-}
-
-/// @nodoc
-class __$$SuccessImplCopyWithImpl<$Res>
-    extends _$ReferralStateCopyWithImpl<$Res, _$SuccessImpl>
-    implements _$$SuccessImplCopyWith<$Res> {
-  __$$SuccessImplCopyWithImpl(
-      _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
-      : super(_value, _then);
-
-  /// Create a copy of ReferralState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? referralInfo = null,
+    Object? referralInfo = freezed,
     Object? showConfirmation = null,
+    Object? isLoading = null,
+    Object? errorMessage = null,
   }) {
-    return _then(_$SuccessImpl(
-      null == referralInfo
+    return _then(_value.copyWith(
+      referralInfo: freezed == referralInfo
           ? _value.referralInfo
           : referralInfo // ignore: cast_nullable_to_non_nullable
-              as ReferralInfo,
+              as ReferralInfo?,
       showConfirmation: null == showConfirmation
           ? _value.showConfirmation
           : showConfirmation // ignore: cast_nullable_to_non_nullable
               as bool,
-    ));
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
   }
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $ReferralInfoCopyWith<$Res> get referralInfo {
-    return $ReferralInfoCopyWith<$Res>(_value.referralInfo, (value) {
-      return _then(_value.copyWith(referralInfo: value));
+  $ReferralInfoCopyWith<$Res>? get referralInfo {
+    if (_value.referralInfo == null) {
+      return null;
+    }
+
+    return $ReferralInfoCopyWith<$Res>(_value.referralInfo!, (value) {
+      return _then(_value.copyWith(referralInfo: value) as $Val);
     });
   }
 }
 
 /// @nodoc
-
-class _$SuccessImpl implements Success {
-  const _$SuccessImpl(this.referralInfo, {this.showConfirmation = false});
-
+abstract class _$$ReferralStateImplCopyWith<$Res>
+    implements $ReferralStateCopyWith<$Res> {
+  factory _$$ReferralStateImplCopyWith(
+          _$ReferralStateImpl value, $Res Function(_$ReferralStateImpl) then) =
+      __$$ReferralStateImplCopyWithImpl<$Res>;
   @override
-  final ReferralInfo referralInfo;
-  @override
-  @JsonKey()
-  final bool showConfirmation;
-
-  @override
-  String toString() {
-    return 'ReferralState.success(referralInfo: $referralInfo, showConfirmation: $showConfirmation)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$SuccessImpl &&
-            (identical(other.referralInfo, referralInfo) ||
-                other.referralInfo == referralInfo) &&
-            (identical(other.showConfirmation, showConfirmation) ||
-                other.showConfirmation == showConfirmation));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, referralInfo, showConfirmation);
-
-  /// Create a copy of ReferralState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      __$$SuccessImplCopyWithImpl<_$SuccessImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ReferralInfo referralInfo, bool showConfirmation)
-        success,
-    required TResult Function(String message) error,
-  }) {
-    return success(referralInfo, showConfirmation);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ReferralInfo referralInfo, bool showConfirmation)?
-        success,
-    TResult? Function(String message)? error,
-  }) {
-    return success?.call(referralInfo, showConfirmation);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ReferralInfo referralInfo, bool showConfirmation)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(referralInfo, showConfirmation);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(Success value) success,
-    required TResult Function(Error value) error,
-  }) {
-    return success(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(Success value)? success,
-    TResult? Function(Error value)? error,
-  }) {
-    return success?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(Success value)? success,
-    TResult Function(Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (success != null) {
-      return success(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Success implements ReferralState {
-  const factory Success(final ReferralInfo referralInfo,
-      {final bool showConfirmation}) = _$SuccessImpl;
-
-  ReferralInfo get referralInfo;
-  bool get showConfirmation;
-
-  /// Create a copy of ReferralState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$ErrorImplCopyWith<$Res> {
-  factory _$$ErrorImplCopyWith(
-          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
-      __$$ErrorImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({String message});
+  $Res call(
+      {ReferralInfo? referralInfo,
+      bool showConfirmation,
+      bool isLoading,
+      String errorMessage});
+
+  @override
+  $ReferralInfoCopyWith<$Res>? get referralInfo;
 }
 
 /// @nodoc
-class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$ReferralStateCopyWithImpl<$Res, _$ErrorImpl>
-    implements _$$ErrorImplCopyWith<$Res> {
-  __$$ErrorImplCopyWithImpl(
-      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+class __$$ReferralStateImplCopyWithImpl<$Res>
+    extends _$ReferralStateCopyWithImpl<$Res, _$ReferralStateImpl>
+    implements _$$ReferralStateImplCopyWith<$Res> {
+  __$$ReferralStateImplCopyWithImpl(
+      _$ReferralStateImpl _value, $Res Function(_$ReferralStateImpl) _then)
       : super(_value, _then);
 
   /// Create a copy of ReferralState
@@ -530,12 +129,27 @@ class __$$ErrorImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? message = null,
+    Object? referralInfo = freezed,
+    Object? showConfirmation = null,
+    Object? isLoading = null,
+    Object? errorMessage = null,
   }) {
-    return _then(_$ErrorImpl(
-      null == message
-          ? _value.message
-          : message // ignore: cast_nullable_to_non_nullable
+    return _then(_$ReferralStateImpl(
+      referralInfo: freezed == referralInfo
+          ? _value.referralInfo
+          : referralInfo // ignore: cast_nullable_to_non_nullable
+              as ReferralInfo?,
+      showConfirmation: null == showConfirmation
+          ? _value.showConfirmation
+          : showConfirmation // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isLoading: null == isLoading
+          ? _value.isLoading
+          : isLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
+      errorMessage: null == errorMessage
+          ? _value.errorMessage
+          : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -543,121 +157,80 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements Error {
-  const _$ErrorImpl(this.message);
+class _$ReferralStateImpl extends _ReferralState {
+  const _$ReferralStateImpl(
+      {this.referralInfo,
+      this.showConfirmation = false,
+      this.isLoading = false,
+      this.errorMessage = ''})
+      : super._();
 
   @override
-  final String message;
+  final ReferralInfo? referralInfo;
+  @override
+  @JsonKey()
+  final bool showConfirmation;
+  @override
+  @JsonKey()
+  final bool isLoading;
+  @override
+  @JsonKey()
+  final String errorMessage;
 
   @override
   String toString() {
-    return 'ReferralState.error(message: $message)';
+    return 'ReferralState(referralInfo: $referralInfo, showConfirmation: $showConfirmation, isLoading: $isLoading, errorMessage: $errorMessage)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$ErrorImpl &&
-            (identical(other.message, message) || other.message == message));
+            other is _$ReferralStateImpl &&
+            (identical(other.referralInfo, referralInfo) ||
+                other.referralInfo == referralInfo) &&
+            (identical(other.showConfirmation, showConfirmation) ||
+                other.showConfirmation == showConfirmation) &&
+            (identical(other.isLoading, isLoading) ||
+                other.isLoading == isLoading) &&
+            (identical(other.errorMessage, errorMessage) ||
+                other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, message);
+  int get hashCode => Object.hash(
+      runtimeType, referralInfo, showConfirmation, isLoading, errorMessage);
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
-      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function() initial,
-    required TResult Function() loading,
-    required TResult Function(ReferralInfo referralInfo, bool showConfirmation)
-        success,
-    required TResult Function(String message) error,
-  }) {
-    return error(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function()? initial,
-    TResult? Function()? loading,
-    TResult? Function(ReferralInfo referralInfo, bool showConfirmation)?
-        success,
-    TResult? Function(String message)? error,
-  }) {
-    return error?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function()? initial,
-    TResult Function()? loading,
-    TResult Function(ReferralInfo referralInfo, bool showConfirmation)? success,
-    TResult Function(String message)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Loading value) loading,
-    required TResult Function(Success value) success,
-    required TResult Function(Error value) error,
-  }) {
-    return error(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(Initial value)? initial,
-    TResult? Function(Loading value)? loading,
-    TResult? Function(Success value)? success,
-    TResult? Function(Error value)? error,
-  }) {
-    return error?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Loading value)? loading,
-    TResult Function(Success value)? success,
-    TResult Function(Error value)? error,
-    required TResult orElse(),
-  }) {
-    if (error != null) {
-      return error(this);
-    }
-    return orElse();
-  }
+  _$$ReferralStateImplCopyWith<_$ReferralStateImpl> get copyWith =>
+      __$$ReferralStateImplCopyWithImpl<_$ReferralStateImpl>(this, _$identity);
 }
 
-abstract class Error implements ReferralState {
-  const factory Error(final String message) = _$ErrorImpl;
+abstract class _ReferralState extends ReferralState {
+  const factory _ReferralState(
+      {final ReferralInfo? referralInfo,
+      final bool showConfirmation,
+      final bool isLoading,
+      final String errorMessage}) = _$ReferralStateImpl;
+  const _ReferralState._() : super._();
 
-  String get message;
+  @override
+  ReferralInfo? get referralInfo;
+  @override
+  bool get showConfirmation;
+  @override
+  bool get isLoading;
+  @override
+  String get errorMessage;
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+  _$$ReferralStateImplCopyWith<_$ReferralStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

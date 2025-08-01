@@ -5,11 +5,11 @@ part 'state.freezed.dart';
 
 @freezed
 class ReferralState with _$ReferralState {
-  const factory ReferralState.initial() = Initial;
-  const factory ReferralState.loading() = Loading;
-  const factory ReferralState.success(
-    ReferralInfo referralInfo, {
+  const factory ReferralState({
+    ReferralInfo? referralInfo,
     @Default(false) bool showConfirmation,
-  }) = Success;
-  const factory ReferralState.error(String message) = Error;
+    @Default(false) bool isLoading,
+    @Default('') String errorMessage,
+  }) = _ReferralState;
+  const ReferralState._();
 }
