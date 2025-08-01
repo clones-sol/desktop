@@ -25,7 +25,7 @@ final referralRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef ReferralRepositoryRef = AutoDisposeProviderRef<ReferralRepository>;
-String _$referralNotifierHash() => r'd886493526771d593d4d4bc8ed6aa67cbb867e33';
+String _$referralNotifierHash() => r'65cea25b195be619366c4b75909f0eb4128682bf';
 
 /// See also [ReferralNotifier].
 @ProviderFor(ReferralNotifier)
