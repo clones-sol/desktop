@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/wallet_button.dart';
+import 'package:flutter/material.dart';
 
 class WalletConnectionSection extends StatelessWidget {
   const WalletConnectionSection({super.key});
@@ -21,16 +21,16 @@ class WalletConnectionSection extends StatelessWidget {
             Text(
               'Connect Your Wallet',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: ClonesColors.primaryText,
-                fontWeight: FontWeight.w600,
-              ),
+                    color: ClonesColors.primaryText,
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
             const SizedBox(height: 16),
             Text(
               'Connect your Solana wallet to access your referral program and start earning rewards.',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: ClonesColors.secondaryText,
-              ),
+                    color: ClonesColors.secondaryText,
+                  ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
@@ -40,4 +40,4 @@ class WalletConnectionSection extends StatelessWidget {
       ),
     );
   }
-} 
+}
