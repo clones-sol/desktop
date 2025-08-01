@@ -24,6 +24,10 @@ This project is a monorepo containing the Flutter Web application and the Rust b
 -   [VS Code](https://code.visualstudio.com/) with the following extensions:
     -   [Flutter](https://marketplace.visualstudio.com/items?itemName=Dart-Code.flutter)
     -   [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+-   **Windows-specific requirements:**
+    -   PowerShell 5.0+ (included with Windows 10/11)
+    -   Windows Terminal (recommended) or Command Prompt
+    -   Visual Studio Build Tools (for Rust compilation)
 -   The [backend server](../projects/backend.mdx) and [website](../projects/website.mdx) must be running. Using the recommended Docker setup for both is advised.
 
 ### Application Setup (Flutter Web + Tauri)
@@ -46,15 +50,38 @@ There are several ways to run the application in development mode:
 
 Use the provided development script that handles both Flutter Web and Tauri:
 
+**For Windows:**
+```powershell
+# PowerShell (Recommended) - Full Flutter Web + Tauri
+.\scripts\dev_web_tauri.ps1
+
+# Batch file wrapper - Full Flutter Web + Tauri
+.\scripts\dev_web_tauri.bat
+
+# PowerShell - Tauri Desktop Only (for wallet testing)
+.\scripts\dev_tauri_desktop.ps1
+
+# Batch file wrapper - Tauri Desktop Only
+.\scripts\dev_tauri_desktop.bat
+
+# PowerShell - Windows-optimized Tauri development
+.\scripts\dev-windows.ps1
+
+# Batch file wrapper - Windows-optimized Tauri development
+.\scripts\dev-windows.bat
+```
+
+**For macOS/Linux:**
 ```bash
 ./scripts/dev_web_tauri.sh
 ```
 
-This script will:
+These scripts will:
 - Start Flutter Web development server on port 3000
 - Wait for Flutter to be ready
-- Start Tauri development server
+- Start Tauri development server with Windows-specific optimizations
 - Provide real-time logs
+- Handle Windows file lock issues using temporary build directories
 
 ##### Option 2: VS Code Launch Configuration
 
@@ -67,6 +94,18 @@ This script will:
 
 Run the following commands in separate terminals:
 
+**For Windows:**
+```powershell
+# Terminal 1: Start Flutter Web development server
+flutter run -d web-server --web-port 3000 --web-hostname 127.0.0.1
+
+# Terminal 2: Start Tauri development server (Windows-optimized)
+cd src-tauri
+$env:CARGO_TARGET_DIR = "$env:TEMP\clones-desktop-target"
+cargo tauri dev
+```
+
+**For macOS/Linux:**
 ```bash
 # Terminal 1: Start Flutter Web development server
 flutter run -d web-server --web-port 3000 --web-hostname 127.0.0.1
@@ -86,3 +125,40 @@ The application now uses a unified architecture:
 - **Native distribution** via Tauri for production
 
 This architecture provides a consistent development and production experience while maintaining all existing functionality.
+
+### Windows-Specific Notes
+
+The Windows development environment includes several optimizations to handle common Windows development challenges:
+
+- **Temporary Build Directories**: Uses `%TEMP%\clones-desktop-build` and `%TEMP%\clones-desktop-target` to avoid file lock issues
+- **PowerShell Scripts**: Enhanced PowerShell scripts with proper error handling and cleanup
+- **Batch File Wrappers**: Simple `.bat` files for users who prefer Command Prompt
+- **Process Management**: Automatic cleanup of Flutter and Rust processes on script termination
+- **File Lock Handling**: Prevents common Windows file locking issues during development
+
+If you encounter any Windows-specific issues, the automated scripts handle most common problems automatically.
+
+### Windows Development Scripts Overview
+
+The project includes several Windows-specific development scripts for different use cases:
+
+#### Full Development (Flutter Web + Tauri)
+- **`dev_web_tauri.ps1`** / **`dev_web_tauri.bat`**: Complete development environment with Flutter Web server and Tauri desktop app
+- Best for: Full application development and testing
+
+#### Tauri Desktop Only
+- **`dev_tauri_desktop.ps1`** / **`dev_tauri_desktop.bat`**: Runs only the Tauri desktop application
+- Best for: Testing wallet functionality and desktop-specific features
+- Skips Flutter Web server setup
+
+#### Windows-Optimized Tauri
+- **`dev-windows.ps1`** / **`dev-windows.bat`**: Optimized Tauri development with enhanced Windows file handling
+- Best for: Pure Tauri development and debugging
+- Uses temporary build directories to avoid file lock issues
+
+#### Script Features
+- **PowerShell Scripts**: Full-featured with error handling, process management, and cleanup
+- **Batch Files**: Simple wrappers that call the PowerShell scripts
+- **Automatic Cleanup**: Removes temporary files and stops processes on exit
+- **File Lock Prevention**: Uses Windows temp directories to avoid build conflicts
+- **Process Management**: Automatically handles Flutter and Rust process lifecycle
