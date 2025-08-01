@@ -8,48 +8,9 @@ ROOT_DIR=$(pwd)
 LOCK_FILE="$ROOT_DIR/.dev_lock"
 LOG_FILE="$ROOT_DIR/flutter.log"
 
-# Detect operating system
-detect_os() {
-    # Check for Windows environment variables first
-    if [ -n "${OS:-}" ] && [ "$OS" = "Windows_NT" ]; then
-        echo "windows"
-        return
-    fi
-    
-    # Check for Windows-specific environment variables
-    if [ -n "${WINDIR:-}" ] || [ -n "${SystemRoot:-}" ]; then
-        echo "windows"
-        return
-    fi
-    
-    # Check uname output
-    case "$(uname -s)" in
-        *NT*|MINGW*|MSYS*|CYGWIN*)
-            echo "windows"
-            ;;
-        Darwin)
-            echo "macos"
-            ;;
-        Linux)
-            # Additional check for WSL or Git Bash on Windows
-            if [ -f /proc/version ] && grep -q Microsoft /proc/version; then
-                echo "windows"
-            else
-                echo "linux"
-            fi
-            ;;
-        *)
-            echo "unknown"
-            ;;
-    esac
-}
-
-OS=$(detect_os)
-echo "🖥️  Detected OS: $OS"
-
 # Windows-specific temp directory setup
 setup_windows_temp() {
-    echo "🪟 Windows detected - using temporary build directory to avoid file locks"
+    echo "🪟 Using temporary build directory to avoid file locks"
     
     # Use system temp directory
     if [ -n "${TEMP:-}" ]; then
@@ -118,7 +79,7 @@ cleanup() {
     rm -f "$LOCK_FILE"
     
     # Clean up Windows temp directory if it exists
-    if [ "$OS" = "windows" ] && [ -n "${TEMP_BUILD_DIR:-}" ] && [ -d "$TEMP_BUILD_DIR" ]; then
+    if [ -n "${TEMP_BUILD_DIR:-}" ] && [ -d "$TEMP_BUILD_DIR" ]; then
         echo "🧹 Cleaning up Windows temp directory..."
         rm -rf "$TEMP_BUILD_DIR"
     fi
@@ -149,35 +110,26 @@ sleep 2
 
 # Check if Flutter is available
 echo "🔍 Checking Flutter availability..."
-if [ "$OS" = "windows" ]; then
-    # On Windows, try to use the Windows Flutter installation
-    if [ -f "/c/flutter/bin/flutter.exe" ]; then
-        FLUTTER_CMD="/c/flutter/bin/flutter.exe"
-    elif [ -f "/mnt/c/flutter/bin/flutter.exe" ]; then
-        FLUTTER_CMD="/mnt/c/flutter/bin/flutter.exe"
-    elif [ -f "/c/flutter/bin/flutter" ]; then
-        FLUTTER_CMD="/c/flutter/bin/flutter"
-    elif [ -f "/mnt/c/flutter/bin/flutter" ]; then
-        FLUTTER_CMD="/mnt/c/flutter/bin/flutter"
-    elif command -v flutter.exe &> /dev/null; then
-        FLUTTER_CMD="flutter.exe"
-    elif command -v flutter &> /dev/null; then
-        FLUTTER_CMD="flutter"
-    else
-        echo "❌ Flutter is not installed or not in PATH"
-        echo "   Please install Flutter from: https://flutter.dev/docs/get-started/install"
-        exit 1
-    fi
+
+# On Windows, try to use the Windows Flutter installation
+if [ -f "/c/flutter/bin/flutter.exe" ]; then
+    FLUTTER_CMD="/c/flutter/bin/flutter.exe"
+elif [ -f "/mnt/c/flutter/bin/flutter.exe" ]; then
+    FLUTTER_CMD="/mnt/c/flutter/bin/flutter.exe"
+elif [ -f "/c/flutter/bin/flutter" ]; then
+    FLUTTER_CMD="/c/flutter/bin/flutter"
+elif [ -f "/mnt/c/flutter/bin/flutter" ]; then
+    FLUTTER_CMD="/mnt/c/flutter/bin/flutter"
+elif command -v flutter.exe &> /dev/null; then
+    FLUTTER_CMD="flutter.exe"
+elif command -v flutter &> /dev/null; then
+    FLUTTER_CMD="flutter"
 else
-    # On macOS/Linux, use standard flutter command
-    if command -v flutter &> /dev/null; then
-        FLUTTER_CMD="flutter"
-    else
-        echo "❌ Flutter is not installed or not in PATH"
-        echo "   Please install Flutter from: https://flutter.dev/docs/get-started/install"
-        exit 1
-    fi
+    echo "❌ Flutter is not installed or not in PATH"
+    echo "   Please install Flutter from: https://flutter.dev/docs/get-started/install"
+    exit 1
 fi
+
 
 echo "📱 Using Flutter command: $FLUTTER_CMD"
 
@@ -186,9 +138,7 @@ echo "🔍 Running Flutter doctor..."
 $FLUTTER_CMD doctor --android-licenses --quiet || true
 
 # Setup Windows temp directory if needed
-if [ "$OS" = "windows" ]; then
-    setup_windows_temp
-fi
+setup_windows_temp
 
 # 1. Start Flutter and pipe output to a file
 echo "📱 Starting Flutter Web development server..."
@@ -256,14 +206,10 @@ sleep 2
 
 # 3. Start Tauri
 echo "⚙️ Starting Tauri development..."
-if [ "$OS" = "windows" ]; then
-    # Use temp directory for Windows
-    cd "$TEMP_BUILD_DIR"
-    echo "🪟 Running Tauri from temp directory: $TEMP_BUILD_DIR"
-else
-    # Use original directory for macOS/Linux
-    cd "$ROOT_DIR/src-tauri"
-fi
+
+# Use temp directory for Windows
+cd "$TEMP_BUILD_DIR"
+echo "🪟 Running Tauri from temp directory: $TEMP_BUILD_DIR"
 
 cargo tauri dev --config tauri.conf.json &
 TAURI_PID=$!
@@ -271,10 +217,8 @@ TAURI_PID=$!
 echo "✅ Development servers started!"
 echo "🌐 Flutter Web: http://localhost:3000"
 echo "🖥️  Tauri App: Starting..."
-if [ "$OS" = "windows" ]; then
-    echo "🪟 Using temporary build directory: $TEMP_BUILD_DIR"
-    echo "🎯 Using temporary target directory: $TEMP_TARGET_DIR"
-fi
+echo "🪟 Using temporary build directory: $TEMP_BUILD_DIR"
+echo "🎯 Using temporary target directory: $TEMP_TARGET_DIR"
 echo "🛑 Press Ctrl+C to stop all servers"
 
 # 4. Tail logs for visibility (optional) - only one instance
