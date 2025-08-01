@@ -12,4 +12,4 @@ class ReferralState with _$ReferralState {
     @Default(false) bool showConfirmation,
   }) = Success;
   const factory ReferralState.error(String message) = Error;
-} 
+}

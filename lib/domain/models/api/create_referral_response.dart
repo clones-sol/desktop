@@ -13,4 +13,4 @@ class CreateReferralResponse with _$CreateReferralResponse {
 
   factory CreateReferralResponse.fromJson(Map<String, dynamic> json) =>
       _$CreateReferralResponseFromJson(json);
-} 
+}

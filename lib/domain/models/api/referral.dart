@@ -23,4 +23,4 @@ class Referral with _$Referral {
 
   factory Referral.fromJson(Map<String, dynamic> json) =>
       _$ReferralFromJson(json);
-} 
+}

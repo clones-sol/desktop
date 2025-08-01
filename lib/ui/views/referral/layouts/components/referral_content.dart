@@ -1,16 +1,15 @@
-import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
-import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
 import 'package:clones_desktop/application/session/provider.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/referral_header.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/wallet_connection_section.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/referral_code_card.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/referral_stats_card.dart';
-import 'package:clones_desktop/ui/views/referral/layouts/components/referral_instructions_card.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
+import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/components/referral_code_card.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/components/referral_header.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/components/referral_instructions_card.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/components/referral_stats_card.dart';
+import 'package:clones_desktop/ui/views/referral/layouts/components/wallet_connection_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/services.dart';
 
 class ReferralContent extends ConsumerStatefulWidget {
   const ReferralContent({super.key});
@@ -36,11 +35,13 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
         _previousWalletAddress = currentWalletAddress;
         _hasTriedLoading = false;
         _hasShownConfirmation = false;
-        
+
         // Auto-load existing referral info when wallet is connected
         if (currentWalletAddress != null && !_hasTriedLoading) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            ref.read(referralNotifierProvider.notifier).getReferralInfo(currentWalletAddress);
+            ref
+                .read(referralNotifierProvider.notifier)
+                .getReferralInfo(currentWalletAddress);
             _hasTriedLoading = true;
           });
         }
@@ -66,22 +67,32 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
     );
   }
 
-  Widget _buildReferralInfoSection(BuildContext context, ReferralState referralState) {
+  Widget _buildReferralInfoSection(
+    BuildContext context,
+    ReferralState referralState,
+  ) {
     return Expanded(
       child: _buildReferralStateWidget(context, referralState),
     );
   }
 
-  Widget _buildReferralStateWidget(BuildContext context, ReferralState referralState) {
+  Widget _buildReferralStateWidget(
+    BuildContext context,
+    ReferralState referralState,
+  ) {
     if (referralState is Initial) {
       return _buildInitialState(context);
     } else if (referralState is Loading) {
       return _buildLoadingState();
     } else if (referralState is Success) {
-      final successState = referralState as Success;
-      return _buildSuccessState(context, successState.referralInfo, successState.showConfirmation);
+      final successState = referralState;
+      return _buildSuccessState(
+        context,
+        successState.referralInfo,
+        successState.showConfirmation,
+      );
     } else if (referralState is Error) {
-      final errorState = referralState as Error;
+      final errorState = referralState;
       return _buildErrorState(context, errorState.message);
     } else {
       return _buildInitialState(context);
@@ -102,16 +113,16 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
           Text(
             'Get Your Referral Code',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: ClonesColors.primaryText,
-              fontWeight: FontWeight.w600,
-            ),
+                  color: ClonesColors.primaryText,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 16),
           Text(
             'Generate your unique referral code to start earning rewards.',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: ClonesColors.secondaryText,
-            ),
+                  color: ClonesColors.secondaryText,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -120,7 +131,9 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
             onTap: () {
               final walletAddress = ref.read(sessionNotifierProvider).address;
               if (walletAddress != null) {
-                ref.read(referralNotifierProvider.notifier).createReferral(walletAddress);
+                ref
+                    .read(referralNotifierProvider.notifier)
+                    .createReferral(walletAddress);
               }
             },
           ),
@@ -130,14 +143,14 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
   }
 
   Widget _buildLoadingState() {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
             color: ClonesColors.primaryText,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           Text(
             'Loading referral information...',
             style: TextStyle(
@@ -150,22 +163,26 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
     );
   }
 
-  Widget _buildSuccessState(BuildContext context, referralInfo, bool showConfirmation) {
+  Widget _buildSuccessState(
+    BuildContext context,
+    referralInfo,
+    bool showConfirmation,
+  ) {
     // Show success confirmation when this state is first displayed
     if (showConfirmation && !_hasShownConfirmation) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _hasShownConfirmation = true;
-        
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Row(
+            content: const Row(
               children: [
                 Icon(
                   Icons.check_circle,
                   color: ClonesColors.primaryText,
                   size: 20,
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     'Referral code successfully linked to your wallet!',
@@ -179,7 +196,6 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
               ],
             ),
             backgroundColor: ClonesColors.rewardInfo,
-            duration: const Duration(seconds: 4),
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
@@ -214,7 +230,7 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             Icons.error_outline,
             color: ClonesColors.lowScore,
             size: 80,
@@ -223,16 +239,16 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
           Text(
             'Error Loading Referral',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: ClonesColors.primaryText,
-              fontWeight: FontWeight.w600,
-            ),
+                  color: ClonesColors.primaryText,
+                  fontWeight: FontWeight.w600,
+                ),
           ),
           const SizedBox(height: 16),
           Text(
             message,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: ClonesColors.secondaryText,
-            ),
+                  color: ClonesColors.secondaryText,
+                ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
@@ -241,7 +257,9 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
             onTap: () {
               final walletAddress = ref.read(sessionNotifierProvider).address;
               if (walletAddress != null) {
-                ref.read(referralNotifierProvider.notifier).createReferral(walletAddress);
+                ref
+                    .read(referralNotifierProvider.notifier)
+                    .createReferral(walletAddress);
               }
             },
           ),
@@ -249,4 +267,4 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
       ),
     );
   }
-} 
+}
