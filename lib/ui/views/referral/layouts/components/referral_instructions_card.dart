@@ -99,7 +99,7 @@ class ReferralInstructionsCard extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
               ),
-              ClonesSpacing.space4,
+              const SizedBox(height: 4),
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

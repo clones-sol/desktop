@@ -1,91 +1,8 @@
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/ui/components/card.dart';
+import 'package:clones_desktop/ui/components/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-
-class MenuItem {
-  const MenuItem(this.title, this.description, this.imageName, this.linkRoute);
-  final String title;
-  final String description;
-  final String imageName;
-  final String linkRoute;
-}
-
-const menuItems = [
-  MenuItem(
-    'Create a Factory',
-    'Design AI training environments and monetize your workflows.',
-    Assets.menuForge,
-    '/forge',
-  ),
-  MenuItem(
-    'Farm Data',
-    'Generate high-quality demonstrations and earn rewards.',
-    Assets.menuFarm,
-    '/factory',
-  ),
-];
-
-class MenuItemWidget extends StatelessWidget {
-  const MenuItemWidget({super.key, required this.item});
-  final MenuItem item;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
-
-    return InkWell(
-      onTap: () {
-        context.go(item.linkRoute);
-      },
-      child: CardWidget(
-        variant: CardVariant.secondary,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Stack(
-              children: [
-                Image.asset(
-                  item.imageName,
-                  width: mediaQuery.size.width * 0.2,
-                  height: mediaQuery.size.height * 0.2,
-                  color: ClonesColors.tertiary,
-                ),
-                Opacity(
-                  opacity: 0.7,
-                  child: Image.asset(
-                    item.imageName,
-                    width: mediaQuery.size.width * 0.2,
-                    height: mediaQuery.size.height * 0.2,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Column(
-              children: [
-                Text(
-                  item.title,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    color: ClonesColors.primary,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  item.description,
-                  style: theme.textTheme.bodySmall,
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -96,6 +13,25 @@ class HomeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final theme = Theme.of(context);
+    final menuItems = [
+      MenuItem(
+        'Create a Factory',
+        'Design AI training environments and monetize your workflows.',
+        Assets.menuForge,
+        () {
+          context.go('/forge');
+        },
+      ),
+      MenuItem(
+        'Farm Data',
+        'Generate high-quality demonstrations and earn rewards.',
+        Assets.menuFarm,
+        () {
+          context.go('/factory');
+        },
+      ),
+    ];
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
