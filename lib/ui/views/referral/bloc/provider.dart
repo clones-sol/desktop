@@ -1,3 +1,4 @@
+import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/domain/models/api/api_error.dart';
 import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/infrastructure/referral.repository.dart';
@@ -22,10 +23,16 @@ class ReferralNotifier extends _$ReferralNotifier {
     return const ReferralState.initial();
   }
 
-  Future<void> createReferral(String walletAddress) async {
+  Future<void> createReferral() async {
     state = const ReferralState.loading();
 
     try {
+      final walletAddress = ref.read(sessionNotifierProvider).address;
+      if (walletAddress == null) {
+        state = const ReferralState.error('Wallet address is null');
+        return;
+      }
+
       final repository = ref.read(referralRepositoryProvider);
       final response = await repository.createReferral(walletAddress);
 
