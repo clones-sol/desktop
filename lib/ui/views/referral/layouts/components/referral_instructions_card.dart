@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:flutter/material.dart';
 
 class ReferralInstructionsCard extends StatelessWidget {
   const ReferralInstructionsCard({super.key});
@@ -10,11 +10,10 @@ class ReferralInstructionsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 1,
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
@@ -23,7 +22,7 @@ class ReferralInstructionsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.info_outline,
                 color: ClonesColors.containerIcon3,
                 size: 24,
@@ -32,9 +31,9 @@ class ReferralInstructionsCard extends StatelessWidget {
               Text(
                 'How It Works',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: ClonesColors.primaryText,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: ClonesColors.primaryText,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
@@ -48,13 +47,13 @@ class ReferralInstructionsCard extends StatelessWidget {
             context,
             2,
             'They sign up using your link',
-            'When someone uses your referral link to sign up, they\'ll be automatically linked to your account.',
+            "When someone uses your referral link to sign up, they'll be automatically linked to your account.",
           ),
           _buildInstructionStep(
             context,
             3,
             'Earn rewards together',
-            'You\'ll earn rewards when your referrals complete tasks and contribute to the platform.',
+            "You'll earn rewards when your referrals complete tasks and contribute to the platform.",
           ),
         ],
       ),
@@ -80,7 +79,7 @@ class ReferralInstructionsCard extends StatelessWidget {
           child: Center(
             child: Text(
               '$step',
-              style: TextStyle(
+              style: const TextStyle(
                 color: ClonesColors.primaryText,
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -96,16 +95,16 @@ class ReferralInstructionsCard extends StatelessWidget {
               Text(
                 title,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: ClonesColors.primaryText,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: ClonesColors.primaryText,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
               ClonesSpacing.space4,
               Text(
                 description,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: ClonesColors.secondaryText,
-                ),
+                      color: ClonesColors.secondaryText,
+                    ),
               ),
             ],
           ),
@@ -113,4 +112,4 @@ class ReferralInstructionsCard extends StatelessWidget {
       ],
     );
   }
-} 
+}

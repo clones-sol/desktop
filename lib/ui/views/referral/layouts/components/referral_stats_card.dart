@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/models/referral/referral_info.dart';
+import 'package:flutter/material.dart';
 
 class ReferralStatsCard extends StatelessWidget {
-  final ReferralInfo referralInfo;
-
   const ReferralStatsCard({
     super.key,
     required this.referralInfo,
   });
+  final ReferralInfo referralInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +15,10 @@ class ReferralStatsCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.05),
+        color: Colors.white.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 1,
+          color: Colors.white.withValues(alpha: 0.1),
         ),
       ),
       child: Column(
@@ -28,7 +26,7 @@ class ReferralStatsCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.analytics,
                 color: ClonesColors.rewardInfo,
                 size: 24,
@@ -37,9 +35,9 @@ class ReferralStatsCard extends StatelessWidget {
               Text(
                 'Your Stats',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: ClonesColors.primaryText,
-                  fontWeight: FontWeight.w600,
-                ),
+                      color: ClonesColors.primaryText,
+                      fontWeight: FontWeight.w600,
+                    ),
               ),
             ],
           ),
@@ -82,11 +80,10 @@ class ReferralStatsCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.3),
+        color: Colors.black.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: color.withOpacity(0.3),
-          width: 1,
+          color: color.withValues(alpha: 0.3),
         ),
       ),
       child: Column(
@@ -100,20 +97,20 @@ class ReferralStatsCard extends StatelessWidget {
           Text(
             value,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: ClonesColors.primaryText,
-              fontWeight: FontWeight.bold,
-            ),
+                  color: ClonesColors.primaryText,
+                  fontWeight: FontWeight.bold,
+                ),
           ),
           const SizedBox(height: 4),
           Text(
             label,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: ClonesColors.secondaryText,
-            ),
+                  color: ClonesColors.secondaryText,
+                ),
             textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
-} 
+}

@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:flutter/material.dart';
 
 class ReferralHeader extends StatelessWidget {
   const ReferralHeader({super.key});
@@ -8,7 +8,7 @@ class ReferralHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(
+        const Icon(
           Icons.share,
           color: ClonesColors.primaryText,
           size: 32,
@@ -17,11 +17,11 @@ class ReferralHeader extends StatelessWidget {
         Text(
           'Referral Program',
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: ClonesColors.primaryText,
-            fontWeight: FontWeight.bold,
-          ),
+                color: ClonesColors.primaryText,
+                fontWeight: FontWeight.bold,
+              ),
         ),
       ],
     );
   }
-} 
+}

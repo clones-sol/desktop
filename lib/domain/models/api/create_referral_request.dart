@@ -11,4 +11,4 @@ class CreateReferralRequest with _$CreateReferralRequest {
 
   factory CreateReferralRequest.fromJson(Map<String, dynamic> json) =>
       _$CreateReferralRequestFromJson(json);
-} 
+}

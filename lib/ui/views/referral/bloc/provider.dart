@@ -1,14 +1,11 @@
-import 'package:clones_desktop/domain/models/api/create_referral_request.dart';
-import 'package:clones_desktop/domain/models/api/create_referral_response.dart';
-import 'package:clones_desktop/domain/models/api/get_referral_info_response.dart';
 import 'package:clones_desktop/domain/models/api/api_error.dart';
 import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/infrastructure/referral.repository.dart';
+import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 import 'package:clones_desktop/utils/env.dart';
-import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:riverpod/riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'provider.g.dart';
 
@@ -27,21 +24,21 @@ class ReferralNotifier extends _$ReferralNotifier {
 
   Future<void> createReferral(String walletAddress) async {
     state = const ReferralState.loading();
-    
+
     try {
       final repository = ref.read(referralRepositoryProvider);
       final response = await repository.createReferral(walletAddress);
-      
+
       final referralInfo = ReferralInfo(
         referralCode: response.referralCode,
         referralLink: response.referralLink,
         walletAddress: response.walletAddress,
         totalReferrals: 0,
-        totalRewards: 0.0,
+        totalRewards: 0,
         isActive: true,
         createdAt: DateTime.now(),
       );
-      
+
       state = ReferralState.success(referralInfo, showConfirmation: true);
     } catch (e) {
       state = ReferralState.error(e.toString());
@@ -50,20 +47,20 @@ class ReferralNotifier extends _$ReferralNotifier {
 
   Future<void> getReferralInfo(String walletAddress) async {
     state = const ReferralState.loading();
-    
+
     try {
       final repository = ref.read(referralRepositoryProvider);
       final response = await repository.getReferralInfo(walletAddress);
-      
+
       // Check if the referral code is empty
       if (response.referralCode.isEmpty) {
         state = const ReferralState.initial();
         return;
       }
-      
+
       // Construct the referral link using the API_WEBSITE_URL
       final referralLink = '${Env.apiWebsiteUrl}/ref/${response.referralCode}';
-      
+
       final referralInfo = ReferralInfo(
         referralCode: response.referralCode,
         referralLink: referralLink,
@@ -71,11 +68,12 @@ class ReferralNotifier extends _$ReferralNotifier {
         totalReferrals: response.totalReferrals,
         totalRewards: response.totalRewards,
         isActive: true,
-        createdAt: DateTime.now(), // TODO(diamondly777): Backend doesn't provide this in stats
+        createdAt: DateTime
+            .now(), // TODO(diamondly777): Backend doesn't provide this in stats
         lastUpdated: DateTime.now(),
       );
-      
-      state = ReferralState.success(referralInfo, showConfirmation: false);
+
+      state = ReferralState.success(referralInfo);
     } catch (e) {
       // Handle specific API errors
       if (e is ApiError) {
@@ -95,4 +93,4 @@ class ReferralNotifier extends _$ReferralNotifier {
   void reset() {
     state = const ReferralState.initial();
   }
-} 
+}

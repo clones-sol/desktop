@@ -18,4 +18,4 @@ class ReferralInfo with _$ReferralInfo {
 
   factory ReferralInfo.fromJson(Map<String, dynamic> json) =>
       _$ReferralInfoFromJson(json);
-} 
+}
