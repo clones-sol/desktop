@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:clones_desktop/domain/models/api/referral.dart';
 
 part 'get_referral_info_response.freezed.dart';
 part 'get_referral_info_response.g.dart';
@@ -9,7 +10,7 @@ class GetReferralInfoResponse with _$GetReferralInfoResponse {
     required int totalReferrals,
     required double totalRewards,
     required String referralCode,
-    required List<dynamic> referrals,
+    required List<Referral> referrals,
   }) = _GetReferralInfoResponse;
 
   factory GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =>
