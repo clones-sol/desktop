@@ -12,7 +12,9 @@ _$GetReferralInfoResponseImpl _$$GetReferralInfoResponseImplFromJson(
       totalReferrals: (json['totalReferrals'] as num).toInt(),
       totalRewards: (json['totalRewards'] as num).toDouble(),
       referralCode: json['referralCode'] as String,
-      referrals: json['referrals'] as List<dynamic>,
+      referrals: (json['referrals'] as List<dynamic>)
+          .map((e) => Referral.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$GetReferralInfoResponseImplToJson(

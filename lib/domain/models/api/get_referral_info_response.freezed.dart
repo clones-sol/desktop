@@ -24,7 +24,7 @@ mixin _$GetReferralInfoResponse {
   int get totalReferrals => throw _privateConstructorUsedError;
   double get totalRewards => throw _privateConstructorUsedError;
   String get referralCode => throw _privateConstructorUsedError;
-  List<dynamic> get referrals => throw _privateConstructorUsedError;
+  List<Referral> get referrals => throw _privateConstructorUsedError;
 
   /// Serializes this GetReferralInfoResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -46,7 +46,7 @@ abstract class $GetReferralInfoResponseCopyWith<$Res> {
       {int totalReferrals,
       double totalRewards,
       String referralCode,
-      List<dynamic> referrals});
+      List<Referral> referrals});
 }
 
 /// @nodoc
@@ -86,7 +86,7 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
       referrals: null == referrals
           ? _value.referrals
           : referrals // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Referral>,
     ) as $Val);
   }
 }
@@ -104,7 +104,7 @@ abstract class _$$GetReferralInfoResponseImplCopyWith<$Res>
       {int totalReferrals,
       double totalRewards,
       String referralCode,
-      List<dynamic> referrals});
+      List<Referral> referrals});
 }
 
 /// @nodoc
@@ -143,7 +143,7 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
       referrals: null == referrals
           ? _value._referrals
           : referrals // ignore: cast_nullable_to_non_nullable
-              as List<dynamic>,
+              as List<Referral>,
     ));
   }
 }
@@ -155,7 +155,7 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
       {required this.totalReferrals,
       required this.totalRewards,
       required this.referralCode,
-      required final List<dynamic> referrals})
+      required final List<Referral> referrals})
       : _referrals = referrals;
 
   factory _$GetReferralInfoResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -167,9 +167,9 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
   final double totalRewards;
   @override
   final String referralCode;
-  final List<dynamic> _referrals;
+  final List<Referral> _referrals;
   @override
-  List<dynamic> get referrals {
+  List<Referral> get referrals {
     if (_referrals is EqualUnmodifiableListView) return _referrals;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_referrals);
@@ -222,7 +222,7 @@ abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
       {required final int totalReferrals,
       required final double totalRewards,
       required final String referralCode,
-      required final List<dynamic> referrals}) = _$GetReferralInfoResponseImpl;
+      required final List<Referral> referrals}) = _$GetReferralInfoResponseImpl;
 
   factory _GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =
       _$GetReferralInfoResponseImpl.fromJson;
@@ -234,7 +234,7 @@ abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
   @override
   String get referralCode;
   @override
-  List<dynamic> get referrals;
+  List<Referral> get referrals;
 
   /// Create a copy of GetReferralInfoResponse
   /// with the given fields replaced by the non-null parameter values.
