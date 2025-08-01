@@ -19,6 +19,7 @@ class ReferralInstructionsCard extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 16,
         children: [
           Row(
             children: [
@@ -37,21 +38,18 @@ class ReferralInstructionsCard extends StatelessWidget {
               ),
             ],
           ),
-          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             1,
             'Share your referral link with friends',
             'Send your unique referral link to people you know who might be interested in Clones.',
           ),
-          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             2,
             'They sign up using your link',
             'When someone uses your referral link to sign up, they\'ll be automatically linked to your account.',
           ),
-          ClonesSpacing.space16,
           _buildInstructionStep(
             context,
             3,

@@ -71,7 +71,7 @@ class ReferralNotifier extends _$ReferralNotifier {
         totalReferrals: response.totalReferrals,
         totalRewards: response.totalRewards,
         isActive: true,
-        createdAt: DateTime.now(), // Backend doesn't provide this in stats
+        createdAt: DateTime.now(), // TODO(diamondly777): Backend doesn't provide this in stats
         lastUpdated: DateTime.now(),
       );
       
