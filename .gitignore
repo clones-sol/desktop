@@ -23,7 +23,7 @@
 #.vscode/
 
 # VS Code settings (platform-specific paths)
-.vscode/settings.json
+settings.json
 
 # Flutter/Dart/Pub related
 **/doc/api/
@@ -53,4 +53,3 @@ node_modules
 src-tauri/target/
 vendor/
 .dev_lock
-
