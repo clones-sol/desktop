@@ -6,6 +6,7 @@ class ReferralInstructionsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -20,22 +21,9 @@ class ReferralInstructionsCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 16,
         children: [
-          Row(
-            children: [
-              const Icon(
-                Icons.info_outline,
-                color: ClonesColors.containerIcon3,
-                size: 24,
-              ),
-              const SizedBox(width: 12),
-              Text(
-                'How It Works',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: ClonesColors.primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
-              ),
-            ],
+          Text(
+            'How It Works',
+            style: theme.textTheme.titleSmall,
           ),
           _buildInstructionStep(
             context,
@@ -66,25 +54,24 @@ class ReferralInstructionsCard extends StatelessWidget {
     String title,
     String description,
   ) {
+    final theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 32,
-          height: 32,
+          padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: ClonesColors.containerIcon2,
-            borderRadius: BorderRadius.circular(16),
+            color: ClonesColors.containerIcon6.withValues(alpha: 0.2),
+            borderRadius: BorderRadius.circular(10),
           ),
-          child: Center(
-            child: Text(
-              '$step',
-              style: const TextStyle(
-                color: ClonesColors.primaryText,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          child: Icon(
+            step == 1
+                ? Icons.looks_one_outlined
+                : step == 2
+                    ? Icons.looks_two_outlined
+                    : Icons.looks_3_outlined,
+            color: ClonesColors.containerIcon6.withValues(alpha: 0.7),
+            size: 20,
           ),
         ),
         const SizedBox(width: 16),
@@ -94,17 +81,12 @@ class ReferralInstructionsCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: ClonesColors.primaryText,
-                      fontWeight: FontWeight.w600,
-                    ),
+                style: theme.textTheme.titleSmall,
               ),
               const SizedBox(height: 4),
               Text(
                 description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ClonesColors.secondaryText,
-                    ),
+                style: theme.textTheme.bodyMedium,
               ),
             ],
           ),

@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/api/referral.dart';
+import 'package:clones_desktop/domain/models/referral/referral.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'get_referral_info_response.freezed.dart';
