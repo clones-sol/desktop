@@ -19,6 +19,7 @@ class Assets {
   static const String factoryAddIcon =
       '${assetIconsFolder}add_factory_icon.png';
   static const String statsIcon = '${assetIconsFolder}stats_icon.png';
+  static const String referralIcon = '${assetIconsFolder}referral_icon.png';
   static const String skillsTreeIcon =
       '${assetIconsFolder}skills_tree_icon.png';
   static const String walletToConnectIcon =
@@ -37,6 +38,8 @@ class Assets {
   // Menu
   static const String menuFarm = '${assetMenuFolder}farmer_menu.png';
   static const String menuForge = '${assetMenuFolder}forge_menu.png';
+  static const String getReferralCodeMenu =
+      '${assetMenuFolder}get_referral_code_menu.png';
 }
 
 class ClonesFonts {

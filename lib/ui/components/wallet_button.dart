@@ -34,18 +34,29 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
   }
 
   Future<void> _handleConnect() async {
-    await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
-    final session = ref.read(sessionNotifierProvider);
-    if (!mounted) return;
-
     try {
+      await ref.read(sessionNotifierProvider.notifier).getConnectionUrl();
+      
+      final session = ref.read(sessionNotifierProvider);
+
       await ref.read(tauriApiClientProvider).openExternalUrl(
-            session.connectionUrl,
-          );
+        session.connectionUrl,
+      );
+      await ref.read(sessionNotifierProvider.notifier).startPolling();
     } catch (e) {
-      debugPrint('Failed to open external URL: $e');
+      // Handle any errors gracefully
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Failed to connect wallet: $e',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
-    await ref.read(sessionNotifierProvider.notifier).startPolling();
   }
 
   OverlayEntry _createOverlayEntry() {

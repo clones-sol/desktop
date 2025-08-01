@@ -22,6 +22,9 @@
 # is commented out by default.
 #.vscode/
 
+# VS Code settings (platform-specific paths)
+settings.json
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
@@ -50,4 +53,3 @@ node_modules
 src-tauri/target/
 vendor/
 .dev_lock
-
