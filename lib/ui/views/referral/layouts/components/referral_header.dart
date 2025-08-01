@@ -7,19 +7,16 @@ class ReferralHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Icon(
-          Icons.share,
-          color: ClonesColors.primaryText,
-          size: 32,
-        ),
-        const SizedBox(width: 16),
         Text(
           'Referral Program',
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: ClonesColors.primaryText,
-                fontWeight: FontWeight.bold,
-              ),
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w300,
+            letterSpacing: 0.5,
+            color: ClonesColors.secondaryText,
+          ),
         ),
       ],
     );
