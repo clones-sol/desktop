@@ -56,7 +56,6 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
           ),
         );
       }
-      debugPrint('Failed to open external URL: $e');
     }
   }
 

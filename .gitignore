@@ -22,6 +22,9 @@
 # is commented out by default.
 #.vscode/
 
+# VS Code settings (platform-specific paths)
+.vscode/settings.json
+
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id

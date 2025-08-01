@@ -7,6 +7,7 @@ import 'package:clones_desktop/ui/views/referral/layouts/components/referral_cod
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_stats_card.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/components/referral_instructions_card.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
@@ -114,27 +115,14 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: () {
+          BtnPrimary(
+            buttonText: 'Generate Referral Code',
+            onTap: () {
               final walletAddress = ref.read(sessionNotifierProvider).address;
               if (walletAddress != null) {
                 ref.read(referralNotifierProvider.notifier).createReferral(walletAddress);
               }
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ClonesColors.containerIcon2,
-              foregroundColor: ClonesColors.primaryText,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Text(
-              'Generate Referral Code',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ),
         ],
       ),
@@ -248,27 +236,14 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 32),
-          ElevatedButton(
-            onPressed: () {
+          BtnPrimary(
+            buttonText: 'Try Again',
+            onTap: () {
               final walletAddress = ref.read(sessionNotifierProvider).address;
               if (walletAddress != null) {
                 ref.read(referralNotifierProvider.notifier).createReferral(walletAddress);
               }
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: ClonesColors.containerIcon2,
-              foregroundColor: ClonesColors.primaryText,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: Text(
-              'Try Again',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
           ),
         ],
       ),
