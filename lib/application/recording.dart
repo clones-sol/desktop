@@ -12,7 +12,7 @@ part 'recording.g.dart';
 
 @riverpod
 Future<List<rec_meta.RecordingMeta>> listRecordings(Ref ref) async {
-  final tauriApiClient = ref.read(tauriApiClientProvider);
+  final tauriApiClient = ref.watch(tauriApiClientProvider);
   return tauriApiClient.listRecordings();
 }
 
@@ -23,7 +23,7 @@ Future<void> writeRecordingFile(
   required String filename,
   required String content,
 }) async {
-  final tauriApiClient = ref.read(tauriApiClientProvider);
+  final tauriApiClient = ref.watch(tauriApiClientProvider);
   await tauriApiClient.writeRecordingFile(
     recordingId: recordingId,
     filename: filename,
@@ -37,7 +37,7 @@ Future<String> getRecordingFile(
   required String recordingId,
   required String filename,
 }) async {
-  final tauriApiClient = ref.read(tauriApiClientProvider);
+  final tauriApiClient = ref.watch(tauriApiClientProvider);
   return tauriApiClient.getRecordingFile(
     recordingId: recordingId,
     filename: filename,
@@ -46,7 +46,7 @@ Future<String> getRecordingFile(
 
 @riverpod
 Future<void> deleteRecording(Ref ref, {required String recordingId}) async {
-  final tauriApiClient = ref.read(tauriApiClientProvider);
+  final tauriApiClient = ref.watch(tauriApiClientProvider);
   await tauriApiClient.deleteRecording(recordingId);
 }
 

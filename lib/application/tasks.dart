@@ -19,6 +19,6 @@ Future<List<ForgeTask>> getTasksForFactory(
   Ref ref, {
   Map<String, dynamic>? filter,
 }) async {
-  final tasksRepository = ref.read(tasksRepositoryProvider);
+  final tasksRepository = ref.watch(tasksRepositoryProvider);
   return tasksRepository.getTasksForFactory(filter: filter);
 }

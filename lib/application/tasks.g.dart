@@ -25,7 +25,7 @@ final tasksRepositoryProvider =
 // ignore: unused_element
 typedef TasksRepositoryRef = AutoDisposeProviderRef<TasksRepositoryImpl>;
 String _$getTasksForFactoryHash() =>
-    r'125b2d10d59065fabb691def33d42fbbb3b34613';
+    r'06a63f8c08e17a3677e9ce37506848dfda7d78a7';
 
 /// Copied from Dart SDK
 class _SystemHash {
