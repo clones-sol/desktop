@@ -27,7 +27,7 @@ final submissionsRepositoryProvider =
 typedef SubmissionsRepositoryRef
     = AutoDisposeProviderRef<SubmissionsRepositoryImpl>;
 String _$getSubmissionStatusHash() =>
-    r'733b52713d3ffcfe7351237f9a0f0a438ad73665';
+    r'0705c8519154d78e062b33f9ad404cc98368410e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -182,7 +182,7 @@ class _GetSubmissionStatusProviderElement
       (origin as GetSubmissionStatusProvider).submissionId;
 }
 
-String _$listSubmissionsHash() => r'46888695c0f037788c57967f6a40e375483b951e';
+String _$listSubmissionsHash() => r'd884130a18e30dc678dad3739d1f35e571e32ba6';
 
 /// See also [listSubmissions].
 @ProviderFor(listSubmissions)
@@ -202,7 +202,7 @@ final listSubmissionsProvider =
 typedef ListSubmissionsRef
     = AutoDisposeFutureProviderRef<List<SubmissionStatus>>;
 String _$getPoolSubmissionsHash() =>
-    r'bb7e8cab8859f77604bf7a2cadc6c7b244d49c82';
+    r'f0fda76b1bddbef53141d2ac95f284d3810b1793';
 
 /// See also [getPoolSubmissions].
 @ProviderFor(getPoolSubmissions)

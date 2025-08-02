@@ -6,7 +6,7 @@ part of 'recording.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$listRecordingsHash() => r'c659fee8a33b22ff7772e1b395d0c072a05fe887';
+String _$listRecordingsHash() => r'd148b94a250b6d6c7f36d2ec67a67e17cb495af6';
 
 /// See also [listRecordings].
 @ProviderFor(listRecordings)
@@ -26,7 +26,7 @@ final listRecordingsProvider =
 typedef ListRecordingsRef
     = AutoDisposeFutureProviderRef<List<rec_meta.RecordingMeta>>;
 String _$writeRecordingFileHash() =>
-    r'cbb7f3f9671485df7779455c6f51df4a30cc2f9a';
+    r'1b3d08229ab9afb894658f36cc0994515c4184e9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -210,7 +210,7 @@ class _WriteRecordingFileProviderElement
   String get content => (origin as WriteRecordingFileProvider).content;
 }
 
-String _$getRecordingFileHash() => r'b607bb7657555288298701e9b7124d49f9638b85';
+String _$getRecordingFileHash() => r'8df5b233fa1f35a5c038c7ebc0553e06d399edae';
 
 /// See also [getRecordingFile].
 @ProviderFor(getRecordingFile)
@@ -357,7 +357,7 @@ class _GetRecordingFileProviderElement
   String get filename => (origin as GetRecordingFileProvider).filename;
 }
 
-String _$deleteRecordingHash() => r'dcc5b7c8160e4ac0954c00796a32fac27c716120';
+String _$deleteRecordingHash() => r'64310bc42e73b45588b2683022f123e53dba5f03';
 
 /// See also [deleteRecording].
 @ProviderFor(deleteRecording)

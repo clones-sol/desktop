@@ -20,7 +20,7 @@ Future<SubmissionStatus> getSubmissionStatus(
   Ref ref, {
   required String submissionId,
 }) async {
-  final submissionsRepository = ref.read(submissionsRepositoryProvider);
+  final submissionsRepository = ref.watch(submissionsRepositoryProvider);
   return submissionsRepository.getSubmissionStatus(submissionId: submissionId);
 }
 
@@ -28,7 +28,7 @@ Future<SubmissionStatus> getSubmissionStatus(
 Future<List<SubmissionStatus>> listSubmissions(
   Ref ref,
 ) async {
-  final submissionsRepository = ref.read(submissionsRepositoryProvider);
+  final submissionsRepository = ref.watch(submissionsRepositoryProvider);
   return submissionsRepository.listSubmissions();
 }
 
@@ -37,6 +37,6 @@ Future<List<PoolSubmission>> getPoolSubmissions(
   Ref ref,
   String poolId,
 ) async {
-  final submissionsRepository = ref.read(submissionsRepositoryProvider);
+  final submissionsRepository = ref.watch(submissionsRepositoryProvider);
   return submissionsRepository.getPoolSubmissions(poolId: poolId);
 }
