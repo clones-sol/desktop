@@ -1,26 +1,25 @@
+import 'package:clones_desktop/application/referral.dart';
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/domain/models/api/api_error.dart';
 import 'package:clones_desktop/domain/models/referral/referral_info.dart';
-import 'package:clones_desktop/infrastructure/referral.repository.dart';
 import 'package:clones_desktop/ui/views/referral/bloc/state.dart';
-import 'package:clones_desktop/utils/api_client.dart';
-import 'package:clones_desktop/utils/env.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'provider.g.dart';
 
 @riverpod
-ReferralRepository referralRepository(Ref ref) {
-  final apiClient = ref.watch(apiClientProvider);
-  return ReferralRepositoryImpl(apiClient);
-}
-
-@riverpod
 class ReferralNotifier extends _$ReferralNotifier {
   @override
   ReferralState build() {
+    final session = ref.read(sessionNotifierProvider);
+    if (session.isConnected == false) {
+      return const ReferralState();
+    }
+    final referralInfo = session.referralInfo;
+    if (referralInfo != null) {
+      getReferralInfo(session.address!);
+      return ReferralState(referralInfo: referralInfo);
+    }
     return const ReferralState();
   }
 
@@ -30,6 +29,10 @@ class ReferralNotifier extends _$ReferralNotifier {
 
   void setErrorMessage(String errorMessage) {
     state = state.copyWith(errorMessage: errorMessage);
+  }
+
+  void setReferralInfo(ReferralInfo? referralInfo) {
+    state = state.copyWith(referralInfo: referralInfo);
   }
 
   Future<void> createReferral() async {
@@ -68,43 +71,16 @@ class ReferralNotifier extends _$ReferralNotifier {
 
   Future<void> getReferralInfo(String walletAddress) async {
     try {
-      final repository = ref.read(referralRepositoryProvider);
-      final response = await repository.getReferralInfo(walletAddress);
+      setIsLoading(true);
+      final referralInfo = await ref.read(
+        getReferralInfoProvider(walletAddress).future,
+      );
 
-      debugPrint('response: $response');
-      debugPrint('response.referralCode: ${response.referralCode}');
-
-      debugPrint('walletAddress: $walletAddress');
-      debugPrint('response.totalReferrals: ${response.totalReferrals}');
-      debugPrint('response.totalRewards: ${response.totalRewards}');
-
-      // Check if the referral code is empty
-      if (response.referralCode.isEmpty) {
-        return;
+      if (referralInfo != null) {
+        setReferralInfo(referralInfo);
       }
-
-      // Construct the referral link using the API_WEBSITE_URL
-      final referralLink =
-          '${Env.apiWebsiteUrl}/referral/${response.referralCode}';
-      debugPrint('referralLink: $referralLink');
-
-      final referralInfo = ReferralInfo(
-        referralCode: response.referralCode,
-        referralLink: referralLink,
-        walletAddress: walletAddress,
-        totalReferrals: response.totalReferrals,
-        totalRewards: response.totalRewards,
-        isActive: true,
-        createdAt: DateTime
-            .now(), // TODO(diamondly777): Backend doesn't provide this in stats
-        lastUpdated: DateTime.now(),
-      );
-
-      state = state.copyWith(
-        referralInfo: referralInfo,
-        isLoading: false,
-      );
     } catch (e) {
+      setReferralInfo(null);
       // Handle specific API errors
       if (e is ApiError) {
         // If it's a 404 error (wallet doesn't have referral code), show initial state instead of error
@@ -117,6 +93,8 @@ class ReferralNotifier extends _$ReferralNotifier {
         // Handle other types of exceptions
         setErrorMessage(e.toString());
       }
+    } finally {
+      setIsLoading(false);
     }
   }
 }
