@@ -1,3 +1,4 @@
+import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/domain/models/wallet/token_balance.dart';
 import 'package:clones_desktop/utils/env.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,6 +11,7 @@ class Session with _$Session {
     String? address,
     String? connectionToken,
     List<TokenBalance>? balances,
+    ReferralInfo? referralInfo,
   }) = _Session;
   const Session._();
 

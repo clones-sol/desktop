@@ -6,26 +6,7 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$referralRepositoryHash() =>
-    r'27f8f29f6bfe8a3e5835ab232311c721ad29f4d1';
-
-/// See also [referralRepository].
-@ProviderFor(referralRepository)
-final referralRepositoryProvider =
-    AutoDisposeProvider<ReferralRepository>.internal(
-  referralRepository,
-  name: r'referralRepositoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$referralRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ReferralRepositoryRef = AutoDisposeProviderRef<ReferralRepository>;
-String _$referralNotifierHash() => r'62fd8b210c992425adcee096cb2df9ed0d3b99ef';
+String _$referralNotifierHash() => r'86c2e48b155f642a6fdafd092e5de10a8b0e75d5';
 
 /// See also [ReferralNotifier].
 @ProviderFor(ReferralNotifier)
