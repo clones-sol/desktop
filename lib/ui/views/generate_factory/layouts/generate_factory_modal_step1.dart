@@ -55,13 +55,13 @@ class _GenerateFactoryModalStep1State
               10,
             ),
             border: Border.all(
-              color: ClonesColors.secondary.withValues(alpha: 0.3),
+              color: ClonesColors.secondary.withOpacity(0.3),
               width: 0.5,
             ),
             gradient: LinearGradient(
               colors: [
-                ClonesColors.secondary.withValues(alpha: 0.3),
-                ClonesColors.secondary.withValues(alpha: 0.1),
+                ClonesColors.secondary.withOpacity(0.3),
+                ClonesColors.secondary.withOpacity(0.1),
               ],
             ),
           ),
@@ -84,7 +84,7 @@ class _GenerateFactoryModalStep1State
                 hintText: 'List the skills to train (one per line)...',
                 hintStyle: theme.textTheme.bodyMedium?.copyWith(
                   color:
-                      theme.textTheme.bodyMedium?.color!.withValues(alpha: 0.2),
+                      theme.textTheme.bodyMedium?.color!.withOpacity(0.2),
                 ),
               ),
             ),
@@ -134,7 +134,7 @@ class _GenerateFactoryModalStep1State
               value: generateFactoryState.selectedTokenSymbol,
               isExpanded: true,
               underline: const SizedBox.shrink(),
-              dropdownColor: Colors.black.withValues(alpha: 0.9),
+              dropdownColor: Colors.black.withOpacity(0.9),
               style: theme.textTheme.bodyMedium,
               items: generateFactoryState.supportedTokens!
                   .map(

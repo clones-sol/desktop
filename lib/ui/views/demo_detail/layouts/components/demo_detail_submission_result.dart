@@ -47,7 +47,7 @@ class DemoDetailSubmissionResult extends ConsumerWidget {
                       value: score / 100,
                       strokeWidth: 10,
                       backgroundColor: ClonesColors.getScoreColor(score)
-                          .withValues(alpha: 0.2),
+                          .withOpacity(0.2),
                       valueColor: AlwaysStoppedAnimation<Color>(
                         ClonesColors.getScoreColor(score),
                       ),

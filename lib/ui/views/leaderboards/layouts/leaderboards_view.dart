@@ -161,7 +161,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                         BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                           child: Container(
-                            color: Colors.black.withValues(alpha: 0.3),
+                            color: Colors.black.withOpacity(0.3),
                           ),
                         ),
                         AnimatedContainer(
@@ -241,7 +241,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                         BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                           child: Container(
-                            color: Colors.black.withValues(alpha: 0.3),
+                            color: Colors.black.withOpacity(0.3),
                           ),
                         ),
                         AnimatedContainer(
@@ -319,11 +319,13 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        spacing: 20,
         children: [
           LeaderboardsStatTotalDemos(stat: _stats!),
+          const SizedBox(width: 20),
           LeaderboardsStatTotalTasks(stat: _stats!),
+          const SizedBox(width: 20),
           LeaderboardsStatTotalPaidOut(stat: _stats!),
+          const SizedBox(width: 20),
           LeaderboardsStatActiveForges(stat: _stats!),
         ],
       ),

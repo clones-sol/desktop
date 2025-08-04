@@ -96,7 +96,7 @@ class _ManageTaskModalPricePerDemoState
                             .textTheme
                             .bodyMedium
                             ?.color!
-                            .withValues(alpha: 0.2),
+                            .withOpacity(0.2),
                       ),
                 ),
               ),

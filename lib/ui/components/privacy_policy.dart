@@ -13,7 +13,7 @@ class PrivacyPolicy extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.1),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -64,10 +64,10 @@ class PrivacyPolicy extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: 0.8),
+                          color: Colors.black.withOpacity(0.8),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: Colors.purple.withValues(alpha: 0.5),
+                            color: Colors.purple.withOpacity(0.5),
                           ),
                         ),
                         child: const RecordingBadge(

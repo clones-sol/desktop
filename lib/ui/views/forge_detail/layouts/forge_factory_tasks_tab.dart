@@ -212,7 +212,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                               decoration: BoxDecoration(
                                                 color: ClonesColors
                                                     .containerIcon5
-                                                    .withValues(alpha: 0.2),
+                                                    .withOpacity(0.2),
                                                 borderRadius:
                                                     BorderRadius.circular(10),
                                               ),
@@ -337,7 +337,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                             child: ColorFiltered(
                                               colorFilter: ColorFilter.mode(
                                                 Colors.red
-                                                    .withValues(alpha: 0.8),
+                                                    .withOpacity(0.8),
                                                 BlendMode.srcATop,
                                               ),
                                               child: Image.asset(
@@ -520,9 +520,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                     ColorFilter
                                                                         .mode(
                                                                   Colors.blue
-                                                                      .withValues(
-                                                                    alpha: 0.8,
-                                                                  ),
+                                                                      .withOpacity(0.8),
                                                                   BlendMode
                                                                       .srcATop,
                                                                 ),
@@ -596,9 +594,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                     ColorFilter
                                                                         .mode(
                                                                   Colors.red
-                                                                      .withValues(
-                                                                    alpha: 0.8,
-                                                                  ),
+                                                                      .withOpacity(0.8),
                                                                   BlendMode
                                                                       .srcATop,
                                                                 ),

@@ -77,7 +77,7 @@ class _ManageTaskModalPromptState extends ConsumerState<ManageTaskModalPrompt> {
                       .textTheme
                       .bodyMedium
                       ?.color!
-                      .withValues(alpha: 0.2),
+                      .withOpacity(0.2),
                 ),
               ),
             ),

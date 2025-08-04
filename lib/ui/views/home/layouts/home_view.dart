@@ -65,9 +65,9 @@ class HomeView extends ConsumerWidget {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 100),
-                Row(
+                Wrap(
                   spacing: 20,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  alignment: WrapAlignment.center,
                   children: [
                     SizedBox(
                       width: mediaQuery.size.width * 0.25,

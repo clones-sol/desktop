@@ -59,7 +59,7 @@ class AppText extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
+              border: Border.all(color: Colors.grey.withOpacity(0.5)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

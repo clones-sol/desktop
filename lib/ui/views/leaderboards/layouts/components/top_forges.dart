@@ -226,9 +226,9 @@ class _TopForgesState extends ConsumerState<TopForges> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.white.withValues(alpha: 0.05),
-                    Colors.white.withValues(alpha: 0.3),
-                    Colors.white.withValues(alpha: 0.05),
+                    Colors.white.withOpacity(0.05),
+                    Colors.white.withOpacity(0.3),
+                    Colors.white.withOpacity(0.05),
                   ],
                 ),
               ),
@@ -252,7 +252,7 @@ class TopForgesFullscreen extends StatelessWidget {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: Container(
-              color: Colors.black.withValues(alpha: 0.3),
+              color: Colors.black.withOpacity(0.3),
             ),
           ),
         ),
@@ -261,7 +261,7 @@ class TopForgesFullscreen extends StatelessWidget {
             width: mediaQuery.size.width * 0.9,
             height: mediaQuery.size.height * 0.85,
             decoration: BoxDecoration(
-              color: Colors.black.withValues(alpha: 0.95),
+              color: Colors.black.withOpacity(0.95),
               borderRadius: BorderRadius.circular(24),
             ),
             child: Material(

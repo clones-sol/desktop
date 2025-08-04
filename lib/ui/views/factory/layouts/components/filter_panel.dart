@@ -81,7 +81,7 @@ class FilterPanel extends ConsumerWidget {
                                         .textTheme
                                         .bodyMedium
                                         ?.color!
-                                        .withValues(alpha: 0.2),
+                                        .withOpacity(0.2),
                                   ),
                         ),
                       ),
@@ -135,7 +135,7 @@ class FilterPanel extends ConsumerWidget {
                                           .textTheme
                                           .bodyMedium
                                           ?.color!
-                                          .withValues(alpha: 0.2),
+                                          .withOpacity(0.2),
                                     ),
                               ),
                             ),
@@ -193,7 +193,7 @@ class FilterPanel extends ConsumerWidget {
                                           .textTheme
                                           .bodyMedium
                                           ?.color!
-                                          .withValues(alpha: 0.2),
+                                          .withOpacity(0.2),
                                     ),
                               ),
                             ),
@@ -229,7 +229,7 @@ class FilterPanel extends ConsumerWidget {
                           value: sortValue,
                           isExpanded: true,
                           underline: const SizedBox(),
-                          dropdownColor: Colors.black.withValues(alpha: 0.9),
+                          dropdownColor: Colors.black.withOpacity(0.9),
                           style: theme.textTheme.bodyMedium,
                           items: [
                             DropdownMenuItem(

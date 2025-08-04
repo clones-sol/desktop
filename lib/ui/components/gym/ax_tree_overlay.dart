@@ -48,7 +48,7 @@ class AxTreeOverlay extends StatelessWidget {
         Container(
           width: videoSize.width,
           height: videoSize.height,
-          color: Colors.black.withValues(alpha: 0.5),
+          color: Colors.black.withOpacity(0.5),
         ),
         // scaled container with positioned boxes
         Positioned(
@@ -72,7 +72,7 @@ class AxTreeOverlay extends StatelessWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.5),
+                          color: Colors.white.withOpacity(0.5),
                         ),
                         color: Colors.transparent,
                       ),
@@ -82,7 +82,7 @@ class AxTreeOverlay extends StatelessWidget {
                           horizontal: 4,
                           vertical: 1,
                         ),
-                        color: Colors.black.withValues(alpha: 0.75),
+                        color: Colors.black.withOpacity(0.75),
                         child: Text(
                           box.name.isNotEmpty ? box.name : box.role,
                           style: const TextStyle(
