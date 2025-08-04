@@ -88,7 +88,7 @@ class _SearchAndFilters extends StatelessWidget {
                       .textTheme
                       .bodyMedium
                       ?.color!
-                      .withValues(alpha: 0.2),
+                      .withOpacity(0.2),
                 ),
                 prefixIcon: Icon(
                   Icons.search,
@@ -103,7 +103,7 @@ class _SearchAndFilters extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const Row(
+          const Wrap(
             spacing: 12,
             children: [
               _FilterButton(
@@ -163,15 +163,15 @@ class _FilterButton extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: isActive
-            ? ClonesColors.primary.withValues(alpha: 0.5)
-            : Colors.black.withValues(alpha: 0.2),
+            ? ClonesColors.primary.withOpacity(0.5)
+            : Colors.black.withOpacity(0.2),
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
           side: BorderSide(
             color: isActive
                 ? ClonesColors.primary
-                : Colors.white.withValues(alpha: 0.2),
+                : Colors.white.withOpacity(0.2),
           ),
         ),
       ),
@@ -252,7 +252,7 @@ class _StatCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.2),
+              color: color.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: color, size: 20),
@@ -472,7 +472,7 @@ class _AgentCard extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: _getTagColor(tag).withValues(alpha: 0.2),
+                      color: _getTagColor(tag).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
@@ -531,13 +531,13 @@ class _IconButton extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withOpacity(0.2),
             borderRadius: BorderRadius.circular(8),
           ),
           child: FaIcon(
             icon,
             size: 14,
-            color: Colors.white.withValues(alpha: 0.7),
+            color: Colors.white.withOpacity(0.7),
           ),
         ),
       ),

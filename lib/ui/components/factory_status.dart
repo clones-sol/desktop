@@ -13,22 +13,22 @@ class FactoryStatus extends StatelessWidget {
 
     switch (status) {
       case TrainingPoolStatus.live:
-        badgeColor = Colors.green.withValues(alpha: 0.1);
+        badgeColor = Colors.green.withOpacity(0.1);
         textColor = Colors.green;
         statusText = 'LIVE';
         break;
       case TrainingPoolStatus.paused:
-        badgeColor = Colors.blue.withValues(alpha: 0.1);
+        badgeColor = Colors.blue.withOpacity(0.1);
         textColor = Colors.blue;
         statusText = 'PAUSED';
         break;
       case TrainingPoolStatus.noFunds:
-        badgeColor = Colors.yellow.withValues(alpha: 0.1);
+        badgeColor = Colors.yellow.withOpacity(0.1);
         textColor = Colors.yellow[700]!;
         statusText = 'NO FUNDS';
         break;
       case TrainingPoolStatus.noGas:
-        badgeColor = Colors.yellow.withValues(alpha: 0.1);
+        badgeColor = Colors.yellow.withOpacity(0.1);
         textColor = Colors.yellow[700]!;
         statusText = 'NO GAS';
         break;

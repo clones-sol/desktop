@@ -83,17 +83,17 @@ class MessageBox extends StatelessWidget {
   Color _getCardColor(MessageBoxType messageBoxType) {
     switch (messageBoxType) {
       case MessageBoxType.success:
-        return const Color(0xFF00B67A).withValues(alpha: 0.1);
+        return const Color(0xFF00B67A).withOpacity(0.1);
       case MessageBoxType.warning:
-        return const Color(0xFFFF8400).withValues(alpha: 0.2);
+        return const Color(0xFFFF8400).withOpacity(0.2);
       case MessageBoxType.locked:
         return const Color(0xFF262626);
       case MessageBoxType.info:
-        return const Color(0xFF5540BF).withValues(alpha: 0.2);
+        return const Color(0xFF5540BF).withOpacity(0.2);
       case MessageBoxType.talkLeft:
-        return const Color.fromARGB(255, 140, 122, 228).withValues(alpha: 0.2);
+        return const Color.fromARGB(255, 140, 122, 228).withOpacity(0.2);
       case MessageBoxType.talkRight:
-        return const Color.fromARGB(255, 49, 27, 163).withValues(alpha: 0.2);
+        return const Color.fromARGB(255, 49, 27, 163).withOpacity(0.2);
     }
   }
 

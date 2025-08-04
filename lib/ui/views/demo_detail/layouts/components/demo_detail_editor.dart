@@ -105,9 +105,9 @@ class DemoDetailEditor extends ConsumerWidget {
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),
             decoration: BoxDecoration(
-              color: ClonesColors.secondaryText.withValues(alpha: 0.1),
+              color: ClonesColors.secondaryText.withOpacity(0.1),
               border: Border.all(
-                color: ClonesColors.secondaryText.withValues(alpha: 0.3),
+                color: ClonesColors.secondaryText.withOpacity(0.3),
               ),
               borderRadius: BorderRadius.circular(8),
             ),
@@ -173,7 +173,7 @@ class DemoDetailEditor extends ConsumerWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: ClonesColors.secondaryText.withValues(alpha: 0.3),
+                  color: ClonesColors.secondaryText.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
                     BoxShadow(

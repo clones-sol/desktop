@@ -190,12 +190,12 @@ class RecordingCard extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Row(
         children: [
-          Icon(icon, color: color.withValues(alpha: 0.8), size: 16),
+          Icon(icon, color: color.withOpacity(0.8), size: 16),
           const SizedBox(width: 5),
           Text(
             label,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: color.withValues(alpha: 0.8),
+              color: color.withOpacity(0.8),
             ),
           ),
         ],
@@ -262,7 +262,7 @@ class RecordingCard extends ConsumerWidget {
         if (recording.location == 'local')
           PopupMenuButton<String>(
             icon: Icon(Icons.more_vert, color: ClonesColors.secondaryText),
-            color: Colors.black.withValues(alpha: 0.9),
+            color: Colors.black.withOpacity(0.9),
             onSelected: (value) async {
               switch (value) {
                 case 'open_folder':

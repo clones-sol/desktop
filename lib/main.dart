@@ -291,7 +291,7 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
         textTheme: textTheme,
         snackBarTheme: SnackBarThemeData(
           width: mediaQuery.size.width * 0.5,
-          backgroundColor: ClonesColors.tertiary.withValues(alpha: 0.7),
+          backgroundColor: ClonesColors.tertiary.withOpacity(0.7),
           elevation: 2,
           contentTextStyle: textTheme.bodyMedium,
           insetPadding:

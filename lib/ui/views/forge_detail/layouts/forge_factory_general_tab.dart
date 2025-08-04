@@ -123,10 +123,9 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
     }
     return const SizedBox(
       height: 160,
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+      child: Wrap(
         spacing: 20,
+        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           ForgeFactoryGeneralTabStatSessionCompleted(),
           ForgeFactoryGeneralTabStatDemoPrice(),

@@ -66,7 +66,7 @@ class BtnPrimary extends StatelessWidget {
                   softWrap: false,
                   style: theme.textTheme.bodySmall!.copyWith(
                     color: isLocked
-                        ? Colors.white.withValues(alpha: 0.2)
+                        ? Colors.white.withOpacity(0.2)
                         : Colors.white,
                     fontWeight: FontWeight.w600,
                   ),
