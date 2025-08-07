@@ -319,13 +319,11 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
+        spacing: 20,
         children: [
           LeaderboardsStatTotalDemos(stat: _stats!),
-          const SizedBox(width: 20),
           LeaderboardsStatTotalTasks(stat: _stats!),
-          const SizedBox(width: 20),
           LeaderboardsStatTotalPaidOut(stat: _stats!),
-          const SizedBox(width: 20),
           LeaderboardsStatActiveForges(stat: _stats!),
         ],
       ),
