@@ -336,8 +336,9 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                             },
                                             child: ColorFiltered(
                                               colorFilter: ColorFilter.mode(
-                                                Colors.red
-                                                    .withValues(alpha: 0.8),
+                                                Colors.red.withValues(
+                                                  alpha: 0.8,
+                                                ),
                                                 BlendMode.srcATop,
                                               ),
                                               child: Image.asset(
@@ -521,8 +522,8 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                         .mode(
                                                                   Colors.blue
                                                                       .withValues(
-                                                                          alpha:
-                                                                              0.8),
+                                                                    alpha: 0.8,
+                                                                  ),
                                                                   BlendMode
                                                                       .srcATop,
                                                                 ),
@@ -597,8 +598,8 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                                                                         .mode(
                                                                   Colors.red
                                                                       .withValues(
-                                                                          alpha:
-                                                                              0.8),
+                                                                    alpha: 0.8,
+                                                                  ),
                                                                   BlendMode
                                                                       .srcATop,
                                                                 ),
