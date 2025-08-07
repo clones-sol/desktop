@@ -161,7 +161,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                         BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                           child: Container(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                           ),
                         ),
                         AnimatedContainer(
@@ -241,7 +241,7 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                         BackdropFilter(
                           filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
                           child: Container(
-                            color: Colors.black.withOpacity(0.3),
+                            color: Colors.black.withValues(alpha: 0.3),
                           ),
                         ),
                         AnimatedContainer(

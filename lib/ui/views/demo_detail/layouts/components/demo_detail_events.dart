@@ -95,7 +95,7 @@ class DemoDetailEvents extends ConsumerWidget {
                         vertical: 4,
                       ),
                       decoration: BoxDecoration(
-                        color: ClonesColors.rewardInfo.withOpacity(0.3),
+                        color: ClonesColors.rewardInfo.withValues(alpha: 0.3),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
@@ -134,7 +134,7 @@ class DemoDetailEvents extends ConsumerWidget {
                         ),
                         decoration: BoxDecoration(
                           color: ClonesColors.getEventTypeColor(event.event)
-                              .withOpacity(0.3),
+                              .withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(16),
                           boxShadow: [
                             BoxShadow(

@@ -259,9 +259,9 @@ class _TopWorkersState extends ConsumerState<TopWorkers> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    Colors.white.withOpacity(0.05),
-                    Colors.white.withOpacity(0.3),
-                    Colors.white.withOpacity(0.05),
+                    Colors.white.withValues(alpha: 0.05),
+                    Colors.white.withValues(alpha: 0.3),
+                    Colors.white.withValues(alpha: 0.05),
                   ],
                 ),
               ),

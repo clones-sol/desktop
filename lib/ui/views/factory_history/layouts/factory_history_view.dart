@@ -141,7 +141,7 @@ class FactoryHistoryView extends ConsumerWidget {
                                     .textTheme
                                     .bodyMedium
                                     ?.color!
-                                    .withOpacity(0.2),
+                                    .withValues(alpha: 0.2),
                               ),
                     ),
                   ),
@@ -177,7 +177,7 @@ class FactoryHistoryView extends ConsumerWidget {
                           .name,
                       isExpanded: true,
                       underline: const SizedBox(),
-                      dropdownColor: Colors.black.withOpacity(0.9),
+                      dropdownColor: Colors.black.withValues(alpha: 0.9),
                       style: theme.textTheme.bodyMedium,
                       items: [
                         DropdownMenuItem(

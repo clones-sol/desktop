@@ -50,12 +50,12 @@ class _ForgeFactoryGeneralTabPricePerDemoState
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: ClonesColors.containerIcon1.withOpacity(0.2),
+                    color: ClonesColors.containerIcon1.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(
                     Icons.price_check_outlined,
-                    color: ClonesColors.containerIcon3.withOpacity(0.7),
+                    color: ClonesColors.containerIcon3.withValues(alpha: 0.7),
                     size: 20,
                   ),
                 ),
@@ -121,7 +121,7 @@ class _ForgeFactoryGeneralTabPricePerDemoState
                             hintText: 'Reward per demo',
                             hintStyle: theme.textTheme.bodyMedium?.copyWith(
                               color: theme.textTheme.bodyMedium?.color!
-                                  .withOpacity(0.2),
+                                  .withValues(alpha: 0.2),
                             ),
                           ),
                         ),

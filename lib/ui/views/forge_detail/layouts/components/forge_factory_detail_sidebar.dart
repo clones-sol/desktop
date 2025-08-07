@@ -110,15 +110,15 @@ class AnimatedSidebarSection extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: ClonesColors.secondary.withOpacity(0.2),
+                      color: ClonesColors.secondary.withValues(alpha: 0.2),
                       width: 0.5,
                     ),
                     gradient: LinearGradient(
                       colors: [
-                        ClonesColors.secondary.withOpacity(0.2),
+                        ClonesColors.secondary.withValues(alpha: 0.2),
                         Colors.transparent,
                         Colors.transparent,
-                        ClonesColors.secondary.withOpacity(0.2),
+                        ClonesColors.secondary.withValues(alpha: 0.2),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -143,8 +143,8 @@ class AnimatedSidebarSection extends StatelessWidget {
                           shaderCallback: (Rect bounds) {
                             return LinearGradient(
                               colors: [
-                                ClonesColors.primary.withOpacity(0.5),
-                                ClonesColors.secondary.withOpacity(0.9),
+                                ClonesColors.primary.withValues(alpha: 0.5),
+                                ClonesColors.secondary.withValues(alpha: 0.9),
                               ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
@@ -154,7 +154,7 @@ class AnimatedSidebarSection extends StatelessWidget {
                           child: activeIndex == i
                               ? ColorFiltered(
                                   colorFilter: ColorFilter.mode(
-                                    ClonesColors.tertiary.withOpacity(1),
+                                    ClonesColors.tertiary.withValues(alpha: 1),
                                     BlendMode.srcATop,
                                   ),
                                   child: Column(
