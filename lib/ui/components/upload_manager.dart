@@ -85,7 +85,7 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
     } else {
       badgeColor = Theme.of(
         context,
-      ).colorScheme.secondary.withOpacity(0.7);
+      ).colorScheme.secondary.withValues(alpha: 0.7);
     }
 
     return GestureDetector(
@@ -103,8 +103,8 @@ class _UploadManagerWidgetState extends ConsumerState<UploadManagerWidget> {
             shaderCallback: (Rect bounds) {
               return LinearGradient(
                 colors: [
-                  ClonesColors.primary.withOpacity(0.5),
-                  ClonesColors.secondary.withOpacity(0.9),
+                  ClonesColors.primary.withValues(alpha: 0.5),
+                  ClonesColors.secondary.withValues(alpha: 0.9),
                 ],
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,

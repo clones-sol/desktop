@@ -492,7 +492,7 @@ class _DeploymentStepsIndicator extends StatelessWidget {
             lineHeight: 8,
             barRadius: const Radius.circular(4),
             progressColor: ClonesColors.primary,
-            backgroundColor: Colors.grey.withOpacity(0.3),
+            backgroundColor: Colors.grey.withValues(alpha: 0.3),
           ),
           const SizedBox(height: 12),
           Row(
@@ -586,7 +586,7 @@ class _SignTransactionCard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withOpacity(0.2),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -773,7 +773,7 @@ class _CostBreakdownCard extends StatelessWidget {
           const SizedBox(height: 12),
           const _CostRow(label: 'Platform Fee', cost: '~0.05 SOL'),
           const SizedBox(height: 12),
-          Divider(color: Colors.grey.withOpacity(0.5)),
+          Divider(color: Colors.grey.withValues(alpha: 0.5)),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -876,7 +876,7 @@ class _AgentPreviewCard extends StatelessWidget {
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.primaryContainer
-                        .withOpacity(0.1),
+                        .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
@@ -909,10 +909,10 @@ Widget _buildSectionHeader({
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: color.withOpacity(0.7), size: 20),
+            child: Icon(icon, color: color.withValues(alpha: 0.7), size: 20),
           ),
           const SizedBox(width: 10),
           Text(title, style: theme.textTheme.titleSmall),
@@ -968,7 +968,7 @@ class _FormTextField extends StatelessWidget {
               hintText: hint,
               hintStyle: theme.textTheme.bodyMedium?.copyWith(
                 color:
-                    theme.textTheme.bodyMedium?.color!.withOpacity(0.2),
+                    theme.textTheme.bodyMedium?.color!.withValues(alpha: 0.2),
               ),
             ),
           ),
@@ -998,7 +998,7 @@ class _FileUploadBox extends StatelessWidget {
         const SizedBox(height: 8),
         DecoratedBox(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withOpacity(0.5)),
+            border: Border.all(color: Colors.grey.withValues(alpha: 0.5)),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Container(

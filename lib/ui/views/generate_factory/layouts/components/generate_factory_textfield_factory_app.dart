@@ -65,13 +65,13 @@ class GenerateFactoryTextFieldAppState
                             ),
                             border: Border.all(
                               color:
-                                  ClonesColors.tertiary.withOpacity(0.3),
+                                  ClonesColors.tertiary.withValues(alpha: 0.3),
                               width: 0.5,
                             ),
                             gradient: LinearGradient(
                               colors: [
-                                ClonesColors.primary.withOpacity(0.1),
-                                ClonesColors.tertiary.withOpacity(0.1),
+                                ClonesColors.primary.withValues(alpha: 0.1),
+                                ClonesColors.tertiary.withValues(alpha: 0.1),
                               ],
                             ),
                           ),
@@ -93,7 +93,7 @@ class GenerateFactoryTextFieldAppState
                                 borderSide: BorderSide(
                                   width: 0.5,
                                   color: ClonesColors.secondary
-                                      .withOpacity(0.1),
+                                      .withValues(alpha: 0.1),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -101,7 +101,7 @@ class GenerateFactoryTextFieldAppState
                                 borderSide: BorderSide(
                                   width: 0.5,
                                   color: ClonesColors.primary
-                                      .withOpacity(0.1),
+                                      .withValues(alpha: 0.1),
                                 ),
                                 borderRadius: BorderRadius.circular(10),
                               ),

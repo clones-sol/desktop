@@ -118,9 +118,9 @@ class LayoutBackground extends ConsumerWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.white.withOpacity(0.05),
-                          Colors.white.withOpacity(0.2),
-                          Colors.white.withOpacity(0.05),
+                          Colors.white.withValues(alpha: 0.05),
+                          Colors.white.withValues(alpha: 0.2),
+                          Colors.white.withValues(alpha: 0.05),
                         ],
                       ),
                     ),

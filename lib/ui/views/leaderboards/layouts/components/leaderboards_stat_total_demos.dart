@@ -20,12 +20,12 @@ class LeaderboardsStatTotalDemos extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: ClonesColors.containerIcon1.withOpacity(0.2),
+                color: ClonesColors.containerIcon1.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 Icons.people_outline,
-                color: ClonesColors.containerIcon1.withOpacity(0.7),
+                color: ClonesColors.containerIcon1.withValues(alpha: 0.7),
                 size: 20,
               ),
             ),

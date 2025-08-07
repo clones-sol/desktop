@@ -43,13 +43,13 @@ class ForgeFactoryGeneralTabStatGasBalance extends ConsumerWidget {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color:
-                            ClonesColors.containerIcon3.withOpacity(0.2),
+                            ClonesColors.containerIcon3.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(
                         Icons.local_gas_station,
                         color:
-                            ClonesColors.containerIcon3.withOpacity(0.7),
+                            ClonesColors.containerIcon3.withValues(alpha: 0.7),
                         size: 20,
                       ),
                     ),

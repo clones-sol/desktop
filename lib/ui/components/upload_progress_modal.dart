@@ -201,7 +201,8 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
         color: Colors.grey[900],
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: getStatusColor(task.uploadStatus, context).withOpacity(0.3),
+          color:
+              getStatusColor(task.uploadStatus, context).withValues(alpha: 0.3),
           width: 1,
         ),
       ),
@@ -214,7 +215,8 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: getStatusColor(task.uploadStatus, context).withOpacity(0.1),
+                  color: getStatusColor(task.uploadStatus, context)
+                      .withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -356,13 +358,14 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
           ],
 
           // Error details
-          if (task.uploadStatus == UploadStatus.error && task.error != null) ...[
+          if (task.uploadStatus == UploadStatus.error &&
+              task.error != null) ...[
             const SizedBox(height: 12),
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.red[900]!.withOpacity(0.3),
+                color: Colors.red[900]!.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: Colors.red[700]!,
@@ -406,7 +409,7 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
             child: Container(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withValues(alpha: 0.5),
             ),
           ),
         ),
@@ -432,8 +435,9 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
                               shaderCallback: (Rect bounds) {
                                 return LinearGradient(
                                   colors: [
-                                    ClonesColors.primary.withOpacity(0.7),
-                                    ClonesColors.secondary.withOpacity(0.9),
+                                    ClonesColors.primary.withValues(alpha: 0.7),
+                                    ClonesColors.secondary
+                                        .withValues(alpha: 0.9),
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -453,7 +457,8 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
                                 children: [
                                   Text(
                                     'Upload Manager',
-                                    style: Theme.of(context).textTheme.titleLarge,
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
                                   ),
                                   Text(
                                     '${queueItems.length} item${queueItems.length == 1 ? '' : 's'}',

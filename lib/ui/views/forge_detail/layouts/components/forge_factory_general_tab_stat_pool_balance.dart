@@ -43,13 +43,13 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color:
-                            ClonesColors.containerIcon4.withOpacity(0.2),
+                            ClonesColors.containerIcon4.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(
                         Icons.account_balance_wallet_outlined,
                         color:
-                            ClonesColors.containerIcon4.withOpacity(0.7),
+                            ClonesColors.containerIcon4.withValues(alpha: 0.7),
                         size: 20,
                       ),
                     ),
@@ -57,14 +57,14 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         color:
-                            ClonesColors.containerIcon4.withOpacity(0.2),
+                            ClonesColors.containerIcon4.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
                         'POOL',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: ClonesColors.containerIcon4
-                              .withOpacity(0.7),
+                              .withValues(alpha: 0.7),
                           fontSize: 10,
                         ),
                       ),

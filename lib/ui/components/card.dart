@@ -39,19 +39,19 @@ class CardWidget extends StatelessWidget {
         padding: _getPadding(),
         decoration: BoxDecoration(
           color: variant == CardVariant.primary
-              ? ClonesColors.primary.withOpacity(0.1)
+              ? ClonesColors.primary.withValues(alpha: 0.1)
               : variant == CardVariant.secondary
-                  ? ClonesColors.secondary.withOpacity(0.1)
+                  ? ClonesColors.secondary.withValues(alpha: 0.1)
                   : variant == CardVariant.black
-                      ? Colors.black.withOpacity(0.5)
+                      ? Colors.black.withValues(alpha: 0.5)
                       : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: variant == CardVariant.primary
-                ? ClonesColors.primary.withOpacity(0.2)
+                ? ClonesColors.primary.withValues(alpha: 0.2)
                 : variant == CardVariant.secondary
-                    ? ClonesColors.secondary.withOpacity(0.2)
-                    : Colors.white.withOpacity(0.1),
+                    ? ClonesColors.secondary.withValues(alpha: 0.2)
+                    : Colors.white.withValues(alpha: 0.1),
           ),
         ),
         child: child,

@@ -41,12 +41,12 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: ClonesColors.containerIcon5.withOpacity(0.2),
+                color: ClonesColors.containerIcon5.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 Icons.lightbulb_outline,
-                color: ClonesColors.containerIcon5.withOpacity(0.7),
+                color: ClonesColors.containerIcon5.withValues(alpha: 0.7),
                 size: 20,
               ),
             ),
@@ -70,9 +70,9 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        ClonesColors.primary.withOpacity(0.3),
-                        ClonesColors.secondary.withOpacity(0.3),
-                        ClonesColors.tertiary.withOpacity(0.3),
+                        ClonesColors.primary.withValues(alpha: 0.3),
+                        ClonesColors.secondary.withValues(alpha: 0.3),
+                        ClonesColors.tertiary.withValues(alpha: 0.3),
                       ],
                     ),
                     borderRadius: BorderRadius.circular(3),
@@ -86,7 +86,7 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            ClonesColors.rewardInfo.withOpacity(0.3),
+                            ClonesColors.rewardInfo.withValues(alpha: 0.3),
                             ClonesColors.rewardInfo,
                           ],
                         ),
@@ -102,7 +102,7 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            ClonesColors.secondary.withOpacity(0.3),
+                            ClonesColors.secondary.withValues(alpha: 0.3),
                             ClonesColors.secondary,
                           ],
                         ),

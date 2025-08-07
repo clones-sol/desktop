@@ -95,7 +95,7 @@ class _PageHeader extends ConsumerWidget {
               Chip(
                 label: Text('${selectedSubmissions.length} selected'),
                 padding: const EdgeInsets.all(4),
-                backgroundColor: ClonesColors.secondary.withOpacity(0.2),
+                backgroundColor: ClonesColors.secondary.withValues(alpha: 0.2),
                 labelStyle: theme.textTheme.bodySmall
                     ?.copyWith(color: ClonesColors.secondary),
               ),
@@ -139,7 +139,7 @@ class _UploadsTable extends ConsumerWidget {
               child: DataTable(
                 dividerThickness: 0,
                 headingRowColor: WidgetStateProperty.all(
-                  ClonesColors.tertiary.withOpacity(0.1),
+                  ClonesColors.tertiary.withValues(alpha: 0.1),
                 ),
                 columns: [
                   DataColumn(
@@ -331,23 +331,23 @@ class _StatusCell extends StatelessWidget {
 
     switch (submission.status.toLowerCase()) {
       case 'completed':
-        backgroundColor = const Color(0xFF10b981).withOpacity(0.2);
+        backgroundColor = const Color(0xFF10b981).withValues(alpha: 0.2);
         textColor = const Color(0xFF10b981);
         break;
       case 'failed':
-        backgroundColor = const Color(0xFFef4444).withOpacity(0.2);
+        backgroundColor = const Color(0xFFef4444).withValues(alpha: 0.2);
         textColor = const Color(0xFFf87171);
         break;
       case 'pending':
-        backgroundColor = const Color(0xFFf59e0b).withOpacity(0.2);
+        backgroundColor = const Color(0xFFf59e0b).withValues(alpha: 0.2);
         textColor = const Color(0xFFfacc15);
         break;
       case 'processing':
-        backgroundColor = const Color(0xFFf97316).withOpacity(0.2);
+        backgroundColor = const Color(0xFFf97316).withValues(alpha: 0.2);
         textColor = const Color(0xFFfb923c);
         break;
       default:
-        backgroundColor = Colors.grey.withOpacity(0.2);
+        backgroundColor = Colors.grey.withValues(alpha: 0.2);
         textColor = Colors.grey;
     }
 
@@ -422,7 +422,7 @@ class _RewardCell extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.3),
+        color: Colors.grey.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
