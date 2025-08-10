@@ -20,19 +20,6 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
   bool _hasShownConfirmation = false;
 
   @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () async {
-      final walletAddress = ref.read(sessionNotifierProvider).address;
-      if (walletAddress != null) {
-        await ref
-            .read(referralNotifierProvider.notifier)
-            .getReferralInfo(walletAddress);
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final referralState = ref.watch(referralNotifierProvider);
     // Listen to session changes within the build method
@@ -61,22 +48,18 @@ class _ReferralContentState extends ConsumerState<ReferralContent> {
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Row(
+            content: Row(
               children: [
-                Icon(
+                const Icon(
                   Icons.check_circle,
                   color: ClonesColors.primaryText,
                   size: 20,
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     'Referral code successfully linked to your wallet!',
-                    style: TextStyle(
-                      color: ClonesColors.primaryText,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ),
               ],

@@ -18,6 +18,9 @@ _$ReferralInfoImpl _$$ReferralInfoImplFromJson(Map<String, dynamic> json) =>
       lastUpdated: json['lastUpdated'] == null
           ? null
           : DateTime.parse(json['lastUpdated'] as String),
+      expiresAt: json['expiresAt'] == null
+          ? null
+          : DateTime.parse(json['expiresAt'] as String),
     );
 
 Map<String, dynamic> _$$ReferralInfoImplToJson(_$ReferralInfoImpl instance) =>
@@ -30,4 +33,5 @@ Map<String, dynamic> _$$ReferralInfoImplToJson(_$ReferralInfoImpl instance) =>
       'isActive': instance.isActive,
       'createdAt': instance.createdAt.toIso8601String(),
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
+      'expiresAt': instance.expiresAt?.toIso8601String(),
     };

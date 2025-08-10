@@ -10,13 +10,32 @@ import 'package:clones_desktop/ui/views/referral/layouts/components/referral_hea
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ReferralView extends ConsumerWidget {
+class ReferralView extends ConsumerStatefulWidget {
   const ReferralView({super.key});
 
   static const String routeName = '/referral';
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ReferralView> createState() => _ReferralViewState();
+}
+
+class _ReferralViewState extends ConsumerState<ReferralView> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      final session = ref.read(sessionNotifierProvider);
+      if (session.isConnected == false || session.referralCode == null) {
+        return;
+      }
+      await ref
+          .read(referralNotifierProvider.notifier)
+          .getReferralInfo(session.address!);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final session = ref.watch(sessionNotifierProvider);
     if (session.isConnected == false) {
       return const WalletNotConnected();
@@ -30,7 +49,7 @@ class ReferralView extends ConsumerWidget {
         children: [
           const ReferralHeader(),
           Expanded(
-            child: (referralState.referralInfo == null)
+            child: (session.referralCode == null)
                 ? _buildInitialState(context, ref)
                 : (referralState.isLoading)
                     ? _buildLoadingState(context)

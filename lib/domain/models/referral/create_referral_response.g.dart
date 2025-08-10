@@ -12,6 +12,7 @@ _$CreateReferralResponseImpl _$$CreateReferralResponseImplFromJson(
       referralCode: json['referralCode'] as String,
       referralLink: json['referralLink'] as String,
       walletAddress: json['walletAddress'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
     );
 
 Map<String, dynamic> _$$CreateReferralResponseImplToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$CreateReferralResponseImplToJson(
       'referralCode': instance.referralCode,
       'referralLink': instance.referralLink,
       'walletAddress': instance.walletAddress,
+      'createdAt': instance.createdAt.toIso8601String(),
     };

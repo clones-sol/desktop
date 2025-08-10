@@ -9,6 +9,7 @@ class CreateReferralResponse with _$CreateReferralResponse {
     required String referralCode,
     required String referralLink,
     required String walletAddress,
+    required DateTime createdAt,
   }) = _CreateReferralResponse;
 
   factory CreateReferralResponse.fromJson(Map<String, dynamic> json) =>

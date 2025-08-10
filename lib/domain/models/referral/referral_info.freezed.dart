@@ -28,6 +28,7 @@ mixin _$ReferralInfo {
   bool get isActive => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime? get lastUpdated => throw _privateConstructorUsedError;
+  DateTime? get expiresAt => throw _privateConstructorUsedError;
 
   /// Serializes this ReferralInfo to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -53,7 +54,8 @@ abstract class $ReferralInfoCopyWith<$Res> {
       double totalRewards,
       bool isActive,
       DateTime createdAt,
-      DateTime? lastUpdated});
+      DateTime? lastUpdated,
+      DateTime? expiresAt});
 }
 
 /// @nodoc
@@ -79,6 +81,7 @@ class _$ReferralInfoCopyWithImpl<$Res, $Val extends ReferralInfo>
     Object? isActive = null,
     Object? createdAt = null,
     Object? lastUpdated = freezed,
+    Object? expiresAt = freezed,
   }) {
     return _then(_value.copyWith(
       referralCode: null == referralCode
@@ -113,6 +116,10 @@ class _$ReferralInfoCopyWithImpl<$Res, $Val extends ReferralInfo>
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ) as $Val);
   }
 }
@@ -133,7 +140,8 @@ abstract class _$$ReferralInfoImplCopyWith<$Res>
       double totalRewards,
       bool isActive,
       DateTime createdAt,
-      DateTime? lastUpdated});
+      DateTime? lastUpdated,
+      DateTime? expiresAt});
 }
 
 /// @nodoc
@@ -157,6 +165,7 @@ class __$$ReferralInfoImplCopyWithImpl<$Res>
     Object? isActive = null,
     Object? createdAt = null,
     Object? lastUpdated = freezed,
+    Object? expiresAt = freezed,
   }) {
     return _then(_$ReferralInfoImpl(
       referralCode: null == referralCode
@@ -191,6 +200,10 @@ class __$$ReferralInfoImplCopyWithImpl<$Res>
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      expiresAt: freezed == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
     ));
   }
 }
@@ -206,7 +219,8 @@ class _$ReferralInfoImpl implements _ReferralInfo {
       required this.totalRewards,
       required this.isActive,
       required this.createdAt,
-      this.lastUpdated});
+      this.lastUpdated,
+      this.expiresAt});
 
   factory _$ReferralInfoImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReferralInfoImplFromJson(json);
@@ -227,10 +241,12 @@ class _$ReferralInfoImpl implements _ReferralInfo {
   final DateTime createdAt;
   @override
   final DateTime? lastUpdated;
+  @override
+  final DateTime? expiresAt;
 
   @override
   String toString() {
-    return 'ReferralInfo(referralCode: $referralCode, referralLink: $referralLink, walletAddress: $walletAddress, totalReferrals: $totalReferrals, totalRewards: $totalRewards, isActive: $isActive, createdAt: $createdAt, lastUpdated: $lastUpdated)';
+    return 'ReferralInfo(referralCode: $referralCode, referralLink: $referralLink, walletAddress: $walletAddress, totalReferrals: $totalReferrals, totalRewards: $totalRewards, isActive: $isActive, createdAt: $createdAt, lastUpdated: $lastUpdated, expiresAt: $expiresAt)';
   }
 
   @override
@@ -253,7 +269,9 @@ class _$ReferralInfoImpl implements _ReferralInfo {
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.lastUpdated, lastUpdated) ||
-                other.lastUpdated == lastUpdated));
+                other.lastUpdated == lastUpdated) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -267,7 +285,8 @@ class _$ReferralInfoImpl implements _ReferralInfo {
       totalRewards,
       isActive,
       createdAt,
-      lastUpdated);
+      lastUpdated,
+      expiresAt);
 
   /// Create a copy of ReferralInfo
   /// with the given fields replaced by the non-null parameter values.
@@ -294,7 +313,8 @@ abstract class _ReferralInfo implements ReferralInfo {
       required final double totalRewards,
       required final bool isActive,
       required final DateTime createdAt,
-      final DateTime? lastUpdated}) = _$ReferralInfoImpl;
+      final DateTime? lastUpdated,
+      final DateTime? expiresAt}) = _$ReferralInfoImpl;
 
   factory _ReferralInfo.fromJson(Map<String, dynamic> json) =
       _$ReferralInfoImpl.fromJson;
@@ -315,6 +335,8 @@ abstract class _ReferralInfo implements ReferralInfo {
   DateTime get createdAt;
   @override
   DateTime? get lastUpdated;
+  @override
+  DateTime? get expiresAt;
 
   /// Create a copy of ReferralInfo
   /// with the given fields replaced by the non-null parameter values.

@@ -11,15 +11,6 @@ part 'provider.g.dart';
 class ReferralNotifier extends _$ReferralNotifier {
   @override
   ReferralState build() {
-    final session = ref.read(sessionNotifierProvider);
-    if (session.isConnected == false) {
-      return const ReferralState();
-    }
-    final referralInfo = session.referralInfo;
-    if (referralInfo != null) {
-      getReferralInfo(session.address!);
-      return ReferralState(referralInfo: referralInfo);
-    }
     return const ReferralState();
   }
 
