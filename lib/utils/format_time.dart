@@ -11,7 +11,7 @@ String formatTimeWithHours(int seconds) {
   return '$hours:$minutes:$secs';
 }
 
-String formatDuration(int seconds) {
+String formatDurationFromSeconds(int seconds) {
   if (seconds == 0) return '0:00';
   final duration = Duration(seconds: seconds);
   final minutes = duration.inMinutes;
@@ -24,4 +24,18 @@ String formatTimeMs(int ms) {
   final minutes = (totalSeconds / 60).floor();
   final seconds = totalSeconds % 60;
   return "${minutes.toString().padLeft(2, '0')}:${seconds.toStringAsFixed(3).padLeft(6, '0')}";
+}
+
+String formatDuration(Duration duration) {
+  final hours = duration.inHours;
+  final minutes = duration.inMinutes % 60;
+  final seconds = duration.inSeconds % 60;
+
+  if (hours > 0) {
+    return '${hours}h ${minutes}m';
+  } else if (minutes > 0) {
+    return '${minutes}m ${seconds}s';
+  } else {
+    return '${seconds}s';
+  }
 }

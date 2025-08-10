@@ -5,20 +5,6 @@ import 'package:clones_desktop/ui/components/upload_progress_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-String formatFileSize(int? bytes) {
-  if (bytes == null) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  var size = bytes.toDouble();
-  var unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-
-  return '${size.toStringAsFixed(1)} ${units[unitIndex]}';
-}
-
 IconData getStatusIcon(UploadStatus status) {
   switch (status) {
     case UploadStatus.done:
@@ -48,6 +34,23 @@ Color getStatusColor(UploadStatus status, BuildContext context) {
       return Colors.yellow[700]!;
     case UploadStatus.idle:
       return Colors.grey[500]!;
+  }
+}
+
+String getStatusMessage(UploadTaskState task) {
+  switch (task.uploadStatus) {
+    case UploadStatus.idle:
+      return 'Queued for upload';
+    case UploadStatus.zipping:
+      return 'Preparing recording...';
+    case UploadStatus.uploading:
+      return 'Uploading to server...';
+    case UploadStatus.processing:
+      return 'Processing upload...';
+    case UploadStatus.done:
+      return 'Upload completed successfully';
+    case UploadStatus.error:
+      return task.error ?? 'Upload failed';
   }
 }
 
