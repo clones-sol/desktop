@@ -4,85 +4,11 @@ import 'package:clones_desktop/application/upload/provider.dart';
 import 'package:clones_desktop/application/upload/state.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/upload_manager.dart';
+import 'package:clones_desktop/utils/format_file_info.dart';
+import 'package:clones_desktop/utils/format_time.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-String formatFileSize(int? bytes) {
-  if (bytes == null) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-  var size = bytes.toDouble();
-  var unitIndex = 0;
-
-  while (size >= 1024 && unitIndex < units.length - 1) {
-    size /= 1024;
-    unitIndex++;
-  }
-
-  return '${size.toStringAsFixed(1)} ${units[unitIndex]}';
-}
-
-String formatDuration(Duration duration) {
-  final hours = duration.inHours;
-  final minutes = duration.inMinutes % 60;
-  final seconds = duration.inSeconds % 60;
-
-  if (hours > 0) {
-    return '${hours}h ${minutes}m';
-  } else if (minutes > 0) {
-    return '${minutes}m ${seconds}s';
-  } else {
-    return '${seconds}s';
-  }
-}
-
-IconData getStatusIcon(UploadStatus status) {
-  switch (status) {
-    case UploadStatus.done:
-      return Icons.check_circle;
-    case UploadStatus.error:
-      return Icons.error;
-    case UploadStatus.idle:
-      return Icons.pending;
-    case UploadStatus.uploading:
-      return Icons.cloud_upload;
-    case UploadStatus.zipping:
-      return Icons.archive;
-    case UploadStatus.processing:
-      return Icons.hourglass_empty;
-  }
-}
-
-Color getStatusColor(UploadStatus status, BuildContext context) {
-  switch (status) {
-    case UploadStatus.done:
-      return Colors.green[500]!;
-    case UploadStatus.error:
-      return Colors.red[500]!;
-    case UploadStatus.processing:
-    case UploadStatus.uploading:
-    case UploadStatus.zipping:
-      return Colors.orange[500]!;
-    case UploadStatus.idle:
-      return Colors.grey[500]!;
-  }
-}
-
-String getStatusMessage(UploadTaskState task) {
-  switch (task.uploadStatus) {
-    case UploadStatus.idle:
-      return 'Queued for upload';
-    case UploadStatus.zipping:
-      return 'Preparing recording...';
-    case UploadStatus.uploading:
-      return 'Uploading to server...';
-    case UploadStatus.processing:
-      return 'Processing upload...';
-    case UploadStatus.done:
-      return 'Upload completed successfully';
-    case UploadStatus.error:
-      return task.error ?? 'Upload failed';
-  }
-}
 
 class ImprovedUploadManager extends ConsumerStatefulWidget {
   const ImprovedUploadManager({super.key});
@@ -212,7 +138,6 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
         border: Border.all(
           color:
               getStatusColor(task.uploadStatus, context).withValues(alpha: 0.3),
-          width: 1,
         ),
       ),
       child: Column(
@@ -360,10 +285,12 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
     }
 
     // Enhanced hover functionality
-    final bool hasActiveUploads = queueItems.any((item) =>
-        item.uploadStatus == UploadStatus.uploading ||
-        item.uploadStatus == UploadStatus.processing ||
-        item.uploadStatus == UploadStatus.zipping);
+    final hasActiveUploads = queueItems.any(
+      (item) =>
+          item.uploadStatus == UploadStatus.uploading ||
+          item.uploadStatus == UploadStatus.processing ||
+          item.uploadStatus == UploadStatus.zipping,
+    );
 
     return Positioned(
       top: 20,
@@ -377,13 +304,12 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
               elevation: 8,
               borderRadius: BorderRadius.circular(12),
               color: Colors.transparent,
-              child: Container(
+              child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Colors.black.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: Colors.grey[700]!,
-                    width: 1,
                   ),
                 ),
                 child: Column(
@@ -466,9 +392,9 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
+                              const Text(
                                 'Upload Manager',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -514,28 +440,32 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
                               constraints: const BoxConstraints(maxHeight: 300),
                               child: SingleChildScrollView(
                                 child: Column(
-                                  children: queueItems
-                                      .map((item) => _buildUploadItem(item))
-                                      .toList(),
+                                  children:
+                                      queueItems.map(_buildUploadItem).toList(),
                                 ),
                               ),
                             ),
-                            if (queueItems.any((item) =>
-                                item.uploadStatus == UploadStatus.done ||
-                                item.uploadStatus == UploadStatus.error)) ...[
+                            if (queueItems.any(
+                              (item) =>
+                                  item.uploadStatus == UploadStatus.done ||
+                                  item.uploadStatus == UploadStatus.error,
+                            )) ...[
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  if (queueItems.any((item) =>
-                                      item.uploadStatus == UploadStatus.done))
+                                  if (queueItems.any(
+                                    (item) =>
+                                        item.uploadStatus == UploadStatus.done,
+                                  ))
                                     Expanded(
                                       child: BtnPrimary(
                                         buttonText: 'Clear Completed',
                                         onTap: () {
                                           for (final item in queueItems.where(
-                                              (item) =>
-                                                  item.uploadStatus ==
-                                                  UploadStatus.done)) {
+                                            (item) =>
+                                                item.uploadStatus ==
+                                                UploadStatus.done,
+                                          )) {
                                             _removeUpload(item.recordingId);
                                           }
                                         },
@@ -543,23 +473,30 @@ class _ImprovedUploadManagerState extends ConsumerState<ImprovedUploadManager>
                                             BtnPrimaryType.outlinePrimary,
                                       ),
                                     ),
-                                  if (queueItems.any((item) =>
-                                          item.uploadStatus ==
-                                          UploadStatus.done) &&
-                                      queueItems.any((item) =>
-                                          item.uploadStatus ==
-                                          UploadStatus.error))
+                                  if (queueItems.any(
+                                        (item) =>
+                                            item.uploadStatus ==
+                                            UploadStatus.done,
+                                      ) &&
+                                      queueItems.any(
+                                        (item) =>
+                                            item.uploadStatus ==
+                                            UploadStatus.error,
+                                      ))
                                     const SizedBox(width: 8),
-                                  if (queueItems.any((item) =>
-                                      item.uploadStatus == UploadStatus.error))
+                                  if (queueItems.any(
+                                    (item) =>
+                                        item.uploadStatus == UploadStatus.error,
+                                  ))
                                     Expanded(
                                       child: BtnPrimary(
                                         buttonText: 'Clear Failed',
                                         onTap: () {
                                           for (final item in queueItems.where(
-                                              (item) =>
-                                                  item.uploadStatus ==
-                                                  UploadStatus.error)) {
+                                            (item) =>
+                                                item.uploadStatus ==
+                                                UploadStatus.error,
+                                          )) {
                                             _removeUpload(item.recordingId);
                                           }
                                         },

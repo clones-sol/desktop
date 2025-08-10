@@ -92,7 +92,7 @@ class RecordingCard extends ConsumerWidget {
             Icon(Icons.schedule, size: 12, color: ClonesColors.secondaryText),
             const SizedBox(width: 4),
             Text(
-              formatDuration(recording.durationSeconds),
+              formatDurationFromSeconds(recording.durationSeconds),
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(width: 8),
