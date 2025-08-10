@@ -21,9 +21,14 @@ GetReferralInfoResponse _$GetReferralInfoResponseFromJson(
 
 /// @nodoc
 mixin _$GetReferralInfoResponse {
+  String get walletAddress => throw _privateConstructorUsedError;
+  String get referralCode => throw _privateConstructorUsedError;
+  bool get isActive => throw _privateConstructorUsedError;
   int get totalReferrals => throw _privateConstructorUsedError;
   double get totalRewards => throw _privateConstructorUsedError;
-  String get referralCode => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get lastUpdated => throw _privateConstructorUsedError;
+  DateTime get expiresAt => throw _privateConstructorUsedError;
   List<Referral> get referrals => throw _privateConstructorUsedError;
 
   /// Serializes this GetReferralInfoResponse to a JSON map.
@@ -43,9 +48,14 @@ abstract class $GetReferralInfoResponseCopyWith<$Res> {
       _$GetReferralInfoResponseCopyWithImpl<$Res, GetReferralInfoResponse>;
   @useResult
   $Res call(
-      {int totalReferrals,
-      double totalRewards,
+      {String walletAddress,
       String referralCode,
+      bool isActive,
+      int totalReferrals,
+      double totalRewards,
+      DateTime createdAt,
+      DateTime lastUpdated,
+      DateTime expiresAt,
       List<Referral> referrals});
 }
 
@@ -65,12 +75,29 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? walletAddress = null,
+    Object? referralCode = null,
+    Object? isActive = null,
     Object? totalReferrals = null,
     Object? totalRewards = null,
-    Object? referralCode = null,
+    Object? createdAt = null,
+    Object? lastUpdated = null,
+    Object? expiresAt = null,
     Object? referrals = null,
   }) {
     return _then(_value.copyWith(
+      walletAddress: null == walletAddress
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       totalReferrals: null == totalReferrals
           ? _value.totalReferrals
           : totalReferrals // ignore: cast_nullable_to_non_nullable
@@ -79,10 +106,18 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
           ? _value.totalRewards
           : totalRewards // ignore: cast_nullable_to_non_nullable
               as double,
-      referralCode: null == referralCode
-          ? _value.referralCode
-          : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastUpdated: null == lastUpdated
+          ? _value.lastUpdated
+          : lastUpdated // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       referrals: null == referrals
           ? _value.referrals
           : referrals // ignore: cast_nullable_to_non_nullable
@@ -101,9 +136,14 @@ abstract class _$$GetReferralInfoResponseImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int totalReferrals,
-      double totalRewards,
+      {String walletAddress,
       String referralCode,
+      bool isActive,
+      int totalReferrals,
+      double totalRewards,
+      DateTime createdAt,
+      DateTime lastUpdated,
+      DateTime expiresAt,
       List<Referral> referrals});
 }
 
@@ -122,12 +162,29 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? walletAddress = null,
+    Object? referralCode = null,
+    Object? isActive = null,
     Object? totalReferrals = null,
     Object? totalRewards = null,
-    Object? referralCode = null,
+    Object? createdAt = null,
+    Object? lastUpdated = null,
+    Object? expiresAt = null,
     Object? referrals = null,
   }) {
     return _then(_$GetReferralInfoResponseImpl(
+      walletAddress: null == walletAddress
+          ? _value.walletAddress
+          : walletAddress // ignore: cast_nullable_to_non_nullable
+              as String,
+      referralCode: null == referralCode
+          ? _value.referralCode
+          : referralCode // ignore: cast_nullable_to_non_nullable
+              as String,
+      isActive: null == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool,
       totalReferrals: null == totalReferrals
           ? _value.totalReferrals
           : totalReferrals // ignore: cast_nullable_to_non_nullable
@@ -136,10 +193,18 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
           ? _value.totalRewards
           : totalRewards // ignore: cast_nullable_to_non_nullable
               as double,
-      referralCode: null == referralCode
-          ? _value.referralCode
-          : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      lastUpdated: null == lastUpdated
+          ? _value.lastUpdated
+          : lastUpdated // ignore: cast_nullable_to_non_nullable
+              as DateTime,
+      expiresAt: null == expiresAt
+          ? _value.expiresAt
+          : expiresAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       referrals: null == referrals
           ? _value._referrals
           : referrals // ignore: cast_nullable_to_non_nullable
@@ -152,9 +217,14 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
   const _$GetReferralInfoResponseImpl(
-      {required this.totalReferrals,
-      required this.totalRewards,
+      {required this.walletAddress,
       required this.referralCode,
+      required this.isActive,
+      required this.totalReferrals,
+      required this.totalRewards,
+      required this.createdAt,
+      required this.lastUpdated,
+      required this.expiresAt,
       required final List<Referral> referrals})
       : _referrals = referrals;
 
@@ -162,11 +232,21 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
       _$$GetReferralInfoResponseImplFromJson(json);
 
   @override
+  final String walletAddress;
+  @override
+  final String referralCode;
+  @override
+  final bool isActive;
+  @override
   final int totalReferrals;
   @override
   final double totalRewards;
   @override
-  final String referralCode;
+  final DateTime createdAt;
+  @override
+  final DateTime lastUpdated;
+  @override
+  final DateTime expiresAt;
   final List<Referral> _referrals;
   @override
   List<Referral> get referrals {
@@ -177,7 +257,7 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
 
   @override
   String toString() {
-    return 'GetReferralInfoResponse(totalReferrals: $totalReferrals, totalRewards: $totalRewards, referralCode: $referralCode, referrals: $referrals)';
+    return 'GetReferralInfoResponse(walletAddress: $walletAddress, referralCode: $referralCode, isActive: $isActive, totalReferrals: $totalReferrals, totalRewards: $totalRewards, createdAt: $createdAt, lastUpdated: $lastUpdated, expiresAt: $expiresAt, referrals: $referrals)';
   }
 
   @override
@@ -185,20 +265,39 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$GetReferralInfoResponseImpl &&
+            (identical(other.walletAddress, walletAddress) ||
+                other.walletAddress == walletAddress) &&
+            (identical(other.referralCode, referralCode) ||
+                other.referralCode == referralCode) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(other.totalReferrals, totalReferrals) ||
                 other.totalReferrals == totalReferrals) &&
             (identical(other.totalRewards, totalRewards) ||
                 other.totalRewards == totalRewards) &&
-            (identical(other.referralCode, referralCode) ||
-                other.referralCode == referralCode) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.lastUpdated, lastUpdated) ||
+                other.lastUpdated == lastUpdated) &&
+            (identical(other.expiresAt, expiresAt) ||
+                other.expiresAt == expiresAt) &&
             const DeepCollectionEquality()
                 .equals(other._referrals, _referrals));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, totalReferrals, totalRewards,
-      referralCode, const DeepCollectionEquality().hash(_referrals));
+  int get hashCode => Object.hash(
+      runtimeType,
+      walletAddress,
+      referralCode,
+      isActive,
+      totalReferrals,
+      totalRewards,
+      createdAt,
+      lastUpdated,
+      expiresAt,
+      const DeepCollectionEquality().hash(_referrals));
 
   /// Create a copy of GetReferralInfoResponse
   /// with the given fields replaced by the non-null parameter values.
@@ -219,20 +318,35 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
 
 abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
   const factory _GetReferralInfoResponse(
-      {required final int totalReferrals,
-      required final double totalRewards,
+      {required final String walletAddress,
       required final String referralCode,
+      required final bool isActive,
+      required final int totalReferrals,
+      required final double totalRewards,
+      required final DateTime createdAt,
+      required final DateTime lastUpdated,
+      required final DateTime expiresAt,
       required final List<Referral> referrals}) = _$GetReferralInfoResponseImpl;
 
   factory _GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =
       _$GetReferralInfoResponseImpl.fromJson;
 
   @override
+  String get walletAddress;
+  @override
+  String get referralCode;
+  @override
+  bool get isActive;
+  @override
   int get totalReferrals;
   @override
   double get totalRewards;
   @override
-  String get referralCode;
+  DateTime get createdAt;
+  @override
+  DateTime get lastUpdated;
+  @override
+  DateTime get expiresAt;
   @override
   List<Referral> get referrals;
 

@@ -7,9 +7,14 @@ part 'get_referral_info_response.g.dart';
 @freezed
 class GetReferralInfoResponse with _$GetReferralInfoResponse {
   const factory GetReferralInfoResponse({
+    required String walletAddress,
+    required String referralCode,
+    required bool isActive,
     required int totalReferrals,
     required double totalRewards,
-    required String referralCode,
+    required DateTime createdAt,
+    required DateTime lastUpdated,
+    required DateTime expiresAt,
     required List<Referral> referrals,
   }) = _GetReferralInfoResponse;
 

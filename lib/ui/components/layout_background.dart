@@ -1,6 +1,8 @@
 import 'package:clones_desktop/application/route_provider.dart';
+import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/sidebar.dart';
+import 'package:clones_desktop/ui/components/wallet_modal.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
@@ -30,6 +32,7 @@ class LayoutBackground extends ConsumerWidget {
         const maxLogoSize = 400.0;
         logoSize.clamp(minLogoSize, maxLogoSize);
         final currentRoute = ref.watch(currentRouteProvider);
+        final showWalletModal = ref.watch(walletModalProvider);
 
         return Stack(
           alignment: Alignment.center,
@@ -123,15 +126,27 @@ class LayoutBackground extends ConsumerWidget {
                     ),
                   ),
                   Expanded(
-                    child: Column(
-                      children: [
-                        Expanded(child: child),
-                        if (actions != null)
-                          Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: actions,
+                    child: ClipRect(
+                      child: Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Expanded(child: child),
+                              if (actions != null)
+                                Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: actions,
+                                ),
+                            ],
                           ),
-                      ],
+                          if (showWalletModal)
+                            WalletModal(
+                              onClose: () {
+                                ref.read(walletModalProvider.notifier).hide();
+                              },
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ],

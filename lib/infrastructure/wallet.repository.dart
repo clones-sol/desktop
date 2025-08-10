@@ -21,7 +21,12 @@ class WalletRepositoryImpl {
     }
   }
 
-  Future<({bool connected, String? address})> checkConnection(
+  Future<
+      ({
+        bool connected,
+        String? address,
+        String? referralCode,
+      })> checkConnection(
     String token,
   ) async {
     try {
@@ -32,6 +37,7 @@ class WalletRepositoryImpl {
       return (
         connected: data['connected'] as bool,
         address: data['address'] as String?,
+        referralCode: data['referralCode'] as String?,
       );
     } catch (e) {
       throw Exception('Failed to check connection: $e');

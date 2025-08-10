@@ -1,9 +1,7 @@
-/// SPDX-License-Identifier: AGPL-3.0-or-later
 import 'dart:async';
 import 'dart:math';
 
 import 'package:clones_desktop/application/pool.dart';
-import 'package:clones_desktop/application/referral.dart';
 import 'package:clones_desktop/application/session/state.dart';
 import 'package:clones_desktop/domain/models/wallet/token_balance.dart';
 import 'package:clones_desktop/infrastructure/wallet.repository.dart';
@@ -67,9 +65,9 @@ class SessionNotifier extends _$SessionNotifier {
           if (checkConnectionResult.address != null) {
             state = state.copyWith(
               address: checkConnectionResult.address,
+              referralCode: checkConnectionResult.referralCode,
             );
             await fetchBalances();
-            await fetchReferralInfo();
           }
         }
       } catch (e) {
@@ -83,18 +81,6 @@ class SessionNotifier extends _$SessionNotifier {
     _pollingTimer = null;
     _connectingTimer?.cancel();
     _connectingTimer = null;
-  }
-
-  // TODO(reddwarf03): Just need to fetch the referral code
-  Future<void> fetchReferralInfo() async {
-    if (state.address == null) {
-      state = state.copyWith(referralInfo: null);
-      return;
-    }
-    final referralInfo = await ref.read(
-      getReferralInfoProvider(state.address!).future,
-    );
-    state = state.copyWith(referralInfo: referralInfo);
   }
 
   Future<void> fetchBalances() async {
@@ -152,7 +138,12 @@ class SessionNotifier extends _$SessionNotifier {
 }
 
 @riverpod
-Future<({bool connected, String? address})> checkWalletConnection(
+Future<
+    ({
+      bool connected,
+      String? address,
+      String? referralCode,
+    })> checkWalletConnection(
   Ref ref,
   String token,
 ) async {

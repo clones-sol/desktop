@@ -14,6 +14,7 @@ class ReferralInfo with _$ReferralInfo {
     required bool isActive,
     required DateTime createdAt,
     DateTime? lastUpdated,
+    DateTime? expiresAt,
   }) = _ReferralInfo;
 
   factory ReferralInfo.fromJson(Map<String, dynamic> json) =>

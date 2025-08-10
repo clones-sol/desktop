@@ -32,10 +32,10 @@ Future<ReferralInfo?> getReferralInfo(Ref ref, String walletAddress) async {
       walletAddress: walletAddress,
       totalReferrals: response.totalReferrals,
       totalRewards: response.totalRewards,
-      isActive: true,
-      createdAt: DateTime
-          .now(), // TODO(diamondly777): Backend doesn't provide this in stats
-      lastUpdated: DateTime.now(),
+      isActive: response.isActive,
+      expiresAt: response.expiresAt,
+      createdAt: response.createdAt,
+      lastUpdated: response.lastUpdated,
     );
 
     return referralInfo;

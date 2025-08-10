@@ -7,7 +7,7 @@ part of 'provider.dart';
 // **************************************************************************
 
 String _$checkWalletConnectionHash() =>
-    r'429a4ffbf3f60cc4da867a1672c0d44c0f172216';
+    r'e0427ab698e073f8918794dc917cc1e2915c683b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -35,8 +35,8 @@ class _SystemHash {
 const checkWalletConnectionProvider = CheckWalletConnectionFamily();
 
 /// See also [checkWalletConnection].
-class CheckWalletConnectionFamily
-    extends Family<AsyncValue<({bool connected, String? address})>> {
+class CheckWalletConnectionFamily extends Family<
+    AsyncValue<({bool connected, String? address, String? referralCode})>> {
   /// See also [checkWalletConnection].
   const CheckWalletConnectionFamily();
 
@@ -74,8 +74,8 @@ class CheckWalletConnectionFamily
 }
 
 /// See also [checkWalletConnection].
-class CheckWalletConnectionProvider
-    extends AutoDisposeFutureProvider<({bool connected, String? address})> {
+class CheckWalletConnectionProvider extends AutoDisposeFutureProvider<
+    ({bool connected, String? address, String? referralCode})> {
   /// See also [checkWalletConnection].
   CheckWalletConnectionProvider(
     String token,
@@ -110,8 +110,8 @@ class CheckWalletConnectionProvider
 
   @override
   Override overrideWith(
-    FutureOr<({bool connected, String? address})> Function(
-            CheckWalletConnectionRef provider)
+    FutureOr<({bool connected, String? address, String? referralCode})>
+            Function(CheckWalletConnectionRef provider)
         create,
   ) {
     return ProviderOverride(
@@ -129,7 +129,8 @@ class CheckWalletConnectionProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<({bool connected, String? address})>
+  AutoDisposeFutureProviderElement<
+          ({bool connected, String? address, String? referralCode})>
       createElement() {
     return _CheckWalletConnectionProviderElement(this);
   }
@@ -150,15 +151,16 @@ class CheckWalletConnectionProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin CheckWalletConnectionRef
-    on AutoDisposeFutureProviderRef<({bool connected, String? address})> {
+mixin CheckWalletConnectionRef on AutoDisposeFutureProviderRef<
+    ({bool connected, String? address, String? referralCode})> {
   /// The parameter `token` of this provider.
   String get token;
 }
 
 class _CheckWalletConnectionProviderElement
     extends AutoDisposeFutureProviderElement<
-        ({bool connected, String? address})> with CheckWalletConnectionRef {
+        ({bool connected, String? address, String? referralCode})>
+    with CheckWalletConnectionRef {
   _CheckWalletConnectionProviderElement(super.provider);
 
   @override
@@ -183,7 +185,7 @@ final walletRepositoryProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef WalletRepositoryRef = AutoDisposeProviderRef<WalletRepositoryImpl>;
-String _$sessionNotifierHash() => r'4964a6fc9a6b36de65a7d685fd909055d59eae5d';
+String _$sessionNotifierHash() => r'7094eab8db2a7965b05e16191aa4e1a05b2865e6';
 
 /// See also [SessionNotifier].
 @ProviderFor(SessionNotifier)
