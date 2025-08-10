@@ -5,7 +5,8 @@
     "identifier": "sol.clones.desktop.test",
     "build": {
         "frontendDist": "../build/web",
-        "devUrl": "http://localhost:3000"
+        "devUrl": "http://localhost:3000",
+        "beforeBuildCommand": "flutter build web --release --base-href / --no-web-resources-cdn --csp"
     },
     "plugins": {
         "deep-link": {
@@ -40,12 +41,14 @@
             },
             "csp": {
                 "default-src": "'self' customprotocol: asset:",
-                "connect-src": "'self' ipc: http://ipc.localhost https://api.jup.ag http://localhost http://localhost:8001 https://clones.sol.ai https://insi.viralmind.ai",
-                "font-src": "'self' https://fonts.googleapis.com https://fonts.gstatic.com",
+                "connect-src": "'self' ipc: http://ipc.localhost https://api.jup.ag http://localhost http://localhost:* http://127.0.0.1:* https://clones.sol.ai https://insi.viralmind.ai https://www.gstatic.com https://fonts.gstatic.com https://fonts.googleapis.com",
+                "font-src": "'self' https://fonts.googleapis.com https://fonts.gstatic.com data:",
                 "img-src": "'self' asset: https://placehold.co https://clones.sol http://asset.localhost https://s2.googleusercontent.com https://t0.gstatic.com https://t1.gstatic.com https://t2.gstatic.com https://t3.gstatic.com https://google.com https://www.google.com blob: data:",
                 "media-src": "'self' data: blob: asset: http://asset.localhost",
-                "style-src": "'self' 'unsafe-inline'  https://fonts.googleapis.com https://fonts.gstatic.com",
-                "script-src": "'self' 'unsafe-eval' https://insi.viralmind.ai"
+                "style-src": "'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
+                "script-src": "'self' 'unsafe-eval' 'unsafe-inline' https://insi.viralmind.ai https://www.gstatic.com",
+                "worker-src": "'self' blob:",
+                "child-src": "'self' blob:"
             }
         }
     },
@@ -53,6 +56,23 @@
         "createUpdaterArtifacts": false,
         "active": true,
         "targets": "all",
+        "windows": {},
+        "macOS": {
+            "dmg": {
+                "appPosition": {
+                    "x": 180,
+                    "y": 170
+                },
+                "applicationFolderPosition": {
+                    "x": 480,
+                    "y": 170
+                },
+                "windowSize": {
+                    "height": 400,
+                    "width": 660
+                }
+            }
+        },
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
