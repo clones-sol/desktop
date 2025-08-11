@@ -7,9 +7,9 @@ part 'state.freezed.dart';
 class ReferralState with _$ReferralState {
   const factory ReferralState({
     ReferralInfo? referralInfo,
-    @Default(false) bool showConfirmation,
     @Default(false) bool isLoading,
     @Default('') String errorMessage,
+    String? referrerCode,
   }) = _ReferralState;
   const ReferralState._();
 }

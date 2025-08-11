@@ -20,6 +20,8 @@ mixin _$Session {
   String? get connectionToken => throw _privateConstructorUsedError;
   List<TokenBalance>? get balances => throw _privateConstructorUsedError;
   String? get referralCode => throw _privateConstructorUsedError;
+  String? get referrerAddress => throw _privateConstructorUsedError;
+  String? get referrerCode => throw _privateConstructorUsedError;
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.
@@ -36,7 +38,9 @@ abstract class $SessionCopyWith<$Res> {
       {String? address,
       String? connectionToken,
       List<TokenBalance>? balances,
-      String? referralCode});
+      String? referralCode,
+      String? referrerAddress,
+      String? referrerCode});
 }
 
 /// @nodoc
@@ -58,6 +62,8 @@ class _$SessionCopyWithImpl<$Res, $Val extends Session>
     Object? connectionToken = freezed,
     Object? balances = freezed,
     Object? referralCode = freezed,
+    Object? referrerAddress = freezed,
+    Object? referrerCode = freezed,
   }) {
     return _then(_value.copyWith(
       address: freezed == address
@@ -76,6 +82,14 @@ class _$SessionCopyWithImpl<$Res, $Val extends Session>
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      referrerAddress: freezed == referrerAddress
+          ? _value.referrerAddress
+          : referrerAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrerCode: freezed == referrerCode
+          ? _value.referrerCode
+          : referrerCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -91,7 +105,9 @@ abstract class _$$SessionImplCopyWith<$Res> implements $SessionCopyWith<$Res> {
       {String? address,
       String? connectionToken,
       List<TokenBalance>? balances,
-      String? referralCode});
+      String? referralCode,
+      String? referrerAddress,
+      String? referrerCode});
 }
 
 /// @nodoc
@@ -111,6 +127,8 @@ class __$$SessionImplCopyWithImpl<$Res>
     Object? connectionToken = freezed,
     Object? balances = freezed,
     Object? referralCode = freezed,
+    Object? referrerAddress = freezed,
+    Object? referrerCode = freezed,
   }) {
     return _then(_$SessionImpl(
       address: freezed == address
@@ -129,6 +147,14 @@ class __$$SessionImplCopyWithImpl<$Res>
           ? _value.referralCode
           : referralCode // ignore: cast_nullable_to_non_nullable
               as String?,
+      referrerAddress: freezed == referrerAddress
+          ? _value.referrerAddress
+          : referrerAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      referrerCode: freezed == referrerCode
+          ? _value.referrerCode
+          : referrerCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -140,7 +166,9 @@ class _$SessionImpl extends _Session {
       {this.address,
       this.connectionToken,
       final List<TokenBalance>? balances,
-      this.referralCode})
+      this.referralCode,
+      this.referrerAddress,
+      this.referrerCode})
       : _balances = balances,
         super._();
 
@@ -160,10 +188,14 @@ class _$SessionImpl extends _Session {
 
   @override
   final String? referralCode;
+  @override
+  final String? referrerAddress;
+  @override
+  final String? referrerCode;
 
   @override
   String toString() {
-    return 'Session(address: $address, connectionToken: $connectionToken, balances: $balances, referralCode: $referralCode)';
+    return 'Session(address: $address, connectionToken: $connectionToken, balances: $balances, referralCode: $referralCode, referrerAddress: $referrerAddress, referrerCode: $referrerCode)';
   }
 
   @override
@@ -176,12 +208,22 @@ class _$SessionImpl extends _Session {
                 other.connectionToken == connectionToken) &&
             const DeepCollectionEquality().equals(other._balances, _balances) &&
             (identical(other.referralCode, referralCode) ||
-                other.referralCode == referralCode));
+                other.referralCode == referralCode) &&
+            (identical(other.referrerAddress, referrerAddress) ||
+                other.referrerAddress == referrerAddress) &&
+            (identical(other.referrerCode, referrerCode) ||
+                other.referrerCode == referrerCode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, address, connectionToken,
-      const DeepCollectionEquality().hash(_balances), referralCode);
+  int get hashCode => Object.hash(
+      runtimeType,
+      address,
+      connectionToken,
+      const DeepCollectionEquality().hash(_balances),
+      referralCode,
+      referrerAddress,
+      referrerCode);
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.
@@ -197,7 +239,9 @@ abstract class _Session extends Session {
       {final String? address,
       final String? connectionToken,
       final List<TokenBalance>? balances,
-      final String? referralCode}) = _$SessionImpl;
+      final String? referralCode,
+      final String? referrerAddress,
+      final String? referrerCode}) = _$SessionImpl;
   const _Session._() : super._();
 
   @override
@@ -208,6 +252,10 @@ abstract class _Session extends Session {
   List<TokenBalance>? get balances;
   @override
   String? get referralCode;
+  @override
+  String? get referrerAddress;
+  @override
+  String? get referrerCode;
 
   /// Create a copy of Session
   /// with the given fields replaced by the non-null parameter values.

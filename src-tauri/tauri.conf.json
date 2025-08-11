@@ -17,7 +17,7 @@
     "deep-link": {
       "desktop": {
         "schemes": [
-          "clones"
+          "clones-dev"
         ]
       }
     }

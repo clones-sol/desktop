@@ -22,16 +22,6 @@ Referral _$ReferralFromJson(Map<String, dynamic> json) {
 mixin _$Referral {
   String get referrerAddress => throw _privateConstructorUsedError;
   String get referreeAddress => throw _privateConstructorUsedError;
-  String get referralCode => throw _privateConstructorUsedError;
-  String get referralLink => throw _privateConstructorUsedError;
-  String get firstActionType => throw _privateConstructorUsedError;
-  Map<String, dynamic>? get firstActionData =>
-      throw _privateConstructorUsedError;
-  String? get onChainTxHash => throw _privateConstructorUsedError;
-  int? get onChainSlot => throw _privateConstructorUsedError;
-  double get rewardAmount => throw _privateConstructorUsedError;
-  bool get rewardProcessed => throw _privateConstructorUsedError;
-  String get status => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -53,15 +43,6 @@ abstract class $ReferralCopyWith<$Res> {
   $Res call(
       {String referrerAddress,
       String referreeAddress,
-      String referralCode,
-      String referralLink,
-      String firstActionType,
-      Map<String, dynamic>? firstActionData,
-      String? onChainTxHash,
-      int? onChainSlot,
-      double rewardAmount,
-      bool rewardProcessed,
-      String status,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -83,15 +64,6 @@ class _$ReferralCopyWithImpl<$Res, $Val extends Referral>
   $Res call({
     Object? referrerAddress = null,
     Object? referreeAddress = null,
-    Object? referralCode = null,
-    Object? referralLink = null,
-    Object? firstActionType = null,
-    Object? firstActionData = freezed,
-    Object? onChainTxHash = freezed,
-    Object? onChainSlot = freezed,
-    Object? rewardAmount = null,
-    Object? rewardProcessed = null,
-    Object? status = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -103,42 +75,6 @@ class _$ReferralCopyWithImpl<$Res, $Val extends Referral>
       referreeAddress: null == referreeAddress
           ? _value.referreeAddress
           : referreeAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      referralCode: null == referralCode
-          ? _value.referralCode
-          : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      referralLink: null == referralLink
-          ? _value.referralLink
-          : referralLink // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstActionType: null == firstActionType
-          ? _value.firstActionType
-          : firstActionType // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstActionData: freezed == firstActionData
-          ? _value.firstActionData
-          : firstActionData // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-      onChainTxHash: freezed == onChainTxHash
-          ? _value.onChainTxHash
-          : onChainTxHash // ignore: cast_nullable_to_non_nullable
-              as String?,
-      onChainSlot: freezed == onChainSlot
-          ? _value.onChainSlot
-          : onChainSlot // ignore: cast_nullable_to_non_nullable
-              as int?,
-      rewardAmount: null == rewardAmount
-          ? _value.rewardAmount
-          : rewardAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      rewardProcessed: null == rewardProcessed
-          ? _value.rewardProcessed
-          : rewardProcessed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -163,15 +99,6 @@ abstract class _$$ReferralImplCopyWith<$Res>
   $Res call(
       {String referrerAddress,
       String referreeAddress,
-      String referralCode,
-      String referralLink,
-      String firstActionType,
-      Map<String, dynamic>? firstActionData,
-      String? onChainTxHash,
-      int? onChainSlot,
-      double rewardAmount,
-      bool rewardProcessed,
-      String status,
       DateTime? createdAt,
       DateTime? updatedAt});
 }
@@ -191,15 +118,6 @@ class __$$ReferralImplCopyWithImpl<$Res>
   $Res call({
     Object? referrerAddress = null,
     Object? referreeAddress = null,
-    Object? referralCode = null,
-    Object? referralLink = null,
-    Object? firstActionType = null,
-    Object? firstActionData = freezed,
-    Object? onChainTxHash = freezed,
-    Object? onChainSlot = freezed,
-    Object? rewardAmount = null,
-    Object? rewardProcessed = null,
-    Object? status = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
@@ -211,42 +129,6 @@ class __$$ReferralImplCopyWithImpl<$Res>
       referreeAddress: null == referreeAddress
           ? _value.referreeAddress
           : referreeAddress // ignore: cast_nullable_to_non_nullable
-              as String,
-      referralCode: null == referralCode
-          ? _value.referralCode
-          : referralCode // ignore: cast_nullable_to_non_nullable
-              as String,
-      referralLink: null == referralLink
-          ? _value.referralLink
-          : referralLink // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstActionType: null == firstActionType
-          ? _value.firstActionType
-          : firstActionType // ignore: cast_nullable_to_non_nullable
-              as String,
-      firstActionData: freezed == firstActionData
-          ? _value._firstActionData
-          : firstActionData // ignore: cast_nullable_to_non_nullable
-              as Map<String, dynamic>?,
-      onChainTxHash: freezed == onChainTxHash
-          ? _value.onChainTxHash
-          : onChainTxHash // ignore: cast_nullable_to_non_nullable
-              as String?,
-      onChainSlot: freezed == onChainSlot
-          ? _value.onChainSlot
-          : onChainSlot // ignore: cast_nullable_to_non_nullable
-              as int?,
-      rewardAmount: null == rewardAmount
-          ? _value.rewardAmount
-          : rewardAmount // ignore: cast_nullable_to_non_nullable
-              as double,
-      rewardProcessed: null == rewardProcessed
-          ? _value.rewardProcessed
-          : rewardProcessed // ignore: cast_nullable_to_non_nullable
-              as bool,
-      status: null == status
-          ? _value.status
-          : status // ignore: cast_nullable_to_non_nullable
               as String,
       createdAt: freezed == createdAt
           ? _value.createdAt
@@ -266,18 +148,8 @@ class _$ReferralImpl implements _Referral {
   const _$ReferralImpl(
       {required this.referrerAddress,
       required this.referreeAddress,
-      required this.referralCode,
-      required this.referralLink,
-      required this.firstActionType,
-      final Map<String, dynamic>? firstActionData,
-      this.onChainTxHash,
-      this.onChainSlot,
-      this.rewardAmount = 0,
-      this.rewardProcessed = false,
-      this.status = 'pending',
       this.createdAt,
-      this.updatedAt})
-      : _firstActionData = firstActionData;
+      this.updatedAt});
 
   factory _$ReferralImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReferralImplFromJson(json);
@@ -287,42 +159,13 @@ class _$ReferralImpl implements _Referral {
   @override
   final String referreeAddress;
   @override
-  final String referralCode;
-  @override
-  final String referralLink;
-  @override
-  final String firstActionType;
-  final Map<String, dynamic>? _firstActionData;
-  @override
-  Map<String, dynamic>? get firstActionData {
-    final value = _firstActionData;
-    if (value == null) return null;
-    if (_firstActionData is EqualUnmodifiableMapView) return _firstActionData;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(value);
-  }
-
-  @override
-  final String? onChainTxHash;
-  @override
-  final int? onChainSlot;
-  @override
-  @JsonKey()
-  final double rewardAmount;
-  @override
-  @JsonKey()
-  final bool rewardProcessed;
-  @override
-  @JsonKey()
-  final String status;
-  @override
   final DateTime? createdAt;
   @override
   final DateTime? updatedAt;
 
   @override
   String toString() {
-    return 'Referral(referrerAddress: $referrerAddress, referreeAddress: $referreeAddress, referralCode: $referralCode, referralLink: $referralLink, firstActionType: $firstActionType, firstActionData: $firstActionData, onChainTxHash: $onChainTxHash, onChainSlot: $onChainSlot, rewardAmount: $rewardAmount, rewardProcessed: $rewardProcessed, status: $status, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Referral(referrerAddress: $referrerAddress, referreeAddress: $referreeAddress, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -334,23 +177,6 @@ class _$ReferralImpl implements _Referral {
                 other.referrerAddress == referrerAddress) &&
             (identical(other.referreeAddress, referreeAddress) ||
                 other.referreeAddress == referreeAddress) &&
-            (identical(other.referralCode, referralCode) ||
-                other.referralCode == referralCode) &&
-            (identical(other.referralLink, referralLink) ||
-                other.referralLink == referralLink) &&
-            (identical(other.firstActionType, firstActionType) ||
-                other.firstActionType == firstActionType) &&
-            const DeepCollectionEquality()
-                .equals(other._firstActionData, _firstActionData) &&
-            (identical(other.onChainTxHash, onChainTxHash) ||
-                other.onChainTxHash == onChainTxHash) &&
-            (identical(other.onChainSlot, onChainSlot) ||
-                other.onChainSlot == onChainSlot) &&
-            (identical(other.rewardAmount, rewardAmount) ||
-                other.rewardAmount == rewardAmount) &&
-            (identical(other.rewardProcessed, rewardProcessed) ||
-                other.rewardProcessed == rewardProcessed) &&
-            (identical(other.status, status) || other.status == status) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -360,20 +186,7 @@ class _$ReferralImpl implements _Referral {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType,
-      referrerAddress,
-      referreeAddress,
-      referralCode,
-      referralLink,
-      firstActionType,
-      const DeepCollectionEquality().hash(_firstActionData),
-      onChainTxHash,
-      onChainSlot,
-      rewardAmount,
-      rewardProcessed,
-      status,
-      createdAt,
-      updatedAt);
+      runtimeType, referrerAddress, referreeAddress, createdAt, updatedAt);
 
   /// Create a copy of Referral
   /// with the given fields replaced by the non-null parameter values.
@@ -395,15 +208,6 @@ abstract class _Referral implements Referral {
   const factory _Referral(
       {required final String referrerAddress,
       required final String referreeAddress,
-      required final String referralCode,
-      required final String referralLink,
-      required final String firstActionType,
-      final Map<String, dynamic>? firstActionData,
-      final String? onChainTxHash,
-      final int? onChainSlot,
-      final double rewardAmount,
-      final bool rewardProcessed,
-      final String status,
       final DateTime? createdAt,
       final DateTime? updatedAt}) = _$ReferralImpl;
 
@@ -414,24 +218,6 @@ abstract class _Referral implements Referral {
   String get referrerAddress;
   @override
   String get referreeAddress;
-  @override
-  String get referralCode;
-  @override
-  String get referralLink;
-  @override
-  String get firstActionType;
-  @override
-  Map<String, dynamic>? get firstActionData;
-  @override
-  String? get onChainTxHash;
-  @override
-  int? get onChainSlot;
-  @override
-  double get rewardAmount;
-  @override
-  bool get rewardProcessed;
-  @override
-  String get status;
   @override
   DateTime? get createdAt;
   @override

@@ -9,7 +9,7 @@ part of 'referral_info.dart';
 _$ReferralInfoImpl _$$ReferralInfoImplFromJson(Map<String, dynamic> json) =>
     _$ReferralInfoImpl(
       referralCode: json['referralCode'] as String,
-      referralLink: json['referralLink'] as String,
+      referralLink: json['referralLink'] as String?,
       walletAddress: json['walletAddress'] as String,
       totalReferrals: (json['totalReferrals'] as num).toInt(),
       totalRewards: (json['totalRewards'] as num).toDouble(),

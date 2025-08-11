@@ -1,7 +1,5 @@
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/menu_item.dart';
 import 'package:clones_desktop/ui/components/wallet_not_connected.dart';
 import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
@@ -53,9 +51,7 @@ class _ReferralViewState extends ConsumerState<ReferralView> {
                 ? _buildInitialState(context, ref)
                 : (referralState.isLoading)
                     ? _buildLoadingState(context)
-                    : (referralState.errorMessage.isNotEmpty)
-                        ? _buildErrorState(context, ref)
-                        : const ReferralContent(),
+                    : const ReferralContent(),
           ),
         ],
       ),
@@ -96,36 +92,6 @@ class _ReferralViewState extends ConsumerState<ReferralView> {
           Text(
             'Loading referral information...',
             style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildErrorState(
-    BuildContext context,
-    WidgetRef ref,
-  ) {
-    final referralState = ref.watch(referralNotifierProvider);
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          MessageBox(
-            messageBoxType: MessageBoxType.warning,
-            content: Text(
-              'Error Loading Referral: ${referralState.errorMessage}',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          const SizedBox(height: 24),
-          BtnPrimary(
-            buttonText: 'Try Again',
-            onTap: () async {
-              await ref
-                  .read(referralNotifierProvider.notifier)
-                  .createReferral();
-            },
           ),
         ],
       ),

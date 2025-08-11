@@ -6,7 +6,7 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$referralNotifierHash() => r'31d31136f0b0aedc48c354a8af5e013e0897f463';
+String _$referralNotifierHash() => r'7f6f6646a2eee3fab7cf4f8732ea356f0ca30c4d';
 
 /// See also [ReferralNotifier].
 @ProviderFor(ReferralNotifier)

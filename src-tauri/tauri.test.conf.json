@@ -11,7 +11,7 @@
         "deep-link": {
             "desktop": {
                 "schemes": [
-                    "clones"
+                    "clones-test"
                 ]
             }
         }

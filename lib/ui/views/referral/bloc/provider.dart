@@ -26,6 +26,10 @@ class ReferralNotifier extends _$ReferralNotifier {
     state = state.copyWith(referralInfo: referralInfo);
   }
 
+  void setReferrerCode(String? referrerCode) {
+    state = state.copyWith(referrerCode: referrerCode?.toUpperCase());
+  }
+
   Future<void> createReferral() async {
     try {
       setIsLoading(true);
@@ -46,13 +50,13 @@ class ReferralNotifier extends _$ReferralNotifier {
         totalReferrals: 0,
         totalRewards: 0,
         isActive: true,
-        createdAt: DateTime.now(),
+        createdAt: response.createdAt,
       );
 
-      state = state.copyWith(
-        referralInfo: referralInfo,
-        showConfirmation: true,
-      );
+      setReferralInfo(referralInfo);
+      ref.read(sessionNotifierProvider.notifier).addReferralCode(
+            referralInfo.referralCode,
+          );
     } catch (e) {
       setErrorMessage(e.toString());
     } finally {
@@ -86,6 +90,47 @@ class ReferralNotifier extends _$ReferralNotifier {
       }
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  Future<void> applyReferrerCode() async {
+    try {
+      setErrorMessage('');
+      final walletAddress = ref.read(sessionNotifierProvider).address;
+      if (walletAddress == null) {
+        setErrorMessage(
+          'Wallet address is required. Please connect your wallet.',
+        );
+        return;
+      }
+
+      if (state.referrerCode == null || state.referrerCode!.isEmpty) {
+        setErrorMessage(
+          'Referrer code is required. Please enter a referrer code.',
+        );
+        return;
+      }
+
+      if (state.referrerCode == null || state.referrerCode!.length != 6) {
+        setErrorMessage(
+          'Referrer code must be 6 characters long.',
+        );
+        return;
+      }
+
+      final repository = ref.read(referralRepositoryProvider);
+      await repository.applyReferrerCode(
+        walletAddress,
+        state.referrerCode!,
+      );
+
+      await ref.read(sessionNotifierProvider.notifier).addReferrerInfo();
+    } catch (e) {
+      if (e is ApiError) {
+        setErrorMessage(e.message);
+      } else {
+        setErrorMessage(e.toString());
+      }
     }
   }
 }

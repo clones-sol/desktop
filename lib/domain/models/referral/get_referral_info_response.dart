@@ -13,9 +13,9 @@ class GetReferralInfoResponse with _$GetReferralInfoResponse {
     required int totalReferrals,
     required double totalRewards,
     required DateTime createdAt,
-    required DateTime lastUpdated,
-    required DateTime expiresAt,
-    required List<Referral> referrals,
+    DateTime? lastUpdated,
+    DateTime? expiresAt,
+    List<Referral>? referrals,
   }) = _GetReferralInfoResponse;
 
   factory GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =>

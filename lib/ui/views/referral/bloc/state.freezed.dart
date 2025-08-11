@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$ReferralState {
   ReferralInfo? get referralInfo => throw _privateConstructorUsedError;
-  bool get showConfirmation => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  String? get referrerCode => throw _privateConstructorUsedError;
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
@@ -36,9 +36,9 @@ abstract class $ReferralStateCopyWith<$Res> {
   @useResult
   $Res call(
       {ReferralInfo? referralInfo,
-      bool showConfirmation,
       bool isLoading,
-      String errorMessage});
+      String errorMessage,
+      String? referrerCode});
 
   $ReferralInfoCopyWith<$Res>? get referralInfo;
 }
@@ -59,19 +59,15 @@ class _$ReferralStateCopyWithImpl<$Res, $Val extends ReferralState>
   @override
   $Res call({
     Object? referralInfo = freezed,
-    Object? showConfirmation = null,
     Object? isLoading = null,
     Object? errorMessage = null,
+    Object? referrerCode = freezed,
   }) {
     return _then(_value.copyWith(
       referralInfo: freezed == referralInfo
           ? _value.referralInfo
           : referralInfo // ignore: cast_nullable_to_non_nullable
               as ReferralInfo?,
-      showConfirmation: null == showConfirmation
-          ? _value.showConfirmation
-          : showConfirmation // ignore: cast_nullable_to_non_nullable
-              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -80,6 +76,10 @@ class _$ReferralStateCopyWithImpl<$Res, $Val extends ReferralState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      referrerCode: freezed == referrerCode
+          ? _value.referrerCode
+          : referrerCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 
@@ -108,9 +108,9 @@ abstract class _$$ReferralStateImplCopyWith<$Res>
   @useResult
   $Res call(
       {ReferralInfo? referralInfo,
-      bool showConfirmation,
       bool isLoading,
-      String errorMessage});
+      String errorMessage,
+      String? referrerCode});
 
   @override
   $ReferralInfoCopyWith<$Res>? get referralInfo;
@@ -130,19 +130,15 @@ class __$$ReferralStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? referralInfo = freezed,
-    Object? showConfirmation = null,
     Object? isLoading = null,
     Object? errorMessage = null,
+    Object? referrerCode = freezed,
   }) {
     return _then(_$ReferralStateImpl(
       referralInfo: freezed == referralInfo
           ? _value.referralInfo
           : referralInfo // ignore: cast_nullable_to_non_nullable
               as ReferralInfo?,
-      showConfirmation: null == showConfirmation
-          ? _value.showConfirmation
-          : showConfirmation // ignore: cast_nullable_to_non_nullable
-              as bool,
       isLoading: null == isLoading
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
@@ -151,6 +147,10 @@ class __$$ReferralStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      referrerCode: freezed == referrerCode
+          ? _value.referrerCode
+          : referrerCode // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -160,26 +160,25 @@ class __$$ReferralStateImplCopyWithImpl<$Res>
 class _$ReferralStateImpl extends _ReferralState {
   const _$ReferralStateImpl(
       {this.referralInfo,
-      this.showConfirmation = false,
       this.isLoading = false,
-      this.errorMessage = ''})
+      this.errorMessage = '',
+      this.referrerCode})
       : super._();
 
   @override
   final ReferralInfo? referralInfo;
   @override
   @JsonKey()
-  final bool showConfirmation;
-  @override
-  @JsonKey()
   final bool isLoading;
   @override
   @JsonKey()
   final String errorMessage;
+  @override
+  final String? referrerCode;
 
   @override
   String toString() {
-    return 'ReferralState(referralInfo: $referralInfo, showConfirmation: $showConfirmation, isLoading: $isLoading, errorMessage: $errorMessage)';
+    return 'ReferralState(referralInfo: $referralInfo, isLoading: $isLoading, errorMessage: $errorMessage, referrerCode: $referrerCode)';
   }
 
   @override
@@ -189,17 +188,17 @@ class _$ReferralStateImpl extends _ReferralState {
             other is _$ReferralStateImpl &&
             (identical(other.referralInfo, referralInfo) ||
                 other.referralInfo == referralInfo) &&
-            (identical(other.showConfirmation, showConfirmation) ||
-                other.showConfirmation == showConfirmation) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading) &&
             (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.errorMessage == errorMessage) &&
+            (identical(other.referrerCode, referrerCode) ||
+                other.referrerCode == referrerCode));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, referralInfo, showConfirmation, isLoading, errorMessage);
+      runtimeType, referralInfo, isLoading, errorMessage, referrerCode);
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.
@@ -213,19 +212,19 @@ class _$ReferralStateImpl extends _ReferralState {
 abstract class _ReferralState extends ReferralState {
   const factory _ReferralState(
       {final ReferralInfo? referralInfo,
-      final bool showConfirmation,
       final bool isLoading,
-      final String errorMessage}) = _$ReferralStateImpl;
+      final String errorMessage,
+      final String? referrerCode}) = _$ReferralStateImpl;
   const _ReferralState._() : super._();
 
   @override
   ReferralInfo? get referralInfo;
   @override
-  bool get showConfirmation;
-  @override
   bool get isLoading;
   @override
   String get errorMessage;
+  @override
+  String? get referrerCode;
 
   /// Create a copy of ReferralState
   /// with the given fields replaced by the non-null parameter values.

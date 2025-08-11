@@ -121,6 +121,7 @@ class ClonesColors {
   static const Color primary = Color(0xFFC34EFF);
   static const Color secondary = Color(0xFF9050FF);
   static const Color tertiary = Color(0xFF5C51FF);
+  static const Color error = Color(0xFFFB923C);
 
   static const Color rewardInfo = Color(0xFF10B981);
   static const Color uploadLimit = Color.fromARGB(255, 203, 132, 46);

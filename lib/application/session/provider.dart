@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:clones_desktop/application/pool.dart';
+import 'package:clones_desktop/application/referral.dart';
 import 'package:clones_desktop/application/session/state.dart';
 import 'package:clones_desktop/domain/models/wallet/token_balance.dart';
 import 'package:clones_desktop/infrastructure/wallet.repository.dart';
@@ -66,6 +67,8 @@ class SessionNotifier extends _$SessionNotifier {
             state = state.copyWith(
               address: checkConnectionResult.address,
               referralCode: checkConnectionResult.referralCode,
+              referrerAddress: checkConnectionResult.referrerAddress,
+              referrerCode: checkConnectionResult.referrerCode,
             );
             await fetchBalances();
           }
@@ -74,6 +77,24 @@ class SessionNotifier extends _$SessionNotifier {
         debugPrint('Failed to check connection: $e');
       }
     });
+  }
+
+  void addReferralCode(String referralCode) {
+    state = state.copyWith(referralCode: referralCode.toUpperCase());
+  }
+
+  Future<void> addReferrerInfo() async {
+    final referrerInfo =
+        await ref.read(getReferrerInfoProvider(state.address!).future);
+    if (referrerInfo.referrerAddress == null ||
+        referrerInfo.referrerCode == null) {
+      return;
+    }
+
+    state = state.copyWith(
+      referrerAddress: referrerInfo.referrerAddress,
+      referrerCode: referrerInfo.referrerCode,
+    );
   }
 
   void stopPolling() {
@@ -143,6 +164,8 @@ Future<
       bool connected,
       String? address,
       String? referralCode,
+      String? referrerAddress,
+      String? referrerCode,
     })> checkWalletConnection(
   Ref ref,
   String token,

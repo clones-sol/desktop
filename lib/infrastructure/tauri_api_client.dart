@@ -373,8 +373,8 @@ class TauriApiClient {
       return data
           .map(
             (json) => (
-              width: json['width'] as double,
-              height: json['height'] as double,
+              width: (json['width'] as num).toDouble(),
+              height: (json['height'] as num).toDouble(),
             ),
           )
           .toList();
