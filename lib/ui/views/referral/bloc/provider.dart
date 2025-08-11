@@ -111,9 +111,10 @@ class ReferralNotifier extends _$ReferralNotifier {
         return;
       }
 
-      if (state.referrerCode == null || state.referrerCode!.length != 6) {
+      if (state.referrerCode == null ||
+          state.referrerCode!.length != referrerCodeLength) {
         setErrorMessage(
-          'Referrer code must be 6 characters long.',
+          'Referrer code must be $referrerCodeLength characters long.',
         );
         return;
       }
