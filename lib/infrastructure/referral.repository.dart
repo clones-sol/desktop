@@ -50,7 +50,8 @@ class ReferralRepositoryImpl implements ReferralRepository {
       );
 
       final referralInfo = ReferralInfo.fromJson(
-          responseData['referralInfo'] as Map<String, dynamic>);
+        responseData['referralInfo'] as Map<String, dynamic>,
+      );
       final referrals = responseData['referrals'] as List<dynamic>;
 
       return GetReferralInfoResponse(

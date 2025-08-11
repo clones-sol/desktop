@@ -777,9 +777,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
               debugPrint('Failed to get submission details: $e');
             }
           }
-          Future.delayed(const Duration(seconds: 10), () {
-            ref.read(uploadQueueProvider.notifier).removeTask(recordingId);
-          });
         } else if (uploadState.uploadStatus == UploadStatus.error) {
           sub.close();
           setIsUploading(false);
@@ -788,9 +785,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
               'There was an error processing your demonstration: ${uploadState.error ?? 'Unknown error'}',
             ),
           );
-          Future.delayed(const Duration(seconds: 10), () {
-            ref.read(uploadQueueProvider.notifier).removeTask(recordingId);
-          });
         }
       });
 

@@ -125,7 +125,6 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
       height: 160,
       child: Wrap(
         spacing: 20,
-        crossAxisAlignment: WrapCrossAlignment.start,
         children: [
           ForgeFactoryGeneralTabStatSessionCompleted(),
           ForgeFactoryGeneralTabStatDemoPrice(),
