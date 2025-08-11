@@ -1,7 +1,9 @@
 import 'package:clones_desktop/application/feature_flags.dart';
 import 'package:clones_desktop/application/route_provider.dart';
+import 'package:clones_desktop/application/upload_modal_provider.dart';
+import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/ui/components/upload_manager.dart';
+import 'package:clones_desktop/ui/components/upload_button.dart';
 import 'package:clones_desktop/ui/components/wallet_button.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
@@ -93,6 +95,8 @@ class Sidebar extends ConsumerWidget {
               buttons: buttons,
               activeIndex: activeIndex,
               onTap: (i) {
+                ref.read(uploadModalProvider.notifier).hide();
+                ref.read(walletModalProvider.notifier).hide();
                 context.go(buttons[i].path);
               },
             ),
@@ -134,7 +138,7 @@ class Sidebar extends ConsumerWidget {
                 ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 8),
-                child: UploadManagerWidget(),
+                child: UploadButton(),
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 20),

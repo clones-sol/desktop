@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
+import 'package:clones_desktop/application/upload_modal_provider.dart';
 import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
     if (session.isConnected) {
       return InkWell(
         onTap: () {
+          ref.read(uploadModalProvider.notifier).hide();
           ref.read(walletModalProvider.notifier).show();
         },
         child: ShaderMask(
