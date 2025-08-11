@@ -294,7 +294,7 @@ class WalletModal extends ConsumerWidget {
                                   )
                                 else
                                   Text(
-                                    '${tokenBalance.balance?.toStringAsFixed(2) ?? 'N/A'} ${tokenBalance.symbol}',
+                                    '${tokenBalance.balance?.toStringAsFixed(2) ?? '0.00'} ${tokenBalance.symbol}',
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: ClonesColors.secondary,
                                     ),
