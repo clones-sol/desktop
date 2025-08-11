@@ -124,13 +124,13 @@ class WalletModal extends ConsumerWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 8),
                       if (session.referralCode != null)
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Referral Code',
+                              'Your Referral Code',
                               style: theme.textTheme.bodyMedium,
                             ),
                             Row(
@@ -167,7 +167,7 @@ class WalletModal extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Referral Code',
+                              'Your Referral Code',
                               style: theme.textTheme.bodyMedium,
                             ),
                             Row(
@@ -189,6 +189,70 @@ class WalletModal extends ConsumerWidget {
                               ],
                             ),
                           ],
+                        ),
+                      if (session.referrerCode != null &&
+                          session.referrerAddress != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Your Referrer',
+                                style: theme.textTheme.bodyMedium,
+                              ),
+                              Row(
+                                children: [
+                                  const SizedBox(width: 8),
+                                  InkWell(
+                                    onTap: () {
+                                      Clipboard.setData(
+                                        ClipboardData(
+                                          text: session.referrerAddress!,
+                                        ),
+                                      );
+
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content:
+                                              Text('Referrer address copied!'),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      '${session.referrerAddress!.shortAddress()} (${session.referrerCode})',
+                                      style: const TextStyle(
+                                        fontFamily: 'monospace',
+                                        color: ClonesColors.primaryText,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  InkWell(
+                                    onTap: () async {
+                                      try {
+                                        await ref
+                                            .read(tauriApiClientProvider)
+                                            .openExternalUrl(
+                                              '${Env.solscanBaseUrl}/address/${session.referrerAddress}',
+                                            );
+                                      } catch (e) {
+                                        debugPrint(
+                                          'Failed to open external URL: $e',
+                                        );
+                                      }
+                                    },
+                                    child: Icon(
+                                      Icons.open_in_new,
+                                      color: ClonesColors.secondaryText,
+                                      size: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       const SizedBox(height: 12),
                       if (session.balances != null)

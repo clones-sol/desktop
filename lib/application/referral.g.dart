@@ -177,5 +177,142 @@ class _GetReferralInfoProviderElement
   @override
   String get walletAddress => (origin as GetReferralInfoProvider).walletAddress;
 }
+
+String _$getReferrerInfoHash() => r'30bc7cb6cc94b0d421bbf21982c4f232641c1837';
+
+/// See also [getReferrerInfo].
+@ProviderFor(getReferrerInfo)
+const getReferrerInfoProvider = GetReferrerInfoFamily();
+
+/// See also [getReferrerInfo].
+class GetReferrerInfoFamily extends Family<
+    AsyncValue<({String? referrerAddress, String? referrerCode})>> {
+  /// See also [getReferrerInfo].
+  const GetReferrerInfoFamily();
+
+  /// See also [getReferrerInfo].
+  GetReferrerInfoProvider call(
+    String walletAddress,
+  ) {
+    return GetReferrerInfoProvider(
+      walletAddress,
+    );
+  }
+
+  @override
+  GetReferrerInfoProvider getProviderOverride(
+    covariant GetReferrerInfoProvider provider,
+  ) {
+    return call(
+      provider.walletAddress,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getReferrerInfoProvider';
+}
+
+/// See also [getReferrerInfo].
+class GetReferrerInfoProvider extends AutoDisposeFutureProvider<
+    ({String? referrerAddress, String? referrerCode})> {
+  /// See also [getReferrerInfo].
+  GetReferrerInfoProvider(
+    String walletAddress,
+  ) : this._internal(
+          (ref) => getReferrerInfo(
+            ref as GetReferrerInfoRef,
+            walletAddress,
+          ),
+          from: getReferrerInfoProvider,
+          name: r'getReferrerInfoProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getReferrerInfoHash,
+          dependencies: GetReferrerInfoFamily._dependencies,
+          allTransitiveDependencies:
+              GetReferrerInfoFamily._allTransitiveDependencies,
+          walletAddress: walletAddress,
+        );
+
+  GetReferrerInfoProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.walletAddress,
+  }) : super.internal();
+
+  final String walletAddress;
+
+  @override
+  Override overrideWith(
+    FutureOr<({String? referrerAddress, String? referrerCode})> Function(
+            GetReferrerInfoRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetReferrerInfoProvider._internal(
+        (ref) => create(ref as GetReferrerInfoRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        walletAddress: walletAddress,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<
+      ({String? referrerAddress, String? referrerCode})> createElement() {
+    return _GetReferrerInfoProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetReferrerInfoProvider &&
+        other.walletAddress == walletAddress;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, walletAddress.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetReferrerInfoRef on AutoDisposeFutureProviderRef<
+    ({String? referrerAddress, String? referrerCode})> {
+  /// The parameter `walletAddress` of this provider.
+  String get walletAddress;
+}
+
+class _GetReferrerInfoProviderElement extends AutoDisposeFutureProviderElement<
+    ({String? referrerAddress, String? referrerCode})> with GetReferrerInfoRef {
+  _GetReferrerInfoProviderElement(super.provider);
+
+  @override
+  String get walletAddress => (origin as GetReferrerInfoProvider).walletAddress;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

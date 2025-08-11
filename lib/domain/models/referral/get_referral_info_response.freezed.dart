@@ -27,9 +27,9 @@ mixin _$GetReferralInfoResponse {
   int get totalReferrals => throw _privateConstructorUsedError;
   double get totalRewards => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  DateTime get lastUpdated => throw _privateConstructorUsedError;
-  DateTime get expiresAt => throw _privateConstructorUsedError;
-  List<Referral> get referrals => throw _privateConstructorUsedError;
+  DateTime? get lastUpdated => throw _privateConstructorUsedError;
+  DateTime? get expiresAt => throw _privateConstructorUsedError;
+  List<Referral>? get referrals => throw _privateConstructorUsedError;
 
   /// Serializes this GetReferralInfoResponse to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -54,9 +54,9 @@ abstract class $GetReferralInfoResponseCopyWith<$Res> {
       int totalReferrals,
       double totalRewards,
       DateTime createdAt,
-      DateTime lastUpdated,
-      DateTime expiresAt,
-      List<Referral> referrals});
+      DateTime? lastUpdated,
+      DateTime? expiresAt,
+      List<Referral>? referrals});
 }
 
 /// @nodoc
@@ -81,9 +81,9 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
     Object? totalReferrals = null,
     Object? totalRewards = null,
     Object? createdAt = null,
-    Object? lastUpdated = null,
-    Object? expiresAt = null,
-    Object? referrals = null,
+    Object? lastUpdated = freezed,
+    Object? expiresAt = freezed,
+    Object? referrals = freezed,
   }) {
     return _then(_value.copyWith(
       walletAddress: null == walletAddress
@@ -110,18 +110,18 @@ class _$GetReferralInfoResponseCopyWithImpl<$Res,
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lastUpdated: null == lastUpdated
+      lastUpdated: freezed == lastUpdated
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      expiresAt: null == expiresAt
+              as DateTime?,
+      expiresAt: freezed == expiresAt
           ? _value.expiresAt
           : expiresAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      referrals: null == referrals
+              as DateTime?,
+      referrals: freezed == referrals
           ? _value.referrals
           : referrals // ignore: cast_nullable_to_non_nullable
-              as List<Referral>,
+              as List<Referral>?,
     ) as $Val);
   }
 }
@@ -142,9 +142,9 @@ abstract class _$$GetReferralInfoResponseImplCopyWith<$Res>
       int totalReferrals,
       double totalRewards,
       DateTime createdAt,
-      DateTime lastUpdated,
-      DateTime expiresAt,
-      List<Referral> referrals});
+      DateTime? lastUpdated,
+      DateTime? expiresAt,
+      List<Referral>? referrals});
 }
 
 /// @nodoc
@@ -168,9 +168,9 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
     Object? totalReferrals = null,
     Object? totalRewards = null,
     Object? createdAt = null,
-    Object? lastUpdated = null,
-    Object? expiresAt = null,
-    Object? referrals = null,
+    Object? lastUpdated = freezed,
+    Object? expiresAt = freezed,
+    Object? referrals = freezed,
   }) {
     return _then(_$GetReferralInfoResponseImpl(
       walletAddress: null == walletAddress
@@ -197,18 +197,18 @@ class __$$GetReferralInfoResponseImplCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      lastUpdated: null == lastUpdated
+      lastUpdated: freezed == lastUpdated
           ? _value.lastUpdated
           : lastUpdated // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      expiresAt: null == expiresAt
+              as DateTime?,
+      expiresAt: freezed == expiresAt
           ? _value.expiresAt
           : expiresAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      referrals: null == referrals
+              as DateTime?,
+      referrals: freezed == referrals
           ? _value._referrals
           : referrals // ignore: cast_nullable_to_non_nullable
-              as List<Referral>,
+              as List<Referral>?,
     ));
   }
 }
@@ -223,9 +223,9 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
       required this.totalReferrals,
       required this.totalRewards,
       required this.createdAt,
-      required this.lastUpdated,
-      required this.expiresAt,
-      required final List<Referral> referrals})
+      this.lastUpdated,
+      this.expiresAt,
+      final List<Referral>? referrals})
       : _referrals = referrals;
 
   factory _$GetReferralInfoResponseImpl.fromJson(Map<String, dynamic> json) =>
@@ -244,15 +244,17 @@ class _$GetReferralInfoResponseImpl implements _GetReferralInfoResponse {
   @override
   final DateTime createdAt;
   @override
-  final DateTime lastUpdated;
+  final DateTime? lastUpdated;
   @override
-  final DateTime expiresAt;
-  final List<Referral> _referrals;
+  final DateTime? expiresAt;
+  final List<Referral>? _referrals;
   @override
-  List<Referral> get referrals {
+  List<Referral>? get referrals {
+    final value = _referrals;
+    if (value == null) return null;
     if (_referrals is EqualUnmodifiableListView) return _referrals;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_referrals);
+    return EqualUnmodifiableListView(value);
   }
 
   @override
@@ -324,9 +326,9 @@ abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
       required final int totalReferrals,
       required final double totalRewards,
       required final DateTime createdAt,
-      required final DateTime lastUpdated,
-      required final DateTime expiresAt,
-      required final List<Referral> referrals}) = _$GetReferralInfoResponseImpl;
+      final DateTime? lastUpdated,
+      final DateTime? expiresAt,
+      final List<Referral>? referrals}) = _$GetReferralInfoResponseImpl;
 
   factory _GetReferralInfoResponse.fromJson(Map<String, dynamic> json) =
       _$GetReferralInfoResponseImpl.fromJson;
@@ -344,11 +346,11 @@ abstract class _GetReferralInfoResponse implements GetReferralInfoResponse {
   @override
   DateTime get createdAt;
   @override
-  DateTime get lastUpdated;
+  DateTime? get lastUpdated;
   @override
-  DateTime get expiresAt;
+  DateTime? get expiresAt;
   @override
-  List<Referral> get referrals;
+  List<Referral>? get referrals;
 
   /// Create a copy of GetReferralInfoResponse
   /// with the given fields replaced by the non-null parameter values.

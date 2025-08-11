@@ -11,6 +11,8 @@ class Session with _$Session {
     String? connectionToken,
     List<TokenBalance>? balances,
     String? referralCode,
+    String? referrerAddress,
+    String? referrerCode,
   }) = _Session;
   const Session._();
 

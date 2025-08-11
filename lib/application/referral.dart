@@ -43,3 +43,12 @@ Future<ReferralInfo?> getReferralInfo(Ref ref, String walletAddress) async {
     rethrow;
   }
 }
+
+@riverpod
+Future<({String? referrerAddress, String? referrerCode})> getReferrerInfo(
+  Ref ref,
+  String walletAddress,
+) async {
+  final repository = ref.watch(referralRepositoryProvider);
+  return repository.getReferrerInfo(walletAddress);
+}

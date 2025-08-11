@@ -15,10 +15,14 @@ _$GetReferralInfoResponseImpl _$$GetReferralInfoResponseImplFromJson(
       totalReferrals: (json['totalReferrals'] as num).toInt(),
       totalRewards: (json['totalRewards'] as num).toDouble(),
       createdAt: DateTime.parse(json['createdAt'] as String),
-      lastUpdated: DateTime.parse(json['lastUpdated'] as String),
-      expiresAt: DateTime.parse(json['expiresAt'] as String),
-      referrals: (json['referrals'] as List<dynamic>)
-          .map((e) => Referral.fromJson(e as Map<String, dynamic>))
+      lastUpdated: json['lastUpdated'] == null
+          ? null
+          : DateTime.parse(json['lastUpdated'] as String),
+      expiresAt: json['expiresAt'] == null
+          ? null
+          : DateTime.parse(json['expiresAt'] as String),
+      referrals: (json['referrals'] as List<dynamic>?)
+          ?.map((e) => Referral.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -31,7 +35,7 @@ Map<String, dynamic> _$$GetReferralInfoResponseImplToJson(
       'totalReferrals': instance.totalReferrals,
       'totalRewards': instance.totalRewards,
       'createdAt': instance.createdAt.toIso8601String(),
-      'lastUpdated': instance.lastUpdated.toIso8601String(),
-      'expiresAt': instance.expiresAt.toIso8601String(),
+      'lastUpdated': instance.lastUpdated?.toIso8601String(),
+      'expiresAt': instance.expiresAt?.toIso8601String(),
       'referrals': instance.referrals,
     };

@@ -7,7 +7,7 @@ part 'referral_info.g.dart';
 class ReferralInfo with _$ReferralInfo {
   const factory ReferralInfo({
     required String referralCode,
-    required String referralLink,
+    String? referralLink,
     required String walletAddress,
     required int totalReferrals,
     required double totalRewards,
