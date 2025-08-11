@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:clones_desktop/domain/models/referral/referral_info.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/views/referral/bloc/provider.dart';
@@ -91,7 +92,7 @@ class _ReferralReferrerCodeCardState
                   style: theme.textTheme.titleSmall,
                 ),
                 Text(
-                  'If a friend reffered you, you can add their code here to thank them.',
+                  'If a friend referred you, you can add their code here to thank them.',
                   style: theme.textTheme.bodySmall,
                 ),
               ],
@@ -149,7 +150,9 @@ class _ReferralReferrerCodeCardState
                                 textInputAction: TextInputAction.next,
                                 keyboardType: TextInputType.text,
                                 inputFormatters: [
-                                  LengthLimitingTextInputFormatter(6),
+                                  LengthLimitingTextInputFormatter(
+                                    referrerCodeLength,
+                                  ),
                                   FilteringTextInputFormatter.allow(
                                     RegExp(r'^[a-zA-Z0-9]+$'),
                                   ),
@@ -211,8 +214,9 @@ class _ReferralReferrerCodeCardState
                     }
 
                     ref.read(referralNotifierProvider.notifier).setReferrerCode(
-                          clipboardData.text!.length > 6
-                              ? clipboardData.text!.substring(0, 6)
+                          clipboardData.text!.length > referrerCodeLength
+                              ? clipboardData.text!
+                                  .substring(0, referrerCodeLength)
                               : clipboardData.text,
                         );
 
