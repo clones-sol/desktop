@@ -66,29 +66,32 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
     final recording = demoDetail.recording;
     final submission = recording?.submission;
     final demoDetailNotifier = ref.watch(demoDetailNotifierProvider.notifier);
-    return Wrap(
-      spacing: 10,
-      alignment: WrapAlignment.end,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         BtnPrimary(
           btnPrimaryType: BtnPrimaryType.outlinePrimary,
           buttonText: 'Open in $platformOpenFileExplorerName',
           onTap: demoDetailNotifier.openRecordingFolder,
         ),
+        const SizedBox(width: 10),
         if (recording != null && recording.status == 'completed') ...[
-          if (demoDetail.sftMessages.isEmpty)
+          if (demoDetail.sftMessages.isEmpty) ...[
             BtnPrimary(
               btnPrimaryType: BtnPrimaryType.outlinePrimary,
               onTap: demoDetailNotifier.processRecording,
               isLoading: demoDetail.isProcessing,
               buttonText: 'Process',
             ),
+            const SizedBox(width: 10),
+          ],
           BtnPrimary(
             btnPrimaryType: BtnPrimaryType.outlinePrimary,
             onTap: demoDetailNotifier.exportRecording,
             isLoading: demoDetail.isExporting,
             buttonText: 'Export Zip',
           ),
+          const SizedBox(width: 10),
           BtnPrimary(
             onTap: demoDetailNotifier.uploadRecording,
             isLoading: demoDetail.isUploading,
@@ -192,7 +195,7 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                               const SizedBox(width: 20),
                               Expanded(
                                 flex: 3,
-                                child: _buildEditorTabs(),
+                                child: _buildEditorTabs(expanded: true),
                               ),
                             ],
                           );
@@ -213,7 +216,7 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                               const SizedBox(height: 20),
                               const DemoDetailRewards(),
                               const SizedBox(height: 20),
-                              _buildEditorTabs(),
+                              _buildEditorTabs(expanded: false),
                             ],
                           ),
                         );
@@ -232,7 +235,7 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
     );
   }
 
-  Widget _buildEditorTabs() {
+  Widget _buildEditorTabs({required bool expanded}) {
     return CardWidget(
       child: DefaultTabController(
         length: 2,
@@ -247,8 +250,7 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                 Tab(text: 'Events'),
               ],
             ),
-            const SizedBox(
-              height: 400,
+            const Expanded(
               child: TabBarView(
                 children: [
                   DemoDetailEditor(),
@@ -315,40 +317,9 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
                             ),
                             const SizedBox(width: 20),
                             Expanded(
-                              child: _buildEditorTabs(),
+                              child: _buildEditorTabs(expanded: true),
                             ),
                           ],
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        flex: 3,
-                        child: CardWidget(
-                          child: DefaultTabController(
-                            length: 2,
-                            child: Column(
-                              children: [
-                                TabBar(
-                                  labelColor: ClonesColors.secondary,
-                                  unselectedLabelColor:
-                                      ClonesColors.secondaryText,
-                                  dividerColor: ClonesColors.secondary,
-                                  tabs: const [
-                                    Tab(text: 'Editor'),
-                                    Tab(text: 'Events'),
-                                  ],
-                                ),
-                                const Expanded(
-                                  child: TabBarView(
-                                    children: [
-                                      DemoDetailEditor(),
-                                      DemoDetailEvents(),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
                         ),
                       ),
                     ],
