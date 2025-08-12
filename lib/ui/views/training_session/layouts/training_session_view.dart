@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/app_info.dart';
@@ -96,6 +97,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     ref
       ..listen(
         trainingSessionNotifierProvider.select((s) => s.showUploadConfirmModal),
@@ -152,51 +154,50 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
             parent: RangeMaintainingScrollPhysics(),
           ),
           slivers: [
-            SliverPadding(
-              padding: const EdgeInsets.all(24),
-              sliver: SliverToBoxAdapter(
-                child: Stack(
-                  children: [
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Demonstration',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Positioned(
-                      right: -10,
-                      top: -10,
-                      child: IconButton(
-                        onPressed: () {
-                          AppDialogs.showConfirmDialog(
-                            context,
-                            ref,
-                            'Leave Demonstration Recording?',
-                            'Are you sure you want to leave the recording of this demonstration ? Your progress will be lost.',
-                            'Leave',
-                            () {
-                              context.go(FactoryView.routeName);
-                            },
-                            cancelText: 'Cancel',
-                            cancelAction: () {
-                              return;
-                            },
-                          );
+            SliverAppBar(
+              pinned: true,
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+              centerTitle: true,
+              titleTextStyle: theme.textTheme.titleMedium?.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w300,
+                letterSpacing: 0.5,
+              ),
+              title: const Text('Demonstration'),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: IconButton(
+                    onPressed: () {
+                      AppDialogs.showConfirmDialog(
+                        context,
+                        ref,
+                        'Leave Demonstration Recording?',
+                        'Are you sure you want to leave the recording of this demonstration ? Your progress will be lost.',
+                        'Leave',
+                        () {
+                          context.go(FactoryView.routeName);
                         },
-                        icon: Icon(
-                          Icons.close,
-                          color: ClonesColors.secondaryText,
-                        ),
-                      ),
+                        cancelText: 'Cancel',
+                        cancelAction: () {
+                          return;
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: ClonesColors.secondaryText,
                     ),
-                  ],
+                  ),
+                ),
+              ],
+              flexibleSpace: ClipRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Container(
+                    color: Colors.transparent,
+                  ),
                 ),
               ),
             ),
