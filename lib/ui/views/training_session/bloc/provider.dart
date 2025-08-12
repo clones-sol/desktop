@@ -493,9 +493,6 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         await ref
             .read(tauriApiClientProvider)
             .processRecording(state.currentRecordingId!);
-        debugPrint(
-          'Recording processed: ${state.currentRecordingId}',
-        );
       } catch (processError) {
         debugPrint('Failed to automatically process recording: $processError');
       }
@@ -557,13 +554,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         "Review your demonstration before uploading. You can hover over messages to delete any sections containing sensitive information. Once you're ready, upload to get scored or do it later from the history page.",
       ),
     );
-    await addMessage(
-      generateAssistantMessage(
-        '',
-        type: MessageType.uploadButton,
-      ),
-      delay: false,
-    );
+    setShowUploadBlock(true);
 
     setRecordingProcessing(false);
     triggerScrollToBottom();
@@ -673,15 +664,37 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     }
   }
 
-  Future<void> deleteRecording() async {
-    if (state.currentRecordingId != null) {
+  Future<bool> deleteRecording() async {
+    if (state.currentRecordingId == null) return false;
+
+    try {
       final deleted = await ref
           .read(tauriApiClientProvider)
           .deleteRecording(state.currentRecordingId!);
+
       if (deleted.isNotEmpty) {
-        // TODO(reddwarf03): /app/factory
-        //Navigator.of(context).pop();
+        final messages = state.chatMessages
+            .where((m) => m.type != MessageType.uploadButton)
+            .toList()
+          ..add(
+            generateAssistantMessage(
+              'The recording has been deleted.',
+            ),
+          );
+
+        setChatMessages(messages);
+        triggerScrollToBottom();
+
+        setCurrentRecordingId(null);
+        setRecordedDemonstration(null);
+        return true;
       }
+      return false;
+    } catch (e) {
+      debugPrint('Error deleting recording: $e');
+      return false;
+    } finally {
+      setShowUploadBlock(false);
     }
   }
 
@@ -775,6 +788,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         ),
       );
       setIsUploading(false);
+    } finally {
+      setShowUploadBlock(false);
     }
   }
 

@@ -22,6 +22,7 @@ class TrainingSessionState with _$TrainingSessionState {
     @Default(false) bool recordingLoading,
     @Default(false) bool recordingProcessing,
     @Default(false) bool showUploadConfirmModal,
+    @Default(false) bool showUploadBlock,
     String? currentRecordingId,
     @Default(false) bool isUploading,
     Size? originalWindowSize,

@@ -36,6 +36,10 @@ mixin TrainingSessionSetters on AutoDisposeNotifier<TrainingSessionState> {
     state = state.copyWith(showUploadConfirmModal: showUploadConfirmModal);
   }
 
+  void setShowUploadBlock(bool showUploadBlock) {
+    state = state.copyWith(showUploadBlock: showUploadBlock);
+  }
+
   void setCurrentRecordingId(String? currentRecordingId) {
     state = state.copyWith(currentRecordingId: currentRecordingId);
   }
