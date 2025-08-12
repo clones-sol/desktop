@@ -18,7 +18,7 @@ class RecordOverlayObjectives extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final demo = trainingSession.activeDemonstration;
+    final demo = trainingSession.recordingDemonstration;
 
     return Opacity(
       opacity: recordOverlay.focused ? 1.0 : 0.7,

@@ -18,8 +18,10 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TrainingSessionState {
   String? get prompt => throw _privateConstructorUsedError;
   String? get poolId => throw _privateConstructorUsedError;
-  Demonstration? get currentDemonstration => throw _privateConstructorUsedError;
-  Demonstration? get activeDemonstration => throw _privateConstructorUsedError;
+  Demonstration? get recordedDemonstration =>
+      throw _privateConstructorUsedError;
+  Demonstration? get recordingDemonstration =>
+      throw _privateConstructorUsedError;
   bool get recordingLoading => throw _privateConstructorUsedError;
   bool get recordingProcessing => throw _privateConstructorUsedError;
   bool get showUploadConfirmModal => throw _privateConstructorUsedError;
@@ -55,8 +57,8 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
   $Res call(
       {String? prompt,
       String? poolId,
-      Demonstration? currentDemonstration,
-      Demonstration? activeDemonstration,
+      Demonstration? recordedDemonstration,
+      Demonstration? recordingDemonstration,
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
@@ -76,8 +78,8 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       AudioPlayer? toneAudio,
       AudioPlayer? blipAudio});
 
-  $DemonstrationCopyWith<$Res>? get currentDemonstration;
-  $DemonstrationCopyWith<$Res>? get activeDemonstration;
+  $DemonstrationCopyWith<$Res>? get recordedDemonstration;
+  $DemonstrationCopyWith<$Res>? get recordingDemonstration;
   $TypingMessageCopyWith<$Res>? get typingMessage;
   $AppInfoCopyWith<$Res>? get app;
 }
@@ -100,8 +102,8 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   $Res call({
     Object? prompt = freezed,
     Object? poolId = freezed,
-    Object? currentDemonstration = freezed,
-    Object? activeDemonstration = freezed,
+    Object? recordedDemonstration = freezed,
+    Object? recordingDemonstration = freezed,
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
@@ -130,13 +132,13 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentDemonstration: freezed == currentDemonstration
-          ? _value.currentDemonstration
-          : currentDemonstration // ignore: cast_nullable_to_non_nullable
+      recordedDemonstration: freezed == recordedDemonstration
+          ? _value.recordedDemonstration
+          : recordedDemonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration?,
-      activeDemonstration: freezed == activeDemonstration
-          ? _value.activeDemonstration
-          : activeDemonstration // ignore: cast_nullable_to_non_nullable
+      recordingDemonstration: freezed == recordingDemonstration
+          ? _value.recordingDemonstration
+          : recordingDemonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration?,
       recordingLoading: null == recordingLoading
           ? _value.recordingLoading
@@ -217,13 +219,13 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $DemonstrationCopyWith<$Res>? get currentDemonstration {
-    if (_value.currentDemonstration == null) {
+  $DemonstrationCopyWith<$Res>? get recordedDemonstration {
+    if (_value.recordedDemonstration == null) {
       return null;
     }
 
-    return $DemonstrationCopyWith<$Res>(_value.currentDemonstration!, (value) {
-      return _then(_value.copyWith(currentDemonstration: value) as $Val);
+    return $DemonstrationCopyWith<$Res>(_value.recordedDemonstration!, (value) {
+      return _then(_value.copyWith(recordedDemonstration: value) as $Val);
     });
   }
 
@@ -231,13 +233,14 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $DemonstrationCopyWith<$Res>? get activeDemonstration {
-    if (_value.activeDemonstration == null) {
+  $DemonstrationCopyWith<$Res>? get recordingDemonstration {
+    if (_value.recordingDemonstration == null) {
       return null;
     }
 
-    return $DemonstrationCopyWith<$Res>(_value.activeDemonstration!, (value) {
-      return _then(_value.copyWith(activeDemonstration: value) as $Val);
+    return $DemonstrationCopyWith<$Res>(_value.recordingDemonstration!,
+        (value) {
+      return _then(_value.copyWith(recordingDemonstration: value) as $Val);
     });
   }
 
@@ -281,8 +284,8 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
   $Res call(
       {String? prompt,
       String? poolId,
-      Demonstration? currentDemonstration,
-      Demonstration? activeDemonstration,
+      Demonstration? recordedDemonstration,
+      Demonstration? recordingDemonstration,
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
@@ -303,9 +306,9 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
       AudioPlayer? blipAudio});
 
   @override
-  $DemonstrationCopyWith<$Res>? get currentDemonstration;
+  $DemonstrationCopyWith<$Res>? get recordedDemonstration;
   @override
-  $DemonstrationCopyWith<$Res>? get activeDemonstration;
+  $DemonstrationCopyWith<$Res>? get recordingDemonstration;
   @override
   $TypingMessageCopyWith<$Res>? get typingMessage;
   @override
@@ -327,8 +330,8 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
   $Res call({
     Object? prompt = freezed,
     Object? poolId = freezed,
-    Object? currentDemonstration = freezed,
-    Object? activeDemonstration = freezed,
+    Object? recordedDemonstration = freezed,
+    Object? recordingDemonstration = freezed,
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
@@ -357,13 +360,13 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
           ? _value.poolId
           : poolId // ignore: cast_nullable_to_non_nullable
               as String?,
-      currentDemonstration: freezed == currentDemonstration
-          ? _value.currentDemonstration
-          : currentDemonstration // ignore: cast_nullable_to_non_nullable
+      recordedDemonstration: freezed == recordedDemonstration
+          ? _value.recordedDemonstration
+          : recordedDemonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration?,
-      activeDemonstration: freezed == activeDemonstration
-          ? _value.activeDemonstration
-          : activeDemonstration // ignore: cast_nullable_to_non_nullable
+      recordingDemonstration: freezed == recordingDemonstration
+          ? _value.recordingDemonstration
+          : recordingDemonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration?,
       recordingLoading: null == recordingLoading
           ? _value.recordingLoading
@@ -447,8 +450,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   const _$TrainingSessionStateImpl(
       {this.prompt,
       this.poolId,
-      this.currentDemonstration,
-      this.activeDemonstration,
+      this.recordedDemonstration,
+      this.recordingDemonstration,
       this.recordingLoading = false,
       this.recordingProcessing = false,
       this.showUploadConfirmModal = false,
@@ -477,9 +480,9 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   @override
   final String? poolId;
   @override
-  final Demonstration? currentDemonstration;
+  final Demonstration? recordedDemonstration;
   @override
-  final Demonstration? activeDemonstration;
+  final Demonstration? recordingDemonstration;
   @override
   @JsonKey()
   final bool recordingLoading;
@@ -552,7 +555,7 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
 
   @override
   String toString() {
-    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, currentDemonstration: $currentDemonstration, activeDemonstration: $activeDemonstration, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
+    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, recordedDemonstration: $recordedDemonstration, recordingDemonstration: $recordingDemonstration, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
   }
 
   @override
@@ -562,10 +565,10 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
             other is _$TrainingSessionStateImpl &&
             (identical(other.prompt, prompt) || other.prompt == prompt) &&
             (identical(other.poolId, poolId) || other.poolId == poolId) &&
-            (identical(other.currentDemonstration, currentDemonstration) ||
-                other.currentDemonstration == currentDemonstration) &&
-            (identical(other.activeDemonstration, activeDemonstration) ||
-                other.activeDemonstration == activeDemonstration) &&
+            (identical(other.recordedDemonstration, recordedDemonstration) ||
+                other.recordedDemonstration == recordedDemonstration) &&
+            (identical(other.recordingDemonstration, recordingDemonstration) ||
+                other.recordingDemonstration == recordingDemonstration) &&
             (identical(other.recordingLoading, recordingLoading) ||
                 other.recordingLoading == recordingLoading) &&
             (identical(other.recordingProcessing, recordingProcessing) ||
@@ -608,8 +611,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
         runtimeType,
         prompt,
         poolId,
-        currentDemonstration,
-        activeDemonstration,
+        recordedDemonstration,
+        recordingDemonstration,
         recordingLoading,
         recordingProcessing,
         showUploadConfirmModal,
@@ -645,8 +648,8 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   const factory _TrainingSessionState(
       {final String? prompt,
       final String? poolId,
-      final Demonstration? currentDemonstration,
-      final Demonstration? activeDemonstration,
+      final Demonstration? recordedDemonstration,
+      final Demonstration? recordingDemonstration,
       final bool recordingLoading,
       final bool recordingProcessing,
       final bool showUploadConfirmModal,
@@ -672,9 +675,9 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   @override
   String? get poolId;
   @override
-  Demonstration? get currentDemonstration;
+  Demonstration? get recordedDemonstration;
   @override
-  Demonstration? get activeDemonstration;
+  Demonstration? get recordingDemonstration;
   @override
   bool get recordingLoading;
   @override

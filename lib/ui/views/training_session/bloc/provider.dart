@@ -19,6 +19,7 @@ import 'package:clones_desktop/ui/views/training_session/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/state.dart';
 import 'package:clones_desktop/utils/env.dart';
 import 'package:clones_desktop/utils/window_alignment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -68,21 +69,23 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
           ),
         );
 
-        unawaited(
-          ref.read(tauriApiClientProvider).resizeWindow(
-                kRecordOverlaySize.width,
-                kRecordOverlaySize.height,
-              ),
-        );
-        unawaited(
-          ref.read(tauriApiClientProvider).setWindowPosition(
-                WindowAlignment.topRight,
-              ),
-        );
+        if (kIsWeb) {
+          unawaited(
+            ref.read(tauriApiClientProvider).resizeWindow(
+                  kRecordOverlaySize.width,
+                  kRecordOverlaySize.height,
+                ),
+          );
+          unawaited(
+            ref.read(tauriApiClientProvider).setWindowPosition(
+                  WindowAlignment.topRight,
+                ),
+          );
+        }
 
         await ref
             .read(tauriApiClientProvider)
-            .startRecording(demonstration: state.activeDemonstration);
+            .startRecording(demonstration: state.recordingDemonstration);
         setRecordingState(RecordingState.recording);
       }
       setRecordingLoading(false);
@@ -231,7 +234,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
           debugPrint('Failed to get reward info: $error');
         }
       }
-      setActiveDemonstration(currentDemonstration);
+      setRecordingDemonstration(currentDemonstration);
     }
   }
 
@@ -438,7 +441,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
     setRecordingLoading(true);
     setRecordingProcessing(true);
-    setActiveDemonstration(null);
+    setRecordedDemonstration(state.recordingDemonstration);
+    setRecordingDemonstration(null);
 
     await addMessage(
       generateUserMessage(
@@ -624,7 +628,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         final recordingId =
             await ref.read(tauriApiClientProvider).stopRecording('fail');
 
-        setActiveDemonstration(null);
+        setRecordingDemonstration(null);
         setRecordingState(RecordingState.off);
 
         await addMessage(
@@ -728,8 +732,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     setIsUploading(true);
 
     try {
-      final demonstrationTitle = state.activeDemonstration?.title ??
-          state.currentDemonstration?.title ??
+      final demonstrationTitle = state.recordingDemonstration?.title ??
+          state.recordedDemonstration?.title ??
           'Unknown';
 
       await addMessage(
@@ -788,9 +792,13 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         }
       });
 
+      final poolId = state.recordingDemonstration?.poolId ??
+          state.recordedDemonstration?.poolId ??
+          '';
+
       await ref.read(uploadQueueProvider.notifier).upload(
             recordingId,
-            state.activeDemonstration?.poolId ?? '',
+            poolId,
             demonstrationTitle,
           );
     } on Exception catch (e) {

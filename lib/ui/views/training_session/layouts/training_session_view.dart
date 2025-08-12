@@ -6,9 +6,11 @@ import 'package:clones_desktop/domain/app_info.dart';
 import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/design_widget/dialog/dialog.dart';
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/pfp.dart';
 import 'package:clones_desktop/ui/components/recording_panel.dart';
+import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/training_session/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/components/base64_image_message.dart';
@@ -151,6 +153,54 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
           ),
           slivers: [
             SliverPadding(
+              padding: const EdgeInsets.all(24),
+              sliver: SliverToBoxAdapter(
+                child: Stack(
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Demonstration',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Positioned(
+                      right: -10,
+                      top: -10,
+                      child: IconButton(
+                        onPressed: () {
+                          AppDialogs.showConfirmDialog(
+                            context,
+                            ref,
+                            'Leave Demonstration Recording?',
+                            'Are you sure you want to leave the recording of this demonstration ? Your progress will be lost.',
+                            'Leave',
+                            () {
+                              context.go(FactoryView.routeName);
+                            },
+                            cancelText: 'Cancel',
+                            cancelAction: () {
+                              return;
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: ClonesColors.secondaryText,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverPadding(
               padding: const EdgeInsets.all(20),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
@@ -177,7 +227,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 sliver: SliverToBoxAdapter(child: TypingIndicator()),
               ),
-            if (trainingSession.activeDemonstration != null)
+            if (trainingSession.recordingDemonstration != null)
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                 sliver: SliverToBoxAdapter(
@@ -197,11 +247,11 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                                 messageBoxType: MessageBoxType.talkLeft,
                                 content: RecordPanel(
                                   title: trainingSession
-                                      .activeDemonstration!.title,
+                                      .recordingDemonstration!.title,
                                   reward: trainingSession
-                                      .activeDemonstration!.reward,
+                                      .recordingDemonstration!.reward,
                                   objectives: trainingSession
-                                      .activeDemonstration!.objectives,
+                                      .recordingDemonstration!.objectives,
                                   onStartRecording: () async {
                                     unawaited(
                                       ref
