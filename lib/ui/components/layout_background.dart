@@ -2,6 +2,7 @@ import 'package:clones_desktop/application/route_provider.dart';
 import 'package:clones_desktop/application/upload_modal_provider.dart';
 import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:clones_desktop/ui/components/global_action_rail.dart';
 import 'package:clones_desktop/ui/components/modals/upload_progress_modal.dart';
 import 'package:clones_desktop/ui/components/modals/wallet_modal.dart';
 import 'package:clones_desktop/ui/components/sidebar.dart';
@@ -141,6 +142,14 @@ class LayoutBackground extends ConsumerWidget {
                                   child: actions,
                                 ),
                             ],
+                          ),
+                          const Positioned(
+                            bottom: 10,
+                            left: 0,
+                            right: 0,
+                            child: Center(
+                              child: GlobalActionRail(),
+                            ),
                           ),
                           if (showWalletModal)
                             WalletModal(
