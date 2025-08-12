@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/ui/components/upload_button.dart';
 import 'package:clones_desktop/ui/components/wallet_button.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ class GlobalActionRail extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final disableAnimations = mediaQuery.disableAnimations;
+    final session = ref.watch(sessionNotifierProvider);
 
     const double railPaddingVertical = 10;
     const double railPaddingHorizontal = 50;
@@ -60,14 +62,15 @@ class GlobalActionRail extends ConsumerWidget {
             ),
             child: FocusTraversalGroup(
               policy: OrderedTraversalPolicy(),
-              child: const Wrap(
-                alignment: WrapAlignment.center,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: spacing,
-                runSpacing: spacing,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  WalletButton(),
-                  UploadButton(),
+                  const WalletButton(),
+                  if (session.isConnected) ...[
+                    const SizedBox(width: spacing),
+                    const UploadButton(),
+                  ],
                 ],
               ),
             ),
