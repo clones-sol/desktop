@@ -25,6 +25,7 @@ mixin _$TrainingSessionState {
   bool get recordingLoading => throw _privateConstructorUsedError;
   bool get recordingProcessing => throw _privateConstructorUsedError;
   bool get showUploadConfirmModal => throw _privateConstructorUsedError;
+  bool get showUploadBlock => throw _privateConstructorUsedError;
   String? get currentRecordingId => throw _privateConstructorUsedError;
   bool get isUploading => throw _privateConstructorUsedError;
   Size? get originalWindowSize => throw _privateConstructorUsedError;
@@ -62,6 +63,7 @@ abstract class $TrainingSessionStateCopyWith<$Res> {
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
+      bool showUploadBlock,
       String? currentRecordingId,
       bool isUploading,
       Size? originalWindowSize,
@@ -107,6 +109,7 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
+    Object? showUploadBlock = null,
     Object? currentRecordingId = freezed,
     Object? isUploading = null,
     Object? originalWindowSize = freezed,
@@ -151,6 +154,10 @@ class _$TrainingSessionStateCopyWithImpl<$Res,
       showUploadConfirmModal: null == showUploadConfirmModal
           ? _value.showUploadConfirmModal
           : showUploadConfirmModal // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showUploadBlock: null == showUploadBlock
+          ? _value.showUploadBlock
+          : showUploadBlock // ignore: cast_nullable_to_non_nullable
               as bool,
       currentRecordingId: freezed == currentRecordingId
           ? _value.currentRecordingId
@@ -289,6 +296,7 @@ abstract class _$$TrainingSessionStateImplCopyWith<$Res>
       bool recordingLoading,
       bool recordingProcessing,
       bool showUploadConfirmModal,
+      bool showUploadBlock,
       String? currentRecordingId,
       bool isUploading,
       Size? originalWindowSize,
@@ -335,6 +343,7 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
     Object? recordingLoading = null,
     Object? recordingProcessing = null,
     Object? showUploadConfirmModal = null,
+    Object? showUploadBlock = null,
     Object? currentRecordingId = freezed,
     Object? isUploading = null,
     Object? originalWindowSize = freezed,
@@ -379,6 +388,10 @@ class __$$TrainingSessionStateImplCopyWithImpl<$Res>
       showUploadConfirmModal: null == showUploadConfirmModal
           ? _value.showUploadConfirmModal
           : showUploadConfirmModal // ignore: cast_nullable_to_non_nullable
+              as bool,
+      showUploadBlock: null == showUploadBlock
+          ? _value.showUploadBlock
+          : showUploadBlock // ignore: cast_nullable_to_non_nullable
               as bool,
       currentRecordingId: freezed == currentRecordingId
           ? _value.currentRecordingId
@@ -455,6 +468,7 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
       this.recordingLoading = false,
       this.recordingProcessing = false,
       this.showUploadConfirmModal = false,
+      this.showUploadBlock = false,
       this.currentRecordingId,
       this.isUploading = false,
       this.originalWindowSize,
@@ -492,6 +506,9 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
   @override
   @JsonKey()
   final bool showUploadConfirmModal;
+  @override
+  @JsonKey()
+  final bool showUploadBlock;
   @override
   final String? currentRecordingId;
   @override
@@ -555,7 +572,7 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
 
   @override
   String toString() {
-    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, recordedDemonstration: $recordedDemonstration, recordingDemonstration: $recordingDemonstration, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
+    return 'TrainingSessionState(prompt: $prompt, poolId: $poolId, recordedDemonstration: $recordedDemonstration, recordingDemonstration: $recordingDemonstration, recordingLoading: $recordingLoading, recordingProcessing: $recordingProcessing, showUploadConfirmModal: $showUploadConfirmModal, showUploadBlock: $showUploadBlock, currentRecordingId: $currentRecordingId, isUploading: $isUploading, originalWindowSize: $originalWindowSize, loadingSftData: $loadingSftData, recordingState: $recordingState, chatMessages: $chatMessages, typingMessage: $typingMessage, isWaitingForResponse: $isWaitingForResponse, hoveredMessageIndex: $hoveredMessageIndex, deletedRanges: $deletedRanges, originalSftData: $originalSftData, app: $app, scrollToBottomNonce: $scrollToBottomNonce, toneAudio: $toneAudio, blipAudio: $blipAudio)';
   }
 
   @override
@@ -575,6 +592,8 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
                 other.recordingProcessing == recordingProcessing) &&
             (identical(other.showUploadConfirmModal, showUploadConfirmModal) ||
                 other.showUploadConfirmModal == showUploadConfirmModal) &&
+            (identical(other.showUploadBlock, showUploadBlock) ||
+                other.showUploadBlock == showUploadBlock) &&
             (identical(other.currentRecordingId, currentRecordingId) ||
                 other.currentRecordingId == currentRecordingId) &&
             (identical(other.isUploading, isUploading) ||
@@ -616,6 +635,7 @@ class _$TrainingSessionStateImpl extends _TrainingSessionState {
         recordingLoading,
         recordingProcessing,
         showUploadConfirmModal,
+        showUploadBlock,
         currentRecordingId,
         isUploading,
         originalWindowSize,
@@ -653,6 +673,7 @@ abstract class _TrainingSessionState extends TrainingSessionState {
       final bool recordingLoading,
       final bool recordingProcessing,
       final bool showUploadConfirmModal,
+      final bool showUploadBlock,
       final String? currentRecordingId,
       final bool isUploading,
       final Size? originalWindowSize,
@@ -684,6 +705,8 @@ abstract class _TrainingSessionState extends TrainingSessionState {
   bool get recordingProcessing;
   @override
   bool get showUploadConfirmModal;
+  @override
+  bool get showUploadBlock;
   @override
   String? get currentRecordingId;
   @override

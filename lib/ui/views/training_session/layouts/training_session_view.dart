@@ -288,6 +288,11 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
                 sliver: SliverToBoxAdapter(child: TypingIndicator()),
               ),
+            if (trainingSession.showUploadBlock)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                sliver: SliverToBoxAdapter(child: _buildUploadButton()),
+              ),
             if (trainingSession.recordingDemonstration != null)
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
@@ -416,9 +421,6 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
         final id = message.content;
         return RecordingPanel(recordingId: id);
       }
-      if (message.type == MessageType.uploadButton) {
-        return _buildUploadButton();
-      }
       if (message.type == MessageType.loading) {
         return const Center(
           child: CircularProgressIndicator(
@@ -509,6 +511,82 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     );
   }
 
+  Widget _buildUploadButton() {
+    final trainingSession = ref.watch(trainingSessionNotifierProvider);
+
+    final assistantMessage = _buildMessageItem(
+      const Message(
+        role: 'assistant',
+        content:
+            'Ready to submit your demonstration to get scored and earn Tokens?',
+      ),
+      -1,
+    );
+
+    final userActions = CardWidget(
+      variant: CardVariant.secondary,
+      padding: CardPadding.large,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BtnPrimary(
+            onTap: () async {
+              final success = await ref
+                  .read(trainingSessionNotifierProvider.notifier)
+                  .deleteRecording();
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      success
+                          ? 'Recording deleted successfully'
+                          : 'Failed to delete recording',
+                    ),
+                  ),
+                );
+              }
+            },
+            buttonText: "Don't like your recording? Click to delete it.",
+            btnPrimaryType: BtnPrimaryType.outlinePrimary,
+          ),
+          const SizedBox(width: 16),
+          BtnPrimary(
+            onTap: trainingSession.isUploading
+                ? null
+                : () {
+                    ref
+                        .read(
+                          trainingSessionNotifierProvider.notifier,
+                        )
+                        .uploadRecording(
+                          trainingSession.currentRecordingId!,
+                        );
+                  },
+            buttonText: trainingSession.isUploading
+                ? 'Uploading...'
+                : 'Upload Demonstration',
+            isLoading: trainingSession.isUploading,
+            isLocked: trainingSession.isUploading,
+          ),
+        ],
+      ),
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        assistantMessage,
+        const SizedBox(height: 20),
+        Align(
+          alignment: Alignment.centerRight,
+          child: userActions,
+        ),
+      ],
+    );
+  }
+
   Widget _buildStreamingMessage(TypingMessage typingMessage) {
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
@@ -546,85 +624,6 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [messageBubble],
-    );
-  }
-
-  Widget _buildUploadButton() {
-    final trainingSession = ref.watch(trainingSessionNotifierProvider);
-    final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15, top: 15),
-              child: Container(
-                constraints: BoxConstraints(
-                  maxWidth: mediaQuery.size.width * 0.7,
-                ),
-                child: MessageBox(
-                  messageBoxType: MessageBoxType.talkLeft,
-                  content: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'Ready to submit your demonstration?',
-                            style: theme.textTheme.bodyMedium,
-                          ),
-                          const SizedBox(width: 16),
-                          BtnPrimary(
-                            onTap: trainingSession.isUploading
-                                ? null
-                                : () {
-                                    ref
-                                        .read(
-                                          trainingSessionNotifierProvider
-                                              .notifier,
-                                        )
-                                        .uploadRecording(
-                                          trainingSession.currentRecordingId!,
-                                        );
-                                  },
-                            buttonText: trainingSession.isUploading
-                                ? 'Uploading...'
-                                : 'Upload Demonstration',
-                            isLoading: trainingSession.isUploading,
-                            isLocked: trainingSession.isUploading,
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Get scored and earn Tokens',
-                        style: theme.textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 10),
-                      BtnPrimary(
-                        onTap: ref
-                            .read(trainingSessionNotifierProvider.notifier)
-                            .deleteRecording,
-                        buttonText:
-                            "Don't like your recording? Click to delete it.",
-                        btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            const Positioned(
-              left: 0,
-              top: 0,
-              child: Pfp(),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
