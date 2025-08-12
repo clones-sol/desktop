@@ -264,6 +264,44 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
     }
   }
 
+  List<Message> _sftToChatMessages(List<SftMessage> sftMessages) {
+    final chatMessages = <Message>[];
+    for (final msg in sftMessages) {
+      if (msg.role == 'user' &&
+          msg.content is Map &&
+          msg.content['type'] == 'image') {
+        chatMessages.add(
+          generateAssistantMessage(
+            msg.content['data'],
+            type: MessageType.image,
+            timestamp: msg.timestamp,
+          ),
+        );
+      } else if (msg.role == 'assistant') {
+        dynamic content = msg.content;
+        var typeMessage = MessageType.text;
+        if (content is String && content.contains('```python')) {
+          final match = RegExp(r'```python\s*\n(.*?)\n```', dotAll: true)
+              .firstMatch(content);
+          if (match != null && match.group(1) != null) {
+            content = match.group(1)!.trim();
+            typeMessage = MessageType.action;
+          }
+        } else if (msg.content is! String) {
+          content = jsonEncode(msg.content);
+        }
+        chatMessages.add(
+          generateUserMessage(
+            content,
+            timestamp: msg.timestamp,
+            type: typeMessage,
+          ),
+        );
+      }
+    }
+    return chatMessages;
+  }
+
   Future<void> removeMessage() async {
     // Remove the last message from the chatMessages array
     if (state.chatMessages.isNotEmpty) {
@@ -362,8 +400,8 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       final deleteMsg = state.chatMessages[clickedMessageIndex];
       // TODO(reddwarf03): check this
       if (deleteMsg.type == MessageType.delete) {
-        final content = deleteMsg.content;
-        final parts = content.split(' ').map(int.parse).toList();
+        final content = deleteMsg.content.substring(3);
+        final parts = content.trim().split(' ').map(int.parse).toList();
         final start = parts[0];
         final end = parts[1];
 
@@ -381,46 +419,7 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         );
 
         // Create new messages to insert
-        final newMessages = <Message>[];
-
-        for (final msg in messagesToRestore) {
-          if (msg.role == 'user' &&
-              msg.content is Map &&
-              msg.content?['type'] == 'image') {
-            // VM sends the desktop screenshot
-            newMessages.add(
-              Message(
-                role: 'assistant',
-                content: msg.content['data'],
-                timestamp: msg.timestamp,
-                type: MessageType.image,
-              ),
-            );
-          } else if (msg.role == 'assistant') {
-            // Extract code block content when applicable
-            dynamic content = msg.content;
-            var messageType = MessageType.text;
-            if (content is String && content.contains('```python')) {
-              final match = RegExp(r'```python\s*\n(.*?)\n```', dotAll: true)
-                  .firstMatch(content);
-              if (match != null) {
-                content = match.group(1)!.trim();
-                messageType = MessageType.action;
-              }
-            } else if (content is! String) {
-              content = content.toString();
-            }
-
-            // User sends the action
-            newMessages.add(
-              generateUserMessage(
-                content,
-                timestamp: msg.timestamp,
-                type: messageType,
-              ),
-            );
-          }
-        }
+        final newMessages = _sftToChatMessages(messagesToRestore.toList());
 
         // Replace the delete message with the restored messages
         setChatMessages([
@@ -519,47 +518,9 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
         );
 
         // Process SFT messages properly alternating between VM (assistant) and user
-        for (final msg in sftData) {
-          if (msg.role == 'user' &&
-              msg.content is Map &&
-              msg.content['type'] == 'image') {
-            // VM sends the desktop screenshot
-            await addMessage(
-              generateAssistantMessage(
-                msg.content['data'],
-                type: MessageType.image,
-                timestamp: msg.timestamp,
-              ),
-              audio: false,
-              delay: false,
-            );
-          } else if (msg.role == 'assistant') {
-            // Extract code block content when applicable
-            dynamic content = msg.content;
-            var typeMessage = MessageType.text;
-            if (content is String && content.contains('```python')) {
-              final match = RegExp(r'```python\s*\n(.*?)\n```', dotAll: true)
-                  .firstMatch(content);
-              if (match != null && match.group(1) != null) {
-                content = match.group(1)!.trim();
-                typeMessage = MessageType.action;
-              }
-            } else if (msg.content is! String) {
-              content = jsonEncode(msg.content);
-            }
-
-            // User sends the action (ignore scroll)
-            await addMessage(
-              generateUserMessage(
-                content,
-                timestamp: msg.timestamp,
-                type: typeMessage,
-              ),
-              audio: false,
-              delay: false,
-            );
-          }
-        }
+        final replayMessages = _sftToChatMessages(sftData);
+        setChatMessages([...state.chatMessages, ...replayMessages]);
+        triggerScrollToBottom();
 
         // Add end replay message
         await addMessage(
