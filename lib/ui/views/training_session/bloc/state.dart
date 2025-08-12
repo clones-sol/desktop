@@ -17,8 +17,8 @@ class TrainingSessionState with _$TrainingSessionState {
   const factory TrainingSessionState({
     String? prompt,
     String? poolId,
-    Demonstration? currentDemonstration,
-    Demonstration? activeDemonstration,
+    Demonstration? recordedDemonstration,
+    Demonstration? recordingDemonstration,
     @Default(false) bool recordingLoading,
     @Default(false) bool recordingProcessing,
     @Default(false) bool showUploadConfirmModal,

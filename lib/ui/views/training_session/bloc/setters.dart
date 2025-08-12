@@ -16,12 +16,12 @@ mixin TrainingSessionSetters on AutoDisposeNotifier<TrainingSessionState> {
     state = state.copyWith(poolId: poolId);
   }
 
-  void setCurrentDemonstration(Demonstration? demonstration) {
-    state = state.copyWith(currentDemonstration: demonstration);
+  void setRecordedDemonstration(Demonstration? demonstration) {
+    state = state.copyWith(recordedDemonstration: demonstration);
   }
 
-  void setActiveDemonstration(Demonstration? demonstration) {
-    state = state.copyWith(activeDemonstration: demonstration);
+  void setRecordingDemonstration(Demonstration? demonstration) {
+    state = state.copyWith(recordingDemonstration: demonstration);
   }
 
   void setRecordingLoading(bool recordingLoading) {
