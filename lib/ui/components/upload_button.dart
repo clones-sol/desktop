@@ -19,9 +19,10 @@ class UploadButton extends ConsumerStatefulWidget {
 class _UploadButtonState extends ConsumerState<UploadButton> {
   @override
   Widget build(BuildContext context) {
-    final session = ref.watch(sessionNotifierProvider);
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
 
-    if (session.isConnected) {
+    if (isConnected) {
       Color badgeColor;
       final queueItems = ref.watch(uploadQueueProvider).values.toList();
       if (queueItems.any((item) => item.uploadStatus == UploadStatus.error)) {

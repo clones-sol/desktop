@@ -19,7 +19,9 @@ class GlobalActionRail extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final mediaQuery = MediaQuery.of(context);
     final disableAnimations = mediaQuery.disableAnimations;
-    final session = ref.watch(sessionNotifierProvider);
+
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
 
     const double railPaddingVertical = 10;
     const double railPaddingHorizontal = 50;
@@ -67,7 +69,7 @@ class GlobalActionRail extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const WalletButton(),
-                  if (session.isConnected) ...[
+                  if (isConnected) ...[
                     const SizedBox(width: spacing),
                     const UploadButton(),
                   ],
