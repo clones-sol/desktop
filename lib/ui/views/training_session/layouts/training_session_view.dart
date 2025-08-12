@@ -231,10 +231,6 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
                         () {
                           context.go(FactoryView.routeName);
                         },
-                        cancelText: 'Cancel',
-                        cancelAction: () {
-                          return;
-                        },
                       );
                     },
                     icon: Icon(

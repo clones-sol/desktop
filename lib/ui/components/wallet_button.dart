@@ -33,9 +33,10 @@ class _WalletButtonState extends ConsumerState<WalletButton> {
 
   @override
   Widget build(BuildContext context) {
-    final session = ref.watch(sessionNotifierProvider);
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
 
-    if (session.isConnected) {
+    if (isConnected) {
       return InkWell(
         onTap: () {
           ref.read(uploadModalProvider.notifier).hide();

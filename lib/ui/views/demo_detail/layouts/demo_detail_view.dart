@@ -108,8 +108,9 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final session = ref.watch(sessionNotifierProvider);
-    if (session.isConnected == false) {
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
+    if (isConnected == false) {
       return const WalletNotConnected();
     }
 

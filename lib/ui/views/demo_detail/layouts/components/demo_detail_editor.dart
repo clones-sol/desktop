@@ -30,14 +30,15 @@ class DemoDetailEditor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(sessionNotifierProvider);
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
     final demoDetail = ref.watch(demoDetailNotifierProvider);
 
     final videoController = demoDetail.videoController;
     final startTime = demoDetail.startTime;
     final theme = Theme.of(context);
 
-    if (session.isConnected == false) {
+    if (isConnected == false) {
       return const WalletNotConnected();
     }
 

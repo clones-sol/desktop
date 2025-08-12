@@ -16,8 +16,9 @@ class DemoDetailEvents extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(sessionNotifierProvider);
-    if (session.isConnected == false) {
+    final isConnected =
+        ref.watch(sessionNotifierProvider.select((s) => s.isConnected));
+    if (isConnected == false) {
       return const WalletNotConnected();
     }
     final theme = Theme.of(context);
