@@ -19,6 +19,7 @@ import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_vi
 import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:clones_desktop/utils/window_alignment.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -172,7 +173,9 @@ class _ClonesAppState extends ConsumerState<ClonesApp> {
     _router.routeInformationProvider.addListener(_updateRoute);
     // Set initial route
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _initializeWindow();
+      if (kIsWeb) {
+        _initializeWindow();
+      }
       _updateRoute();
     });
   }

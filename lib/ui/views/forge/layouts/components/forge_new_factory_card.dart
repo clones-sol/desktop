@@ -23,24 +23,23 @@ class ForgeNewFactoryCard extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return const LinearGradient(
-                  colors: [
-                    Colors.transparent,
-                    ClonesColors.secondary,
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ).createShader(bounds);
-              },
-              blendMode: BlendMode.srcATop,
-              child: Image.asset(
-                Assets.factoryAddIcon,
-                width: 100,
-                height: 100,
-                color: ClonesColors.primary,
-              ),
+            Stack(
+              children: [
+                Image.asset(
+                  Assets.factoryAddIcon,
+                  width: 100,
+                  height: 100,
+                  color: ClonesColors.tertiary,
+                ),
+                Opacity(
+                  opacity: 0.7,
+                  child: Image.asset(
+                    Assets.factoryAddIcon,
+                    width: 100,
+                    height: 100,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 5),
             Column(
