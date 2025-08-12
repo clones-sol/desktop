@@ -2,9 +2,22 @@ import 'dart:async';
 
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/tools_provider.dart';
+import 'package:clones_desktop/application/upload_modal_provider.dart';
+import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/ui/components/layout_background.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter/services.dart';
+
+/// Intent to open the Uploads modal via keyboard shortcut.
+class OpenUploadsIntent extends Intent {
+  const OpenUploadsIntent();
+}
+
+/// Intent to open the Wallet modal via keyboard shortcut.
+class OpenWalletIntent extends Intent {
+  const OpenWalletIntent();
+}
 
 class MainLayout extends ConsumerStatefulWidget {
   const MainLayout({
@@ -100,10 +113,37 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: LayoutBackground(
-        child: widget.child,
+    // Keyboard shortcuts: U for Uploads, W for Wallet
+    return Shortcuts(
+      shortcuts: <LogicalKeySet, Intent>{
+        LogicalKeySet(LogicalKeyboardKey.keyU): const OpenUploadsIntent(),
+        LogicalKeySet(LogicalKeyboardKey.keyW): const OpenWalletIntent(),
+      },
+      child: Actions(
+        actions: <Type, Action<Intent>>{
+          OpenUploadsIntent:
+              CallbackAction<OpenUploadsIntent>(onInvoke: (intent) {
+            ref.read(walletModalProvider.notifier).hide();
+            ref.read(uploadModalProvider.notifier).show();
+            return null;
+          }),
+          OpenWalletIntent:
+              CallbackAction<OpenWalletIntent>(onInvoke: (intent) {
+            ref.read(uploadModalProvider.notifier).hide();
+            ref.read(walletModalProvider.notifier).show();
+            return null;
+          }),
+        },
+        child: Focus(
+          autofocus: true,
+          canRequestFocus: true,
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: LayoutBackground(
+              child: widget.child,
+            ),
+          ),
+        ),
       ),
     );
   }

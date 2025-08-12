@@ -3,8 +3,6 @@ import 'package:clones_desktop/application/route_provider.dart';
 import 'package:clones_desktop/application/upload_modal_provider.dart';
 import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/ui/components/upload_button.dart';
-import 'package:clones_desktop/ui/components/wallet_button.dart';
 import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
@@ -101,51 +99,39 @@ class Sidebar extends ConsumerWidget {
               },
             ),
           ),
-          Column(
-            children: [
-              if (isRecording)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: IconButton(
-                    icon: const Icon(Icons.stop, color: Colors.white, size: 32),
-                    onPressed: onStopRecording,
-                    tooltip: 'Stop Recording',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: const CircleBorder(),
-                    ),
-                  ),
-                )
-              else if (isRecordingLoading)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: IconButton(
-                    icon: const SizedBox(
-                      width: 32,
-                      height: 32,
-                      child: CircularProgressIndicator(
-                        color: Colors.red,
-                        strokeWidth: 3,
-                      ),
-                    ),
-                    onPressed: null,
-                    tooltip: 'Stop Recording',
-                    style: IconButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      shape: const CircleBorder(),
-                    ),
+          if (isRecording)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: IconButton(
+                icon: const Icon(Icons.stop, color: Colors.white, size: 32),
+                onPressed: onStopRecording,
+                tooltip: 'Stop Recording',
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: const CircleBorder(),
+                ),
+              ),
+            )
+          else if (isRecordingLoading)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: IconButton(
+                icon: const SizedBox(
+                  width: 32,
+                  height: 32,
+                  child: CircularProgressIndicator(
+                    color: Colors.red,
+                    strokeWidth: 3,
                   ),
                 ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 8),
-                child: UploadButton(),
+                onPressed: null,
+                tooltip: 'Stop Recording',
+                style: IconButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  shape: const CircleBorder(),
+                ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: WalletButton(),
-              ),
-            ],
-          ),
+            ),
         ],
       ),
     );
