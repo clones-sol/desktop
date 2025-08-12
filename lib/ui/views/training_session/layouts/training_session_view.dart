@@ -6,6 +6,7 @@ import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/app_info.dart';
 import 'package:clones_desktop/domain/models/message/message.dart';
 import 'package:clones_desktop/domain/models/message/typing_message.dart';
+import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/components/design_widget/dialog/dialog.dart';
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
@@ -21,6 +22,19 @@ import 'package:clones_desktop/ui/views/training_session/layouts/components/uplo
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+abstract class _ChatItem {}
+
+class _SingleMessageItem extends _ChatItem {
+  _SingleMessageItem(this.message, this.index);
+  final Message message;
+  final int index;
+}
+
+class _ReplayGroupItem extends _ChatItem {
+  _ReplayGroupItem(this.items);
+  final List<_SingleMessageItem> items;
+}
 
 class TrainingSessionView extends ConsumerStatefulWidget {
   const TrainingSessionView({
@@ -70,6 +84,43 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       await ref.read(trainingSessionNotifierProvider.notifier).initialMessage();
     });
     super.initState();
+  }
+
+  List<_ChatItem> _processMessages(List<Message> messages) {
+    final processed = <_ChatItem>[];
+    var inReplayBlock = false;
+    var currentReplayItems = <_SingleMessageItem>[];
+
+    for (var i = 0; i < messages.length; i++) {
+      final message = messages[i];
+
+      if (message.type == MessageType.start) {
+        inReplayBlock = true;
+        continue;
+      }
+
+      if (message.type == MessageType.end) {
+        inReplayBlock = false;
+        if (currentReplayItems.isNotEmpty) {
+          processed.add(_ReplayGroupItem(currentReplayItems));
+        }
+        currentReplayItems = [];
+        continue;
+      }
+
+      final item = _SingleMessageItem(message, i);
+      if (inReplayBlock) {
+        currentReplayItems.add(item);
+      } else {
+        processed.add(item);
+      }
+    }
+
+    if (currentReplayItems.isNotEmpty) {
+      processed.add(_ReplayGroupItem(currentReplayItems));
+    }
+
+    return processed;
   }
 
   String _decodeComponent(String component) {
@@ -142,6 +193,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       );
 
     final trainingSession = ref.watch(trainingSessionNotifierProvider);
+    final processedItems = _processMessages(trainingSession.chatMessages);
     final showTypingIndicator = trainingSession.isWaitingForResponse &&
         trainingSession.typingMessage == null;
     final showStreamingMessage = trainingSession.typingMessage != null;
@@ -206,13 +258,21 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final message = trainingSession.chatMessages[index];
+                    final item = processedItems[index];
+                    Widget child;
+
+                    if (item is _ReplayGroupItem) {
+                      child = _buildReplayGroup(item);
+                    } else {
+                      final single = item as _SingleMessageItem;
+                      child = _buildMessageItem(single.message, single.index);
+                    }
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 20),
-                      child: _buildMessageItem(message, index),
+                      child: child,
                     );
                   },
-                  childCount: trainingSession.chatMessages.length,
+                  childCount: processedItems.length,
                 ),
               ),
             ),
@@ -313,14 +373,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
         // TODO(reddwarf03): Add delete message
         return const Text('Deleted');
       }
-      if (message.type == MessageType.start) {
-        // TODO(reddwarf03): Add start message
-        return const Text('Start');
-      }
-      if (message.type == MessageType.end) {
-        // TODO(reddwarf03): Add end message
-        return const Text('End');
-      }
+
       if (message.type == MessageType.action) {
         return Row(
           mainAxisSize: MainAxisSize.min,
@@ -417,6 +470,35 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
     );
 
     return messageBubble;
+  }
+
+  Widget _buildReplayGroup(_ReplayGroupItem group) {
+    final theme = Theme.of(context);
+    return CardWidget(
+      variant: CardVariant.secondary,
+      padding: CardPadding.large,
+      child: Column(
+        children: [
+          Text(
+            'Demonstration Replay',
+            style: theme.textTheme.titleSmall,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Column(
+              children: group.items.map((item) {
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: item == group.items.last ? 0 : 20,
+                  ),
+                  child: _buildMessageItem(item.message, item.index),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildMessageContent(Message message) {
