@@ -123,7 +123,7 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
     }
     return const SizedBox(
       height: 160,
-      child: Wrap(
+      child: Row(
         spacing: 20,
         children: [
           ForgeFactoryGeneralTabStatSessionCompleted(),

@@ -1,5 +1,7 @@
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/menu_item.dart';
+import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
+import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,7 +21,7 @@ class HomeView extends ConsumerWidget {
         'Design AI training environments and monetize your workflows.',
         Assets.menuForge,
         () {
-          context.go('/forge');
+          context.go(ForgeView.routeName);
         },
       ),
       MenuItem(
@@ -27,7 +29,7 @@ class HomeView extends ConsumerWidget {
         'Generate high-quality demonstrations and earn rewards.',
         Assets.menuFarm,
         () {
-          context.go('/factory');
+          context.go(FactoryView.routeName);
         },
       ),
     ];

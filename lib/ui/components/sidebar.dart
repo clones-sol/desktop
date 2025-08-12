@@ -12,6 +12,7 @@ import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
 import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
+import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,11 @@ class Sidebar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentRoute = ref.watch(currentRouteProvider);
     final buttons = [
+      SidebarButtonData(
+        path: HomeView.routeName,
+        imagePath: Assets.homeIcon,
+        label: 'Home',
+      ),
       if (FeatureFlags.enableHubFeature)
         SidebarButtonData(
           path: HubView.routeName,
@@ -41,13 +47,18 @@ class Sidebar extends ConsumerWidget {
           label: 'Hub',
         ),
       SidebarButtonData(
+        path: ForgeView.routeName,
+        imagePath: Assets.forgeIcon,
+        label: 'Forge',
+      ),
+      SidebarButtonData(
         path: FactoryView.routeName,
-        imagePath: Assets.factoryIcon,
+        imagePath: Assets.farmerIcon,
         label: 'Factory',
       ),
       SidebarButtonData(
         path: FactoryHistoryView.routeName,
-        imagePath: Assets.factoryHistoryIcon,
+        imagePath: Assets.farmerHistoryIcon,
         label: 'Factory History',
       ),
       SidebarButtonData(
@@ -60,29 +71,18 @@ class Sidebar extends ConsumerWidget {
         imagePath: Assets.referralIcon,
         label: 'Referral',
       ),
-      SidebarButtonData(
-        path: ForgeView.routeName,
-        imagePath: Assets.forgeIcon,
-        label: 'Forge',
-      ),
-      SidebarButtonData(
-        path: HomeView.routeName,
-        imagePath: Assets.homeIcon,
-        label: 'Home',
-      ),
     ];
 
     var activeIndex = 0;
-    if (currentRoute.startsWith(TrainingSessionView.routeName)) {
-      activeIndex = FeatureFlags.enableHubFeature ? 1 : 0;
+    if (currentRoute.startsWith(TrainingSessionView.routeName) ||
+        currentRoute.startsWith(DemoDetailView.routeName) ||
+        currentRoute.startsWith(RecordOverlayView.routeName)) {
+      activeIndex = FeatureFlags.enableHubFeature ? 3 : 2;
     } else {
-      if (currentRoute.startsWith(DemoDetailView.routeName)) {
-        activeIndex = FeatureFlags.enableHubFeature ? 1 : 0;
-      } else {
-        activeIndex =
-            buttons.indexWhere((b) => currentRoute.startsWith(b.path));
-        if (activeIndex == -1) activeIndex = 0;
-      }
+      activeIndex = buttons.indexWhere(
+        (b) => currentRoute == b.path || currentRoute.startsWith('${b.path}/'),
+      );
+      if (activeIndex == -1) activeIndex = 0;
     }
 
     return Container(
@@ -234,16 +234,23 @@ class AnimatedSidebarSection extends StatelessWidget {
                           },
                           blendMode: BlendMode.dstIn,
                           child: activeIndex == i
-                              ? ColorFiltered(
-                                  colorFilter: ColorFilter.mode(
-                                    ClonesColors.tertiary.withValues(alpha: 1),
-                                    BlendMode.srcATop,
-                                  ),
-                                  child: Image.asset(
-                                    button.imagePath,
-                                    width: 40,
-                                    height: 40,
-                                  ),
+                              ? Stack(
+                                  children: [
+                                    Image.asset(
+                                      button.imagePath,
+                                      width: 40,
+                                      height: 40,
+                                      color: ClonesColors.primary,
+                                    ),
+                                    Opacity(
+                                      opacity: 0.7,
+                                      child: Image.asset(
+                                        button.imagePath,
+                                        width: 40,
+                                        height: 40,
+                                      ),
+                                    ),
+                                  ],
                                 )
                               : Image.asset(
                                   button.imagePath,

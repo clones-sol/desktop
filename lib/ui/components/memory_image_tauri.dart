@@ -31,9 +31,11 @@ class _MemoryImageTauriState extends ConsumerState<MemoryImageTauri> {
       final bytes = await ref
           .read(tauriApiClientProvider)
           .fetchImageViaProxy(widget.imageUrl);
-      setState(() {
-        this.bytes = bytes;
-      });
+      if (mounted) {
+        setState(() {
+          this.bytes = bytes;
+        });
+      }
     });
   }
 

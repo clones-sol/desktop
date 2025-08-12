@@ -346,8 +346,8 @@ class TauriApiClient {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       return (
-        width: data['width'] as double,
-        height: data['height'] as double,
+        width: (data['width'] as num).toDouble(),
+        height: (data['height'] as num).toDouble(),
       );
     } else {
       throw Exception('Failed to get window size: ${response.body}');

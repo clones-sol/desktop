@@ -113,168 +113,172 @@ class _UploadProgressModalState extends ConsumerState<UploadProgressModal>
     final eta = _getEstimatedTimeRemaining(task);
     final speed = _uploadSpeeds[task.recordingId];
 
-    return CardWidget(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: getStatusColor(task.uploadStatus, context)
-                      .withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Icon(
-                  getStatusIcon(task.uploadStatus),
-                  color: getStatusColor(task.uploadStatus, context)
-                      .withValues(alpha: 0.7),
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      task.name ?? 'Unknown Recording',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      getStatusMessage(task),
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (task.uploadStatus == UploadStatus.error ||
-                  task.uploadStatus == UploadStatus.done)
-                IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  color: Colors.grey[400],
-                  onPressed: () => _removeUpload(task.recordingId),
-                  tooltip: 'Remove',
-                ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '${(progress * 100).toStringAsFixed(1)}%',
-                    style: TextStyle(
-                      color: Colors.grey[300],
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  if (task.uploadStatus == UploadStatus.uploading &&
-                      task.totalBytes > 0)
-                    Text(
-                      '${formatFileSize(task.uploadedBytes)} / ${formatFileSize(task.totalBytes)}',
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 12,
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: ClonesColors.tertiary.withValues(alpha: 0.2),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    getStatusColor(task.uploadStatus, context),
-                  ),
-                  minHeight: 8,
-                ),
-              ),
-            ],
-          ),
-
-          // Additional info for active uploads
-          if (task.uploadStatus == UploadStatus.uploading &&
-              (speed != null || eta != null)) ...[
-            const SizedBox(height: 12),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: CardWidget(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (speed != null)
-                  Row(
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: getStatusColor(task.uploadStatus, context)
+                        .withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    getStatusIcon(task.uploadStatus),
+                    color: getStatusColor(task.uploadStatus, context)
+                        .withValues(alpha: 0.7),
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.speed,
-                        color: Colors.grey[400],
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
                       Text(
-                        '${formatFileSize(speed.round())}/s',
+                        task.name ?? 'Unknown Recording',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        getStatusMessage(task),
                         style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 12,
+                          color: Colors.grey[400],
+                          fontSize: 14,
                         ),
                       ),
                     ],
                   ),
-                if (eta != null)
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.schedule,
-                        color: Colors.grey[400],
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        formatDuration(eta),
-                        style: TextStyle(
-                          color: Colors.grey[300],
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
+                ),
+                if (task.uploadStatus == UploadStatus.error ||
+                    task.uploadStatus == UploadStatus.done)
+                  IconButton(
+                    icon: const Icon(Icons.close, size: 20),
+                    color: Colors.grey[400],
+                    onPressed: () => _removeUpload(task.recordingId),
+                    tooltip: 'Remove',
                   ),
               ],
             ),
-          ],
+            const SizedBox(height: 16),
 
-          // Error details
-          if (task.uploadStatus == UploadStatus.error &&
-              task.error != null) ...[
-            const SizedBox(height: 12),
-            MessageBox(
-              messageBoxType: MessageBoxType.warning,
-              content: Expanded(
-                child: Text(
-                  task.error!,
-                  style: TextStyle(
-                    color: Colors.red[200],
-                    fontSize: 12,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${(progress * 100).toStringAsFixed(1)}%',
+                      style: TextStyle(
+                        color: Colors.grey[300],
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    if (task.uploadStatus == UploadStatus.uploading &&
+                        task.totalBytes > 0)
+                      Text(
+                        '${formatFileSize(task.uploadedBytes)} / ${formatFileSize(task.totalBytes)}',
+                        style: TextStyle(
+                          color: Colors.grey[400],
+                          fontSize: 12,
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor:
+                        ClonesColors.tertiary.withValues(alpha: 0.2),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      getStatusColor(task.uploadStatus, context),
+                    ),
+                    minHeight: 8,
+                  ),
+                ),
+              ],
+            ),
+
+            // Additional info for active uploads
+            if (task.uploadStatus == UploadStatus.uploading &&
+                (speed != null || eta != null)) ...[
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (speed != null)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.speed,
+                          color: Colors.grey[400],
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${formatFileSize(speed.round())}/s',
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                  if (eta != null)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          color: Colors.grey[400],
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          formatDuration(eta),
+                          style: TextStyle(
+                            color: Colors.grey[300],
+                            fontSize: 12,
+                          ),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+            ],
+
+            // Error details
+            if (task.uploadStatus == UploadStatus.error &&
+                task.error != null) ...[
+              const SizedBox(height: 12),
+              MessageBox(
+                messageBoxType: MessageBoxType.warning,
+                content: Expanded(
+                  child: Text(
+                    task.error!,
+                    style: TextStyle(
+                      color: Colors.red[200],
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
