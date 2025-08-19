@@ -18,7 +18,7 @@ class Env {
   static String get ffmpegUrlLinux => dotenv.env['FFMPEG_URL_LINUX'] ?? '';
   static String get ffmpegUrlMacos => dotenv.env['FFMPEG_URL_MACOS'] ?? '';
   static String get ffprobeUrlMacos => dotenv.env['FFPROBE_URL_MACOS'] ?? '';
-  static String get pipelineUrlWin => dotenv.env['PIPELINE_URL_WIN'] ?? '';
-  static String get pipelineUrlLinux => dotenv.env['PIPELINE_URL_LINUX'] ?? '';
-  static String get pipelineUrlMacos => dotenv.env['PIPELINE_URL_MACOS'] ?? '';
+  static String get cqaUrlWin => dotenv.env['CQA_URL_WIN'] ?? '';
+  static String get cqaUrlLinux => dotenv.env['CQA_URL_LINUX'] ?? '';
+  static String get cqaUrlMacos => dotenv.env['CQA_URL_MACOS'] ?? '';
 }

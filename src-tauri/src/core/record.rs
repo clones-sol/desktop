@@ -4,8 +4,8 @@
 
 use crate::core::input;
 use crate::tools::axtree;
+use crate::tools::cqa;
 use crate::tools::ffmpeg::{init_ffmpeg, FFmpegRecorder, FFMPEG_PATH, FFPROBE_PATH};
-use crate::tools::pipeline;
 use crate::utils::logger::Logger;
 use crate::utils::settings::get_custom_app_local_data_dir;
 use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
@@ -388,8 +388,8 @@ pub async fn start_recording(
     // Store demonstration data in state if available
     if let Some(demonstration_data) = &demonstration {
         // Store in DemonstrationState for later retrieval
-        *demonstration_state.current_demonstration.lock().unwrap() = Some(demonstration_data.clone());
-
+        *demonstration_state.current_demonstration.lock().unwrap() =
+            Some(demonstration_data.clone());
     }
 
     let (session_dir, timestamp) = get_session_path(&app)?;
@@ -555,7 +555,12 @@ pub async fn stop_recording(
     *demonstration_state.current_demonstration.lock().unwrap() = None;
 
     // Get the recording ID from state
-    if let Some(recording_id) = demonstration_state.current_recording_id.lock().unwrap().take() {
+    if let Some(recording_id) = demonstration_state
+        .current_recording_id
+        .lock()
+        .unwrap()
+        .take()
+    {
         set_rec_state(&app, "saved".to_string(), Some(recording_id.clone()))?;
         set_rec_state(&app, "off".to_string(), None)?;
 
@@ -637,7 +642,7 @@ pub async fn get_recording_file(
 }
 
 pub async fn process_recording(app: tauri::AppHandle, recording_id: String) -> Result<(), String> {
-    pipeline::process_recording(&app, &recording_id)
+    cqa::process_recording(&app, &recording_id)
 }
 
 pub async fn write_file(
@@ -1089,8 +1094,9 @@ pub async fn create_recording_zip(
         recording_id
     );
 
-    let recordings_dir =
-        get_custom_app_local_data_dir(&app)?.join("recordings").join(&recording_id);
+    let recordings_dir = get_custom_app_local_data_dir(&app)?
+        .join("recordings")
+        .join(&recording_id);
 
     log::info!(
         "[create_recording_zip] Recording directory: {}",
@@ -1160,7 +1166,7 @@ pub async fn create_recording_zip(
     }
 
     // Add files to zip
-    let filenames = ["input_log.jsonl", "meta.json", "recording.mp4"];
+    let filenames = ["input_log.jsonl", "meta.json", "recording.mp4", "sft.json"];
     log::info!(
         "[create_recording_zip] Adding {} files to zip archive",
         filenames.len()
@@ -1253,9 +1259,11 @@ pub async fn create_recording_zip(
 
 pub async fn export_recording_zip(id: String, app: tauri::AppHandle) -> Result<String, String> {
     let buf = create_recording_zip(app.clone(), id.clone()).await;
-    let selected_dir = app.dialog().file()
-    .set_file_name(&format!("export_recording_{}.zip", id))
-    .blocking_save_file();
+    let selected_dir = app
+        .dialog()
+        .file()
+        .set_file_name(&format!("export_recording_{}.zip", id))
+        .blocking_save_file();
 
     // If user cancels the dialog, selected_dir will be None
     if let Some(dir_path) = selected_dir {
@@ -1281,4 +1289,3 @@ pub async fn get_current_demonstration(
         .map_err(|e| e.to_string())?;
     Ok(current_demonstration.clone())
 }
-
