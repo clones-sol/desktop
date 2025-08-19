@@ -1,16 +1,16 @@
-//! Tauri commands for initializing and checking external tool binaries (FFmpeg, dump-tree, pipeline).
+//! Tauri commands for initializing and checking external tool binaries (FFmpeg, dump-tree, Clones Quality Agent).
 //!
 //! This module provides commands to initialize required binaries in parallel and check their status.
 
 use crate::tools::helpers::lock_with_timeout;
-use crate::tools::{axtree, ffmpeg, pipeline};
+use crate::tools::{axtree, cqa, ffmpeg};
 use log::error;
 use serde_json;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use tauri::Emitter;
 
-/// Initializes all required tool binaries (FFmpeg, dump-tree, pipeline) in parallel threads.
+/// Initializes all required tool binaries (FFmpeg, dump-tree, Clones Quality Agent) in parallel threads.
 ///
 /// # Arguments
 /// * `app` - The Tauri `AppHandle` for emitting errors to the frontend.
@@ -57,16 +57,18 @@ pub async fn init_tools(app: tauri::AppHandle) -> Result<(), String> {
         handles.push(handle);
     }
 
-    // Spawn thread for pipeline initialization
+    // Spawn thread for Clones Quality Agent initialization
     {
         let errors = Arc::clone(&errors);
         let handle = thread::spawn(move || {
-            if let Err(e) = pipeline::init_pipeline() {
+            if let Err(e) = cqa::init_cqa() {
                 let lock = lock_with_timeout(&errors, std::time::Duration::from_secs(2));
                 if let Some(mut errors) = lock {
-                    errors.push(format!("Failed to initialize pipeline: {}", e));
+                    errors.push(format!("Failed to initialize Clones Quality Agent: {}", e));
                 } else {
-                    log::error!("[Init Tools] Could not acquire error lock for pipeline");
+                    log::error!(
+                        "[Init Tools] Could not acquire error lock for Clones Quality Agent"
+                    );
                 }
             }
         });
@@ -114,6 +116,6 @@ pub async fn check_tools() -> Result<serde_json::Value, String> {
         "ffmpeg": ffmpeg::FFMPEG_PATH.get().is_some(),
         "ffprobe": ffmpeg::FFPROBE_PATH.get().is_some(),
         "dump_tree": axtree::DUMP_TREE_PATH.get().is_some(),
-        "pipeline": pipeline::PIPELINE_PATH.get().is_some()
+        "cqa": cqa::CQA_PATH.get().is_some()
     }))
 }

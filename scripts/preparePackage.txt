@@ -21,7 +21,7 @@ dart pub add --dev daunused
 flutter pub run daunused:daunused.dart .
 dart pub remove daunused
 
-Kill pipeline thread
+Kill Clones Quality Agent thread
 docker exec -it 2c0cb516cd4d /bin/bash
-ps aux | grep pipeline
+ps aux | grep clones-quality-agent
 kill 56

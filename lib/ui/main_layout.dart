@@ -75,7 +75,7 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       if (status['ffmpeg'] ?? false) initializedTools++;
       if (status['ffprobe'] ?? false) initializedTools++;
       if (status['dump_tree'] ?? false) initializedTools++;
-      if (status['pipeline'] ?? false) initializedTools++;
+      if (status['cqa'] ?? false) initializedTools++;
 
       final progress = (initializedTools / totalTools) * 100;
 
