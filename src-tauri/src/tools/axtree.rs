@@ -19,21 +19,21 @@ const POLLING_SLEEP_SECS: u64 = 2;
 
 #[cfg(target_os = "windows")]
 fn get_dump_tree_url() -> String {
-    std::env::var("DUMP_TREE_URL_WIN").unwrap_or_else(|_| "https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-windows.exe".to_string())
+    std::env::var("DUMP_TREE_URL_WIN").unwrap_or_else(|_| "https://github.com/clones-ai/ax-tree-parsers/releases/latest/download/dump-tree-windows.exe".to_string())
 }
 
 #[cfg(target_os = "linux")]
 fn get_dump_tree_url() -> String {
-    std::env::var("DUMP_TREE_URL_LINUX").unwrap_or_else(|_| "https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-linux-x86_64".to_string())
+    std::env::var("DUMP_TREE_URL_LINUX").unwrap_or_else(|_| "https://github.com/clones-ai/ax-tree-parsers/releases/latest/download/dump-tree-linux-x86_64".to_string())
 }
 
 #[cfg(target_os = "macos")]
 fn get_dump_tree_url() -> String {
-    std::env::var("DUMP_TREE_URL_MACOS").unwrap_or_else(|_| "https://github.com/clones-sol/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64".to_string())
+    std::env::var("DUMP_TREE_URL_MACOS").unwrap_or_else(|_| "https://github.com/clones-ai/ax-tree-parsers/releases/latest/download/dump-tree-macos-arm64".to_string())
 }
 
 const GITHUB_API_URL: &str =
-    "https://api.github.com/repos/clones-sol/ax-tree-parsers/releases/latest";
+    "https://api.github.com/repos/clones-ai/ax-tree-parsers/releases/latest";
 
 fn get_temp_dir() -> PathBuf {
     let mut temp = std::env::temp_dir();
