@@ -1,4 +1,3 @@
-import 'package:clones_desktop/application/feature_flags.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,13 +35,6 @@ class ForgeFactoryDetailSidebar extends ConsumerWidget {
         label: 'Uploads',
         key: 'uploads',
       ),
-      if (FeatureFlags.enableLaunchpadFeature)
-        SidebarButtonData(
-          path: '/forge/$poolId/deploy',
-          icon: Icons.cloud_upload,
-          label: 'Deploy',
-          key: 'deploy',
-        ),
     ];
 
     var activeIndex = buttons.indexWhere((b) => b.key == currentTab);

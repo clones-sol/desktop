@@ -88,7 +88,7 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
             children: [
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Insufficient SOL for Gas'
+                    ? 'Insufficient ETH for Gas'
                     : 'Insufficient ${forgeDetail.pool!.token.symbol} Tokens',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -97,14 +97,14 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
               ),
               Text(
                 forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Your factory needs min $kMinSolBalance SOL to pay for on-chain transactions. Without gas, the factory cannot function on the Solana blockchain.'
+                    ? 'Your factory needs min $kMinEthBalance ETH to pay for on-chain transactions. Without gas, the factory cannot function on the Base blockchain.'
                     : "Your factory needs ${forgeDetail.pool!.token.symbol} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
                 style: TextStyle(
                   color: ClonesColors.secondaryText,
                 ),
               ),
               Text(
-                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? 'SOL' : forgeDetail.pool!.token.symbol} to the address above to activate your factory and start collecting data.',
+                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? 'ETH' : forgeDetail.pool!.token.symbol} to the address above to activate your factory and start collecting data.',
                 style: TextStyle(
                   color: ClonesColors.secondaryText,
                 ),

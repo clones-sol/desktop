@@ -7,13 +7,11 @@ import 'package:clones_desktop/ui/views/demo_detail/layouts/demo_detail_view.dar
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_deploy_tab.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_detail_shell.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_general_tab.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_tasks_tab.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_uploads_tab.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
-import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
@@ -39,12 +37,6 @@ final _router = GoRouter(
           path: HomeView.routeName,
           pageBuilder: (context, state) => const NoTransitionPage(
             child: HomeView(),
-          ),
-        ),
-        GoRoute(
-          path: HubView.routeName,
-          pageBuilder: (context, state) => const NoTransitionPage(
-            child: HubView(),
           ),
         ),
         GoRoute(
@@ -103,12 +95,6 @@ final _router = GoRouter(
               path: '/forge/:id/uploads',
               pageBuilder: (context, state) {
                 return const NoTransitionPage(child: ForgeFactoryUploadsTab());
-              },
-            ),
-            GoRoute(
-              path: '/forge/:id/deploy',
-              pageBuilder: (context, state) {
-                return const NoTransitionPage(child: ForgeFactoryDeployTab());
               },
             ),
           ],

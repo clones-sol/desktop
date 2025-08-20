@@ -7,7 +7,7 @@ This is the backend server for Clones. It handles database operations and API en
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/clones-ai/backend.git
+git clone https://github.com/clones-ai/clones-backend.git
 cd backend
 ```
 
@@ -18,44 +18,51 @@ Before running the backend, you need to configure your environment variables.
 1.  In the root of the backend project, locate the `env.example` file.
 2.  Create a copy of this file and name it `.env`.
 
-    ```bash
-    cp .env.example .env
-    ```
+   ```bash
+   cp .env.example .env
+   ```
 
 3.  The `.env` file is included in `.gitignore` and should not be committed to version control.
 4.  Open the `.env` file and fill in the required values. At a minimum, you must provide:
-    *   `OPENAI_API_KEY`: Your key for OpenAI services.
-    *   `DEPOSIT_KEY_ENCRYPTION_SECRET` and `DEPOSIT_KEY_ENCRYPTION_SALT`: These are critical for securing user funds. For local development, you can generate them with the following commands:
-        ```bash
-        # For the secret key
-        openssl rand -base64 32
+   *   `OPENAI_API_KEY`: Your key for OpenAI services.
+   *   `DEPOSIT_KEY_ENCRYPTION_SECRET` and `DEPOSIT_KEY_ENCRYPTION_SALT`: These are critical for securing user funds. For local development, you can generate them with the following commands:
+     ```bash
+     # For the secret key
+     openssl rand -base64 32
 
-        # For the salt
-        openssl rand -base64 16
-        ```
-    The other variables can usually be left with their default values for a standard local setup.
+     # For the salt
+     openssl rand -base64 16
+     ```
+   The other variables can usually be left with their default values for a standard local setup.
 
-    Here is an example of what the top of your `.env` file should look like:
-    ```dotenv
-    # --- OpenAI ---
-    OPENAI_API_KEY=your_openai_api_key_here
+   Here is an example of what the top of your `.env` file should look like:
+   ```dotenv
+   # --- OpenAI ---
+   OPENAI_API_KEY=your_openai_api_key_here
 
-    # --- Security - See README.md ---
-    # Generate with: openssl rand -base64 32
-    DEPOSIT_KEY_ENCRYPTION_SECRET=
-    # Generate with: openssl rand -base64 16
-    DEPOSIT_KEY_ENCRYPTION_SALT=
+   # --- Security - See README.md ---
+   # Generate with: openssl rand -base64 32
+   DEPOSIT_KEY_ENCRYPTION_SECRET=
+   # Generate with: openssl rand -base64 16
+   DEPOSIT_KEY_ENCRYPTION_SALT=
 
-    # --- Solana Blockchain ---
-    # You can use a public RPC or your own.
-    RPC_URL=https://api.devnet.solana.com/
+   # --- Base Blockchain (EVM) ---
+   # Use Base Sepolia for development, Base Mainnet for production.
+   # Sepolia (testnet):
+   RPC_URL=https://sepolia.base.org
+   # Mainnet (production):
+   # RPC_URL=https://mainnet.base.org
 
-    # --- Mongodb ----
-    DB_URI=mongodb://admin:admin@mongodb:27017/dev?authSource=admin
+   # Optional (some tooling may use these)
+   # BASE_NETWORK=sepolia
+   # BASE_CHAIN_ID=84532  # Mainnet is 8453
+   # Block explorers: https://sepolia.basescan.org (testnet), https://basescan.org (mainnet)
 
-    # --- Raydium
-    SOLANA_CLUSTER=devnet
-    ```
+   # --- Mongodb ----
+   DB_URI=mongodb://admin:admin@mongodb:27017/dev?authSource=admin
+   ```
+
+   *Official Base RPC endpoints and chain IDs: Mainnet `8453` @ `https://mainnet.base.org`, Sepolia `84532` @ `https://sepolia.base.org`. ([Base][1])*
 
 ## Security
 
@@ -93,77 +100,181 @@ docker compose down
 
 ## Creating Development Tokens
 
-To test features involving SPL tokens, you may need to create your own development tokens on the Solana devnet. This guide explains how to create and mint tokens for use in your local development environment.
+To test features involving **ERC‑20 tokens on Base**, you may need to create your own development tokens on the **Base Sepolia** testnet. This guide explains how to deploy and mint a token for local development.
+
 
 ### 1. Prerequisites
 
-Ensure you have the [Solana CLI tool suite](https://docs.solana.com/cli/install-solana-cli-tools) installed. You will specifically need `solana` and `spl-token`.
+Ensure you have:
 
-### 2. Configure Solana CLI
+* **Node.js** (LTS) and **npm**
+* **Hardhat** toolchain in a local project (we’ll initialize one below)
 
-First, make sure your CLI is configured to point to the devnet and uses the project's local keypair.
+(You can use Foundry if you prefer; the steps are shown with Hardhat.)
+
+### 2. Configure Base (Sepolia) access
+
+Create a new folder for a throwaway token project and set up Hardhat:
 
 ```bash
-# Set the RPC URL to devnet
-solana config set --url https://api.devnet.solana.com
-
-# Set the keypair to the one included in this repository
-# (Assuming the keypair is in secrets/solana-keypair.json relative to where you run the command)
-solana config set --keypair secrets/solana-keypair.json
+mkdir erc20-demo && cd erc20-demo
+npm init -y
+npm install --save-dev hardhat@2.26.3 @nomicfoundation/hardhat-toolbox@6.1.0
+npm install dotenv @openzeppelin/contracts
+npx hardhat init # choose "Create a JavaScript project"
+// Let Hardhat project default root
+// Add .gitignore file 
 ```
+
+Create a `.env` in this folder with your deployer EVM private key (use a test key) and your Base Sepolia RPC:
+
+```dotenv
+RPC_URL=https://sepolia.base.org
+PRIVATE_KEY=0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+```
+
+*You can request Base Sepolia test ETH from official faucets. ([Base][https://docs.base.org/base-chain/tools/network-faucets], [Coinbase][https://www.coinbase.com/fr-fr/developer-platform/products/faucet], [Coinbase Développeur Docs][https://docs.cdp.coinbase.com/faucets/introduction/welcome])*
+
+In `hardhat.config.js` add a `baseSepolia` network:
+
+```js
+require("@nomicfoundation/hardhat-toolbox");
+require("dotenv").config();
+
+module.exports = {
+  solidity: "0.8.28",
+  networks: {
+    baseSepolia: {
+      url: process.env.RPC_URL,
+      accounts: [process.env.PRIVATE_KEY],
+      chainId: 84532
+    }
+  }
+};
+```
+
+*Chain ID 84532 is Base Sepolia. ([Base][https://docs.base.org/base-chain/quickstart/connecting-to-base])*
 
 ### 3. Fund Your Wallet
 
-You'll need some devnet SOL to pay for transaction fees.
+You'll need **Base Sepolia ETH** to pay for gas.
 
 ```bash
-# Airdrop 2 SOL to your wallet
-solana airdrop 2
+# Visit a faucet and send test ETH to your deployer address
+# (e.g., Coinbase Developer Platform faucet)
 ```
+
+*See the Base docs faucet list for options. ([Base][https://docs.base.org/base-chain/tools/network-faucets])*
 
 ### 4. Create a New Token
 
-Run the following command to create a new SPL token. A standard token has 6 decimal places.
+Create `contracts/DevToken.sol`:
+
+```solidity
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.28;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+
+contract DevToken is ERC20, Ownable {
+    constructor(address initialRecipient, uint256 initialSupply)
+        ERC20("DevToken", "DEV")
+        Ownable(msg.sender)
+    {
+        // Mint initial supply to the recipient
+        _mint(initialRecipient, initialSupply);
+    }
+
+    // Optional: allow the owner to mint more tokens later
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount);
+    }
+}
+```
+
+Create `scripts/deploy.js`:
+
+```js
+const hre = require("hardhat");
+
+async function main() {
+  const [deployer] = await hre.ethers.getSigners();
+
+  const DevToken = await hre.ethers.getContractFactory("DevToken");
+  // Mint 1,000 DEV with 18 decimals to the deployer:
+  const initialSupply = hre.ethers.parseUnits("1000", 18);
+  const token = await DevToken.deploy(deployer.address, initialSupply);
+  await token.waitForDeployment();
+
+  console.log("Token deployed to:", await token.getAddress());
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
+```
+
+Deploy to **Base Sepolia**:
 
 ```bash
-spl-token create-token --decimals 6
+npx hardhat run scripts/deploy.js --network baseSepolia
 ```
 
-This command will output a **Token Address** (also called a "mint address"). **Copy this address.**
+This will output a **Token Contract Address**. **Copy this address.**
 
-*Example output:*
+### 5. Mint Tokens
+
+If you added the optional `mint()` function above, you can mint more tokens to any address.
+
+Create `scripts/mint.js`:
+
+```js
+const hre = require("hardhat");
+
+async function main() {
+  const tokenAddress = process.env.TOKEN_ADDRESS;      // 0x...
+  const recipient = process.env.RECIPIENT;             // 0x...
+  const amount = hre.ethers.parseUnits(process.env.AMOUNT || "100", 18);
+
+  const token = await hre.ethers.getContractAt("DevToken", tokenAddress);
+  const tx = await token.mint(recipient, amount);
+  await tx.wait();
+  console.log(`Minted ${process.env.AMOUNT || "100"} tokens to ${recipient}`);
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});
 ```
-Creating token 4fmd25KposhGSi3hFSJP4tWWex2wGWjEQdu14YWTddFV ...
-Address: 4fmd25KposhGSi3hFSJP4tWWex2wGWjEQdu14YWTddFV
-```
 
-### 5. Create a Token Account
-
-Next, create an account in your wallet to hold the new tokens. Use the token address from the previous step.
+Run:
 
 ```bash
-# Replace <TOKEN_ADDRESS> with the address you copied
-spl-token create-account <TOKEN_ADDRESS>
-```
-
-### 6. Mint Tokens
-
-Now you can mint (create) as many tokens as you need for testing.
-
-```bash
-# Replace <TOKEN_ADDRESS> with your token address and <AMOUNT> with the quantity you want
-spl-token mint <TOKEN_ADDRESS> <AMOUNT>
+TOKEN_ADDRESS=0xYourTokenAddress RECIPIENT=0xYourWallet AMOUNT=100 \
+npx hardhat run scripts/mint.js --network baseSepolia
 ```
 
 ### 7. Update Backend Configuration
 
-To make the backend aware of your new token, you must add its mint address to `src/services/blockchain/tokens.ts`. Find the correct token symbol (e.g., `USDC`, `CLONES`) and update the `development` address.
+To make the backend aware of your new token, add its **ERC‑20 contract address** to `src/services/blockchain/tokens.ts`. Find the correct token symbol (e.g., `USDC`, `CLONES`) and update the `development` (Base Sepolia) address accordingly.
 
-### 8. Add to Phantom Wallet (Optional)
+### 8. Add to Wallet (Optional)
 
-You can add the token to your Phantom wallet to see your balance.
-1.  Open Phantom and click "Manage Token List".
-2.  Paste the **Token Address** into the search field.
-3.  Enable the token.
+You can add the token to **MetaMask** (or any EVM wallet) to see your balance.
 
-> **Note:** The token will likely appear as "Unknown Token". This is normal because we have not provided on-chain metadata (like a name or symbol). This does not affect its functionality for development purposes.
+1. **Add the Base network** (if not already added):
+
+   * **Base Sepolia**:
+     Network Name: `Base Sepolia`
+     RPC URL: `https://sepolia.base.org`
+     Chain ID: `84532`
+     Currency Symbol: `ETH`
+     Block Explorer: `https://sepolia.basescan.org`
+     *Official reference. ([Base][https://docs.base.org/base-chain/quickstart/connecting-to-base])*
+2. **Import the token**: In MetaMask, click **Import tokens**, paste your **Token Contract Address**, and confirm.
+   *General MetaMask steps are standard; see community guides if needed. ([Revoke.cash][https://revoke.cash/learn/wallets/add-network/base-sepolia])*
+
+> **Note:** Your token may appear as “Unknown Token” until metadata (name/symbol) is detected by explorers/wallets. This does not affect functionality for development.

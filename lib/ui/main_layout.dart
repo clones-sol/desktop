@@ -6,8 +6,8 @@ import 'package:clones_desktop/application/upload_modal_provider.dart';
 import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/ui/components/layout_background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Intent to open the Uploads modal via keyboard shortcut.
 class OpenUploadsIntent extends Intent {
@@ -121,18 +121,20 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
       },
       child: Actions(
         actions: <Type, Action<Intent>>{
-          OpenUploadsIntent:
-              CallbackAction<OpenUploadsIntent>(onInvoke: (intent) {
-            ref.read(walletModalProvider.notifier).hide();
-            ref.read(uploadModalProvider.notifier).show();
-            return null;
-          }),
-          OpenWalletIntent:
-              CallbackAction<OpenWalletIntent>(onInvoke: (intent) {
-            ref.read(uploadModalProvider.notifier).hide();
-            ref.read(walletModalProvider.notifier).show();
-            return null;
-          }),
+          OpenUploadsIntent: CallbackAction<OpenUploadsIntent>(
+            onInvoke: (intent) {
+              ref.read(walletModalProvider.notifier).hide();
+              ref.read(uploadModalProvider.notifier).show();
+              return null;
+            },
+          ),
+          OpenWalletIntent: CallbackAction<OpenWalletIntent>(
+            onInvoke: (intent) {
+              ref.read(uploadModalProvider.notifier).hide();
+              ref.read(walletModalProvider.notifier).show();
+              return null;
+            },
+          ),
         },
         child: Focus(
           autofocus: true,

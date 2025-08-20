@@ -1,4 +1,3 @@
-import 'package:clones_desktop/application/feature_flags.dart';
 import 'package:clones_desktop/application/route_provider.dart';
 import 'package:clones_desktop/application/upload_modal_provider.dart';
 import 'package:clones_desktop/application/wallet_modal_provider.dart';
@@ -8,7 +7,6 @@ import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
 import 'package:clones_desktop/ui/views/forge/layouts/forge_view.dart';
 import 'package:clones_desktop/ui/views/home/layouts/home_view.dart';
-import 'package:clones_desktop/ui/views/hub/layouts/hub_view.dart';
 import 'package:clones_desktop/ui/views/leaderboards/layouts/leaderboards_view.dart';
 import 'package:clones_desktop/ui/views/record_overlay/layouts/record_overlay_view.dart';
 import 'package:clones_desktop/ui/views/referral/layouts/referral_view.dart';
@@ -38,12 +36,6 @@ class Sidebar extends ConsumerWidget {
         imagePath: Assets.homeIcon,
         label: 'Home',
       ),
-      if (FeatureFlags.enableHubFeature)
-        SidebarButtonData(
-          path: HubView.routeName,
-          imagePath: Assets.hubIcon,
-          label: 'Hub',
-        ),
       SidebarButtonData(
         path: ForgeView.routeName,
         imagePath: Assets.forgeIcon,
@@ -75,7 +67,7 @@ class Sidebar extends ConsumerWidget {
     if (currentRoute.startsWith(TrainingSessionView.routeName) ||
         currentRoute.startsWith(DemoDetailView.routeName) ||
         currentRoute.startsWith(RecordOverlayView.routeName)) {
-      activeIndex = FeatureFlags.enableHubFeature ? 3 : 2;
+      activeIndex = 2;
     } else {
       activeIndex = buttons.indexWhere(
         (b) => currentRoute == b.path || currentRoute.startsWith('${b.path}/'),
