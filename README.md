@@ -6,7 +6,7 @@ Built from the ground up with privacy and security as core principles. See our [
 
 ## Development & Contribution
 
-For detailed instructions on how to set up your local development environment, run the project, and contribute, please visit our **[Developer Documentation Website](https://docs.page/clones-ai/desktop)**.
+For detailed instructions on how to set up your local development environment, run the project, and contribute, please visit our **[Developer Documentation Website](https://docs.page/clones-ai/clones-desktop)**.
 
 Our documentation includes:
 - A step-by-step setup guide for the desktop app, backend, and website.

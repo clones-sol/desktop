@@ -11,7 +11,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM1N0NFOEM2QUU4NUYyQjYKUldTMjhvV3V4dWg4eGZSeEZZeExUaFhreXJXUmRCREdjVEhKTmd4SXBNeXczRkNRdFQ1c3F2SUMK",
       "endpoints": [
-        "https://github.com/clones-ai/desktop/releases/latest/download/latest.json"
+        "https://github.com/clones-ai/clones-desktop/releases/latest/download/latest.json"
       ]
     },
     "deep-link": {
