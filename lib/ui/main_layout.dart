@@ -113,38 +113,13 @@ class _MainLayoutState extends ConsumerState<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
-    // Keyboard shortcuts: U for Uploads, W for Wallet
-    return Shortcuts(
-      shortcuts: <LogicalKeySet, Intent>{
-        LogicalKeySet(LogicalKeyboardKey.keyU): const OpenUploadsIntent(),
-        LogicalKeySet(LogicalKeyboardKey.keyW): const OpenWalletIntent(),
-      },
-      child: Actions(
-        actions: <Type, Action<Intent>>{
-          OpenUploadsIntent: CallbackAction<OpenUploadsIntent>(
-            onInvoke: (intent) {
-              ref.read(walletModalProvider.notifier).hide();
-              ref.read(uploadModalProvider.notifier).show();
-              return null;
-            },
-          ),
-          OpenWalletIntent: CallbackAction<OpenWalletIntent>(
-            onInvoke: (intent) {
-              ref.read(uploadModalProvider.notifier).hide();
-              ref.read(walletModalProvider.notifier).show();
-              return null;
-            },
-          ),
-        },
-        child: Focus(
-          autofocus: true,
-          canRequestFocus: true,
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: LayoutBackground(
-              child: widget.child,
-            ),
-          ),
+    return Focus(
+      autofocus: true,
+      canRequestFocus: true,
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: LayoutBackground(
+          child: widget.child,
         ),
       ),
     );

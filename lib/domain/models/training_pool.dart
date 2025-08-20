@@ -7,7 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'training_pool.freezed.dart';
 part 'training_pool.g.dart';
 
-const kMinEthBalance = 0.01;
+const kMinEthBalance = 0.00001;
 
 enum TrainingPoolStatus {
   @JsonValue('live')
