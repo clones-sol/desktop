@@ -13,7 +13,7 @@ _$TrainingPoolImpl _$$TrainingPoolImplFromJson(Map<String, dynamic> json) =>
       status: $enumDecode(_$TrainingPoolStatusEnumMap, json['status']),
       demonstrations: (json['demonstrations'] as num).toInt(),
       funds: (json['funds'] as num).toDouble(),
-      solBalance: (json['solBalance'] as num?)?.toDouble(),
+      ethBalance: (json['ethBalance'] as num?)?.toDouble(),
       token: Token.fromJson(json['token'] as Map<String, dynamic>),
       skills: json['skills'] as String,
       ownerAddress: json['ownerAddress'] as String,
@@ -29,10 +29,6 @@ _$TrainingPoolImpl _$$TrainingPoolImplFromJson(Map<String, dynamic> json) =>
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
-      agentDeploymentInfo: json['agentDeploymentInfo'] == null
-          ? null
-          : AgentDeploymentInfo.fromJson(
-              json['agentDeploymentInfo'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
@@ -42,7 +38,7 @@ Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
       'status': _$TrainingPoolStatusEnumMap[instance.status]!,
       'demonstrations': instance.demonstrations,
       'funds': instance.funds,
-      'solBalance': instance.solBalance,
+      'ethBalance': instance.ethBalance,
       'token': instance.token,
       'skills': instance.skills,
       'ownerAddress': instance.ownerAddress,
@@ -54,7 +50,6 @@ Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
       'uploadLimit': instance.uploadLimit,
       'unsavedUploadLimit': instance.unsavedUploadLimit,
       'createdAt': instance.createdAt?.toIso8601String(),
-      'agentDeploymentInfo': instance.agentDeploymentInfo,
     };
 
 const _$TrainingPoolStatusEnumMap = {

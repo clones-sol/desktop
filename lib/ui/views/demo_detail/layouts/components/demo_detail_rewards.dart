@@ -123,7 +123,7 @@ class DemoDetailRewards extends ConsumerWidget {
                                   await ref
                                       .read(tauriApiClientProvider)
                                       .openExternalUrl(
-                                        '${Env.solscanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}/?cluster=${Env.solscanCluster}',
+                                        '${Env.baseScanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
                                       );
                                 } catch (e) {
                                   debugPrint('Failed to open external URL: $e');
@@ -165,7 +165,7 @@ class DemoDetailRewards extends ConsumerWidget {
                                   await ref
                                       .read(tauriApiClientProvider)
                                       .openExternalUrl(
-                                        '${Env.solscanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}/?cluster=${Env.solscanCluster}',
+                                        '${Env.baseScanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}',
                                       );
                                 } catch (e) {
                                   debugPrint('Failed to open external URL: $e');

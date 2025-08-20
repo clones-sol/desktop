@@ -6,8 +6,7 @@ class Env {
       dotenv.env['APP_IDENTIFIER_SUFFIX'] ?? '';
   static String get privacyPolicyUrl => dotenv.env['PRIVACY_POLICY_URL'] ?? '';
   static String get storageBaseUrl => dotenv.env['STORAGE_BASE_URL'] ?? '';
-  static String get solscanBaseUrl => dotenv.env['SOLSCAN_BASE_URL'] ?? '';
-  static String get solscanCluster => dotenv.env['SOLSCAN_CLUSTER'] ?? '';
+  static String get baseScanBaseUrl => dotenv.env['BASESCAN_BASE_URL'] ?? '';
   static String get apiWebsiteUrl => dotenv.env['API_WEBSITE_URL'] ?? '';
   static String get apiBackendUrl => dotenv.env['API_BACKEND_URL'] ?? '';
   static String get jupiterApiUrl => dotenv.env['JUPITER_API_URL'] ?? '';

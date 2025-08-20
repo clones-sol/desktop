@@ -106,7 +106,7 @@ class WalletModal extends ConsumerWidget {
                                     await ref
                                         .read(tauriApiClientProvider)
                                         .openExternalUrl(
-                                          '${Env.solscanBaseUrl}/address/${session.address}',
+                                          '${Env.baseScanBaseUrl}/address/${session.address}',
                                         );
                                   } catch (e) {
                                     debugPrint(
@@ -235,7 +235,7 @@ class WalletModal extends ConsumerWidget {
                                         await ref
                                             .read(tauriApiClientProvider)
                                             .openExternalUrl(
-                                              '${Env.solscanBaseUrl}/address/${session.referrerAddress}',
+                                              '${Env.baseScanBaseUrl}/address/${session.referrerAddress}',
                                             );
                                       } catch (e) {
                                         debugPrint(

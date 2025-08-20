@@ -31,7 +31,7 @@ class WalletNotConnected extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Please, connect your Solana wallet to start using the app',
+              'Please, connect your EVM wallet to start using the app',
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 20),

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/pfp.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -20,7 +20,7 @@ class ForgeFactoryGeneralTabStatGasBalance extends ConsumerWidget {
       child: CardWidget(
         child: Stack(
           children: [
-            if (pool.solBalance! > 0)
+            if (pool.ethBalance! > 0)
               Positioned(
                 bottom: 0,
                 right: 0,
@@ -57,7 +57,7 @@ class ForgeFactoryGeneralTabStatGasBalance extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '${formatNumberWithSeparator(pool.solBalance)} \$SOL',
+                  '${formatNumberWithSeparator(pool.ethBalance)} \$ETH',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

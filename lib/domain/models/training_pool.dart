@@ -1,6 +1,5 @@
 // ignore_for_file: invalid_annotation_target
 
-import 'package:clones_desktop/domain/models/agent_deployment_info.dart';
 import 'package:clones_desktop/domain/models/token.dart';
 import 'package:clones_desktop/domain/models/upload/upload_limit.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,7 +7,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'training_pool.freezed.dart';
 part 'training_pool.g.dart';
 
-const kMinSolBalance = 0.017;
+const kMinEthBalance = 0.01;
 
 enum TrainingPoolStatus {
   @JsonValue('live')
@@ -44,7 +43,7 @@ class TrainingPool with _$TrainingPool {
     required TrainingPoolStatus status,
     required int demonstrations,
     required double funds,
-    double? solBalance,
+    double? ethBalance,
     required Token token,
     required String skills,
     required String ownerAddress,
@@ -56,7 +55,6 @@ class TrainingPool with _$TrainingPool {
     UploadLimit? uploadLimit,
     @Default(false) bool unsavedUploadLimit,
     DateTime? createdAt,
-    AgentDeploymentInfo? agentDeploymentInfo,
   }) = _TrainingPool;
 
   factory TrainingPool.fromJson(Map<String, dynamic> json) =>
