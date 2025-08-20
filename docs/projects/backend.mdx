@@ -253,7 +253,9 @@ main().catch((e) => {
 Run:
 
 ```bash
-TOKEN_ADDRESS=0xYourTokenAddress RECIPIENT=0xYourWallet AMOUNT=100 \
+export TOKEN_ADDRESS=0xYourTokenAddress
+export RECIPIENT=0xYourWallet
+export AMOUNT=1000
 npx hardhat run scripts/mint.js --network baseSepolia
 ```
 
