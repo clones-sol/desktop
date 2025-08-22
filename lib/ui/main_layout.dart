@@ -2,11 +2,8 @@ import 'dart:async';
 
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/tools_provider.dart';
-import 'package:clones_desktop/application/upload_modal_provider.dart';
-import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/ui/components/layout_background.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Intent to open the Uploads modal via keyboard shortcut.

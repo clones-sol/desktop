@@ -26,7 +26,6 @@ mixin _$TrainingPool {
   TrainingPoolStatus get status => throw _privateConstructorUsedError;
   int get demonstrations => throw _privateConstructorUsedError;
   double get funds => throw _privateConstructorUsedError;
-  double? get ethBalance => throw _privateConstructorUsedError;
   Token get token => throw _privateConstructorUsedError;
   String get skills => throw _privateConstructorUsedError;
   String get ownerAddress => throw _privateConstructorUsedError;
@@ -61,7 +60,6 @@ abstract class $TrainingPoolCopyWith<$Res> {
       TrainingPoolStatus status,
       int demonstrations,
       double funds,
-      double? ethBalance,
       Token token,
       String skills,
       String ownerAddress,
@@ -98,7 +96,6 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
     Object? status = null,
     Object? demonstrations = null,
     Object? funds = null,
-    Object? ethBalance = freezed,
     Object? token = null,
     Object? skills = null,
     Object? ownerAddress = null,
@@ -132,10 +129,6 @@ class _$TrainingPoolCopyWithImpl<$Res, $Val extends TrainingPool>
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
               as double,
-      ethBalance: freezed == ethBalance
-          ? _value.ethBalance
-          : ethBalance // ignore: cast_nullable_to_non_nullable
-              as double?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -222,7 +215,6 @@ abstract class _$$TrainingPoolImplCopyWith<$Res>
       TrainingPoolStatus status,
       int demonstrations,
       double funds,
-      double? ethBalance,
       Token token,
       String skills,
       String ownerAddress,
@@ -259,7 +251,6 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
     Object? status = null,
     Object? demonstrations = null,
     Object? funds = null,
-    Object? ethBalance = freezed,
     Object? token = null,
     Object? skills = null,
     Object? ownerAddress = null,
@@ -293,10 +284,6 @@ class __$$TrainingPoolImplCopyWithImpl<$Res>
           ? _value.funds
           : funds // ignore: cast_nullable_to_non_nullable
               as double,
-      ethBalance: freezed == ethBalance
-          ? _value.ethBalance
-          : ethBalance // ignore: cast_nullable_to_non_nullable
-              as double?,
       token: null == token
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
@@ -354,7 +341,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
       required this.status,
       required this.demonstrations,
       required this.funds,
-      this.ethBalance,
       required this.token,
       required this.skills,
       required this.ownerAddress,
@@ -381,8 +367,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
   final int demonstrations;
   @override
   final double funds;
-  @override
-  final double? ethBalance;
   @override
   final Token token;
   @override
@@ -412,7 +396,7 @@ class _$TrainingPoolImpl implements _TrainingPool {
 
   @override
   String toString() {
-    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, ethBalance: $ethBalance, token: $token, skills: $skills, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, createdAt: $createdAt)';
+    return 'TrainingPool(id: $id, name: $name, status: $status, demonstrations: $demonstrations, funds: $funds, token: $token, skills: $skills, ownerAddress: $ownerAddress, depositAddress: $depositAddress, expanded: $expanded, unsavedSkills: $unsavedSkills, pricePerDemo: $pricePerDemo, unsavedPrice: $unsavedPrice, uploadLimit: $uploadLimit, unsavedUploadLimit: $unsavedUploadLimit, createdAt: $createdAt)';
   }
 
   @override
@@ -426,8 +410,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
             (identical(other.demonstrations, demonstrations) ||
                 other.demonstrations == demonstrations) &&
             (identical(other.funds, funds) || other.funds == funds) &&
-            (identical(other.ethBalance, ethBalance) ||
-                other.ethBalance == ethBalance) &&
             (identical(other.token, token) || other.token == token) &&
             (identical(other.skills, skills) || other.skills == skills) &&
             (identical(other.ownerAddress, ownerAddress) ||
@@ -459,7 +441,6 @@ class _$TrainingPoolImpl implements _TrainingPool {
       status,
       demonstrations,
       funds,
-      ethBalance,
       token,
       skills,
       ownerAddress,
@@ -495,7 +476,6 @@ abstract class _TrainingPool implements TrainingPool {
       required final TrainingPoolStatus status,
       required final int demonstrations,
       required final double funds,
-      final double? ethBalance,
       required final Token token,
       required final String skills,
       required final String ownerAddress,
@@ -522,8 +502,6 @@ abstract class _TrainingPool implements TrainingPool {
   int get demonstrations;
   @override
   double get funds;
-  @override
-  double? get ethBalance;
   @override
   Token get token;
   @override

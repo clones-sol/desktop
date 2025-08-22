@@ -7,7 +7,6 @@ import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_fa
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_factory_upload_limit.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_price_per_demo.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_stat_demo_price.dart';
-import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_stat_gas_balance.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_stat_pool_balance.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_general_tab_stat_session_completed.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/components/forge_factory_header.dart';
@@ -33,8 +32,7 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
             '1. General Information',
             style: theme.textTheme.titleMedium,
           ),
-          if (forgeDetail.pool!.status == TrainingPoolStatus.noGas ||
-              forgeDetail.pool!.status == TrainingPoolStatus.noFunds)
+          if (forgeDetail.pool!.status == TrainingPoolStatus.noFunds)
             _buildNoFundsMessageBox(context, ref),
           const SizedBox(height: 20),
           _buildGlobalStats(ref),
@@ -87,24 +85,20 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Insufficient ETH for Gas'
-                    : 'Insufficient ${forgeDetail.pool!.token.symbol} Tokens',
+                'Insufficient ${forgeDetail.pool!.token.symbol} Tokens',
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   color: ClonesColors.primaryText,
                 ),
               ),
               Text(
-                forgeDetail.pool!.status == TrainingPoolStatus.noGas
-                    ? 'Your factory needs min $kMinEthBalance ETH to pay for on-chain transactions. Without gas, the factory cannot function on the Base blockchain.'
-                    : "Your factory needs ${forgeDetail.pool!.token.symbol} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
+                "Your factory needs ${forgeDetail.pool!.token.symbol} tokens to reward users who provide demonstrations. Without funds, users won't receive compensation.",
                 style: TextStyle(
                   color: ClonesColors.secondaryText,
                 ),
               ),
               Text(
-                'Deposit ${forgeDetail.pool!.status == TrainingPoolStatus.noGas ? 'ETH' : forgeDetail.pool!.token.symbol} to the address above to activate your factory and start collecting data.',
+                'Deposit ${forgeDetail.pool!.token.symbol} to the address above to activate your factory and start collecting data.',
                 style: TextStyle(
                   color: ClonesColors.secondaryText,
                 ),
@@ -129,7 +123,6 @@ class ForgeFactoryGeneralTab extends ConsumerWidget {
           ForgeFactoryGeneralTabStatSessionCompleted(),
           ForgeFactoryGeneralTabStatDemoPrice(),
           ForgeFactoryGeneralTabStatPoolBalance(),
-          ForgeFactoryGeneralTabStatGasBalance(),
         ],
       ),
     );
