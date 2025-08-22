@@ -30,7 +30,6 @@ class PoolsRepositoryImpl {
               pricePerDemo: pool['pricePerDemo'].toDouble(),
               createdAt: DateTime.parse(pool['createdAt']),
               funds: pool['funds']?.toDouble() ?? 0,
-              ethBalance: pool['ethBalance']?.toDouble() ?? 0,
               ownerAddress: pool['ownerAddress'],
               depositAddress: pool['depositAddress'],
               token: Token(
@@ -66,7 +65,6 @@ class PoolsRepositoryImpl {
         pricePerDemo: pool['pricePerDemo'].toDouble(),
         createdAt: DateTime.parse(pool['createdAt']),
         funds: pool['funds']?.toDouble() ?? 0,
-        ethBalance: pool['ethBalance']?.toDouble() ?? 0,
         ownerAddress: pool['ownerAddress'],
         depositAddress: pool['depositAddress'],
         token: Token(
@@ -101,7 +99,6 @@ class PoolsRepositoryImpl {
         pricePerDemo: data['pricePerDemo'].toDouble(),
         createdAt: DateTime.parse(data['createdAt']),
         funds: data['funds'].toDouble(),
-        ethBalance: data['ethBalance'],
         ownerAddress: data['ownerAddress'],
         depositAddress: data['depositAddress'],
         token: Token(
@@ -165,8 +162,6 @@ class PoolsRepositoryImpl {
         return TrainingPoolStatus.paused;
       case 'no-funds':
         return TrainingPoolStatus.noFunds;
-      case 'no-gas':
-        return TrainingPoolStatus.noGas;
       default:
         return TrainingPoolStatus.paused;
     }

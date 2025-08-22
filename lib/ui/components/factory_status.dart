@@ -27,11 +27,6 @@ class FactoryStatus extends StatelessWidget {
         textColor = Colors.yellow[700]!;
         statusText = 'NO FUNDS';
         break;
-      case TrainingPoolStatus.noGas:
-        badgeColor = Colors.yellow.withValues(alpha: 0.1);
-        textColor = Colors.yellow[700]!;
-        statusText = 'NO GAS';
-        break;
     }
 
     return Container(
