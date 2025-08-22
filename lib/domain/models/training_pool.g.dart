@@ -13,7 +13,6 @@ _$TrainingPoolImpl _$$TrainingPoolImplFromJson(Map<String, dynamic> json) =>
       status: $enumDecode(_$TrainingPoolStatusEnumMap, json['status']),
       demonstrations: (json['demonstrations'] as num).toInt(),
       funds: (json['funds'] as num).toDouble(),
-      ethBalance: (json['ethBalance'] as num?)?.toDouble(),
       token: Token.fromJson(json['token'] as Map<String, dynamic>),
       skills: json['skills'] as String,
       ownerAddress: json['ownerAddress'] as String,
@@ -38,7 +37,6 @@ Map<String, dynamic> _$$TrainingPoolImplToJson(_$TrainingPoolImpl instance) =>
       'status': _$TrainingPoolStatusEnumMap[instance.status]!,
       'demonstrations': instance.demonstrations,
       'funds': instance.funds,
-      'ethBalance': instance.ethBalance,
       'token': instance.token,
       'skills': instance.skills,
       'ownerAddress': instance.ownerAddress,
@@ -56,5 +54,4 @@ const _$TrainingPoolStatusEnumMap = {
   TrainingPoolStatus.live: 'live',
   TrainingPoolStatus.paused: 'paused',
   TrainingPoolStatus.noFunds: 'no-funds',
-  TrainingPoolStatus.noGas: 'no-gas',
 };

@@ -182,8 +182,7 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
                                 buttonText: 'Save',
                               ),
                               const SizedBox(width: 16),
-                              if (pool.status != TrainingPoolStatus.noFunds &&
-                                  pool.status != TrainingPoolStatus.noGas)
+                              if (pool.status != TrainingPoolStatus.noFunds)
                                 BtnPrimary(
                                   onTap: () {
                                     ref

@@ -7,8 +7,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'training_pool.freezed.dart';
 part 'training_pool.g.dart';
 
-const kMinEthBalance = 0.00001;
-
 enum TrainingPoolStatus {
   @JsonValue('live')
   live,
@@ -16,8 +14,6 @@ enum TrainingPoolStatus {
   paused,
   @JsonValue('no-funds')
   noFunds,
-  @JsonValue('no-gas')
-  noGas,
 }
 
 extension TrainingPoolStatusExtension on TrainingPoolStatus {
@@ -29,8 +25,6 @@ extension TrainingPoolStatusExtension on TrainingPoolStatus {
         return 'paused';
       case TrainingPoolStatus.noFunds:
         return 'no-funds';
-      case TrainingPoolStatus.noGas:
-        return 'no-gas';
     }
   }
 }
@@ -43,7 +37,6 @@ class TrainingPool with _$TrainingPool {
     required TrainingPoolStatus status,
     required int demonstrations,
     required double funds,
-    double? ethBalance,
     required Token token,
     required String skills,
     required String ownerAddress,
