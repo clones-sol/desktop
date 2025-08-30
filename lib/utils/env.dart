@@ -9,7 +9,6 @@ class Env {
   static String get baseScanBaseUrl => dotenv.env['BASESCAN_BASE_URL'] ?? '';
   static String get apiWebsiteUrl => dotenv.env['API_WEBSITE_URL'] ?? '';
   static String get apiBackendUrl => dotenv.env['API_BACKEND_URL'] ?? '';
-  static String get jupiterApiUrl => dotenv.env['JUPITER_API_URL'] ?? '';
   static String get dumpTreeUrlWin => dotenv.env['DUMP_TREE_URL_WIN'] ?? '';
   static String get dumpTreeUrlLinux => dotenv.env['DUMP_TREE_URL_LINUX'] ?? '';
   static String get dumpTreeUrlMacos => dotenv.env['DUMP_TREE_URL_MACOS'] ?? '';
