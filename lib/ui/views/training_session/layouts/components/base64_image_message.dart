@@ -61,7 +61,9 @@ class _Base64ImageMessageState extends State<Base64ImageMessage>
                         child: SizedBox(
                           height: 32,
                           width: 32,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 0.5,
+                          ),
                         ),
                       );
                     }
