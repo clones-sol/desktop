@@ -1,5 +1,6 @@
 import 'package:clones_desktop/application/apps.dart';
-import 'package:clones_desktop/domain/models/training_pool.dart';
+import 'package:clones_desktop/domain/models/factory/factory.dart';
+
 import 'package:clones_desktop/domain/models/ui/factory_filter.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/provider.dart';
@@ -10,10 +11,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ForgeFactoryDetail extends ConsumerStatefulWidget {
   const ForgeFactoryDetail({
     super.key,
-    required this.pool,
+    required this.factory,
     required this.child,
   });
-  final TrainingPool pool;
+  final Factory factory;
   final Widget child;
 
   @override
@@ -26,8 +27,9 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
     super.initState();
     Future.delayed(Duration.zero, () async {
       final apps = await ref.read(
-        getAppsForFactoryProvider(filter: FactoryFilter(poolId: widget.pool.id))
-            .future,
+        getAppsForFactoryProvider(
+          filter: FactoryFilter(poolId: widget.factory.id),
+        ).future,
       );
 
       ref.read(forgeDetailNotifierProvider.notifier)
@@ -36,14 +38,12 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
         ..setIsRefreshBalanceSuccess(false)
         ..setError(null)
         ..setApps(apps)
-        ..setFactoryName(widget.pool.name)
-        ..setFactoryStatus(widget.pool.status)
-        ..setPricePerDemo(widget.pool.pricePerDemo ?? 0)
-        ..setUploadLimitValue(widget.pool.uploadLimit?.type ?? 10)
-        ..setUploadLimitType(
-          widget.pool.uploadLimit?.limitType.name.toLowerCase() ?? 'none',
-        )
-        ..setPool(widget.pool);
+        ..setFactoryName(widget.factory.name)
+        ..setFactoryStatus(widget.factory.status)
+        ..setPricePerDemo(widget.factory.pricePerDemo)
+        ..setUploadLimitValue(10)
+        ..setUploadLimitType('none')
+        ..setFactory(widget.factory);
     });
   }
 
@@ -117,8 +117,8 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
       }
     });
 
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) return const SizedBox.shrink();
+    final factory = ref.watch(forgeDetailNotifierProvider).factory;
+    if (factory == null) return const SizedBox.shrink();
     return LayoutBuilder(
       builder: (context, constraints) {
         return Stack(
@@ -130,7 +130,7 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
                   SizedBox(
                     width: 100,
                     child: ForgeFactoryDetailSidebar(
-                      poolId: widget.pool.id,
+                      poolId: widget.factory.id,
                     ),
                   ),
                   Container(
@@ -177,12 +177,12 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
                                       .read(
                                         forgeDetailNotifierProvider.notifier,
                                       )
-                                      .updatePool();
+                                      .updateFactory();
                                 },
                                 buttonText: 'Save',
                               ),
                               const SizedBox(width: 16),
-                              if (pool.status != TrainingPoolStatus.noFunds)
+                              if (factory.status != FactoryStatus.error)
                                 BtnPrimary(
                                   onTap: () {
                                     ref
@@ -190,9 +190,9 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
                                           forgeDetailNotifierProvider.notifier,
                                         )
                                         .setFactoryStatus(
-                                          pool.status == TrainingPoolStatus.live
-                                              ? TrainingPoolStatus.paused
-                                              : TrainingPoolStatus.live,
+                                          factory.status == FactoryStatus.active
+                                              ? FactoryStatus.paused
+                                              : FactoryStatus.active,
                                         );
                                     ref
                                         .read(
@@ -201,7 +201,7 @@ class _ForgeFactoryDetailState extends ConsumerState<ForgeFactoryDetail> {
                                         .updateFactoryStatus();
                                   },
                                   buttonText:
-                                      pool.status == TrainingPoolStatus.live
+                                      factory.status == FactoryStatus.active
                                           ? 'Pause Factory'
                                           : 'Activate Factory',
                                 ),

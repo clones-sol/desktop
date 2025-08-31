@@ -31,6 +31,8 @@ mixin _$PoolSubmission {
   double? get reward => throw _privateConstructorUsedError;
   double? get maxReward => throw _privateConstructorUsedError;
   double? get clampedScore => throw _privateConstructorUsedError;
+  ClaimAuthorization? get claimAuthorization =>
+      throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -60,11 +62,13 @@ abstract class $PoolSubmissionCopyWith<$Res> {
       double? reward,
       double? maxReward,
       double? clampedScore,
+      ClaimAuthorization? claimAuthorization,
       String createdAt,
       String updatedAt});
 
   $SubmissionMetaCopyWith<$Res> get meta;
   $GradeResultCopyWith<$Res>? get gradeResult;
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization;
 }
 
 /// @nodoc
@@ -91,6 +95,7 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
     Object? reward = freezed,
     Object? maxReward = freezed,
     Object? clampedScore = freezed,
+    Object? claimAuthorization = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -131,6 +136,10 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
               as double?,
+      claimAuthorization: freezed == claimAuthorization
+          ? _value.claimAuthorization
+          : claimAuthorization // ignore: cast_nullable_to_non_nullable
+              as ClaimAuthorization?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -165,6 +174,21 @@ class _$PoolSubmissionCopyWithImpl<$Res, $Val extends PoolSubmission>
       return _then(_value.copyWith(gradeResult: value) as $Val);
     });
   }
+
+  /// Create a copy of PoolSubmission
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization {
+    if (_value.claimAuthorization == null) {
+      return null;
+    }
+
+    return $ClaimAuthorizationCopyWith<$Res>(_value.claimAuthorization!,
+        (value) {
+      return _then(_value.copyWith(claimAuthorization: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -185,6 +209,7 @@ abstract class _$$PoolSubmissionImplCopyWith<$Res>
       double? reward,
       double? maxReward,
       double? clampedScore,
+      ClaimAuthorization? claimAuthorization,
       String createdAt,
       String updatedAt});
 
@@ -192,6 +217,8 @@ abstract class _$$PoolSubmissionImplCopyWith<$Res>
   $SubmissionMetaCopyWith<$Res> get meta;
   @override
   $GradeResultCopyWith<$Res>? get gradeResult;
+  @override
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization;
 }
 
 /// @nodoc
@@ -216,6 +243,7 @@ class __$$PoolSubmissionImplCopyWithImpl<$Res>
     Object? reward = freezed,
     Object? maxReward = freezed,
     Object? clampedScore = freezed,
+    Object? claimAuthorization = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -256,6 +284,10 @@ class __$$PoolSubmissionImplCopyWithImpl<$Res>
           ? _value.clampedScore
           : clampedScore // ignore: cast_nullable_to_non_nullable
               as double?,
+      claimAuthorization: freezed == claimAuthorization
+          ? _value.claimAuthorization
+          : claimAuthorization // ignore: cast_nullable_to_non_nullable
+              as ClaimAuthorization?,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -281,6 +313,7 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
       this.reward,
       this.maxReward,
       this.clampedScore,
+      this.claimAuthorization,
       required this.createdAt,
       required this.updatedAt})
       : _files = files;
@@ -315,13 +348,15 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
   @override
   final double? clampedScore;
   @override
+  final ClaimAuthorization? claimAuthorization;
+  @override
   final String createdAt;
   @override
   final String updatedAt;
 
   @override
   String toString() {
-    return 'PoolSubmission(id: $id, address: $address, meta: $meta, status: $status, files: $files, gradeResult: $gradeResult, reward: $reward, maxReward: $maxReward, clampedScore: $clampedScore, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'PoolSubmission(id: $id, address: $address, meta: $meta, status: $status, files: $files, gradeResult: $gradeResult, reward: $reward, maxReward: $maxReward, clampedScore: $clampedScore, claimAuthorization: $claimAuthorization, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -341,6 +376,8 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
                 other.maxReward == maxReward) &&
             (identical(other.clampedScore, clampedScore) ||
                 other.clampedScore == clampedScore) &&
+            (identical(other.claimAuthorization, claimAuthorization) ||
+                other.claimAuthorization == claimAuthorization) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -360,6 +397,7 @@ class _$PoolSubmissionImpl implements _PoolSubmission {
       reward,
       maxReward,
       clampedScore,
+      claimAuthorization,
       createdAt,
       updatedAt);
 
@@ -391,6 +429,7 @@ abstract class _PoolSubmission implements PoolSubmission {
       final double? reward,
       final double? maxReward,
       final double? clampedScore,
+      final ClaimAuthorization? claimAuthorization,
       required final String createdAt,
       required final String updatedAt}) = _$PoolSubmissionImpl;
 
@@ -417,6 +456,8 @@ abstract class _PoolSubmission implements PoolSubmission {
   double? get maxReward;
   @override
   double? get clampedScore;
+  @override
+  ClaimAuthorization? get claimAuthorization;
   @override
   String get createdAt;
   @override

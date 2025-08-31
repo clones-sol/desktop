@@ -1,4 +1,4 @@
-import 'package:clones_desktop/application/pool.dart';
+import 'package:clones_desktop/application/factory.dart';
 import 'package:clones_desktop/ui/views/forge_detail/layouts/forge_factory_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,29 +6,31 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ForgeFactoryDetailShell extends ConsumerWidget {
   const ForgeFactoryDetailShell({
     super.key,
-    required this.poolId,
+    required this.factoryId,
     required this.child,
   });
 
-  final String poolId;
+  final String factoryId;
   final Widget child;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final poolAsync = ref.watch(poolProvider(poolId));
-    return poolAsync.when(
+    final factoryAsync = ref.watch(getFactoryProvider(factoryId: factoryId));
+    return factoryAsync.when(
       skipLoadingOnRefresh: true,
       skipLoadingOnReload: true,
-      data: (pool) {
+      data: (factoryData) {
         return ForgeFactoryDetail(
-          pool: pool,
+          factory: factoryData,
           child: child,
         );
       },
       loading: () => const Scaffold(
         backgroundColor: Colors.transparent,
         body: Center(
-          child: CircularProgressIndicator(),
+          child: CircularProgressIndicator(
+            strokeWidth: 0.5,
+          ),
         ),
       ),
       error: (err, stack) => Scaffold(

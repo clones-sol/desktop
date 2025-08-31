@@ -1,5 +1,5 @@
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/training_pool.dart';
+import 'package:clones_desktop/domain/models/factory/factory.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/ui/views/manage_task/bloc/state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -17,11 +17,11 @@ class ForgeDetailState with _$ForgeDetailState {
     @Default(1) double pricePerDemo,
     @Default(10) int uploadLimitValue,
     @Default('none') String uploadLimitType,
-    @Default(TrainingPoolStatus.noFunds) TrainingPoolStatus? factoryStatus,
-    TrainingPool? pool,
+    @Default(FactoryStatus.error) FactoryStatus? factoryStatus,
+    Factory? factory,
     @Default(ViewModeTasks.edit) ViewModeTasks viewModeTasks,
     String? error,
-    @Default([]) List<ForgeApp> apps,
+    @Default([]) List<FactoryApp> apps,
     @Default(false) bool isUpdateFactoryStatusSuccess,
     @Default(false) bool isUpdatePoolSuccess,
     @Default(false) bool isRefreshBalanceSuccess,

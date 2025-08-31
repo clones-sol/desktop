@@ -46,7 +46,7 @@ class _ManageTaskModalPricePerDemoState
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Price per demonstration for this task.  Minimum price: 1 ${widget.tokenSymbol}',
+          'Price per demonstration for this task.',
           style: theme.textTheme.titleSmall,
         ),
         const SizedBox(height: 4),
@@ -81,7 +81,7 @@ class _ManageTaskModalPricePerDemoState
                 style: theme.textTheme.bodyMedium,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.allow(
-                    RegExp(r'^\d+\.?\d{0,1}'),
+                    RegExp(r'^\d*\.?\d{0,18}$'),
                   ),
                 ],
                 decoration: InputDecoration(

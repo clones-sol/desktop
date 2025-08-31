@@ -51,7 +51,7 @@ class _DemoDetailVideoPreviewState
                         width: 50,
                         height: 50,
                         child: CircularProgressIndicator(
-                          strokeWidth: 1,
+                          strokeWidth: 0.5,
                         ),
                       ),
                     )

@@ -1,12 +1,12 @@
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/training_pool.dart';
+import 'package:clones_desktop/domain/models/factory/factory.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/state.dart';
 import 'package:clones_desktop/ui/views/manage_task/bloc/state.dart';
 import 'package:riverpod/riverpod.dart';
 
 mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
-  void setPool(TrainingPool pool) {
-    state = state.copyWith(pool: pool, hasUnsavedChanges: true);
+  void setFactory(Factory factory) {
+    state = state.copyWith(factory: factory, hasUnsavedChanges: true);
   }
 
   void setViewModeTasks(ViewModeTasks viewModeTasks) {
@@ -42,7 +42,7 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
     state = state.copyWith(hasUnsavedChanges: hasUnsavedChanges);
   }
 
-  void setFactoryStatus(TrainingPoolStatus factoryStatus) {
+  void setFactoryStatus(FactoryStatus factoryStatus) {
     if (state.factoryStatus == factoryStatus) return;
     state = state.copyWith(factoryStatus: factoryStatus);
   }
@@ -66,7 +66,7 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
     state = state.copyWith(isRefreshBalanceSuccess: isRefreshBalanceSuccess);
   }
 
-  void setApps(List<ForgeApp> apps) {
+  void setApps(List<FactoryApp> apps) {
     state = state.copyWith(apps: apps);
   }
 
@@ -96,5 +96,13 @@ mixin ForgeDetailSetters on AutoDisposeNotifier<ForgeDetailState> {
 
   void setEditingTaskIdx(int? editingTaskIdx) {
     state = state.copyWith(editingTaskIdx: editingTaskIdx);
+  }
+
+  void updateFactoryBalance(double newBalance) {
+    final currentFactory = state.factory;
+    if (currentFactory == null) return;
+    
+    final updatedFactory = currentFactory.copyWith(balance: newBalance);
+    state = state.copyWith(factory: updatedFactory);
   }
 }

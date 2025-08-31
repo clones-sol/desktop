@@ -1,10 +1,11 @@
 // ignore_for_file: invalid_annotation_target
 
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+import 'package:clones_desktop/domain/models/submission/claim_authorization.dart';
 import 'package:clones_desktop/domain/models/submission/grade_result.dart';
 import 'package:clones_desktop/domain/models/submission/submission_file.dart';
 import 'package:clones_desktop/domain/models/submission/submission_meta.dart';
-import 'package:clones_desktop/domain/models/submission/treasury_transfer.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'submission_status.freezed.dart';
 part 'submission_status.g.dart';
@@ -24,7 +25,7 @@ class SubmissionStatus with _$SubmissionStatus {
     @JsonKey(name: 'grade_result') GradeResult? gradeResult,
     double? maxReward,
     double? reward,
-    TreasuryTransfer? treasuryTransfer,
+    ClaimAuthorization? claimAuthorization,
   }) = _SubmissionStatus;
 
   factory SubmissionStatus.fromJson(Map<String, dynamic> json) =>

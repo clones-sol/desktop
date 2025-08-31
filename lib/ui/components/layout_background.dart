@@ -1,10 +1,7 @@
 import 'package:clones_desktop/application/route_provider.dart';
-import 'package:clones_desktop/application/upload_modal_provider.dart';
-import 'package:clones_desktop/application/wallet_modal_provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/global_action_rail.dart';
-import 'package:clones_desktop/ui/components/modals/upload_progress_modal.dart';
-import 'package:clones_desktop/ui/components/modals/wallet_modal.dart';
+import 'package:clones_desktop/ui/components/modals/modals_management.dart';
 import 'package:clones_desktop/ui/components/sidebar.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/factory_view.dart';
 import 'package:clones_desktop/ui/views/factory_history/layouts/factory_history_view.dart';
@@ -35,8 +32,6 @@ class LayoutBackground extends ConsumerWidget {
         const maxLogoSize = 400.0;
         logoSize.clamp(minLogoSize, maxLogoSize);
         final currentRoute = ref.watch(currentRouteProvider);
-        final showWalletModal = ref.watch(walletModalProvider);
-        final showUploadModal = ref.watch(uploadModalProvider);
 
         return Stack(
           alignment: Alignment.center,
@@ -151,18 +146,7 @@ class LayoutBackground extends ConsumerWidget {
                               child: GlobalActionRail(),
                             ),
                           ),
-                          if (showWalletModal)
-                            WalletModal(
-                              onClose: () {
-                                ref.read(walletModalProvider.notifier).hide();
-                              },
-                            ),
-                          if (showUploadModal)
-                            UploadProgressModal(
-                              onClose: () {
-                                ref.read(uploadModalProvider.notifier).hide();
-                              },
-                            ),
+                          const ModalsManagement(),
                         ],
                       ),
                     ),

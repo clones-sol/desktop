@@ -93,7 +93,11 @@ class _LeaderboardsViewState extends ConsumerState<LeaderboardsView> {
                   ),
                   const SizedBox(height: 20),
                   if (_loading)
-                    const Center(child: CircularProgressIndicator())
+                    const Center(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 0.5,
+                      ),
+                    )
                   else if (_error != null)
                     Center(
                       child: Column(

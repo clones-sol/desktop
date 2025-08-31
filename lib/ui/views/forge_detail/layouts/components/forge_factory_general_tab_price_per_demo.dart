@@ -35,9 +35,9 @@ class _ForgeFactoryGeneralTabPricePerDemoState
   Widget build(BuildContext context) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
 
-    if (forgeDetail.pool == null) return const SizedBox.shrink();
+    if (forgeDetail.factory == null) return const SizedBox.shrink();
 
-    final tokenSymbol = forgeDetail.pool!.token.symbol;
+    final tokenSymbol = forgeDetail.factory!.token.symbol;
     final theme = Theme.of(context);
     return Expanded(
       child: CardWidget(
@@ -68,7 +68,7 @@ class _ForgeFactoryGeneralTabPricePerDemoState
                       style: theme.textTheme.titleSmall,
                     ),
                     Text(
-                      'Set the price for each demonstration. Minimum price: 1 $tokenSymbol',
+                      'Set the price for each demonstration.',
                       style: theme.textTheme.bodySmall,
                     ),
                   ],

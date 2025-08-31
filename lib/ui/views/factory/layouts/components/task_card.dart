@@ -1,34 +1,47 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:clones_desktop/application/factory.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/domain/app_info.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/components/memory_image_tauri.dart';
 import 'package:clones_desktop/ui/views/training_session/layouts/training_session_view.dart';
 import 'package:clones_desktop/utils/fav_tools.dart';
+import 'package:clones_desktop/utils/format_num.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class TaskCard extends StatelessWidget {
+class TaskCard extends ConsumerWidget {
   const TaskCard({
     super.key,
     required this.task,
     required this.app,
   });
 
-  final ForgeTaskItem task;
-  final ForgeApp app;
+  final FactoryTask task;
+  final FactoryApp app;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final tokenSymbol = app.poolId?.token?.symbol ?? '';
+    final factory = ref
+        .watch(
+          getFactoryProvider(factoryId: app.poolId!),
+        )
+        .valueOrNull;
+
+    if (factory == null) {
+      return const SizedBox.shrink();
+    }
+
+    final tokenSymbol = factory.token.symbol;
     final rewardText =
-        '${task.rewardLimit?.toStringAsFixed(0) ?? app.poolId?.pricePerDemo.toStringAsFixed(0) ?? 0} $tokenSymbol';
+        '${formatNumberWithSeparator(factory.pricePerDemo)} $tokenSymbol';
 
     return Stack(
       children: [
@@ -53,7 +66,7 @@ class TaskCard extends StatelessWidget {
                   extra: {
                     'prompt': task.prompt,
                     'appParam': appParam,
-                    'poolId': app.poolId?.id,
+                    'poolId': factory.poolAddress,
                   },
                 );
               },
@@ -154,7 +167,7 @@ class TaskCard extends StatelessWidget {
             extra: {
               'prompt': task.prompt,
               'appParam': appParam,
-              'poolId': app.poolId?.id,
+              'poolId': app.poolId,
             },
           );
         },

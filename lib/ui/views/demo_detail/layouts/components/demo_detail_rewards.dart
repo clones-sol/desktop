@@ -1,7 +1,8 @@
-import 'package:clones_desktop/application/pool.dart';
+import 'package:clones_desktop/application/factory.dart';
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/assets.dart';
+import 'package:clones_desktop/domain/models/submission/claim_authorization.dart';
 import 'package:clones_desktop/domain/models/submission/grade_result.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
@@ -32,12 +33,18 @@ class DemoDetailRewards extends ConsumerWidget {
       return const SizedBox.shrink();
     }
 
-    final poolAsync = ref.watch(poolProvider(poolId));
+    final factoryAsync = ref.watch(getFactoryProvider(factoryId: poolId));
 
-    return poolAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+    return factoryAsync.when(
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 0.5,
+        ),
+      ),
       error: (error, stackTrace) => Center(child: Text('Error: $error')),
-      data: (pool) {
+      data: (factory) {
+        final tokenSymbol = factory.token.symbol;
+
         final theme = Theme.of(context);
         final score =
             submission.gradeResult?.score ?? submission.clampedScore ?? 0;
@@ -63,7 +70,7 @@ class DemoDetailRewards extends ConsumerWidget {
                         style: theme.textTheme.bodyMedium,
                       ),
                       Text(
-                        '$reward \$${pool.token.symbol}',
+                        '$reward \$$tokenSymbol',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: ClonesColors.getScoreColor(score),
                         ),
@@ -79,7 +86,7 @@ class DemoDetailRewards extends ConsumerWidget {
                         style: theme.textTheme.bodyMedium,
                       ),
                       Text(
-                        '$maxReward \$${pool.token.symbol}',
+                        '$maxReward \$$tokenSymbol',
                         style: theme.textTheme.bodyMedium?.copyWith(
                           color: ClonesColors.getScoreColor(100),
                         ),
@@ -107,116 +114,12 @@ class DemoDetailRewards extends ConsumerWidget {
                         ),
                       ),
                     ),
-                  if (submission.treasuryTransfer != null)
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Treasury Transfer:',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                try {
-                                  await ref
-                                      .read(tauriApiClientProvider)
-                                      .openExternalUrl(
-                                        '${Env.baseScanBaseUrl}/address/${submission.treasuryTransfer?.treasuryWallet}',
-                                      );
-                                } catch (e) {
-                                  debugPrint('Failed to open external URL: $e');
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    submission.treasuryTransfer?.treasuryWallet
-                                            .shortAddress() ??
-                                        '',
-                                    style: TextStyle(
-                                      fontFamily: 'monospace',
-                                      color: ClonesColors.secondaryText,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    Icons.open_in_new,
-                                    color: ClonesColors.secondaryText,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Transaction hash:',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                try {
-                                  await ref
-                                      .read(tauriApiClientProvider)
-                                      .openExternalUrl(
-                                        '${Env.baseScanBaseUrl}/tx/${submission.treasuryTransfer?.txHash}',
-                                      );
-                                } catch (e) {
-                                  debugPrint('Failed to open external URL: $e');
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    submission.treasuryTransfer?.txHash
-                                            ?.shortAddress() ??
-                                        'NC',
-                                    style: TextStyle(
-                                      fontFamily: 'monospace',
-                                      color: ClonesColors.secondaryText,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(
-                                    Icons.open_in_new,
-                                    color: ClonesColors.secondaryText,
-                                    size: 16,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Transaction date:',
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                            Text(
-                              submission.treasuryTransfer?.timestamp != null
-                                  ? DateFormat.yMMMMd().add_Hms().format(
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                          submission
-                                              .treasuryTransfer!.timestamp,
-                                        ),
-                                      )
-                                  : 'NC',
-                              style: TextStyle(
-                                color: ClonesColors.secondaryText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                  if (submission.claimAuthorization != null)
+                    _buildClaimAuthorizationSection(
+                      context,
+                      ref,
+                      submission.claimAuthorization!,
+                      tokenSymbol,
                     ),
                 ],
               ),
@@ -224,6 +127,133 @@ class DemoDetailRewards extends ConsumerWidget {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildClaimAuthorizationSection(
+    BuildContext context,
+    WidgetRef ref,
+    ClaimAuthorization claimAuth,
+    String tokenSymbol,
+  ) {
+    final theme = Theme.of(context);
+    final deadline =
+        DateTime.fromMillisecondsSinceEpoch(claimAuth.deadline * 1000);
+    final isExpired = DateTime.now().isAfter(deadline);
+
+    return Column(
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Claim Status:',
+              style: theme.textTheme.bodyMedium,
+            ),
+            Row(
+              children: [
+                Icon(
+                  isExpired ? Icons.warning : Icons.check_circle,
+                  color: isExpired ? Colors.orange : Colors.green,
+                  size: 16,
+                ),
+                const SizedBox(width: 4),
+                Text(
+                  isExpired ? 'Expired' : 'Ready to Claim',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: isExpired ? Colors.orange : Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Expires:',
+              style: theme.textTheme.bodyMedium,
+            ),
+            Text(
+              DateFormat.yMMMMd().add_Hms().format(deadline),
+              style: TextStyle(
+                color: ClonesColors.secondaryText,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Pool Address:',
+              style: theme.textTheme.bodyMedium,
+            ),
+            InkWell(
+              onTap: () async {
+                try {
+                  await ref.read(tauriApiClientProvider).openExternalUrl(
+                        '${Env.baseScanBaseUrl}/address/${claimAuth.poolAddress}',
+                      );
+                } catch (e) {
+                  debugPrint('Failed to open external URL: $e');
+                }
+              },
+              child: Row(
+                children: [
+                  Text(
+                    claimAuth.poolAddress.shortAddress(),
+                    style: TextStyle(
+                      fontFamily: 'monospace',
+                      color: ClonesColors.secondaryText,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                  Icon(
+                    Icons.open_in_new,
+                    color: ClonesColors.secondaryText,
+                    size: 16,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        if (!isExpired)
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: () =>
+                  _handleClaimReward(context, ref, claimAuth, tokenSymbol),
+              icon: const Icon(Icons.account_balance_wallet),
+              label: const Text('Claim Reward'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
+  void _handleClaimReward(
+    BuildContext context,
+    WidgetRef ref,
+    ClaimAuthorization claimAuth,
+    String tokenSymbol,
+  ) {
+    // TODO(dev): Implement claim reward functionality via payWithSig contract call
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Claim functionality not yet implemented'),
+      ),
     );
   }
 }

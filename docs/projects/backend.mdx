@@ -25,26 +25,12 @@ Before running the backend, you need to configure your environment variables.
 3.  The `.env` file is included in `.gitignore` and should not be committed to version control.
 4.  Open the `.env` file and fill in the required values. At a minimum, you must provide:
    *   `OPENAI_API_KEY`: Your key for OpenAI services.
-   *   `DEPOSIT_KEY_ENCRYPTION_SECRET` and `DEPOSIT_KEY_ENCRYPTION_SALT`: These are critical for securing user funds. For local development, you can generate them with the following commands:
-     ```bash
-     # For the secret key
-     openssl rand -base64 32
-
-     # For the salt
-     openssl rand -base64 16
-     ```
    The other variables can usually be left with their default values for a standard local setup.
 
    Here is an example of what the top of your `.env` file should look like:
    ```dotenv
    # --- OpenAI ---
    OPENAI_API_KEY=your_openai_api_key_here
-
-   # --- Security - See README.md ---
-   # Generate with: openssl rand -base64 32
-   DEPOSIT_KEY_ENCRYPTION_SECRET=
-   # Generate with: openssl rand -base64 16
-   DEPOSIT_KEY_ENCRYPTION_SALT=
 
    # --- Base Blockchain (EVM) ---
    # Use Base Sepolia for development, Base Mainnet for production.
@@ -73,10 +59,6 @@ To protect user funds, all `depositPrivateKey` values for training pools are enc
 The encryption is handled by the `src/services/security/crypto.ts` module, which uses the **AES-256-GCM** algorithm.
 
 ### Environment Variables
-
-The entire security mechanism relies on two critical environment variables, which must be set up as described in the [Environment Setup](#environment-setup) section:
-- `DEPOSIT_KEY_ENCRYPTION_SECRET`: The Master Encryption Key.
-- `DEPOSIT_KEY_ENCRYPTION_SALT`: A cryptographic salt used to derive the encryption key from the master key.
 
 **Never commit these values to version control.**
 

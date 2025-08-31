@@ -1,6 +1,6 @@
 import 'package:clones_desktop/application/settings.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/factory_settings.dart';
+import 'package:clones_desktop/domain/models/factory/factory_settings.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

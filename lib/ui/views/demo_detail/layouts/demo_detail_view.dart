@@ -117,7 +117,11 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
     final demoDetail = ref.watch(demoDetailNotifierProvider);
 
     if (demoDetail.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 0.5,
+        ),
+      );
     }
 
     if (demoDetail.recording == null) {

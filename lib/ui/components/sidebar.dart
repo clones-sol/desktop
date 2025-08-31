@@ -112,9 +112,7 @@ class Sidebar extends ConsumerWidget {
                   width: 32,
                   height: 32,
                   child: CircularProgressIndicator(
-                    color: Colors.red,
-                    strokeWidth: 3,
-                  ),
+                      color: Colors.red, strokeWidth: 0.5),
                 ),
                 onPressed: null,
                 tooltip: 'Stop Recording',

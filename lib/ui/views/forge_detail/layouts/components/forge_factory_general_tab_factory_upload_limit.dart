@@ -35,7 +35,7 @@ class _ForgeFactoryGeneralTabFactoryUploadLimitState
   Widget build(BuildContext context) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
 
-    if (forgeDetail.pool == null) return const SizedBox.shrink();
+    if (forgeDetail.factory == null) return const SizedBox.shrink();
 
     final theme = Theme.of(context);
     return CardWidget(

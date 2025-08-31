@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/domain/models/supported_token.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -16,13 +16,18 @@ class GenerateFactoryState with _$GenerateFactoryState {
     String? skills,
     String? error,
     String? factoryName,
-    List<ForgeApp>? apps,
+    List<FactoryApp>? apps,
     @Default(false) bool showJsonEditor,
     @Default(GenerateFactoryStep.input) GenerateFactoryStep currentStep,
     @Default(false) bool isCreating,
     @Default(false) bool isCreated,
     List<SupportedToken>? supportedTokens,
     String? selectedTokenSymbol,
+    String? predictedPoolAddress,
+    String? fundingAmount,
+    String? estimatedGasCost,
+    bool? gasExceedsReward,
+    String? transactionStatus,
   }) = _GenerateFactoryState;
   const GenerateFactoryState._();
 

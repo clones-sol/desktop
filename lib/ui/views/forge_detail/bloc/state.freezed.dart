@@ -20,11 +20,11 @@ mixin _$ForgeDetailState {
   double get pricePerDemo => throw _privateConstructorUsedError;
   int get uploadLimitValue => throw _privateConstructorUsedError;
   String get uploadLimitType => throw _privateConstructorUsedError;
-  TrainingPoolStatus? get factoryStatus => throw _privateConstructorUsedError;
-  TrainingPool? get pool => throw _privateConstructorUsedError;
+  FactoryStatus? get factoryStatus => throw _privateConstructorUsedError;
+  Factory? get factory => throw _privateConstructorUsedError;
   ViewModeTasks get viewModeTasks => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
-  List<ForgeApp> get apps => throw _privateConstructorUsedError;
+  List<FactoryApp> get apps => throw _privateConstructorUsedError;
   bool get isUpdateFactoryStatusSuccess => throw _privateConstructorUsedError;
   bool get isUpdatePoolSuccess => throw _privateConstructorUsedError;
   bool get isRefreshBalanceSuccess => throw _privateConstructorUsedError;
@@ -56,11 +56,11 @@ abstract class $ForgeDetailStateCopyWith<$Res> {
       double pricePerDemo,
       int uploadLimitValue,
       String uploadLimitType,
-      TrainingPoolStatus? factoryStatus,
-      TrainingPool? pool,
+      FactoryStatus? factoryStatus,
+      Factory? factory,
       ViewModeTasks viewModeTasks,
       String? error,
-      List<ForgeApp> apps,
+      List<FactoryApp> apps,
       bool isUpdateFactoryStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
@@ -73,7 +73,7 @@ abstract class $ForgeDetailStateCopyWith<$Res> {
       int? editingTaskAppIdx,
       int? editingTaskIdx});
 
-  $TrainingPoolCopyWith<$Res>? get pool;
+  $FactoryCopyWith<$Res>? get factory;
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
     Object? uploadLimitValue = null,
     Object? uploadLimitType = null,
     Object? factoryStatus = freezed,
-    Object? pool = freezed,
+    Object? factory = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
     Object? apps = null,
@@ -132,11 +132,11 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
       factoryStatus: freezed == factoryStatus
           ? _value.factoryStatus
           : factoryStatus // ignore: cast_nullable_to_non_nullable
-              as TrainingPoolStatus?,
-      pool: freezed == pool
-          ? _value.pool
-          : pool // ignore: cast_nullable_to_non_nullable
-              as TrainingPool?,
+              as FactoryStatus?,
+      factory: freezed == factory
+          ? _value.factory
+          : factory // ignore: cast_nullable_to_non_nullable
+              as Factory?,
       viewModeTasks: null == viewModeTasks
           ? _value.viewModeTasks
           : viewModeTasks // ignore: cast_nullable_to_non_nullable
@@ -148,7 +148,7 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
       apps: null == apps
           ? _value.apps
           : apps // ignore: cast_nullable_to_non_nullable
-              as List<ForgeApp>,
+              as List<FactoryApp>,
       isUpdateFactoryStatusSuccess: null == isUpdateFactoryStatusSuccess
           ? _value.isUpdateFactoryStatusSuccess
           : isUpdateFactoryStatusSuccess // ignore: cast_nullable_to_non_nullable
@@ -200,13 +200,13 @@ class _$ForgeDetailStateCopyWithImpl<$Res, $Val extends ForgeDetailState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TrainingPoolCopyWith<$Res>? get pool {
-    if (_value.pool == null) {
+  $FactoryCopyWith<$Res>? get factory {
+    if (_value.factory == null) {
       return null;
     }
 
-    return $TrainingPoolCopyWith<$Res>(_value.pool!, (value) {
-      return _then(_value.copyWith(pool: value) as $Val);
+    return $FactoryCopyWith<$Res>(_value.factory!, (value) {
+      return _then(_value.copyWith(factory: value) as $Val);
     });
   }
 }
@@ -224,11 +224,11 @@ abstract class _$$ForgeDetailStateImplCopyWith<$Res>
       double pricePerDemo,
       int uploadLimitValue,
       String uploadLimitType,
-      TrainingPoolStatus? factoryStatus,
-      TrainingPool? pool,
+      FactoryStatus? factoryStatus,
+      Factory? factory,
       ViewModeTasks viewModeTasks,
       String? error,
-      List<ForgeApp> apps,
+      List<FactoryApp> apps,
       bool isUpdateFactoryStatusSuccess,
       bool isUpdatePoolSuccess,
       bool isRefreshBalanceSuccess,
@@ -242,7 +242,7 @@ abstract class _$$ForgeDetailStateImplCopyWith<$Res>
       int? editingTaskIdx});
 
   @override
-  $TrainingPoolCopyWith<$Res>? get pool;
+  $FactoryCopyWith<$Res>? get factory;
 }
 
 /// @nodoc
@@ -263,7 +263,7 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
     Object? uploadLimitValue = null,
     Object? uploadLimitType = null,
     Object? factoryStatus = freezed,
-    Object? pool = freezed,
+    Object? factory = freezed,
     Object? viewModeTasks = null,
     Object? error = freezed,
     Object? apps = null,
@@ -299,11 +299,11 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
       factoryStatus: freezed == factoryStatus
           ? _value.factoryStatus
           : factoryStatus // ignore: cast_nullable_to_non_nullable
-              as TrainingPoolStatus?,
-      pool: freezed == pool
-          ? _value.pool
-          : pool // ignore: cast_nullable_to_non_nullable
-              as TrainingPool?,
+              as FactoryStatus?,
+      factory: freezed == factory
+          ? _value.factory
+          : factory // ignore: cast_nullable_to_non_nullable
+              as Factory?,
       viewModeTasks: null == viewModeTasks
           ? _value.viewModeTasks
           : viewModeTasks // ignore: cast_nullable_to_non_nullable
@@ -315,7 +315,7 @@ class __$$ForgeDetailStateImplCopyWithImpl<$Res>
       apps: null == apps
           ? _value._apps
           : apps // ignore: cast_nullable_to_non_nullable
-              as List<ForgeApp>,
+              as List<FactoryApp>,
       isUpdateFactoryStatusSuccess: null == isUpdateFactoryStatusSuccess
           ? _value.isUpdateFactoryStatusSuccess
           : isUpdateFactoryStatusSuccess // ignore: cast_nullable_to_non_nullable
@@ -372,11 +372,11 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
       this.pricePerDemo = 1,
       this.uploadLimitValue = 10,
       this.uploadLimitType = 'none',
-      this.factoryStatus = TrainingPoolStatus.noFunds,
-      this.pool,
+      this.factoryStatus = FactoryStatus.error,
+      this.factory,
       this.viewModeTasks = ViewModeTasks.edit,
       this.error,
-      final List<ForgeApp> apps = const [],
+      final List<FactoryApp> apps = const [],
       this.isUpdateFactoryStatusSuccess = false,
       this.isUpdatePoolSuccess = false,
       this.isRefreshBalanceSuccess = false,
@@ -405,18 +405,18 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
   final String uploadLimitType;
   @override
   @JsonKey()
-  final TrainingPoolStatus? factoryStatus;
+  final FactoryStatus? factoryStatus;
   @override
-  final TrainingPool? pool;
+  final Factory? factory;
   @override
   @JsonKey()
   final ViewModeTasks viewModeTasks;
   @override
   final String? error;
-  final List<ForgeApp> _apps;
+  final List<FactoryApp> _apps;
   @override
   @JsonKey()
-  List<ForgeApp> get apps {
+  List<FactoryApp> get apps {
     if (_apps is EqualUnmodifiableListView) return _apps;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_apps);
@@ -454,7 +454,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
 
   @override
   String toString() {
-    return 'ForgeDetailState(factoryName: $factoryName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, factoryStatus: $factoryStatus, pool: $pool, viewModeTasks: $viewModeTasks, error: $error, apps: $apps, isUpdateFactoryStatusSuccess: $isUpdateFactoryStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges, showNewAppForm: $showNewAppForm, showManageTaskModal: $showManageTaskModal, manageTaskModalType: $manageTaskModalType, newAppName: $newAppName, newAppDomain: $newAppDomain, editingTaskAppIdx: $editingTaskAppIdx, editingTaskIdx: $editingTaskIdx)';
+    return 'ForgeDetailState(factoryName: $factoryName, pricePerDemo: $pricePerDemo, uploadLimitValue: $uploadLimitValue, uploadLimitType: $uploadLimitType, factoryStatus: $factoryStatus, factory: $factory, viewModeTasks: $viewModeTasks, error: $error, apps: $apps, isUpdateFactoryStatusSuccess: $isUpdateFactoryStatusSuccess, isUpdatePoolSuccess: $isUpdatePoolSuccess, isRefreshBalanceSuccess: $isRefreshBalanceSuccess, hasUnsavedChanges: $hasUnsavedChanges, showNewAppForm: $showNewAppForm, showManageTaskModal: $showManageTaskModal, manageTaskModalType: $manageTaskModalType, newAppName: $newAppName, newAppDomain: $newAppDomain, editingTaskAppIdx: $editingTaskAppIdx, editingTaskIdx: $editingTaskIdx)';
   }
 
   @override
@@ -472,7 +472,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
                 other.uploadLimitType == uploadLimitType) &&
             (identical(other.factoryStatus, factoryStatus) ||
                 other.factoryStatus == factoryStatus) &&
-            (identical(other.pool, pool) || other.pool == pool) &&
+            (identical(other.factory, factory) || other.factory == factory) &&
             (identical(other.viewModeTasks, viewModeTasks) ||
                 other.viewModeTasks == viewModeTasks) &&
             (identical(other.error, error) || other.error == error) &&
@@ -512,7 +512,7 @@ class _$ForgeDetailStateImpl extends _ForgeDetailState {
         uploadLimitValue,
         uploadLimitType,
         factoryStatus,
-        pool,
+        factory,
         viewModeTasks,
         error,
         const DeepCollectionEquality().hash(_apps),
@@ -545,11 +545,11 @@ abstract class _ForgeDetailState extends ForgeDetailState {
       final double pricePerDemo,
       final int uploadLimitValue,
       final String uploadLimitType,
-      final TrainingPoolStatus? factoryStatus,
-      final TrainingPool? pool,
+      final FactoryStatus? factoryStatus,
+      final Factory? factory,
       final ViewModeTasks viewModeTasks,
       final String? error,
-      final List<ForgeApp> apps,
+      final List<FactoryApp> apps,
       final bool isUpdateFactoryStatusSuccess,
       final bool isUpdatePoolSuccess,
       final bool isRefreshBalanceSuccess,
@@ -572,15 +572,15 @@ abstract class _ForgeDetailState extends ForgeDetailState {
   @override
   String get uploadLimitType;
   @override
-  TrainingPoolStatus? get factoryStatus;
+  FactoryStatus? get factoryStatus;
   @override
-  TrainingPool? get pool;
+  Factory? get factory;
   @override
   ViewModeTasks get viewModeTasks;
   @override
   String? get error;
   @override
-  List<ForgeApp> get apps;
+  List<FactoryApp> get apps;
   @override
   bool get isUpdateFactoryStatusSuccess;
   @override

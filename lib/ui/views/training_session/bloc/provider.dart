@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:clones_desktop/application/pool.dart';
 import 'package:clones_desktop/application/submissions.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/upload/provider.dart';
 import 'package:clones_desktop/application/upload/state.dart';
+import 'package:clones_desktop/domain/models/api/api_error.dart';
 import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
 import 'package:clones_desktop/domain/models/demonstration/demonstration_reward.dart';
 import 'package:clones_desktop/domain/models/message/deleted_range.dart';
@@ -198,31 +198,40 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
 
     if (demonstration.title.isNotEmpty &&
         demonstration.app.isNotEmpty &&
-        demonstration.iconUrl.isNotEmpty &&
         demonstration.objectives.isNotEmpty) {
-      var currentDemonstration = Demonstration(
+      final currentDemonstration = Demonstration(
         title: demonstration.title,
         app: demonstration.app,
         iconUrl: demonstration.iconUrl,
         objectives: demonstration.objectives,
         content: demonstration.content,
+        poolId: state.poolId,
+        reward: DemonstrationReward(
+          time: demonstration.reward?.time ?? 0,
+          maxReward: demonstration.reward?.maxReward ?? 0,
+        ),
+        taskId: state.app?.taskId,
       );
 
       if (state.poolId != null) {
         try {
-          final taskId = state.app?.taskId;
-
-          final rewardInfo = await ref.read(
-            GetRewardProvider(poolId: state.poolId!, taskId: taskId).future,
-          );
-          currentDemonstration = currentDemonstration.copyWith(
-            poolId: state.poolId,
-            reward: DemonstrationReward(
-              time: rewardInfo.time,
-              maxReward: rewardInfo.maxReward,
-            ),
-            taskId: state.app!.taskId,
-          );
+          // TODO: `getRewardProvider` is deprecated. The new on-chain system does not have a
+          // direct equivalent for pre-calculating rewards. The backend now generates
+          // EIP-712 signatures for claims based on user performance. This logic
+          // needs to be re-evaluated and adapted to the new claim-based system.
+          // final taskId = state.app?.taskId;
+          //
+          // final rewardInfo = await ref.read(
+          //   getRewardProvider(poolId: state.poolId!, taskId: taskId).future,
+          // );
+          // currentDemonstration = currentDemonstration.copyWith(
+          //   poolId: state.poolId,
+          //   reward: DemonstrationReward(
+          //     time: rewardInfo.time,
+          //     maxReward: rewardInfo.maxReward,
+          //   ),
+          //   taskId: state.app!.taskId,
+          // );
 
           await addMessage(generateUserMessage('Sure!'));
         } catch (error) {
@@ -784,7 +793,9 @@ class TrainingSessionNotifier extends _$TrainingSessionNotifier
       debugPrint('Error in upload process: $e');
       await addMessage(
         generateAssistantMessage(
-          'There was an error starting the upload: $e',
+          e is ApiError
+              ? e.message
+              : 'There was an error starting the upload: $e',
         ),
       );
       setIsUploading(false);

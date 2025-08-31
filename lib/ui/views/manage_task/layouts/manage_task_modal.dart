@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/views/manage_task/bloc/provider.dart';
@@ -23,10 +23,10 @@ class ManageTaskModal extends ConsumerStatefulWidget {
     this.task,
   });
   final String tokenSymbol;
-  final void Function(ForgeTaskItem? task) onDone;
+  final void Function(FactoryTask? task) onDone;
   final VoidCallback onClose;
   final ManageTaskModalType modalType;
-  final ForgeTaskItem? task;
+  final FactoryTask? task;
 
   @override
   ConsumerState<ManageTaskModal> createState() => _ManageTaskModalState();
@@ -69,9 +69,9 @@ class _ManageTaskModalState extends ConsumerState<ManageTaskModal> {
     if (state.prompt.isEmpty) {
       return;
     }
-    final ForgeTaskItem result;
+    final FactoryTask result;
     if (widget.modalType == ManageTaskModalType.create) {
-      result = ForgeTaskItem(
+      result = FactoryTask(
         prompt: state.prompt,
         rewardLimit: state.pricePerDemo,
         uploadLimit: state.uploadLimitValue,

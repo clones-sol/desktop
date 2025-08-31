@@ -78,7 +78,7 @@ class BtnPrimary extends StatelessWidget {
                     width: 10,
                     height: 10,
                     child: CircularProgressIndicator(
-                      strokeWidth: 2,
+                      strokeWidth: 0.5,
                       color: Colors.white,
                     ),
                   ),

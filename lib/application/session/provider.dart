@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:clones_desktop/application/pool.dart';
+import 'package:clones_desktop/application/factory.dart';
 import 'package:clones_desktop/application/referral.dart';
 import 'package:clones_desktop/application/session/state.dart';
 import 'package:clones_desktop/domain/models/wallet/token_balance.dart';
@@ -156,6 +156,16 @@ class SessionNotifier extends _$SessionNotifier {
     final token = _generateToken();
     state = state.copyWith(connectionToken: token);
   }
+}
+
+@riverpod
+Future<double> getTokenBalance(
+  Ref ref,
+  String address,
+  String symbol,
+) async {
+  final walletRepository = ref.read(walletRepositoryProvider);
+  return walletRepository.getBalance(address: address, symbol: symbol);
 }
 
 @riverpod

@@ -1,6 +1,4 @@
 import 'package:clones_desktop/domain/models/demonstration/demonstration.dart';
-import 'package:clones_desktop/domain/models/demonstration/demonstration_reward.dart';
-import 'package:clones_desktop/infrastructure/pool.repository.dart';
 import 'package:clones_desktop/infrastructure/tauri_api_client.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 
@@ -28,20 +26,24 @@ class DemonstrationRepositoryImpl {
       fromJson: (json) => Demonstration.fromJson(json as Map<String, dynamic>),
     );
 
-    if (poolId != null) {
-      final rewardInfo = await PoolsRepositoryImpl(_client).getReward(
-        poolId: poolId,
-        taskId: taskId,
-      );
-      return demonstration.copyWith(
-        poolId: poolId,
-        reward: DemonstrationReward(
-          time: rewardInfo.time,
-          maxReward: rewardInfo.maxReward,
-        ),
-        taskId: taskId,
-      );
-    }
+    // TODO: The reward system has been migrated to an on-chain factory system.
+    // The previous `getReward` endpoint was part of the off-chain `pools.ts` API and has been removed.
+    // This logic needs to be re-implemented to fetch reward data from the new on-chain system,
+    // likely by querying the subgraph or a new backend endpoint that interacts with the factory contracts.
+    // if (poolId != null) {
+    //   final rewardInfo = await PoolsRepositoryImpl(_client).getReward(
+    //     poolId: poolId,
+    //     taskId: taskId,
+    //   );
+    //   return demonstration.copyWith(
+    //     poolId: poolId,
+    //     reward: DemonstrationReward(
+    //       time: rewardInfo.time,
+    //       maxReward: rewardInfo.maxReward,
+    //     ),
+    //     taskId: taskId,
+    //   );
+    // }
 
     return demonstration;
   }

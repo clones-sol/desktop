@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ForgeState {
   bool get showFactoryDetail => throw _privateConstructorUsedError;
   bool get showGenerateFactoryModal => throw _privateConstructorUsedError;
-  TrainingPool? get selectedPool => throw _privateConstructorUsedError;
+  Factory? get selectedFactory => throw _privateConstructorUsedError;
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.
@@ -36,9 +36,9 @@ abstract class $ForgeStateCopyWith<$Res> {
   $Res call(
       {bool showFactoryDetail,
       bool showGenerateFactoryModal,
-      TrainingPool? selectedPool});
+      Factory? selectedFactory});
 
-  $TrainingPoolCopyWith<$Res>? get selectedPool;
+  $FactoryCopyWith<$Res>? get selectedFactory;
 }
 
 /// @nodoc
@@ -58,7 +58,7 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
   $Res call({
     Object? showFactoryDetail = null,
     Object? showGenerateFactoryModal = null,
-    Object? selectedPool = freezed,
+    Object? selectedFactory = freezed,
   }) {
     return _then(_value.copyWith(
       showFactoryDetail: null == showFactoryDetail
@@ -69,10 +69,10 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
           ? _value.showGenerateFactoryModal
           : showGenerateFactoryModal // ignore: cast_nullable_to_non_nullable
               as bool,
-      selectedPool: freezed == selectedPool
-          ? _value.selectedPool
-          : selectedPool // ignore: cast_nullable_to_non_nullable
-              as TrainingPool?,
+      selectedFactory: freezed == selectedFactory
+          ? _value.selectedFactory
+          : selectedFactory // ignore: cast_nullable_to_non_nullable
+              as Factory?,
     ) as $Val);
   }
 
@@ -80,13 +80,13 @@ class _$ForgeStateCopyWithImpl<$Res, $Val extends ForgeState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TrainingPoolCopyWith<$Res>? get selectedPool {
-    if (_value.selectedPool == null) {
+  $FactoryCopyWith<$Res>? get selectedFactory {
+    if (_value.selectedFactory == null) {
       return null;
     }
 
-    return $TrainingPoolCopyWith<$Res>(_value.selectedPool!, (value) {
-      return _then(_value.copyWith(selectedPool: value) as $Val);
+    return $FactoryCopyWith<$Res>(_value.selectedFactory!, (value) {
+      return _then(_value.copyWith(selectedFactory: value) as $Val);
     });
   }
 }
@@ -102,10 +102,10 @@ abstract class _$$ForgeStateImplCopyWith<$Res>
   $Res call(
       {bool showFactoryDetail,
       bool showGenerateFactoryModal,
-      TrainingPool? selectedPool});
+      Factory? selectedFactory});
 
   @override
-  $TrainingPoolCopyWith<$Res>? get selectedPool;
+  $FactoryCopyWith<$Res>? get selectedFactory;
 }
 
 /// @nodoc
@@ -123,7 +123,7 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? showFactoryDetail = null,
     Object? showGenerateFactoryModal = null,
-    Object? selectedPool = freezed,
+    Object? selectedFactory = freezed,
   }) {
     return _then(_$ForgeStateImpl(
       showFactoryDetail: null == showFactoryDetail
@@ -134,10 +134,10 @@ class __$$ForgeStateImplCopyWithImpl<$Res>
           ? _value.showGenerateFactoryModal
           : showGenerateFactoryModal // ignore: cast_nullable_to_non_nullable
               as bool,
-      selectedPool: freezed == selectedPool
-          ? _value.selectedPool
-          : selectedPool // ignore: cast_nullable_to_non_nullable
-              as TrainingPool?,
+      selectedFactory: freezed == selectedFactory
+          ? _value.selectedFactory
+          : selectedFactory // ignore: cast_nullable_to_non_nullable
+              as Factory?,
     ));
   }
 }
@@ -148,7 +148,7 @@ class _$ForgeStateImpl extends _ForgeState {
   const _$ForgeStateImpl(
       {this.showFactoryDetail = false,
       this.showGenerateFactoryModal = false,
-      this.selectedPool})
+      this.selectedFactory})
       : super._();
 
   @override
@@ -158,11 +158,11 @@ class _$ForgeStateImpl extends _ForgeState {
   @JsonKey()
   final bool showGenerateFactoryModal;
   @override
-  final TrainingPool? selectedPool;
+  final Factory? selectedFactory;
 
   @override
   String toString() {
-    return 'ForgeState(showFactoryDetail: $showFactoryDetail, showGenerateFactoryModal: $showGenerateFactoryModal, selectedPool: $selectedPool)';
+    return 'ForgeState(showFactoryDetail: $showFactoryDetail, showGenerateFactoryModal: $showGenerateFactoryModal, selectedFactory: $selectedFactory)';
   }
 
   @override
@@ -175,13 +175,13 @@ class _$ForgeStateImpl extends _ForgeState {
             (identical(
                     other.showGenerateFactoryModal, showGenerateFactoryModal) ||
                 other.showGenerateFactoryModal == showGenerateFactoryModal) &&
-            (identical(other.selectedPool, selectedPool) ||
-                other.selectedPool == selectedPool));
+            (identical(other.selectedFactory, selectedFactory) ||
+                other.selectedFactory == selectedFactory));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, showFactoryDetail, showGenerateFactoryModal, selectedPool);
+  int get hashCode => Object.hash(runtimeType, showFactoryDetail,
+      showGenerateFactoryModal, selectedFactory);
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.
@@ -196,7 +196,7 @@ abstract class _ForgeState extends ForgeState {
   const factory _ForgeState(
       {final bool showFactoryDetail,
       final bool showGenerateFactoryModal,
-      final TrainingPool? selectedPool}) = _$ForgeStateImpl;
+      final Factory? selectedFactory}) = _$ForgeStateImpl;
   const _ForgeState._() : super._();
 
   @override
@@ -204,7 +204,7 @@ abstract class _ForgeState extends ForgeState {
   @override
   bool get showGenerateFactoryModal;
   @override
-  TrainingPool? get selectedPool;
+  Factory? get selectedFactory;
 
   /// Create a copy of ForgeState
   /// with the given fields replaced by the non-null parameter values.

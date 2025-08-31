@@ -30,6 +30,12 @@ use crate::core::record::{export_recording_zip, open_recording_folder, process_r
 use crate::utils::permissions::{has_record_perms, request_record_perms};
 // Import functions from `commands/settings`
 use crate::commands::settings::{get_onboarding_complete, set_onboarding_complete};
+// Import functions from `commands/transaction`
+use crate::commands::transaction::{
+    cleanup_old_transactions, generate_session_token, generate_transaction_deep_link,
+    get_transaction_request, handle_transaction_callback, list_pending_transactions,
+    prepare_transaction_request, update_transaction_status, TransactionRequest, TransactionStatus,
+};
 // Import functions from `utils/windows`
 use crate::utils::windows::{
     get_all_displays_size, get_window_size, resize_window, set_window_position,
@@ -96,6 +102,38 @@ pub struct PermissionStatus {
 #[derive(Deserialize)]
 pub struct SetOnboardingCompletePayload {
     complete: bool,
+}
+
+// Structures for transaction endpoints
+#[derive(Deserialize)]
+pub struct PrepareTransactionPayload {
+    transaction_type: String,
+    session_token: String,
+    creator: Option<String>,
+    token: Option<String>,
+    amount: Option<String>,
+    pool_address: Option<String>,
+}
+
+#[derive(Deserialize)]
+pub struct GenerateDeepLinkPayload {
+    request: serde_json::Value,
+    website_base_url: Option<String>,
+}
+
+#[derive(Deserialize)]
+pub struct UpdateTransactionStatusPayload {
+    request_id: String,
+    status: String,
+    gas_estimate: Option<serde_json::Value>,
+}
+
+#[derive(Deserialize)]
+pub struct TransactionCallbackPayload {
+    status: String,
+    tx_hash: Option<String>,
+    message: Option<String>,
+    transaction_type: String,
 }
 
 // Structure for the `set_window_resizable` payload
@@ -194,6 +232,38 @@ pub async fn init(app_handle: AppHandle) {
         .route("/window/resizable", post(set_window_resizable_handler))
         // GET /displays/size: Get the size of all displays.
         .route("/displays/size", get(get_all_displays_size_handler))
+        // Transaction endpoints
+        // GET /transaction/session: Generate a new session token
+        .route("/transaction/session", get(generate_session_token_handler))
+        // POST /transaction/prepare: Prepare a transaction request
+        .route(
+            "/transaction/prepare",
+            post(prepare_transaction_request_handler),
+        )
+        // POST /transaction/deeplink: Generate deep link URL
+        .route("/transaction/deeplink", post(generate_deep_link_handler))
+        // GET /transaction/:id: Get transaction request by ID
+        .route("/transaction/:id", get(get_transaction_request_handler))
+        // POST /transaction/:id/status: Update transaction status
+        .route(
+            "/transaction/:id/status",
+            post(update_transaction_status_handler),
+        )
+        // GET /transaction/pending: List pending transactions
+        .route(
+            "/transaction/pending",
+            get(list_pending_transactions_handler),
+        )
+        // POST /transaction/cleanup: Clean up old transactions
+        .route(
+            "/transaction/cleanup",
+            post(cleanup_old_transactions_handler),
+        )
+        // POST /transaction/callback: Handle transaction callback
+        .route(
+            "/transaction/callback",
+            post(handle_transaction_callback_handler),
+        )
         .with_state(state)
         .layer(cors);
 
@@ -564,6 +634,151 @@ async fn set_window_resizable_handler(
 async fn get_all_displays_size_handler() -> Result<impl IntoResponse, (StatusCode, String)> {
     match get_all_displays_size() {
         Ok(size) => Ok((StatusCode::OK, Json(size))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Transaction handlers
+
+// Handler to generate a new session token
+async fn generate_session_token_handler() -> Result<impl IntoResponse, (StatusCode, String)> {
+    match generate_session_token() {
+        Ok(token) => Ok((StatusCode::OK, Json(token))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to prepare a transaction request
+async fn prepare_transaction_request_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<PrepareTransactionPayload>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match prepare_transaction_request(
+        state.app_handle,
+        payload.transaction_type,
+        payload.session_token,
+        payload.creator,
+        payload.token,
+        payload.amount,
+        payload.pool_address,
+    )
+    .await
+    {
+        Ok(request) => Ok((StatusCode::OK, Json(request))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to generate deep link URL
+async fn generate_deep_link_handler(
+    Json(payload): Json<GenerateDeepLinkPayload>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    // Convert JSON value to TransactionRequest
+    let request: TransactionRequest = match serde_json::from_value(payload.request) {
+        Ok(req) => req,
+        Err(e) => {
+            return Err((
+                StatusCode::BAD_REQUEST,
+                format!("Invalid request format: {}", e),
+            ))
+        }
+    };
+
+    match generate_transaction_deep_link(request, payload.website_base_url) {
+        Ok(url) => Ok((StatusCode::OK, Json(url))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to get transaction request by ID
+async fn get_transaction_request_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(request_id): axum::extract::Path<String>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match get_transaction_request(state.app_handle, request_id).await {
+        Ok(Some(request)) => Ok((StatusCode::OK, Json(request))),
+        Ok(None) => Err((
+            StatusCode::NOT_FOUND,
+            "Transaction request not found".to_string(),
+        )),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to update transaction status
+async fn update_transaction_status_handler(
+    State(state): State<AppState>,
+    axum::extract::Path(request_id): axum::extract::Path<String>,
+    Json(payload): Json<UpdateTransactionStatusPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    // Parse status
+    let status = match payload.status.as_str() {
+        "pending" => TransactionStatus::Pending,
+        "validating" => TransactionStatus::Validating,
+        "ready" => TransactionStatus::Ready,
+        "executing" => TransactionStatus::Executing,
+        "completed" => TransactionStatus::Completed,
+        "failed" => TransactionStatus::Failed,
+        "cancelled" => TransactionStatus::Cancelled,
+        _ => return Err((StatusCode::BAD_REQUEST, "Invalid status".to_string())),
+    };
+
+    // Parse gas estimate if provided
+    let gas_estimate = if let Some(estimate_json) = payload.gas_estimate {
+        match serde_json::from_value(estimate_json) {
+            Ok(estimate) => Some(estimate),
+            Err(e) => {
+                return Err((
+                    StatusCode::BAD_REQUEST,
+                    format!("Invalid gas estimate: {}", e),
+                ))
+            }
+        }
+    } else {
+        None
+    };
+
+    match update_transaction_status(state.app_handle, request_id, status, gas_estimate).await {
+        Ok(_) => Ok(StatusCode::OK),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to list pending transactions
+async fn list_pending_transactions_handler(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match list_pending_transactions(state.app_handle).await {
+        Ok(transactions) => Ok((StatusCode::OK, Json(transactions))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to clean up old transactions
+async fn cleanup_old_transactions_handler(
+    State(state): State<AppState>,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    match cleanup_old_transactions(state.app_handle).await {
+        Ok(count) => Ok((StatusCode::OK, Json(count))),
+        Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
+    }
+}
+
+// Handler to handle transaction callback
+async fn handle_transaction_callback_handler(
+    State(state): State<AppState>,
+    Json(payload): Json<TransactionCallbackPayload>,
+) -> Result<StatusCode, (StatusCode, String)> {
+    match handle_transaction_callback(
+        state.app_handle,
+        payload.status,
+        payload.tx_hash,
+        payload.message,
+        payload.transaction_type,
+    )
+    .await
+    {
+        Ok(_) => Ok(StatusCode::OK),
         Err(e) => Err((StatusCode::INTERNAL_SERVER_ERROR, e)),
     }
 }

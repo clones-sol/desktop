@@ -1013,6 +1013,7 @@ dependencies = [
  "tempfile",
  "tokio",
  "tower-http 0.5.2",
+ "uuid",
  "wait-timeout",
  "walkdir",
  "window-vibrancy",

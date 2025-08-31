@@ -1,5 +1,4 @@
-import 'package:clones_desktop/application/recording.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/domain/models/ui/factory_filter.dart';
 import 'package:clones_desktop/infrastructure/apps.repository.dart';
 import 'package:clones_desktop/utils/api_client.dart';
@@ -26,21 +25,7 @@ Future<Map<String, dynamic>> generateApps(
 }
 
 @riverpod
-Future<List<ForgeApp>> getAppsForHistory(Ref ref) async {
-  final appsRepository = ref.read(appsRepositoryProvider);
-  final recordings = await ref.read(listRecordingsProvider.future);
-  return appsRepository.getAppsForHistory(recordings);
-}
-
-@riverpod
-Future<List<ForgeApp>> getAppsForSkills(Ref ref) async {
-  final appsRepository = ref.read(appsRepositoryProvider);
-  final recordings = await ref.read(listRecordingsProvider.future);
-  return appsRepository.getAppsForSkills(recordings);
-}
-
-@riverpod
-Future<List<ForgeApp>> getAppsForFactory(
+Future<List<FactoryApp>> getAppsForFactory(
   Ref ref, {
   required FactoryFilter filter,
 }) async {

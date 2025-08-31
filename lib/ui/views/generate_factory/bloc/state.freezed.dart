@@ -19,7 +19,7 @@ mixin _$GenerateFactoryState {
   String? get skills => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   String? get factoryName => throw _privateConstructorUsedError;
-  List<ForgeApp>? get apps => throw _privateConstructorUsedError;
+  List<FactoryApp>? get apps => throw _privateConstructorUsedError;
   bool get showJsonEditor => throw _privateConstructorUsedError;
   GenerateFactoryStep get currentStep => throw _privateConstructorUsedError;
   bool get isCreating => throw _privateConstructorUsedError;
@@ -27,6 +27,11 @@ mixin _$GenerateFactoryState {
   List<SupportedToken>? get supportedTokens =>
       throw _privateConstructorUsedError;
   String? get selectedTokenSymbol => throw _privateConstructorUsedError;
+  String? get predictedPoolAddress => throw _privateConstructorUsedError;
+  String? get fundingAmount => throw _privateConstructorUsedError;
+  String? get estimatedGasCost => throw _privateConstructorUsedError;
+  bool? get gasExceedsReward => throw _privateConstructorUsedError;
+  String? get transactionStatus => throw _privateConstructorUsedError;
 
   /// Create a copy of GenerateFactoryState
   /// with the given fields replaced by the non-null parameter values.
@@ -45,13 +50,18 @@ abstract class $GenerateFactoryStateCopyWith<$Res> {
       {String? skills,
       String? error,
       String? factoryName,
-      List<ForgeApp>? apps,
+      List<FactoryApp>? apps,
       bool showJsonEditor,
       GenerateFactoryStep currentStep,
       bool isCreating,
       bool isCreated,
       List<SupportedToken>? supportedTokens,
-      String? selectedTokenSymbol});
+      String? selectedTokenSymbol,
+      String? predictedPoolAddress,
+      String? fundingAmount,
+      String? estimatedGasCost,
+      bool? gasExceedsReward,
+      String? transactionStatus});
 }
 
 /// @nodoc
@@ -80,6 +90,11 @@ class _$GenerateFactoryStateCopyWithImpl<$Res,
     Object? isCreated = null,
     Object? supportedTokens = freezed,
     Object? selectedTokenSymbol = freezed,
+    Object? predictedPoolAddress = freezed,
+    Object? fundingAmount = freezed,
+    Object? estimatedGasCost = freezed,
+    Object? gasExceedsReward = freezed,
+    Object? transactionStatus = freezed,
   }) {
     return _then(_value.copyWith(
       skills: freezed == skills
@@ -97,7 +112,7 @@ class _$GenerateFactoryStateCopyWithImpl<$Res,
       apps: freezed == apps
           ? _value.apps
           : apps // ignore: cast_nullable_to_non_nullable
-              as List<ForgeApp>?,
+              as List<FactoryApp>?,
       showJsonEditor: null == showJsonEditor
           ? _value.showJsonEditor
           : showJsonEditor // ignore: cast_nullable_to_non_nullable
@@ -122,6 +137,26 @@ class _$GenerateFactoryStateCopyWithImpl<$Res,
           ? _value.selectedTokenSymbol
           : selectedTokenSymbol // ignore: cast_nullable_to_non_nullable
               as String?,
+      predictedPoolAddress: freezed == predictedPoolAddress
+          ? _value.predictedPoolAddress
+          : predictedPoolAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fundingAmount: freezed == fundingAmount
+          ? _value.fundingAmount
+          : fundingAmount // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimatedGasCost: freezed == estimatedGasCost
+          ? _value.estimatedGasCost
+          : estimatedGasCost // ignore: cast_nullable_to_non_nullable
+              as String?,
+      gasExceedsReward: freezed == gasExceedsReward
+          ? _value.gasExceedsReward
+          : gasExceedsReward // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      transactionStatus: freezed == transactionStatus
+          ? _value.transactionStatus
+          : transactionStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -138,13 +173,18 @@ abstract class _$$GenerateFactoryStateImplCopyWith<$Res>
       {String? skills,
       String? error,
       String? factoryName,
-      List<ForgeApp>? apps,
+      List<FactoryApp>? apps,
       bool showJsonEditor,
       GenerateFactoryStep currentStep,
       bool isCreating,
       bool isCreated,
       List<SupportedToken>? supportedTokens,
-      String? selectedTokenSymbol});
+      String? selectedTokenSymbol,
+      String? predictedPoolAddress,
+      String? fundingAmount,
+      String? estimatedGasCost,
+      bool? gasExceedsReward,
+      String? transactionStatus});
 }
 
 /// @nodoc
@@ -170,6 +210,11 @@ class __$$GenerateFactoryStateImplCopyWithImpl<$Res>
     Object? isCreated = null,
     Object? supportedTokens = freezed,
     Object? selectedTokenSymbol = freezed,
+    Object? predictedPoolAddress = freezed,
+    Object? fundingAmount = freezed,
+    Object? estimatedGasCost = freezed,
+    Object? gasExceedsReward = freezed,
+    Object? transactionStatus = freezed,
   }) {
     return _then(_$GenerateFactoryStateImpl(
       skills: freezed == skills
@@ -187,7 +232,7 @@ class __$$GenerateFactoryStateImplCopyWithImpl<$Res>
       apps: freezed == apps
           ? _value._apps
           : apps // ignore: cast_nullable_to_non_nullable
-              as List<ForgeApp>?,
+              as List<FactoryApp>?,
       showJsonEditor: null == showJsonEditor
           ? _value.showJsonEditor
           : showJsonEditor // ignore: cast_nullable_to_non_nullable
@@ -212,6 +257,26 @@ class __$$GenerateFactoryStateImplCopyWithImpl<$Res>
           ? _value.selectedTokenSymbol
           : selectedTokenSymbol // ignore: cast_nullable_to_non_nullable
               as String?,
+      predictedPoolAddress: freezed == predictedPoolAddress
+          ? _value.predictedPoolAddress
+          : predictedPoolAddress // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fundingAmount: freezed == fundingAmount
+          ? _value.fundingAmount
+          : fundingAmount // ignore: cast_nullable_to_non_nullable
+              as String?,
+      estimatedGasCost: freezed == estimatedGasCost
+          ? _value.estimatedGasCost
+          : estimatedGasCost // ignore: cast_nullable_to_non_nullable
+              as String?,
+      gasExceedsReward: freezed == gasExceedsReward
+          ? _value.gasExceedsReward
+          : gasExceedsReward // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      transactionStatus: freezed == transactionStatus
+          ? _value.transactionStatus
+          : transactionStatus // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -223,13 +288,18 @@ class _$GenerateFactoryStateImpl extends _GenerateFactoryState {
       {this.skills,
       this.error,
       this.factoryName,
-      final List<ForgeApp>? apps,
+      final List<FactoryApp>? apps,
       this.showJsonEditor = false,
       this.currentStep = GenerateFactoryStep.input,
       this.isCreating = false,
       this.isCreated = false,
       final List<SupportedToken>? supportedTokens,
-      this.selectedTokenSymbol})
+      this.selectedTokenSymbol,
+      this.predictedPoolAddress,
+      this.fundingAmount,
+      this.estimatedGasCost,
+      this.gasExceedsReward,
+      this.transactionStatus})
       : _apps = apps,
         _supportedTokens = supportedTokens,
         super._();
@@ -240,9 +310,9 @@ class _$GenerateFactoryStateImpl extends _GenerateFactoryState {
   final String? error;
   @override
   final String? factoryName;
-  final List<ForgeApp>? _apps;
+  final List<FactoryApp>? _apps;
   @override
-  List<ForgeApp>? get apps {
+  List<FactoryApp>? get apps {
     final value = _apps;
     if (value == null) return null;
     if (_apps is EqualUnmodifiableListView) return _apps;
@@ -274,10 +344,20 @@ class _$GenerateFactoryStateImpl extends _GenerateFactoryState {
 
   @override
   final String? selectedTokenSymbol;
+  @override
+  final String? predictedPoolAddress;
+  @override
+  final String? fundingAmount;
+  @override
+  final String? estimatedGasCost;
+  @override
+  final bool? gasExceedsReward;
+  @override
+  final String? transactionStatus;
 
   @override
   String toString() {
-    return 'GenerateFactoryState(skills: $skills, error: $error, factoryName: $factoryName, apps: $apps, showJsonEditor: $showJsonEditor, currentStep: $currentStep, isCreating: $isCreating, isCreated: $isCreated, supportedTokens: $supportedTokens, selectedTokenSymbol: $selectedTokenSymbol)';
+    return 'GenerateFactoryState(skills: $skills, error: $error, factoryName: $factoryName, apps: $apps, showJsonEditor: $showJsonEditor, currentStep: $currentStep, isCreating: $isCreating, isCreated: $isCreated, supportedTokens: $supportedTokens, selectedTokenSymbol: $selectedTokenSymbol, predictedPoolAddress: $predictedPoolAddress, fundingAmount: $fundingAmount, estimatedGasCost: $estimatedGasCost, gasExceedsReward: $gasExceedsReward, transactionStatus: $transactionStatus)';
   }
 
   @override
@@ -301,7 +381,17 @@ class _$GenerateFactoryStateImpl extends _GenerateFactoryState {
             const DeepCollectionEquality()
                 .equals(other._supportedTokens, _supportedTokens) &&
             (identical(other.selectedTokenSymbol, selectedTokenSymbol) ||
-                other.selectedTokenSymbol == selectedTokenSymbol));
+                other.selectedTokenSymbol == selectedTokenSymbol) &&
+            (identical(other.predictedPoolAddress, predictedPoolAddress) ||
+                other.predictedPoolAddress == predictedPoolAddress) &&
+            (identical(other.fundingAmount, fundingAmount) ||
+                other.fundingAmount == fundingAmount) &&
+            (identical(other.estimatedGasCost, estimatedGasCost) ||
+                other.estimatedGasCost == estimatedGasCost) &&
+            (identical(other.gasExceedsReward, gasExceedsReward) ||
+                other.gasExceedsReward == gasExceedsReward) &&
+            (identical(other.transactionStatus, transactionStatus) ||
+                other.transactionStatus == transactionStatus));
   }
 
   @override
@@ -316,7 +406,12 @@ class _$GenerateFactoryStateImpl extends _GenerateFactoryState {
       isCreating,
       isCreated,
       const DeepCollectionEquality().hash(_supportedTokens),
-      selectedTokenSymbol);
+      selectedTokenSymbol,
+      predictedPoolAddress,
+      fundingAmount,
+      estimatedGasCost,
+      gasExceedsReward,
+      transactionStatus);
 
   /// Create a copy of GenerateFactoryState
   /// with the given fields replaced by the non-null parameter values.
@@ -334,13 +429,18 @@ abstract class _GenerateFactoryState extends GenerateFactoryState {
       {final String? skills,
       final String? error,
       final String? factoryName,
-      final List<ForgeApp>? apps,
+      final List<FactoryApp>? apps,
       final bool showJsonEditor,
       final GenerateFactoryStep currentStep,
       final bool isCreating,
       final bool isCreated,
       final List<SupportedToken>? supportedTokens,
-      final String? selectedTokenSymbol}) = _$GenerateFactoryStateImpl;
+      final String? selectedTokenSymbol,
+      final String? predictedPoolAddress,
+      final String? fundingAmount,
+      final String? estimatedGasCost,
+      final bool? gasExceedsReward,
+      final String? transactionStatus}) = _$GenerateFactoryStateImpl;
   const _GenerateFactoryState._() : super._();
 
   @override
@@ -350,7 +450,7 @@ abstract class _GenerateFactoryState extends GenerateFactoryState {
   @override
   String? get factoryName;
   @override
-  List<ForgeApp>? get apps;
+  List<FactoryApp>? get apps;
   @override
   bool get showJsonEditor;
   @override
@@ -363,6 +463,16 @@ abstract class _GenerateFactoryState extends GenerateFactoryState {
   List<SupportedToken>? get supportedTokens;
   @override
   String? get selectedTokenSymbol;
+  @override
+  String? get predictedPoolAddress;
+  @override
+  String? get fundingAmount;
+  @override
+  String? get estimatedGasCost;
+  @override
+  bool? get gasExceedsReward;
+  @override
+  String? get transactionStatus;
 
   /// Create a copy of GenerateFactoryState
   /// with the given fields replaced by the non-null parameter values.

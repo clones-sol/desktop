@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/forge_task/forge_task.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/infrastructure/tasks.repository.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,7 @@ TasksRepositoryImpl tasksRepository(
 }
 
 @riverpod
-Future<List<ForgeTask>> getTasksForFactory(
+Future<List<FactoryTask>> getTasksForFactory(
   Ref ref, {
   Map<String, dynamic>? filter,
 }) async {

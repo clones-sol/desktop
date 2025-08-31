@@ -12,11 +12,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// - Glass/liquid look (blur + translucent background + subtle inner border)
 /// - Always accessible, floats above content, but under modals
 /// - Keyboard focusable and minimum 48px tap targets
-class GlobalActionRail extends ConsumerWidget {
+class GlobalActionRail extends ConsumerStatefulWidget {
   const GlobalActionRail({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<GlobalActionRail> createState() => _GlobalActionRailState();
+}
+
+class _GlobalActionRailState extends ConsumerState<GlobalActionRail> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final disableAnimations = mediaQuery.disableAnimations;
 
@@ -81,15 +88,24 @@ class GlobalActionRail extends ConsumerWidget {
       ),
     );
 
+    final interactiveRail = MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: rail,
+    );
+
     if (disableAnimations) {
-      return rail;
+      return Opacity(
+        opacity: _isHovered ? 1.0 : 0.1,
+        child: interactiveRail,
+      );
     }
 
     return AnimatedOpacity(
-      opacity: 1,
+      opacity: isConnected == false || _isHovered ? 1.0 : 0.1,
       duration: const Duration(milliseconds: 250),
       curve: Curves.easeOut,
-      child: rail,
+      child: interactiveRail,
     );
   }
 }

@@ -21,6 +21,10 @@ _$PoolSubmissionImpl _$$PoolSubmissionImplFromJson(Map<String, dynamic> json) =>
       reward: (json['reward'] as num?)?.toDouble(),
       maxReward: (json['maxReward'] as num?)?.toDouble(),
       clampedScore: (json['clampedScore'] as num?)?.toDouble(),
+      claimAuthorization: json['claimAuthorization'] == null
+          ? null
+          : ClaimAuthorization.fromJson(
+              json['claimAuthorization'] as Map<String, dynamic>),
       createdAt: json['createdAt'] as String,
       updatedAt: json['updatedAt'] as String,
     );
@@ -37,6 +41,7 @@ Map<String, dynamic> _$$PoolSubmissionImplToJson(
       'reward': instance.reward,
       'maxReward': instance.maxReward,
       'clampedScore': instance.clampedScore,
+      'claimAuthorization': instance.claimAuthorization,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
     };

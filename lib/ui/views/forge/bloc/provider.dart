@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/training_pool.dart';
+import 'package:clones_desktop/domain/models/factory/factory.dart';
 import 'package:clones_desktop/ui/views/forge/bloc/state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,8 +17,8 @@ class ForgeNotifier extends _$ForgeNotifier {
     state = state.copyWith(showFactoryDetail: show);
   }
 
-  void setSelectedPool(TrainingPool? pool) {
-    state = state.copyWith(selectedPool: pool);
+  void setSelectedFactory(Factory? factory) {
+    state = state.copyWith(selectedFactory: factory);
   }
 
   void setShowGenerateFactoryModal(bool show) {
