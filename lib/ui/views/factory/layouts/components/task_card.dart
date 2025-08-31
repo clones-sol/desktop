@@ -43,6 +43,25 @@ class TaskCard extends ConsumerWidget {
     final rewardText =
         '${formatNumberWithSeparator(factory.pricePerDemo)} $tokenSymbol';
 
+    Future<void> onTap(BuildContext context) async {
+      final appInfo = AppInfo(
+        type: 'website',
+        name: app.name,
+        url: 'https://${app.domain}',
+        taskId: task.id,
+      );
+      final appParam = Uri.encodeComponent(jsonEncode(appInfo.toJson()));
+
+      context.go(
+        TrainingSessionView.routeName,
+        extra: {
+          'prompt': task.prompt,
+          'appParam': appParam,
+          'poolId': factory.id,
+        },
+      );
+    }
+
     return Stack(
       children: [
         Padding(
@@ -51,25 +70,7 @@ class TaskCard extends ConsumerWidget {
             padding: CardPadding.small,
             variant: CardVariant.secondary,
             child: InkWell(
-              onTap: () async {
-                final appInfo = AppInfo(
-                  type: 'website',
-                  name: app.name,
-                  url: 'https://${app.domain}',
-                  taskId: task.id,
-                );
-                final appParam =
-                    Uri.encodeComponent(jsonEncode(appInfo.toJson()));
-
-                context.go(
-                  TrainingSessionView.routeName,
-                  extra: {
-                    'prompt': task.prompt,
-                    'appParam': appParam,
-                    'poolId': factory.poolAddress,
-                  },
-                );
-              },
+              onTap: () async => onTap(context),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
@@ -111,7 +112,11 @@ class TaskCard extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _startTrainingButton(context),
+                  BtnPrimary(
+                    widthExpanded: true,
+                    onTap: () async => onTap(context),
+                    buttonText: 'Start Training',
+                  ),
                 ],
               ),
             ),
@@ -145,34 +150,6 @@ class TaskCard extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _startTrainingButton(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: BtnPrimary(
-        widthExpanded: true,
-        onTap: () async {
-          final appInfo = AppInfo(
-            type: 'website',
-            name: app.name,
-            url: 'https://${app.domain}',
-            taskId: task.id,
-          );
-          final appParam = Uri.encodeComponent(jsonEncode(appInfo.toJson()));
-
-          context.go(
-            TrainingSessionView.routeName,
-            extra: {
-              'prompt': task.prompt,
-              'appParam': appParam,
-              'poolId': app.poolId,
-            },
-          );
-        },
-        buttonText: 'Start Training',
-      ),
     );
   }
 }

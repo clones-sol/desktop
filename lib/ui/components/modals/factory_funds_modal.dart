@@ -41,7 +41,7 @@ class FactoryFundsModal extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Funds my Factory',
+                        'Fund my Factory',
                         style: theme.textTheme.titleLarge,
                       ),
                       IconButton(
