@@ -34,7 +34,8 @@ mixin _$SubmissionStatus {
   GradeResult? get gradeResult => throw _privateConstructorUsedError;
   double? get maxReward => throw _privateConstructorUsedError;
   double? get reward => throw _privateConstructorUsedError;
-  TreasuryTransfer? get treasuryTransfer => throw _privateConstructorUsedError;
+  ClaimAuthorization? get claimAuthorization =>
+      throw _privateConstructorUsedError;
 
   /// Serializes this SubmissionStatus to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -65,11 +66,11 @@ abstract class $SubmissionStatusCopyWith<$Res> {
       @JsonKey(name: 'grade_result') GradeResult? gradeResult,
       double? maxReward,
       double? reward,
-      TreasuryTransfer? treasuryTransfer});
+      ClaimAuthorization? claimAuthorization});
 
   $SubmissionMetaCopyWith<$Res> get meta;
   $GradeResultCopyWith<$Res>? get gradeResult;
-  $TreasuryTransferCopyWith<$Res>? get treasuryTransfer;
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization;
 }
 
 /// @nodoc
@@ -99,7 +100,7 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
     Object? gradeResult = freezed,
     Object? maxReward = freezed,
     Object? reward = freezed,
-    Object? treasuryTransfer = freezed,
+    Object? claimAuthorization = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -150,10 +151,10 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
               as double?,
-      treasuryTransfer: freezed == treasuryTransfer
-          ? _value.treasuryTransfer
-          : treasuryTransfer // ignore: cast_nullable_to_non_nullable
-              as TreasuryTransfer?,
+      claimAuthorization: freezed == claimAuthorization
+          ? _value.claimAuthorization
+          : claimAuthorization // ignore: cast_nullable_to_non_nullable
+              as ClaimAuthorization?,
     ) as $Val);
   }
 
@@ -185,13 +186,14 @@ class _$SubmissionStatusCopyWithImpl<$Res, $Val extends SubmissionStatus>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $TreasuryTransferCopyWith<$Res>? get treasuryTransfer {
-    if (_value.treasuryTransfer == null) {
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization {
+    if (_value.claimAuthorization == null) {
       return null;
     }
 
-    return $TreasuryTransferCopyWith<$Res>(_value.treasuryTransfer!, (value) {
-      return _then(_value.copyWith(treasuryTransfer: value) as $Val);
+    return $ClaimAuthorizationCopyWith<$Res>(_value.claimAuthorization!,
+        (value) {
+      return _then(_value.copyWith(claimAuthorization: value) as $Val);
     });
   }
 }
@@ -217,14 +219,14 @@ abstract class _$$SubmissionStatusImplCopyWith<$Res>
       @JsonKey(name: 'grade_result') GradeResult? gradeResult,
       double? maxReward,
       double? reward,
-      TreasuryTransfer? treasuryTransfer});
+      ClaimAuthorization? claimAuthorization});
 
   @override
   $SubmissionMetaCopyWith<$Res> get meta;
   @override
   $GradeResultCopyWith<$Res>? get gradeResult;
   @override
-  $TreasuryTransferCopyWith<$Res>? get treasuryTransfer;
+  $ClaimAuthorizationCopyWith<$Res>? get claimAuthorization;
 }
 
 /// @nodoc
@@ -252,7 +254,7 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
     Object? gradeResult = freezed,
     Object? maxReward = freezed,
     Object? reward = freezed,
-    Object? treasuryTransfer = freezed,
+    Object? claimAuthorization = freezed,
   }) {
     return _then(_$SubmissionStatusImpl(
       id: freezed == id
@@ -303,10 +305,10 @@ class __$$SubmissionStatusImplCopyWithImpl<$Res>
           ? _value.reward
           : reward // ignore: cast_nullable_to_non_nullable
               as double?,
-      treasuryTransfer: freezed == treasuryTransfer
-          ? _value.treasuryTransfer
-          : treasuryTransfer // ignore: cast_nullable_to_non_nullable
-              as TreasuryTransfer?,
+      claimAuthorization: freezed == claimAuthorization
+          ? _value.claimAuthorization
+          : claimAuthorization // ignore: cast_nullable_to_non_nullable
+              as ClaimAuthorization?,
     ));
   }
 }
@@ -327,7 +329,7 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
       @JsonKey(name: 'grade_result') this.gradeResult,
       this.maxReward,
       this.reward,
-      this.treasuryTransfer})
+      this.claimAuthorization})
       : _files = files;
 
   factory _$SubmissionStatusImpl.fromJson(Map<String, dynamic> json) =>
@@ -366,11 +368,11 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
   @override
   final double? reward;
   @override
-  final TreasuryTransfer? treasuryTransfer;
+  final ClaimAuthorization? claimAuthorization;
 
   @override
   String toString() {
-    return 'SubmissionStatus(id: $id, address: $address, meta: $meta, status: $status, files: $files, error: $error, createdAt: $createdAt, updatedAt: $updatedAt, clampedScore: $clampedScore, gradeResult: $gradeResult, maxReward: $maxReward, reward: $reward, treasuryTransfer: $treasuryTransfer)';
+    return 'SubmissionStatus(id: $id, address: $address, meta: $meta, status: $status, files: $files, error: $error, createdAt: $createdAt, updatedAt: $updatedAt, clampedScore: $clampedScore, gradeResult: $gradeResult, maxReward: $maxReward, reward: $reward, claimAuthorization: $claimAuthorization)';
   }
 
   @override
@@ -395,8 +397,8 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
             (identical(other.maxReward, maxReward) ||
                 other.maxReward == maxReward) &&
             (identical(other.reward, reward) || other.reward == reward) &&
-            (identical(other.treasuryTransfer, treasuryTransfer) ||
-                other.treasuryTransfer == treasuryTransfer));
+            (identical(other.claimAuthorization, claimAuthorization) ||
+                other.claimAuthorization == claimAuthorization));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -415,7 +417,7 @@ class _$SubmissionStatusImpl implements _SubmissionStatus {
       gradeResult,
       maxReward,
       reward,
-      treasuryTransfer);
+      claimAuthorization);
 
   /// Create a copy of SubmissionStatus
   /// with the given fields replaced by the non-null parameter values.
@@ -448,7 +450,7 @@ abstract class _SubmissionStatus implements SubmissionStatus {
       @JsonKey(name: 'grade_result') final GradeResult? gradeResult,
       final double? maxReward,
       final double? reward,
-      final TreasuryTransfer? treasuryTransfer}) = _$SubmissionStatusImpl;
+      final ClaimAuthorization? claimAuthorization}) = _$SubmissionStatusImpl;
 
   factory _SubmissionStatus.fromJson(Map<String, dynamic> json) =
       _$SubmissionStatusImpl.fromJson;
@@ -480,7 +482,7 @@ abstract class _SubmissionStatus implements SubmissionStatus {
   @override
   double? get reward;
   @override
-  TreasuryTransfer? get treasuryTransfer;
+  ClaimAuthorization? get claimAuthorization;
 
   /// Create a copy of SubmissionStatus
   /// with the given fields replaced by the non-null parameter values.

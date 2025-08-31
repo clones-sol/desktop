@@ -12,12 +12,12 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
 
-    if (forgeDetail.pool == null) return const SizedBox.shrink();
+    if (forgeDetail.factory == null) return const SizedBox.shrink();
 
-    final pricePerDemo = forgeDetail.pool!.pricePerDemo;
-    final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
+    final pricePerDemo = forgeDetail.factory!.pricePerDemo;
+    final possibleDemos = (pricePerDemo > 0)
         ? (Decimal.parse(
-                  forgeDetail.pool!.funds.toString(),
+                  forgeDetail.factory!.balance.toString(),
                 ) /
                 Decimal.parse(pricePerDemo.toString()))
             .toDouble()
@@ -25,10 +25,11 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
         : 0;
 
     final demoPercentage = possibleDemos > 0
-        ? (forgeDetail.pool!.demonstrations / possibleDemos * 100).clamp(0, 100)
+        ? (forgeDetail.factory!.demonstrations / possibleDemos * 100)
+            .clamp(0, 100)
         : 0;
 
-    if (pricePerDemo == null || pricePerDemo == 0) {
+    if (pricePerDemo == 0) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
@@ -52,7 +53,7 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${forgeDetail.pool!.demonstrations} / $possibleDemos',
+              '${forgeDetail.factory!.demonstrations} / $possibleDemos',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -78,7 +79,7 @@ class ForgeFactoryGeneralTabStatSessionCompleted extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(3),
                   ),
                 ),
-                if (forgeDetail.pool!.demonstrations >= possibleDemos)
+                if (forgeDetail.factory!.demonstrations >= possibleDemos)
                   FractionallySizedBox(
                     widthFactor: demoPercentage / 100,
                     child: Container(

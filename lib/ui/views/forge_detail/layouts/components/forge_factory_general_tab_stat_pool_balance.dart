@@ -1,3 +1,4 @@
+import 'package:clones_desktop/application/factory_funds_modal/provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
@@ -11,8 +12,8 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
+    final factory = ref.watch(forgeDetailNotifierProvider).factory;
+    if (factory == null) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);
@@ -20,18 +21,36 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
       child: CardWidget(
         child: Stack(
           children: [
-            if (pool.funds > 0)
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: BtnPrimary(
-                  buttonText: 'Withdraw',
-                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
-                  onTap: () {
-                    // TODO(reddwarf03): implement
-                  },
-                ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Row(
+                children: [
+                  BtnPrimary(
+                    buttonText: 'Funds',
+                    btnPrimaryType: factory.balance > 0
+                        ? BtnPrimaryType.outlinePrimary
+                        : BtnPrimaryType.primary,
+                    onTap: () {
+                      ref
+                          .read(factoryFundsModalNotifierProvider.notifier)
+                          .show(factory);
+                    },
+                  ),
+                  if (factory.balance > 0)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: BtnPrimary(
+                        buttonText: 'Withdraw',
+                        btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                        onTap: () {
+                          // TODO(reddwarf03): implement
+                        },
+                      ),
+                    ),
+                ],
               ),
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -73,7 +92,7 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '${formatNumberWithSeparator(pool.funds)} ${pool.token.symbol}',
+                  '${formatNumberWithSeparator(factory.balance)} ${factory.token.symbol}',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),

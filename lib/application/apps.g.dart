@@ -176,50 +176,14 @@ class _GenerateAppsProviderElement
   String get prompt => (origin as GenerateAppsProvider).prompt;
 }
 
-String _$getAppsForHistoryHash() => r'8f7969bcd4f6bdf81b952f4535fbaaf9936fa04d';
-
-/// See also [getAppsForHistory].
-@ProviderFor(getAppsForHistory)
-final getAppsForHistoryProvider =
-    AutoDisposeFutureProvider<List<ForgeApp>>.internal(
-  getAppsForHistory,
-  name: r'getAppsForHistoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAppsForHistoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetAppsForHistoryRef = AutoDisposeFutureProviderRef<List<ForgeApp>>;
-String _$getAppsForSkillsHash() => r'5b39dc02d34fb7654baefece62043a055965516d';
-
-/// See also [getAppsForSkills].
-@ProviderFor(getAppsForSkills)
-final getAppsForSkillsProvider =
-    AutoDisposeFutureProvider<List<ForgeApp>>.internal(
-  getAppsForSkills,
-  name: r'getAppsForSkillsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$getAppsForSkillsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetAppsForSkillsRef = AutoDisposeFutureProviderRef<List<ForgeApp>>;
-String _$getAppsForFactoryHash() => r'85fcf5a28f059a446cbbb7c87b7515c78e63ef3b';
+String _$getAppsForFactoryHash() => r'b6e231cc4fb12217d3ad2da2e17a7b29d8b60137';
 
 /// See also [getAppsForFactory].
 @ProviderFor(getAppsForFactory)
 const getAppsForFactoryProvider = GetAppsForFactoryFamily();
 
 /// See also [getAppsForFactory].
-class GetAppsForFactoryFamily extends Family<AsyncValue<List<ForgeApp>>> {
+class GetAppsForFactoryFamily extends Family<AsyncValue<List<FactoryApp>>> {
   /// See also [getAppsForFactory].
   const GetAppsForFactoryFamily();
 
@@ -258,7 +222,7 @@ class GetAppsForFactoryFamily extends Family<AsyncValue<List<ForgeApp>>> {
 
 /// See also [getAppsForFactory].
 class GetAppsForFactoryProvider
-    extends AutoDisposeFutureProvider<List<ForgeApp>> {
+    extends AutoDisposeFutureProvider<List<FactoryApp>> {
   /// See also [getAppsForFactory].
   GetAppsForFactoryProvider({
     required FactoryFilter filter,
@@ -293,7 +257,7 @@ class GetAppsForFactoryProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<ForgeApp>> Function(GetAppsForFactoryRef provider) create,
+    FutureOr<List<FactoryApp>> Function(GetAppsForFactoryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -310,7 +274,7 @@ class GetAppsForFactoryProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ForgeApp>> createElement() {
+  AutoDisposeFutureProviderElement<List<FactoryApp>> createElement() {
     return _GetAppsForFactoryProviderElement(this);
   }
 
@@ -330,13 +294,13 @@ class GetAppsForFactoryProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetAppsForFactoryRef on AutoDisposeFutureProviderRef<List<ForgeApp>> {
+mixin GetAppsForFactoryRef on AutoDisposeFutureProviderRef<List<FactoryApp>> {
   /// The parameter `filter` of this provider.
   FactoryFilter get filter;
 }
 
 class _GetAppsForFactoryProviderElement
-    extends AutoDisposeFutureProviderElement<List<ForgeApp>>
+    extends AutoDisposeFutureProviderElement<List<FactoryApp>>
     with GetAppsForFactoryRef {
   _GetAppsForFactoryProviderElement(super.provider);
 

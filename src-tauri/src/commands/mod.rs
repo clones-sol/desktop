@@ -1,4 +1,4 @@
-//! Command modules for Tauri backend API (general, tools, recordings, settings, record).
+//! Command modules for Tauri backend API (general, tools, recordings, settings, record, transaction).
 //!
 //! This module re-exports all command submodules for use throughout the application.
 
@@ -8,3 +8,4 @@ pub mod record;
 pub mod recordings;
 pub mod settings;
 pub mod tools;
+pub mod transaction;

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 
 final forgeDetailTabProvider = StateProvider<String>((ref) => 'general');
 
-class ForgeFactoryDetailSidebar extends ConsumerWidget {
+class ForgeFactoryDetailSidebar extends ConsumerStatefulWidget {
   const ForgeFactoryDetailSidebar({
     super.key,
     required this.poolId,
@@ -14,23 +14,38 @@ class ForgeFactoryDetailSidebar extends ConsumerWidget {
   final String poolId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ForgeFactoryDetailSidebar> createState() =>
+      _ForgeFactoryDetailSidebarState();
+}
+
+class _ForgeFactoryDetailSidebarState
+    extends ConsumerState<ForgeFactoryDetailSidebar> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () async {
+      ref.read(forgeDetailTabProvider.notifier).state = 'general';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final currentTab = ref.watch(forgeDetailTabProvider);
     final buttons = [
       SidebarButtonData(
-        path: '/forge/$poolId/general',
+        path: '/forge/${widget.poolId}/general',
         icon: Icons.info,
         label: 'General',
         key: 'general',
       ),
       SidebarButtonData(
-        path: '/forge/$poolId/tasks',
+        path: '/forge/${widget.poolId}/tasks',
         icon: Icons.list,
         label: 'Tasks',
         key: 'tasks',
       ),
       SidebarButtonData(
-        path: '/forge/$poolId/uploads',
+        path: '/forge/${widget.poolId}/uploads',
         icon: Icons.upload,
         label: 'Uploads',
         key: 'uploads',

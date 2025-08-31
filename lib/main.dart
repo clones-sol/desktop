@@ -70,10 +70,10 @@ final _router = GoRouter(
         ),
         ShellRoute(
           pageBuilder: (context, state, child) {
-            final poolId = state.pathParameters['id']!;
+            final factoryId = state.pathParameters['id']!;
             return NoTransitionPage(
               child: ForgeFactoryDetailShell(
-                poolId: poolId,
+                factoryId: factoryId,
                 child: child,
               ),
             );

@@ -289,7 +289,7 @@ class WalletModal extends ConsumerWidget {
                                     width: 20,
                                     height: 20,
                                     child: CircularProgressIndicator(
-                                      strokeWidth: 2,
+                                      strokeWidth: 0.5,
                                     ),
                                   )
                                 else

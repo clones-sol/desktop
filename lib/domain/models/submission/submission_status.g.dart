@@ -25,10 +25,10 @@ _$SubmissionStatusImpl _$$SubmissionStatusImplFromJson(
           : GradeResult.fromJson(json['grade_result'] as Map<String, dynamic>),
       maxReward: (json['maxReward'] as num?)?.toDouble(),
       reward: (json['reward'] as num?)?.toDouble(),
-      treasuryTransfer: json['treasuryTransfer'] == null
+      claimAuthorization: json['claimAuthorization'] == null
           ? null
-          : TreasuryTransfer.fromJson(
-              json['treasuryTransfer'] as Map<String, dynamic>),
+          : ClaimAuthorization.fromJson(
+              json['claimAuthorization'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$SubmissionStatusImplToJson(
@@ -46,5 +46,5 @@ Map<String, dynamic> _$$SubmissionStatusImplToJson(
       'grade_result': instance.gradeResult,
       'maxReward': instance.maxReward,
       'reward': instance.reward,
-      'treasuryTransfer': instance.treasuryTransfer,
+      'claimAuthorization': instance.claimAuthorization,
     };

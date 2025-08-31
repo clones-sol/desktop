@@ -40,12 +40,12 @@ class SubmissionsRepositoryImpl {
     }
   }
 
-  Future<List<PoolSubmission>> getPoolSubmissions({
-    required String poolId,
+  Future<List<PoolSubmission>> getFactorySubmissions({
+    required String factoryAddress,
   }) async {
     try {
       final submissions = await _client.get<List<dynamic>>(
-        '/forge/submissions/pool/$poolId',
+        '/forge/submissions/pool/$factoryAddress',
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => (json as List).map((e) {
           return PoolSubmission.fromJson(e as Map<String, dynamic>);

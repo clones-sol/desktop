@@ -223,7 +223,7 @@ class _$DemonstrationImpl implements _Demonstration {
   const _$DemonstrationImpl(
       {required this.title,
       required this.app,
-      @JsonKey(name: 'icon_url') required this.iconUrl,
+      @JsonKey(name: 'icon_url') this.iconUrl = '',
       required final List<String> objectives,
       required this.content,
       @JsonKey(name: 'pool_id') this.poolId,
@@ -314,7 +314,7 @@ abstract class _Demonstration implements Demonstration {
   const factory _Demonstration(
       {required final String title,
       required final String app,
-      @JsonKey(name: 'icon_url') required final String iconUrl,
+      @JsonKey(name: 'icon_url') final String iconUrl,
       required final List<String> objectives,
       required final String content,
       @JsonKey(name: 'pool_id') final String? poolId,

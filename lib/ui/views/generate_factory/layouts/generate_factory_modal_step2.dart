@@ -9,7 +9,11 @@ class GenerateFactoryModalStep2 extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Center(child: CircularProgressIndicator(strokeWidth: 1)),
+        const Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 0.5,
+          ),
+        ),
         const SizedBox(height: 20),
         Center(
           child: Text(

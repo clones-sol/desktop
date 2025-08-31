@@ -25,7 +25,7 @@ final tasksRepositoryProvider =
 // ignore: unused_element
 typedef TasksRepositoryRef = AutoDisposeProviderRef<TasksRepositoryImpl>;
 String _$getTasksForFactoryHash() =>
-    r'06a63f8c08e17a3677e9ce37506848dfda7d78a7';
+    r'1efc5723fdb216e97427d5b0d57177251c5f29b2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -53,7 +53,7 @@ class _SystemHash {
 const getTasksForFactoryProvider = GetTasksForFactoryFamily();
 
 /// See also [getTasksForFactory].
-class GetTasksForFactoryFamily extends Family<AsyncValue<List<ForgeTask>>> {
+class GetTasksForFactoryFamily extends Family<AsyncValue<List<FactoryTask>>> {
   /// See also [getTasksForFactory].
   const GetTasksForFactoryFamily();
 
@@ -92,7 +92,7 @@ class GetTasksForFactoryFamily extends Family<AsyncValue<List<ForgeTask>>> {
 
 /// See also [getTasksForFactory].
 class GetTasksForFactoryProvider
-    extends AutoDisposeFutureProvider<List<ForgeTask>> {
+    extends AutoDisposeFutureProvider<List<FactoryTask>> {
   /// See also [getTasksForFactory].
   GetTasksForFactoryProvider({
     Map<String, dynamic>? filter,
@@ -127,7 +127,7 @@ class GetTasksForFactoryProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<ForgeTask>> Function(GetTasksForFactoryRef provider) create,
+    FutureOr<List<FactoryTask>> Function(GetTasksForFactoryRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -144,7 +144,7 @@ class GetTasksForFactoryProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<ForgeTask>> createElement() {
+  AutoDisposeFutureProviderElement<List<FactoryTask>> createElement() {
     return _GetTasksForFactoryProviderElement(this);
   }
 
@@ -164,13 +164,13 @@ class GetTasksForFactoryProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetTasksForFactoryRef on AutoDisposeFutureProviderRef<List<ForgeTask>> {
+mixin GetTasksForFactoryRef on AutoDisposeFutureProviderRef<List<FactoryTask>> {
   /// The parameter `filter` of this provider.
   Map<String, dynamic>? get filter;
 }
 
 class _GetTasksForFactoryProviderElement
-    extends AutoDisposeFutureProviderElement<List<ForgeTask>>
+    extends AutoDisposeFutureProviderElement<List<FactoryTask>>
     with GetTasksForFactoryRef {
   _GetTasksForFactoryProviderElement(super.provider);
 

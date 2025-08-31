@@ -1,4 +1,4 @@
-import 'package:clones_desktop/ui/components/factory_status.dart';
+import 'package:clones_desktop/ui/components/factory_status_badge.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,23 +9,23 @@ class ForgeFactoryHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
+    final factory = ref.watch(forgeDetailNotifierProvider).factory;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            pool?.name ?? '',
+            factory?.name ?? '',
             style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w800,
             ),
           ),
           const SizedBox(width: 20),
-          if (pool != null)
+          if (factory != null)
             Align(
               alignment: Alignment.topRight,
-              child: FactoryStatus(status: pool.status),
+              child: FactoryStatusBadge(status: factory.status),
             ),
         ],
       ),

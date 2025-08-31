@@ -1,4 +1,4 @@
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/ui/views/generate_factory/bloc/state.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -19,11 +19,18 @@ mixin GenerateFactorySetters on AutoDisposeNotifier<GenerateFactoryState> {
     state = state.copyWith(factoryName: factoryName);
   }
 
-  void setApps(List<ForgeApp> apps) {
+  void setApps(List<FactoryApp> apps) {
     state = state.copyWith(apps: apps);
   }
 
   void setSelectedToken(String symbol) {
     state = state.copyWith(selectedTokenSymbol: symbol);
+  }
+
+  // Abstract method to be implemented by the notifier
+  Future<void> predictPoolAddress();
+
+  void setFundingAmount(String amount) {
+    state = state.copyWith(fundingAmount: amount);
   }
 }

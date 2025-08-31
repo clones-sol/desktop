@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:clones_desktop/domain/models/factory_settings.dart';
+import 'package:clones_desktop/domain/models/factory/factory_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsRepository {

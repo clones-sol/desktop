@@ -1,4 +1,5 @@
-import 'package:clones_desktop/application/pool.dart';
+// Factory import removed - not needed until UI is updated
+import 'package:clones_desktop/application/factory.dart';
 import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/ui/components/design_widget/message_box/message_box.dart';
 import 'package:clones_desktop/ui/components/wallet_not_connected.dart';
@@ -22,7 +23,11 @@ class ForgeView extends ConsumerWidget {
     if (isConnected == false) {
       return const WalletNotConnected();
     }
-    final poolsAsync = ref.watch(listPoolsProvider);
+    final factoriesByCreatorAsync = ref.watch(
+      getFactoriesByCreatorProvider(
+        creatorAddress: ref.read(sessionNotifierProvider).address!,
+      ),
+    );
     return Stack(
       children: [
         Padding(
@@ -44,9 +49,9 @@ class ForgeView extends ConsumerWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                poolsAsync.when(
-                  data: (pools) {
-                    final allPools = [null, ...pools];
+                factoriesByCreatorAsync.when(
+                  data: (factoriesResult) {
+                    final allItems = [null, ...factoriesResult.factories];
                     return GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -57,18 +62,18 @@ class ForgeView extends ConsumerWidget {
                         mainAxisSpacing: 20,
                         childAspectRatio: 0.9,
                       ),
-                      itemCount: allPools.length,
+                      itemCount: allItems.length,
                       itemBuilder: (context, index) {
-                        final pool = allPools[index];
-                        if (pool == null) {
+                        final factory = allItems[index];
+                        if (factory == null) {
                           return const ForgeNewFactoryCard();
                         }
                         return ForgeExistingFactoryCard(
-                          pool: pool,
+                          factory: factory,
                           onTap: () {
                             context.go(
-                              '/forge/${pool.id}/general',
-                              extra: pool,
+                              '/forge/${factory.id}/general',
+                              extra: factory,
                             );
                           },
                         );
@@ -79,7 +84,7 @@ class ForgeView extends ConsumerWidget {
                     padding: EdgeInsets.symmetric(vertical: 100),
                     child: Center(
                       child: CircularProgressIndicator(
-                        strokeWidth: 1,
+                        strokeWidth: 0.5,
                       ),
                     ),
                   ),

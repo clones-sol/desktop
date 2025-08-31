@@ -86,7 +86,7 @@ class _ReferralViewState extends ConsumerState<ReferralView> {
         children: [
           const CircularProgressIndicator(
             color: ClonesColors.primaryText,
-            strokeWidth: 1,
+            strokeWidth: 0.5,
           ),
           const SizedBox(height: 16),
           Text(

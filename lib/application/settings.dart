@@ -1,5 +1,5 @@
 import 'package:clones_desktop/application/shared_preferences_factory.dart';
-import 'package:clones_desktop/domain/models/factory_settings.dart';
+import 'package:clones_desktop/domain/models/factory/factory_settings.dart';
 import 'package:clones_desktop/infrastructure/settings_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

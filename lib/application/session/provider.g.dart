@@ -6,8 +6,7 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$checkWalletConnectionHash() =>
-    r'5149b88e0278d7f18145d25e4c5ebb61326210ae';
+String _$getTokenBalanceHash() => r'4cb07e604fe52d9dc953807ba587401053563c67';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,6 +28,154 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [getTokenBalance].
+@ProviderFor(getTokenBalance)
+const getTokenBalanceProvider = GetTokenBalanceFamily();
+
+/// See also [getTokenBalance].
+class GetTokenBalanceFamily extends Family<AsyncValue<double>> {
+  /// See also [getTokenBalance].
+  const GetTokenBalanceFamily();
+
+  /// See also [getTokenBalance].
+  GetTokenBalanceProvider call(
+    String address,
+    String symbol,
+  ) {
+    return GetTokenBalanceProvider(
+      address,
+      symbol,
+    );
+  }
+
+  @override
+  GetTokenBalanceProvider getProviderOverride(
+    covariant GetTokenBalanceProvider provider,
+  ) {
+    return call(
+      provider.address,
+      provider.symbol,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getTokenBalanceProvider';
+}
+
+/// See also [getTokenBalance].
+class GetTokenBalanceProvider extends AutoDisposeFutureProvider<double> {
+  /// See also [getTokenBalance].
+  GetTokenBalanceProvider(
+    String address,
+    String symbol,
+  ) : this._internal(
+          (ref) => getTokenBalance(
+            ref as GetTokenBalanceRef,
+            address,
+            symbol,
+          ),
+          from: getTokenBalanceProvider,
+          name: r'getTokenBalanceProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getTokenBalanceHash,
+          dependencies: GetTokenBalanceFamily._dependencies,
+          allTransitiveDependencies:
+              GetTokenBalanceFamily._allTransitiveDependencies,
+          address: address,
+          symbol: symbol,
+        );
+
+  GetTokenBalanceProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.address,
+    required this.symbol,
+  }) : super.internal();
+
+  final String address;
+  final String symbol;
+
+  @override
+  Override overrideWith(
+    FutureOr<double> Function(GetTokenBalanceRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetTokenBalanceProvider._internal(
+        (ref) => create(ref as GetTokenBalanceRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        address: address,
+        symbol: symbol,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<double> createElement() {
+    return _GetTokenBalanceProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetTokenBalanceProvider &&
+        other.address == address &&
+        other.symbol == symbol;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, address.hashCode);
+    hash = _SystemHash.combine(hash, symbol.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetTokenBalanceRef on AutoDisposeFutureProviderRef<double> {
+  /// The parameter `address` of this provider.
+  String get address;
+
+  /// The parameter `symbol` of this provider.
+  String get symbol;
+}
+
+class _GetTokenBalanceProviderElement
+    extends AutoDisposeFutureProviderElement<double> with GetTokenBalanceRef {
+  _GetTokenBalanceProviderElement(super.provider);
+
+  @override
+  String get address => (origin as GetTokenBalanceProvider).address;
+  @override
+  String get symbol => (origin as GetTokenBalanceProvider).symbol;
+}
+
+String _$checkWalletConnectionHash() =>
+    r'5149b88e0278d7f18145d25e4c5ebb61326210ae';
 
 /// See also [checkWalletConnection].
 @ProviderFor(checkWalletConnection)

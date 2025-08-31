@@ -420,7 +420,7 @@ class _TrainingSessionViewState extends ConsumerState<TrainingSessionView> {
       if (message.type == MessageType.loading) {
         return const Center(
           child: CircularProgressIndicator(
-            strokeWidth: 1,
+            strokeWidth: 0.5,
           ),
         );
       }

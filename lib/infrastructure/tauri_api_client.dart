@@ -315,7 +315,9 @@ class TauriApiClient {
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
-      throw Exception('Failed to proxy image: ${response.body}');
+      throw Exception(
+        'Failed to proxy image ${'$_baseUrl/proxy-image?url=$imageUrl'}: ${response.body}',
+      );
     }
   }
 
@@ -380,6 +382,19 @@ class TauriApiClient {
           .toList();
     } else {
       throw Exception('Failed to get displays size: ${response.body}');
+    }
+  }
+
+  // --- Transaction Methods ---
+
+  /// Generate a new session token for secure transaction workflow
+  Future<String> generateSessionToken() async {
+    final response =
+        await _client.get(Uri.parse('$_baseUrl/transaction/session'));
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to generate session token: ${response.body}');
     }
   }
 }

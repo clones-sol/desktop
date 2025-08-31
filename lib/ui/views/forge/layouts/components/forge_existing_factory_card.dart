@@ -1,19 +1,19 @@
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/training_pool.dart';
+import 'package:clones_desktop/domain/models/factory/factory.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
-import 'package:clones_desktop/ui/components/factory_status.dart';
+import 'package:clones_desktop/ui/components/factory_status_badge.dart';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 
 class ForgeExistingFactoryCard extends StatelessWidget {
   const ForgeExistingFactoryCard({
     super.key,
-    required this.pool,
+    required this.factory,
     required this.onTap,
   });
 
-  final TrainingPool pool;
+  final Factory factory;
   final VoidCallback onTap;
 
   @override
@@ -28,10 +28,10 @@ class ForgeExistingFactoryCard extends StatelessWidget {
           children: [
             Align(
               alignment: Alignment.topRight,
-              child: FactoryStatus(status: pool.status),
+              child: FactoryStatusBadge(status: factory.status),
             ),
             Text(
-              pool.name,
+              factory.name,
               style: theme.textTheme.titleMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -41,7 +41,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${pool.funds} ${pool.token.symbol}',
+                  '${factory.balance} ${factory.token.symbol}',
                   style: TextStyle(
                     color: ClonesColors.secondaryText,
                     fontSize: 14,
@@ -72,10 +72,10 @@ class ForgeExistingFactoryCard extends StatelessWidget {
   Widget _demoProgress(
     BuildContext context,
   ) {
-    final pricePerDemo = pool.pricePerDemo;
-    final possibleDemos = (pricePerDemo != null && pricePerDemo > 0)
+    final pricePerDemo = factory.pricePerDemo;
+    final possibleDemos = (pricePerDemo > 0)
         ? (Decimal.parse(
-                  pool.funds.toString(),
+                  factory.balance.toString(),
                 ) /
                 Decimal.parse(pricePerDemo.toString()))
             .toDouble()
@@ -83,10 +83,10 @@ class ForgeExistingFactoryCard extends StatelessWidget {
         : 0;
 
     final demoPercentage = possibleDemos > 0
-        ? (pool.demonstrations / possibleDemos * 100).clamp(0, 100)
+        ? (factory.demonstrations / possibleDemos * 100).clamp(0, 100)
         : 0;
 
-    if (pricePerDemo == null || pricePerDemo == 0) {
+    if (pricePerDemo == 0) {
       return const SizedBox.shrink();
     }
 
@@ -110,7 +110,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
             ),
             const SizedBox(width: 4),
             Text(
-              '${pool.demonstrations} / $possibleDemos',
+              '${factory.demonstrations} / $possibleDemos',
               style: TextStyle(
                 color: ClonesColors.secondaryText,
                 fontSize: 12,
@@ -135,7 +135,7 @@ class ForgeExistingFactoryCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
-            if (pool.demonstrations >= possibleDemos)
+            if (factory.demonstrations >= possibleDemos)
               FractionallySizedBox(
                 widthFactor: demoPercentage / 100,
                 child: Container(

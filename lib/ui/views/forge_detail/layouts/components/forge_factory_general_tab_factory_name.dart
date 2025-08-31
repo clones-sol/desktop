@@ -33,7 +33,7 @@ class _ForgeFactoryGeneralTabFactoryNameState
   Widget build(BuildContext context) {
     final forgeDetail = ref.watch(forgeDetailNotifierProvider);
     final theme = Theme.of(context);
-    if (forgeDetail.pool == null) return const SizedBox.shrink();
+    if (forgeDetail.factory == null) return const SizedBox.shrink();
 
     return Expanded(
       child: CardWidget(

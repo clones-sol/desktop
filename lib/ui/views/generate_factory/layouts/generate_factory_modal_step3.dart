@@ -1,3 +1,4 @@
+import 'package:clones_desktop/application/transaction/provider.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
 import 'package:clones_desktop/ui/views/generate_factory/bloc/provider.dart';
 import 'package:clones_desktop/ui/views/generate_factory/bloc/state.dart';
@@ -30,11 +31,11 @@ class GenerateFactoryModalStep3 extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Your factory',
+                  'Your Factory',
                   style: theme.textTheme.titleMedium,
                 ),
                 Text(
-                  "You'll be able to make further changes later",
+                  'Review details before creating your factory with on-chain rewards',
                   style: theme.textTheme.bodyMedium,
                 ),
               ],
@@ -42,6 +43,10 @@ class GenerateFactoryModalStep3 extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 10),
+        _buildPoolDetails(context, ref),
+        const SizedBox(height: 16),
+        // Show transaction status if creating
+        _buildTransactionStatus(context, ref),
         Expanded(child: _uiEditor(context, ref)),
         const SizedBox(height: 20),
         _footerButtons(context, ref),
@@ -150,6 +155,9 @@ class GenerateFactoryModalStep3 extends ConsumerWidget {
     final generateFactoryNotifier =
         ref.watch(generateFactoryNotifierProvider.notifier);
     final generateFactoryState = ref.watch(generateFactoryNotifierProvider);
+    final transactionManager = ref.watch(transactionManagerProvider.notifier);
+    final transactionState = ref.watch(transactionManagerProvider);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -162,15 +170,282 @@ class GenerateFactoryModalStep3 extends ConsumerWidget {
         const SizedBox(width: 10),
         BtnPrimary(
           isLoading: generateFactoryState.isCreating,
-          buttonText: 'Create',
+          buttonText: 'Create Factory',
           onTap: () async {
             await generateFactoryNotifier.createPool();
-            if (generateFactoryState.error == null) {
+
+            // Only close on successful creation or if user explicitly wants to leave
+            final finalState = ref.read(generateFactoryNotifierProvider);
+            if (finalState.isCreated) {
               onClose();
             }
+            // If there's an error, keep modal open to show error
           },
         ),
+
+        // Show transaction status button if there's a result
+        if (transactionState.lastSuccessfulTx != null ||
+            transactionState.error != null) ...[
+          const SizedBox(width: 10),
+          BtnPrimary(
+            buttonText: 'Transaction Status',
+            onTap: () => transactionManager.showTransactionStatus(context),
+            btnPrimaryType: BtnPrimaryType.outlinePrimary,
+          ),
+        ],
       ],
+    );
+  }
+
+  Widget _buildPoolDetails(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final generateFactory = ref.watch(generateFactoryNotifierProvider);
+    final transactionState = ref.watch(transactionManagerProvider);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+        ),
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Factory Details',
+                style: theme.textTheme.titleSmall,
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          if (generateFactory.selectedTokenSymbol != null) ...[
+            Row(
+              children: [
+                Text(
+                  'Reward Token: ',
+                  style: theme.textTheme.bodySmall,
+                ),
+                Text(
+                  generateFactory.selectedTokenSymbol!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (generateFactory.fundingAmount != null &&
+              generateFactory.fundingAmount!.isNotEmpty) ...[
+            Row(
+              children: [
+                Text(
+                  'Reward Funding: ',
+                  style: theme.textTheme.bodySmall,
+                ),
+                Text(
+                  '${generateFactory.fundingAmount} ${generateFactory.selectedTokenSymbol ?? ''}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (generateFactory.predictedPoolAddress != null) ...[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Reward Pool Address:',
+                  style: theme.textTheme.bodySmall,
+                ),
+                const SizedBox(height: 4),
+                SelectableText(
+                  generateFactory.predictedPoolAddress!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    fontFamily: 'monospace',
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (generateFactory.estimatedGasCost != null) ...[
+            Row(
+              children: [
+                Text(
+                  'Estimated Gas: ',
+                  style: theme.textTheme.bodySmall,
+                ),
+                Text(
+                  generateFactory.estimatedGasCost!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: generateFactory.gasExceedsReward == true
+                        ? Colors.orange
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+          ],
+          if (generateFactory.gasExceedsReward == true) ...[
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.warning, color: Colors.orange, size: 16),
+                const SizedBox(width: 4),
+                Expanded(
+                  child: Text(
+                    'Warning: Gas costs may exceed net rewards',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.orange,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+
+          // Transaction Status Indicator
+          if (transactionState.awaitingCallback) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 0.5,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Waiting for transaction confirmation in browser...',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ] else if (transactionState.lastSuccessfulTx != null) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const Icon(Icons.check_circle, color: Colors.green, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Transaction confirmed: ${transactionState.lastSuccessfulTx!.substring(0, 10)}...',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.green,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ] else if (transactionState.error != null) ...[
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                const Icon(Icons.error, color: Colors.red, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Transaction failed: ${transactionState.error}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransactionStatus(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final generateFactory = ref.watch(generateFactoryNotifierProvider);
+
+    if (!generateFactory.isCreating &&
+        generateFactory.transactionStatus == null) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: generateFactory.isCreated
+              ? Colors.green.withValues(alpha: 0.3)
+              : theme.colorScheme.primary.withValues(alpha: 0.3),
+        ),
+        color: generateFactory.isCreated
+            ? Colors.green.withValues(alpha: 0.1)
+            : theme.colorScheme.primary.withValues(alpha: 0.1),
+      ),
+      child: Row(
+        children: [
+          if (generateFactory.isCreating)
+            SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 0.5,
+                valueColor:
+                    AlwaysStoppedAnimation<Color>(theme.colorScheme.primary),
+              ),
+            )
+          else if (generateFactory.isCreated)
+            const Icon(Icons.check_circle, color: Colors.green, size: 20)
+          else
+            Icon(Icons.info, color: theme.colorScheme.primary, size: 20),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  generateFactory.isCreated
+                      ? 'Factory Created Successfully!'
+                      : 'Creating Factory...',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: generateFactory.isCreated
+                        ? Colors.green
+                        : theme.colorScheme.primary,
+                  ),
+                ),
+                if (generateFactory.transactionStatus != null)
+                  Text(
+                    generateFactory.transactionStatus!,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: generateFactory.isCreated
+                          ? Colors.green
+                          : theme.colorScheme.onSurface.withValues(alpha: 0.7),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

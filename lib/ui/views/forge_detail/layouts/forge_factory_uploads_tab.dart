@@ -19,13 +19,17 @@ class ForgeFactoryUploadsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) return const SizedBox.shrink();
+    final factory = ref.watch(forgeDetailNotifierProvider).factory;
+    if (factory == null) return const SizedBox.shrink();
 
-    final submissionsAsync = ref.watch(getPoolSubmissionsProvider(pool.id));
+    final submissionsAsync =
+        ref.watch(getFactorySubmissionsProvider(factory.id));
 
     return submissionsAsync.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(
+          child: CircularProgressIndicator(
+        strokeWidth: 0.5,
+      )),
       error: (err, stack) => Center(child: Text('Error: $err')),
       data: (submissions) {
         return SingleChildScrollView(

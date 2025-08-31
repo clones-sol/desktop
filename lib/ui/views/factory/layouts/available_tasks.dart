@@ -2,9 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:clones_desktop/application/apps.dart';
 import 'package:clones_desktop/application/settings.dart';
 import 'package:clones_desktop/assets.dart';
-import 'package:clones_desktop/domain/models/factory_settings.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_settings.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/domain/models/ui/factory_filter.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/components/filter_panel.dart';
 import 'package:clones_desktop/ui/views/factory/layouts/components/task_card.dart';
@@ -78,8 +78,9 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
     });
   }
 
-  double _getReward(ForgeApp app, ForgeTaskItem task) {
-    return task.rewardLimit ?? app.poolId?.pricePerDemo ?? 0.0;
+  double _getReward(FactoryApp app, FactoryTask task) {
+    // TODO(reddwarf03): Use factory pricePerDemo ?
+    return task.rewardLimit ?? 0.0;
   }
 
   @override
@@ -89,7 +90,11 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
     final settings = ref.watch(factorySettingsNotifierProvider);
     final theme = Theme.of(context);
     return settings.when(
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 0.5,
+        ),
+      ),
       error: (err, stack) =>
           Center(child: Text('Error loading settings: $err')),
       data: (factorySettings) => Column(
@@ -169,7 +174,11 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
             ),
           Expanded(
             child: tasksAsync.when(
-              loading: () => const Center(child: CircularProgressIndicator()),
+              loading: () => const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 0.5,
+                ),
+              ),
               error: (err, stack) => Center(child: Text('Error: $err')),
               data: (apps) {
                 if (apps.isEmpty) {
@@ -183,12 +192,12 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                     .toList()
                   ..sort((a, b) {
                     final rewardA = _getReward(
-                      a['app']! as ForgeApp,
-                      a['task']! as ForgeTaskItem,
+                      a['app']! as FactoryApp,
+                      a['task']! as FactoryTask,
                     );
                     final rewardB = _getReward(
-                      b['app']! as ForgeApp,
-                      b['task']! as ForgeTaskItem,
+                      b['app']! as FactoryApp,
+                      b['task']! as FactoryTask,
                     );
                     return _sort == 'htl'
                         ? rewardB.compareTo(rewardA)
@@ -205,8 +214,8 @@ class _AvailableTasksState extends ConsumerState<AvailableTasks> {
                   ),
                   itemCount: tasks.length,
                   itemBuilder: (context, index) {
-                    final app = tasks[index]['app']! as ForgeApp;
-                    final task = tasks[index]['task']! as ForgeTaskItem;
+                    final app = tasks[index]['app']! as FactoryApp;
+                    final task = tasks[index]['task']! as FactoryTask;
                     return TaskCard(app: app, task: task);
                   },
                 );

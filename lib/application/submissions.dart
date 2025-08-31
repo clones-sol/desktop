@@ -33,10 +33,12 @@ Future<List<SubmissionStatus>> listSubmissions(
 }
 
 @riverpod
-Future<List<PoolSubmission>> getPoolSubmissions(
+Future<List<PoolSubmission>> getFactorySubmissions(
   Ref ref,
-  String poolId,
+  String factoryAddress,
 ) async {
   final submissionsRepository = ref.watch(submissionsRepositoryProvider);
-  return submissionsRepository.getPoolSubmissions(poolId: poolId);
+  return submissionsRepository.getFactorySubmissions(
+    factoryAddress: factoryAddress,
+  );
 }

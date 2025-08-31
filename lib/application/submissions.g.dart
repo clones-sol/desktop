@@ -201,34 +201,34 @@ final listSubmissionsProvider =
 // ignore: unused_element
 typedef ListSubmissionsRef
     = AutoDisposeFutureProviderRef<List<SubmissionStatus>>;
-String _$getPoolSubmissionsHash() =>
-    r'f0fda76b1bddbef53141d2ac95f284d3810b1793';
+String _$getFactorySubmissionsHash() =>
+    r'4954c1585987a41d363565f29e53d94d62ed06ec';
 
-/// See also [getPoolSubmissions].
-@ProviderFor(getPoolSubmissions)
-const getPoolSubmissionsProvider = GetPoolSubmissionsFamily();
+/// See also [getFactorySubmissions].
+@ProviderFor(getFactorySubmissions)
+const getFactorySubmissionsProvider = GetFactorySubmissionsFamily();
 
-/// See also [getPoolSubmissions].
-class GetPoolSubmissionsFamily
+/// See also [getFactorySubmissions].
+class GetFactorySubmissionsFamily
     extends Family<AsyncValue<List<PoolSubmission>>> {
-  /// See also [getPoolSubmissions].
-  const GetPoolSubmissionsFamily();
+  /// See also [getFactorySubmissions].
+  const GetFactorySubmissionsFamily();
 
-  /// See also [getPoolSubmissions].
-  GetPoolSubmissionsProvider call(
-    String poolId,
+  /// See also [getFactorySubmissions].
+  GetFactorySubmissionsProvider call(
+    String factoryAddress,
   ) {
-    return GetPoolSubmissionsProvider(
-      poolId,
+    return GetFactorySubmissionsProvider(
+      factoryAddress,
     );
   }
 
   @override
-  GetPoolSubmissionsProvider getProviderOverride(
-    covariant GetPoolSubmissionsProvider provider,
+  GetFactorySubmissionsProvider getProviderOverride(
+    covariant GetFactorySubmissionsProvider provider,
   ) {
     return call(
-      provider.poolId,
+      provider.factoryAddress,
     );
   }
 
@@ -244,77 +244,78 @@ class GetPoolSubmissionsFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'getPoolSubmissionsProvider';
+  String? get name => r'getFactorySubmissionsProvider';
 }
 
-/// See also [getPoolSubmissions].
-class GetPoolSubmissionsProvider
+/// See also [getFactorySubmissions].
+class GetFactorySubmissionsProvider
     extends AutoDisposeFutureProvider<List<PoolSubmission>> {
-  /// See also [getPoolSubmissions].
-  GetPoolSubmissionsProvider(
-    String poolId,
+  /// See also [getFactorySubmissions].
+  GetFactorySubmissionsProvider(
+    String factoryAddress,
   ) : this._internal(
-          (ref) => getPoolSubmissions(
-            ref as GetPoolSubmissionsRef,
-            poolId,
+          (ref) => getFactorySubmissions(
+            ref as GetFactorySubmissionsRef,
+            factoryAddress,
           ),
-          from: getPoolSubmissionsProvider,
-          name: r'getPoolSubmissionsProvider',
+          from: getFactorySubmissionsProvider,
+          name: r'getFactorySubmissionsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$getPoolSubmissionsHash,
-          dependencies: GetPoolSubmissionsFamily._dependencies,
+                  : _$getFactorySubmissionsHash,
+          dependencies: GetFactorySubmissionsFamily._dependencies,
           allTransitiveDependencies:
-              GetPoolSubmissionsFamily._allTransitiveDependencies,
-          poolId: poolId,
+              GetFactorySubmissionsFamily._allTransitiveDependencies,
+          factoryAddress: factoryAddress,
         );
 
-  GetPoolSubmissionsProvider._internal(
+  GetFactorySubmissionsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.poolId,
+    required this.factoryAddress,
   }) : super.internal();
 
-  final String poolId;
+  final String factoryAddress;
 
   @override
   Override overrideWith(
-    FutureOr<List<PoolSubmission>> Function(GetPoolSubmissionsRef provider)
+    FutureOr<List<PoolSubmission>> Function(GetFactorySubmissionsRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: GetPoolSubmissionsProvider._internal(
-        (ref) => create(ref as GetPoolSubmissionsRef),
+      override: GetFactorySubmissionsProvider._internal(
+        (ref) => create(ref as GetFactorySubmissionsRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        poolId: poolId,
+        factoryAddress: factoryAddress,
       ),
     );
   }
 
   @override
   AutoDisposeFutureProviderElement<List<PoolSubmission>> createElement() {
-    return _GetPoolSubmissionsProviderElement(this);
+    return _GetFactorySubmissionsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is GetPoolSubmissionsProvider && other.poolId == poolId;
+    return other is GetFactorySubmissionsProvider &&
+        other.factoryAddress == factoryAddress;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, poolId.hashCode);
+    hash = _SystemHash.combine(hash, factoryAddress.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -322,19 +323,20 @@ class GetPoolSubmissionsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin GetPoolSubmissionsRef
+mixin GetFactorySubmissionsRef
     on AutoDisposeFutureProviderRef<List<PoolSubmission>> {
-  /// The parameter `poolId` of this provider.
-  String get poolId;
+  /// The parameter `factoryAddress` of this provider.
+  String get factoryAddress;
 }
 
-class _GetPoolSubmissionsProviderElement
+class _GetFactorySubmissionsProviderElement
     extends AutoDisposeFutureProviderElement<List<PoolSubmission>>
-    with GetPoolSubmissionsRef {
-  _GetPoolSubmissionsProviderElement(super.provider);
+    with GetFactorySubmissionsRef {
+  _GetFactorySubmissionsProviderElement(super.provider);
 
   @override
-  String get poolId => (origin as GetPoolSubmissionsProvider).poolId;
+  String get factoryAddress =>
+      (origin as GetFactorySubmissionsProvider).factoryAddress;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

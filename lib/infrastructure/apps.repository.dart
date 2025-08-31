@@ -1,12 +1,8 @@
 import 'dart:math';
 
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
-import 'package:clones_desktop/domain/models/forge_task/pool_id.dart';
-import 'package:clones_desktop/domain/models/recording/recording_meta.dart';
-import 'package:clones_desktop/infrastructure/submissions.repository.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/utils/api_client.dart';
-import 'package:collection/collection.dart';
 
 class AppsRepositoryImpl {
   AppsRepositoryImpl(this._client);
@@ -15,7 +11,7 @@ class AppsRepositoryImpl {
   Future<Map<String, dynamic>> generateApps({required String prompt}) async {
     try {
       final response = await _client.post<Map<String, dynamic>>(
-        '/forge/apps',
+        '/forge/factories/apps',
         data: {'prompt': prompt},
       );
       return response;
@@ -24,136 +20,7 @@ class AppsRepositoryImpl {
     }
   }
 
-  Future<List<ForgeApp>> getAppsForHistory(
-    List<RecordingMeta> recordings,
-  ) async {
-    try {
-      final appMap = <String, ForgeApp>{};
-
-      for (final recording in recordings) {
-        if (recording.status == 'completed') {
-          final demonstration = recording.demonstration;
-          if (!appMap.containsKey(demonstration.app)) {
-            appMap[demonstration.app] = ForgeApp(
-              name: demonstration.app,
-              domain: demonstration.iconUrl.split('domain=')[1].split('&')[0],
-              description: '',
-              categories: [],
-              tasks: [],
-              poolId: const PoolId(
-                id: '',
-                name: '',
-                status: 'completed',
-                pricePerDemo: 0,
-              ),
-              seen: true,
-            );
-          }
-
-          final app = appMap[demonstration.app]!;
-          final newTasks = app.tasks.toList();
-          if (!newTasks.any((t) => t.prompt == demonstration.title)) {
-            newTasks.add(
-              ForgeTaskItem(
-                prompt: demonstration.title,
-                completed: true,
-                recordingId: recording.id,
-              ),
-            );
-            appMap[demonstration.app] = app.copyWith(tasks: newTasks);
-          }
-        }
-      }
-
-      final apps = appMap.values.toList()
-        ..sort((a, b) => a.name.compareTo(b.name));
-
-      return apps;
-    } catch (e) {
-      throw Exception('Failed to get apps for history: $e');
-    }
-  }
-
-  Future<List<ForgeApp>> getAppsForSkills(
-    List<RecordingMeta> recordings,
-  ) async {
-    try {
-      final historyApps = await getAppsForHistory(recordings);
-      final appMap = <String, ForgeApp>{};
-      final submissions =
-          await SubmissionsRepositoryImpl(_client).listSubmissions();
-
-      for (final app in historyApps) {
-        final newTasks = app.tasks.map((task) {
-          if (task.recordingId != null) {
-            final submission = submissions.firstWhereOrNull(
-              (s) => s.meta.id == task.recordingId,
-            );
-            if (submission != null && submission.clampedScore != null) {
-              return task.copyWith(score: submission.clampedScore);
-            }
-          }
-          return task;
-        }).toList();
-        appMap[app.name] = app.copyWith(tasks: newTasks);
-      }
-
-      // TODO(reddwarf03): Write a method to get the apps from the API
-      final appsJson = await _client.get<List<dynamic>>('/forge/apps');
-      final apiApps = appsJson
-          .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))
-          .toList();
-
-      for (final apiApp in apiApps) {
-        var existingApp = appMap[apiApp.name];
-        if (existingApp != null) {
-          existingApp = existingApp.copyWith(
-            domain: apiApp.domain,
-            description: apiApp.description,
-            categories: apiApp.categories,
-          );
-
-          for (final apiTask in apiApp.tasks) {
-            if (!existingApp!.tasks.any((t) => t.prompt == apiTask.prompt)) {
-              existingApp = existingApp.copyWith(
-                tasks: [
-                  ...existingApp.tasks,
-                  apiTask.copyWith(completed: false),
-                ],
-              );
-            }
-          }
-        } else {
-          appMap[apiApp.name] = apiApp.copyWith(
-            seen: false,
-            tasks:
-                apiApp.tasks.map((t) => t.copyWith(completed: false)).toList(),
-          );
-        }
-      }
-
-      final allApps = appMap.values.toList();
-      if (allApps.isEmpty) {
-        return [];
-      }
-
-      final seen = allApps.where((app) => app.seen == true).toList();
-      final unseen = allApps.where((app) => app.seen != true).toList();
-
-      var result = [...seen];
-      if (unseen.isNotEmpty) {
-        unseen.shuffle(Random());
-        final unseenToAdd = min(2, max(0, 3 - seen.length));
-        result = [...result, ...unseen.take(unseenToAdd)];
-      }
-
-      return result;
-    } catch (e) {
-      throw Exception('Failed to get apps for skills: $e');
-    }
-  }
-
-  Future<List<ForgeApp>> getAppsForFactory({
+  Future<List<FactoryApp>> getAppsForFactory({
     Map<String, dynamic>? filter,
   }) async {
     try {
@@ -174,22 +41,22 @@ class AppsRepositoryImpl {
       }
 
       final appsJson = await _client.get<List<dynamic>>(
-        '/forge/apps',
+        '/forge/factories/apps/',
         params: params,
       );
       final apps = appsJson
-          .map((e) => ForgeApp.fromJson(e as Map<String, dynamic>))
+          .map((e) => FactoryApp.fromJson(e as Map<String, dynamic>))
           .toList();
 
       if (filter != null && filter['poolId'] != null) {
         return apps;
       }
 
-      final shuffledApps = List<ForgeApp>.from(apps)..shuffle(Random());
+      final shuffledApps = List<FactoryApp>.from(apps)..shuffle(Random());
       return shuffledApps
           .map(
             (app) => app.copyWith(
-              tasks: List<ForgeTaskItem>.from(app.tasks)..shuffle(Random()),
+              tasks: List<FactoryTask>.from(app.tasks)..shuffle(Random()),
             ),
           )
           .toList();
@@ -201,7 +68,7 @@ class AppsRepositoryImpl {
   Future<List<String>> getFactoryCategories() async {
     try {
       final categories = await _client.get<List<dynamic>>(
-        '/forge/apps/categories',
+        '/forge/factories/apps/categories',
       );
       return categories.cast<String>();
     } catch (e) {

@@ -10,8 +10,8 @@ class ForgeFactoryGeneralTabStatDemoPrice extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pool = ref.watch(forgeDetailNotifierProvider).pool;
-    if (pool == null) {
+    final factory = ref.watch(forgeDetailNotifierProvider).factory;
+    if (factory == null) {
       return const SizedBox.shrink();
     }
 
@@ -44,7 +44,7 @@ class ForgeFactoryGeneralTabStatDemoPrice extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
-                    pool.token.symbol,
+                    factory.token.symbol,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: ClonesColors.containerIcon1.withValues(alpha: 0.7),
                       fontSize: 10,
@@ -55,7 +55,7 @@ class ForgeFactoryGeneralTabStatDemoPrice extends ConsumerWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              '${formatNumberWithSeparator(pool.pricePerDemo)} ${pool.token.symbol}',
+              '${formatNumberWithSeparator(factory.pricePerDemo)} ${factory.token.symbol}',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
               ),

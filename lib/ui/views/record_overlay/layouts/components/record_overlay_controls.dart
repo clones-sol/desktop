@@ -65,7 +65,7 @@ class RecordOverlayControls extends ConsumerWidget {
                   width: 16,
                   height: 16,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2,
+                    strokeWidth: 0.5,
                     color: Colors.white,
                   ),
                 ),

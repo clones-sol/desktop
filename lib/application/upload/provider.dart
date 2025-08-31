@@ -39,6 +39,14 @@ class UploadQueueNotifier extends StateNotifier<Map<String, UploadTaskState>> {
       throw Exception('Wallet address is null');
     }
 
+    if (recordingId.isEmpty) {
+      throw Exception('Recording ID is empty');
+    }
+
+    if (poolId.isEmpty) {
+      throw Exception('Pool ID is empty');
+    }
+
     final isConfirmed = await ref.read(isUploadDataAllowedProvider.future);
     if (!isConfirmed) {
       throw Exception('Upload data is not allowed');

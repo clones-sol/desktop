@@ -1,9 +1,9 @@
-import 'package:clones_desktop/application/pool.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_app.dart';
-import 'package:clones_desktop/domain/models/forge_task/forge_task_item.dart';
-import 'package:clones_desktop/domain/models/upload/upload_limit.dart';
+import 'package:clones_desktop/application/factory.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
+import 'package:clones_desktop/domain/models/factory/factory_task.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/setters.dart';
 import 'package:clones_desktop/ui/views/forge_detail/bloc/state.dart';
+import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'provider.g.dart';
@@ -21,79 +21,79 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
   Future<void> refreshBalance() async {
     setIsRefreshBalanceSuccess(false);
     setError(null);
-    final pool = state.pool;
-    if (pool == null) {
-      throw Exception('Pool not found');
+    final factory = state.factory;
+    if (factory == null) {
+      throw Exception('Factory not found');
     }
 
     try {
-      await ref.read(
-        refreshPoolProvider(
-          poolId: pool.id,
+      // Fetch fresh pool info from backend/blockchain
+      final poolInfoData = await ref.read(
+        getPoolInfoProvider(
+          poolAddress: factory.poolAddress,
         ).future,
       );
+
+      // Extract tokenBalance from the API response
+      final responseData = poolInfoData['data'] as Map<String, dynamic>?;
+      if (responseData != null && responseData.containsKey('tokenBalance')) {
+        final tokenBalanceString = responseData['tokenBalance'] as String?;
+        if (tokenBalanceString != null) {
+          final newBalance = double.tryParse(tokenBalanceString) ?? 0.0;
+
+          // Update factory balance in state
+          updateFactoryBalance(newBalance);
+
+          debugPrint(
+            'Factory balance refreshed: $newBalance ${factory.token.symbol}',
+          );
+        }
+      }
+
       setIsRefreshBalanceSuccess(true);
     } catch (e) {
+      debugPrint('Failed to refresh factory balance: $e');
       setError(e.toString());
     }
-
-    final newPool = await ref.refresh(poolProvider(pool.id).future);
-    ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
   }
 
   Future<void> updateFactoryStatus() async {
     setIsUpdateFactoryStatusSuccess(false);
-    try {
-      await _updatePool();
-      setIsUpdateFactoryStatusSuccess(true);
 
-      final newPool =
-          await ref.refresh(poolProvider(state.pool?.id ?? '').future);
-      ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
+    try {
+      final updatedFactory = await ref.read(
+        updateFactoryProvider(
+          factoryId: state.factory?.id ?? '',
+          walletAddress: state.factory?.ownerAddress ?? '',
+          status: state.factoryStatus,
+        ).future,
+      );
+      setFactory(updatedFactory);
+      setIsUpdateFactoryStatusSuccess(true);
     } catch (e) {
       setError(e.toString());
     }
   }
 
-  Future<void> updatePool() async {
+  Future<void> updateFactory() async {
     setIsUpdatePoolSuccess(false);
     try {
-      await _updatePool();
-      setIsUpdatePoolSuccess(true);
-
-      final newPool =
-          await ref.refresh(poolProvider(state.pool?.id ?? '').future);
-      ref.read(forgeDetailNotifierProvider.notifier).setPool(newPool);
+      final updatedFactory = await ref.read(
+        updateFactoryProvider(
+          factoryId: state.factory?.id ?? '',
+          walletAddress: state.factory?.ownerAddress ?? '',
+          factoryName: state.factoryName,
+          description: state.factory?.description ?? '',
+          skills: state.factory?.skills ?? [],
+          status: state.factoryStatus,
+          pricePerDemo: state.pricePerDemo,
+        ).future,
+      );
+      setFactory(updatedFactory);
+      setIsUpdateFactoryStatusSuccess(true);
     } catch (e) {
       setError(e.toString());
     }
-  }
-
-  Future<void> _updatePool() async {
-    setError(null);
-    final pool = state.pool;
-    if (pool == null) {
-      throw Exception('Pool not found');
-    }
-
-    await ref.read(
-      updatePoolProvider(
-        poolId: pool.id,
-        poolName: state.factoryName,
-        status: state.factoryStatus,
-        skills: pool.skills,
-        apps: state.apps,
-        pricePerDemo: state.pricePerDemo,
-        uploadLimit: state.uploadLimitType == 'none'
-            ? null
-            : UploadLimit(
-                type: state.uploadLimitValue,
-                limitType:
-                    UploadLimitTypeExtension.parse(state.uploadLimitType) ??
-                        UploadLimitType.perTask,
-              ),
-      ).future,
-    );
   }
 
   void createApp() {
@@ -104,7 +104,7 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
       return;
     }
 
-    final newApp = ForgeApp(
+    final newApp = FactoryApp(
       name: state.newAppName!,
       domain: state.newAppDomain!,
       description: '',
@@ -117,35 +117,35 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
   }
 
   void removeApp(int idx) {
-    final apps = List<ForgeApp>.from(state.apps);
-    final newApps = List<ForgeApp>.from(apps)..removeAt(idx);
+    final apps = List<FactoryApp>.from(state.apps);
+    final newApps = List<FactoryApp>.from(apps)..removeAt(idx);
     setApps(newApps);
     setHasUnsavedChanges(true);
   }
 
   void removeTask(int appIdx, int taskIdx) {
-    final apps = List<ForgeApp>.from(state.apps);
+    final apps = List<FactoryApp>.from(state.apps);
     final app = apps[appIdx];
-    final newTasks = List<ForgeTaskItem>.from(app.tasks)..removeAt(taskIdx);
+    final newTasks = List<FactoryTask>.from(app.tasks)..removeAt(taskIdx);
     apps[appIdx] = app.copyWith(tasks: newTasks);
 
     setApps(apps);
     setHasUnsavedChanges(true);
   }
 
-  void createTask(int appIndex, ForgeTaskItem task) {
-    final apps = List<ForgeApp>.from(state.apps);
+  void createTask(int appIndex, FactoryTask task) {
+    final apps = List<FactoryApp>.from(state.apps);
     final app = apps[appIndex];
-    final newTasks = List<ForgeTaskItem>.from(app.tasks)..add(task);
+    final newTasks = List<FactoryTask>.from(app.tasks)..add(task);
     apps[appIndex] = app.copyWith(tasks: newTasks);
     setApps(apps);
     setHasUnsavedChanges(true);
   }
 
-  void updateTask(int appIndex, int taskIndex, ForgeTaskItem task) {
-    final apps = List<ForgeApp>.from(state.apps);
+  void updateTask(int appIndex, int taskIndex, FactoryTask task) {
+    final apps = List<FactoryApp>.from(state.apps);
     final app = apps[appIndex];
-    final newTasks = List<ForgeTaskItem>.from(app.tasks);
+    final newTasks = List<FactoryTask>.from(app.tasks);
     newTasks[taskIndex] = task;
     apps[appIndex] = app.copyWith(tasks: newTasks);
     setApps(apps);

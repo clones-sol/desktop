@@ -45,7 +45,7 @@ class _GenerateFactoryModalStep1State
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'You can generate a factory by describing your dream agent, or by sharing the skills you want a training dataset for.',
+          'Create a factory by describing the skills you want to train, then specify reward funding.',
           style: theme.textTheme.bodyMedium,
         ),
         const SizedBox(height: 16),
@@ -95,6 +95,8 @@ class _GenerateFactoryModalStep1State
         const SizedBox(height: 20),
         _buildRewardTokenSelector(context, ref),
         const SizedBox(height: 20),
+        _buildFundingSection(context, ref),
+        const SizedBox(height: 20),
         _footerButtons(ref),
       ],
     );
@@ -107,7 +109,11 @@ class _GenerateFactoryModalStep1State
         ref.read(generateFactoryNotifierProvider.notifier);
 
     if (generateFactoryState.supportedTokens == null) {
-      return const Center(child: CircularProgressIndicator());
+      return const Center(
+        child: CircularProgressIndicator(
+          strokeWidth: 0.5,
+        ),
+      );
     }
 
     return Column(
@@ -142,10 +148,7 @@ class _GenerateFactoryModalStep1State
                       value: token.symbol,
                       child: Row(
                         children: [
-                          if (token.logoUrl != null)
-                            Image.network(token.logoUrl!, width: 24, height: 24)
-                          else
-                            Text(token.name),
+                          Text('${token.name} (${token.symbol})'),
                         ],
                       ),
                     ),
@@ -153,7 +156,7 @@ class _GenerateFactoryModalStep1State
                   .toList(),
               onChanged: (value) {
                 if (value != null) {
-                  generateFactoryNotifier.setSelectedToken(value);
+                  generateFactoryNotifier.setSelectedTokenWithPrediction(value);
                 }
               },
             ),
@@ -229,14 +232,110 @@ class _GenerateFactoryModalStep1State
         ),
         const SizedBox(width: 10),
         BtnPrimary(
-          buttonText: 'Generate',
+          buttonText: 'Generate Factory',
           onTap: () => ref
               .read(generateFactoryNotifierProvider.notifier)
-              .startGeneration(),
+              .validateAndStartGeneration(),
           isLocked:
               ref.watch(generateFactoryNotifierProvider).skills?.isEmpty ??
                   true,
         ),
+      ],
+    );
+  }
+
+  Widget _buildFundingSection(BuildContext context, WidgetRef ref) {
+    final theme = Theme.of(context);
+    final generateFactoryState = ref.watch(generateFactoryNotifierProvider);
+    final generateFactoryNotifier =
+        ref.read(generateFactoryNotifierProvider.notifier);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Reward Funding', style: theme.textTheme.titleMedium),
+        Text(
+          'Amount to fund factory rewards initially (you pay gas fees)',
+          style: theme.textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 8),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: theme.colorScheme.primaryContainer,
+              width: 0.5,
+            ),
+            gradient: ClonesColors.gradientInputFormBackground,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextField(
+              onChanged: generateFactoryNotifier.setFundingAmount,
+              keyboardType: TextInputType.number,
+              style: theme.textTheme.bodyMedium,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                hintStyle: theme.textTheme.bodyMedium?.copyWith(
+                  color:
+                      theme.textTheme.bodyMedium?.color!.withValues(alpha: 0.5),
+                ),
+                suffixText: generateFactoryState.selectedTokenSymbol ?? '',
+                suffixStyle: theme.textTheme.bodyMedium,
+              ),
+            ),
+          ),
+        ),
+        if (generateFactoryState.estimatedGasCost != null) ...[
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                size: 16,
+                color: theme.textTheme.bodySmall?.color,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                'Estimated gas: ${generateFactoryState.estimatedGasCost}',
+                style: theme.textTheme.bodySmall,
+              ),
+            ],
+          ),
+        ],
+        if (generateFactoryState.gasExceedsReward == true) ...[
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.orange.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: Colors.orange.withValues(alpha: 0.3)),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.warning, color: Colors.orange, size: 16),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Gas cost may exceed net reward. Consider increasing funding amount.',
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: Colors.orange),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+        if (generateFactoryState.predictedPoolAddress != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            'Pool address: ${generateFactoryState.predictedPoolAddress}',
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontFamily: 'monospace',
+            ),
+          ),
+        ],
       ],
     );
   }

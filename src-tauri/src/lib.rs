@@ -27,6 +27,11 @@ use crate::commands::settings::{
     set_upload_data_allowed,
 };
 use crate::commands::tools::{check_tools, init_tools};
+use crate::commands::transaction::{
+    generate_session_token, prepare_transaction_request, generate_transaction_deep_link,
+    get_transaction_request, update_transaction_status, list_pending_transactions,
+    cleanup_old_transactions, handle_transaction_callback,
+};
 
 // State to hold the latest deep link URL
 pub struct DeepLinkState(pub Arc<Mutex<Option<String>>>);
@@ -94,6 +99,14 @@ pub fn setup_builder() -> tauri::Builder<tauri::Wry> {
             delete_recording,
             get_recording_state,
             get_current_demonstration,
+            generate_session_token,
+            prepare_transaction_request,
+            generate_transaction_deep_link,
+            get_transaction_request,
+            update_transaction_status,
+            list_pending_transactions,
+            cleanup_old_transactions,
+            handle_transaction_callback,
         ])
 }
 
