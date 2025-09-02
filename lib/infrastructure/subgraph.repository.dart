@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:clones_desktop/utils/env.dart';
 import 'package:http/http.dart' as http;
 
 /// Repository for The Graph subgraph queries
@@ -6,13 +7,8 @@ import 'package:http/http.dart' as http;
 class SubgraphRepository {
   SubgraphRepository({
     http.Client? httpClient,
-    bool useMainnet = false,
   })  : _httpClient = httpClient ?? http.Client(),
-        _endpoint = useMainnet ? _mainnetEndpoint : _sepoliaEndpoint;
-  static const String _sepoliaEndpoint =
-      'https://api.studio.thegraph.com/query/YOUR_SUBGRAPH_ID/clones-factory-sepolia/version/latest';
-  static const String _mainnetEndpoint =
-      'https://api.studio.thegraph.com/query/YOUR_SUBGRAPH_ID/clones-factory-mainnet/version/latest';
+        _endpoint = Env.subgraphUrl;
 
   final http.Client _httpClient;
   final String _endpoint;
