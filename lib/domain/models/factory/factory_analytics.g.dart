@@ -13,7 +13,6 @@ _$FactoryAnalyticsImpl _$$FactoryAnalyticsImplFromJson(
       activeFactories: (json['activeFactories'] as num?)?.toInt() ?? 0,
       totalBalance: (json['totalBalance'] as num?)?.toDouble() ?? 0.0,
       totalDemonstrations: (json['totalDemonstrations'] as num?)?.toInt() ?? 0,
-      totalEarned: (json['totalEarned'] as num?)?.toDouble() ?? 0.0,
       averageFactorySize:
           (json['averageFactorySize'] as num?)?.toDouble() ?? 0.0,
       topSkills: (json['topSkills'] as List<dynamic>?)
@@ -33,7 +32,6 @@ Map<String, dynamic> _$$FactoryAnalyticsImplToJson(
       'activeFactories': instance.activeFactories,
       'totalBalance': instance.totalBalance,
       'totalDemonstrations': instance.totalDemonstrations,
-      'totalEarned': instance.totalEarned,
       'averageFactorySize': instance.averageFactorySize,
       'topSkills': instance.topSkills,
       'topTokens': instance.topTokens,

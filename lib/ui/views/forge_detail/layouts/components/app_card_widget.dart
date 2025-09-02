@@ -11,11 +11,11 @@ class AppCardWidget extends ConsumerWidget {
     super.key,
     required this.app,
     required this.appIdx,
-    required this.poolAddress,
+    required this.forgeId,
   });
   final FactoryApp app;
   final int appIdx;
-  final String poolAddress;
+  final String forgeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -60,7 +60,7 @@ class AppCardWidget extends ConsumerWidget {
                     app: app,
                     appIdx: appIdx,
                     taskIdx: taskIdx,
-                    poolAddress: poolAddress,
+                    forgeId: forgeId,
                   );
                 },
               ),

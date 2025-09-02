@@ -35,9 +35,9 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
       );
 
       // Extract tokenBalance from the API response
-      final responseData = poolInfoData['data'] as Map<String, dynamic>?;
-      if (responseData != null && responseData.containsKey('tokenBalance')) {
-        final tokenBalanceString = responseData['tokenBalance'] as String?;
+
+      if (poolInfoData.containsKey('tokenBalance')) {
+        final tokenBalanceString = poolInfoData['tokenBalance'] as String?;
         if (tokenBalanceString != null) {
           final newBalance = double.tryParse(tokenBalanceString) ?? 0.0;
 
@@ -150,5 +150,34 @@ class ForgeDetailNotifier extends _$ForgeDetailNotifier
     apps[appIndex] = app.copyWith(tasks: newTasks);
     setApps(apps);
     setHasUnsavedChanges(true);
+  }
+
+  Future<void> saveFactoryApps() async {
+    setError(null);
+    final factory = state.factory;
+    if (factory == null) {
+      setError('Factory not found');
+      return;
+    }
+
+    try {
+      final updatedFactory = await ref.read(
+        UpdateFactoryAppsProvider(
+          factoryId: factory.id,
+          apps: state.apps,
+          walletAddress: factory.ownerAddress,
+        ).future,
+      );
+
+      // Update the factory without marking as having unsaved changes since we just saved
+      state = state.copyWith(
+        factory: updatedFactory,
+        hasUnsavedChanges: false,
+      );
+      debugPrint('Factory apps saved successfully');
+    } catch (e) {
+      debugPrint('Failed to save factory apps: $e');
+      setError('Failed to save apps: $e');
+    }
   }
 }

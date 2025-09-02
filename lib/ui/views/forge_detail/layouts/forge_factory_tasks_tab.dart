@@ -82,7 +82,7 @@ class _ForgeFactoryTasksTabState extends ConsumerState<ForgeFactoryTasksTab> {
                               return AppCardWidget(
                                 app: app,
                                 appIdx: appIdx,
-                                poolAddress: forgeDetail.factory!.poolAddress,
+                                forgeId: forgeDetail.factory!.id,
                               );
                             },
                           ),

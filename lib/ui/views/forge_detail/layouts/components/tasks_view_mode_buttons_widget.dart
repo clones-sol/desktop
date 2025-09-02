@@ -36,6 +36,15 @@ class TasksViewModeButtonsWidget extends ConsumerWidget {
               ? BtnPrimaryType.primary
               : BtnPrimaryType.dark,
         ),
+        if (forgeDetail.viewModeTasks == ViewModeTasks.edit && forgeDetail.hasUnsavedChanges) ...[
+          const SizedBox(width: 10),
+          BtnPrimary(
+            buttonText: 'Save',
+            onTap: () => ref
+                .read(forgeDetailNotifierProvider.notifier)
+                .saveFactoryApps(),
+          ),
+        ],
       ],
     );
   }

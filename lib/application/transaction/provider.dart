@@ -261,8 +261,6 @@ class TransactionManager extends _$TransactionManager {
   void _startTransactionPolling(String sessionId) {
     _pollingTimer?.cancel();
 
-    debugPrint('[Transaction] Starting polling for session: $sessionId');
-
     _pollingTimer = Timer.periodic(const Duration(seconds: 2), (timer) async {
       try {
         final apiClient = ref.read(apiClientProvider);
@@ -274,10 +272,6 @@ class TransactionManager extends _$TransactionManager {
         final status = response['status'] as String;
         final txHash = response['txHash'] as String?;
         final error = response['error'] as String?;
-
-        debugPrint(
-          '[Transaction] Poll result - status: $status, txHash: $txHash',
-        );
 
         // Handle completed transactions
         if (status != 'pending') {

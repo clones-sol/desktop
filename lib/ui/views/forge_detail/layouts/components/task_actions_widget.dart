@@ -19,13 +19,13 @@ class TaskActionsWidget extends ConsumerWidget {
     required this.app,
     required this.appIdx,
     required this.taskIdx,
-    required this.poolAddress,
+    required this.forgeId,
   });
   final FactoryTask task;
   final FactoryApp app;
   final int appIdx;
   final int taskIdx;
-  final String poolAddress;
+  final String forgeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,7 +50,7 @@ class TaskActionsWidget extends ConsumerWidget {
               extra: {
                 'prompt': task.prompt,
                 'appParam': appParam,
-                'poolId': poolAddress,
+                'poolId': forgeId,
               },
             );
           },

@@ -1,5 +1,6 @@
 import 'package:clones_desktop/domain/models/api/request_options.dart';
 import 'package:clones_desktop/domain/models/factory/factory.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/domain/models/factory/factory_search_criteria.dart';
 import 'package:clones_desktop/domain/models/factory/factory_search_result.dart';
 import 'package:clones_desktop/domain/models/supported_token.dart';
@@ -12,6 +13,11 @@ abstract class FactoriesRepository {
     int limit = 20,
     int offset = 0,
     FactoryStatus? status,
+  });
+  Future<Factory> updateFactoryApps({
+    required String factoryId,
+    required List<FactoryApp> apps,
+    required String walletAddress,
   });
 }
 
@@ -344,6 +350,67 @@ class FactoriesRepositoryImpl implements FactoriesRepository {
           .toList();
     } catch (e) {
       throw Exception('Failed to get supported tokens: $e');
+    }
+  }
+
+  /// Update factory apps - allows adding/modifying tasks
+  @override
+  Future<Factory> updateFactoryApps({
+    required String factoryId,
+    required List<FactoryApp> apps,
+    required String walletAddress,
+  }) async {
+    try {
+      // Clean the apps data to match API schema
+      final cleanApps = apps.map((app) {
+        final appJson = app.toJson()
+          // Remove UI-only fields
+          ..remove('_id')
+          ..remove('pool_id');
+
+        // Clean tasks
+        if (appJson['tasks'] is List) {
+          appJson['tasks'] = (appJson['tasks'] as List).map((task) {
+            if (task is Map<String, dynamic>) {
+              final cleanTask = Map<String, dynamic>.from(task)
+                // Remove UI-only fields
+                ..remove('_id')
+                ..remove('limitReason');
+              // Remove null ID if present
+              if (cleanTask['id'] == null) {
+                cleanTask.remove('id');
+              }
+              // Handle limits: remove if null or 0 (API expects either undefined or > 0)
+              if (cleanTask['uploadLimit'] == null || cleanTask['uploadLimit'] == 0) {
+                cleanTask.remove('uploadLimit');
+              }
+              if (cleanTask['rewardLimit'] == null || cleanTask['rewardLimit'] == 0) {
+                cleanTask.remove('rewardLimit');
+              }
+              return cleanTask;
+            }
+            return task;
+          }).toList();
+        }
+
+        return appJson;
+      }).toList();
+
+      final responseData = await _apiClient.put<Map<String, dynamic>>(
+        '/forge/factories/apps/$factoryId',
+        data: {
+          'apps': cleanApps,
+        },
+        options: RequestOptions(
+          requiresAuth: true,
+          headers: {'X-Wallet-Address': walletAddress},
+        ),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+
+      return Factory.fromJson(responseData);
+    } catch (e) {
+      throw Exception('Failed to update factory apps: $e');
     }
   }
 }

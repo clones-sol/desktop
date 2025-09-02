@@ -1,4 +1,5 @@
 import 'package:clones_desktop/domain/models/factory/factory.dart';
+import 'package:clones_desktop/domain/models/factory/factory_app.dart';
 import 'package:clones_desktop/domain/models/factory/factory_search_criteria.dart';
 import 'package:clones_desktop/domain/models/factory/factory_search_result.dart';
 import 'package:clones_desktop/domain/models/supported_token.dart';
@@ -190,4 +191,19 @@ Future<FactorySearchResult> searchFactoriesByToken(
 }) {
   final repository = ref.read(factoryRepositoryProvider);
   return repository.searchFactoriesByToken(tokenSymbol: tokenSymbol);
+}
+
+@riverpod
+Future<Factory> updateFactoryApps(
+  Ref ref, {
+  required String factoryId,
+  required List<FactoryApp> apps,
+  required String walletAddress,
+}) {
+  final repository = ref.read(factoryRepositoryProvider);
+  return repository.updateFactoryApps(
+    factoryId: factoryId,
+    apps: apps,
+    walletAddress: walletAddress,
+  );
 }
