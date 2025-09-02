@@ -19,7 +19,6 @@ class RecordingMeta with _$RecordingMeta {
     required String version,
     required String locale,
     @JsonKey(name: 'quest') required Demonstration demonstration,
-    @JsonKey(name: 'factory_id') required String factoryId,
   }) = _RecordingMeta;
 
   factory RecordingMeta.fromJson(Map<String, dynamic> json) =>

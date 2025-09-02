@@ -21,7 +21,6 @@ _$RecordingMetaImpl _$$RecordingMetaImplFromJson(Map<String, dynamic> json) =>
       locale: json['locale'] as String,
       demonstration:
           Demonstration.fromJson(json['quest'] as Map<String, dynamic>),
-      factoryId: json['factory_id'] as String,
     );
 
 Map<String, dynamic> _$$RecordingMetaImplToJson(_$RecordingMetaImpl instance) =>
@@ -38,7 +37,6 @@ Map<String, dynamic> _$$RecordingMetaImplToJson(_$RecordingMetaImpl instance) =>
       'version': instance.version,
       'locale': instance.locale,
       'quest': instance.demonstration,
-      'factory_id': instance.factoryId,
     };
 
 _$MonitorInfoImpl _$$MonitorInfoImplFromJson(Map<String, dynamic> json) =>
