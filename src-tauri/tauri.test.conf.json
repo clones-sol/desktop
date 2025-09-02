@@ -5,7 +5,8 @@
     "identifier": "ai.clones.desktop.test",
     "build": {
         "frontendDist": "../build/web",
-        "devUrl": "http://localhost:3000"
+        "devUrl": "http://localhost:3000",
+        "beforeBuildCommand": "flutter build web --release --base-href / --no-web-resources-cdn --csp"
     },
     "plugins": {
         "deep-link": {
@@ -52,6 +53,23 @@
         "createUpdaterArtifacts": false,
         "active": true,
         "targets": "all",
+        "windows": {},
+        "macOS": {
+            "dmg": {
+                "appPosition": {
+                    "x": 180,
+                    "y": 170
+                },
+                "applicationFolderPosition": {
+                    "x": 480,
+                    "y": 170
+                },
+                "windowSize": {
+                    "height": 400,
+                    "width": 660
+                }
+            }
+        },
         "icon": [
             "icons/32x32.png",
             "icons/128x128.png",
