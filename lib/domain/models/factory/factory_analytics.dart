@@ -16,7 +16,6 @@ class FactoryAnalytics with _$FactoryAnalytics {
     @Default(0) int activeFactories,
     @Default(0.0) double totalBalance,
     @Default(0) int totalDemonstrations,
-    @Default(0.0) double totalEarned,
     @Default(0.0) double averageFactorySize,
     @Default([]) List<SkillCount> topSkills,
     @Default([]) List<TokenBalance> topTokens,

@@ -24,7 +24,6 @@ mixin _$FactoryAnalytics {
   int get activeFactories => throw _privateConstructorUsedError;
   double get totalBalance => throw _privateConstructorUsedError;
   int get totalDemonstrations => throw _privateConstructorUsedError;
-  double get totalEarned => throw _privateConstructorUsedError;
   double get averageFactorySize => throw _privateConstructorUsedError;
   List<SkillCount> get topSkills => throw _privateConstructorUsedError;
   List<TokenBalance> get topTokens => throw _privateConstructorUsedError;
@@ -50,7 +49,6 @@ abstract class $FactoryAnalyticsCopyWith<$Res> {
       int activeFactories,
       double totalBalance,
       int totalDemonstrations,
-      double totalEarned,
       double averageFactorySize,
       List<SkillCount> topSkills,
       List<TokenBalance> topTokens});
@@ -75,7 +73,6 @@ class _$FactoryAnalyticsCopyWithImpl<$Res, $Val extends FactoryAnalytics>
     Object? activeFactories = null,
     Object? totalBalance = null,
     Object? totalDemonstrations = null,
-    Object? totalEarned = null,
     Object? averageFactorySize = null,
     Object? topSkills = null,
     Object? topTokens = null,
@@ -97,10 +94,6 @@ class _$FactoryAnalyticsCopyWithImpl<$Res, $Val extends FactoryAnalytics>
           ? _value.totalDemonstrations
           : totalDemonstrations // ignore: cast_nullable_to_non_nullable
               as int,
-      totalEarned: null == totalEarned
-          ? _value.totalEarned
-          : totalEarned // ignore: cast_nullable_to_non_nullable
-              as double,
       averageFactorySize: null == averageFactorySize
           ? _value.averageFactorySize
           : averageFactorySize // ignore: cast_nullable_to_non_nullable
@@ -130,7 +123,6 @@ abstract class _$$FactoryAnalyticsImplCopyWith<$Res>
       int activeFactories,
       double totalBalance,
       int totalDemonstrations,
-      double totalEarned,
       double averageFactorySize,
       List<SkillCount> topSkills,
       List<TokenBalance> topTokens});
@@ -153,7 +145,6 @@ class __$$FactoryAnalyticsImplCopyWithImpl<$Res>
     Object? activeFactories = null,
     Object? totalBalance = null,
     Object? totalDemonstrations = null,
-    Object? totalEarned = null,
     Object? averageFactorySize = null,
     Object? topSkills = null,
     Object? topTokens = null,
@@ -175,10 +166,6 @@ class __$$FactoryAnalyticsImplCopyWithImpl<$Res>
           ? _value.totalDemonstrations
           : totalDemonstrations // ignore: cast_nullable_to_non_nullable
               as int,
-      totalEarned: null == totalEarned
-          ? _value.totalEarned
-          : totalEarned // ignore: cast_nullable_to_non_nullable
-              as double,
       averageFactorySize: null == averageFactorySize
           ? _value.averageFactorySize
           : averageFactorySize // ignore: cast_nullable_to_non_nullable
@@ -203,7 +190,6 @@ class _$FactoryAnalyticsImpl implements _FactoryAnalytics {
       this.activeFactories = 0,
       this.totalBalance = 0.0,
       this.totalDemonstrations = 0,
-      this.totalEarned = 0.0,
       this.averageFactorySize = 0.0,
       final List<SkillCount> topSkills = const [],
       final List<TokenBalance> topTokens = const []})
@@ -227,9 +213,6 @@ class _$FactoryAnalyticsImpl implements _FactoryAnalytics {
   final int totalDemonstrations;
   @override
   @JsonKey()
-  final double totalEarned;
-  @override
-  @JsonKey()
   final double averageFactorySize;
   final List<SkillCount> _topSkills;
   @override
@@ -251,7 +234,7 @@ class _$FactoryAnalyticsImpl implements _FactoryAnalytics {
 
   @override
   String toString() {
-    return 'FactoryAnalytics(totalFactories: $totalFactories, activeFactories: $activeFactories, totalBalance: $totalBalance, totalDemonstrations: $totalDemonstrations, totalEarned: $totalEarned, averageFactorySize: $averageFactorySize, topSkills: $topSkills, topTokens: $topTokens)';
+    return 'FactoryAnalytics(totalFactories: $totalFactories, activeFactories: $activeFactories, totalBalance: $totalBalance, totalDemonstrations: $totalDemonstrations, averageFactorySize: $averageFactorySize, topSkills: $topSkills, topTokens: $topTokens)';
   }
 
   @override
@@ -267,8 +250,6 @@ class _$FactoryAnalyticsImpl implements _FactoryAnalytics {
                 other.totalBalance == totalBalance) &&
             (identical(other.totalDemonstrations, totalDemonstrations) ||
                 other.totalDemonstrations == totalDemonstrations) &&
-            (identical(other.totalEarned, totalEarned) ||
-                other.totalEarned == totalEarned) &&
             (identical(other.averageFactorySize, averageFactorySize) ||
                 other.averageFactorySize == averageFactorySize) &&
             const DeepCollectionEquality()
@@ -285,7 +266,6 @@ class _$FactoryAnalyticsImpl implements _FactoryAnalytics {
       activeFactories,
       totalBalance,
       totalDemonstrations,
-      totalEarned,
       averageFactorySize,
       const DeepCollectionEquality().hash(_topSkills),
       const DeepCollectionEquality().hash(_topTokens));
@@ -313,7 +293,6 @@ abstract class _FactoryAnalytics implements FactoryAnalytics {
       final int activeFactories,
       final double totalBalance,
       final int totalDemonstrations,
-      final double totalEarned,
       final double averageFactorySize,
       final List<SkillCount> topSkills,
       final List<TokenBalance> topTokens}) = _$FactoryAnalyticsImpl;
@@ -329,8 +308,6 @@ abstract class _FactoryAnalytics implements FactoryAnalytics {
   double get totalBalance;
   @override
   int get totalDemonstrations;
-  @override
-  double get totalEarned;
   @override
   double get averageFactorySize;
   @override

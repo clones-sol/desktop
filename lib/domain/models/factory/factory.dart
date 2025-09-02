@@ -76,7 +76,6 @@ class Factory with _$Factory {
 
     // Statistics
     @Default(0) int demonstrations,
-    @Default(0.0) double totalEarned,
 
     // Configuration
     FactoryUploadLimit? uploadLimit,

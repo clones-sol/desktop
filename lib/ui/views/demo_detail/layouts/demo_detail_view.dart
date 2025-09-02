@@ -64,9 +64,9 @@ class _DemoDetailViewState extends ConsumerState<DemoDetailView> {
     final recording = demoDetail.recording;
     final submission = recording?.submission;
     final demoDetailNotifier = ref.watch(demoDetailNotifierProvider.notifier);
-    return Wrap(
+    return Row(
       spacing: 10,
-      alignment: WrapAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         BtnPrimary(
           btnPrimaryType: BtnPrimaryType.outlinePrimary,

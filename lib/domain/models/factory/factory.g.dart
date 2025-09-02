@@ -24,7 +24,6 @@ _$FactoryImpl _$$FactoryImplFromJson(Map<String, dynamic> json) =>
       balance: (json['balance'] as num?)?.toDouble() ?? 0.0,
       pricePerDemo: (json['pricePerDemo'] as num).toDouble(),
       demonstrations: (json['demonstrations'] as num?)?.toInt() ?? 0,
-      totalEarned: (json['totalEarned'] as num?)?.toDouble() ?? 0.0,
       uploadLimit: json['uploadLimit'] == null
           ? null
           : FactoryUploadLimit.fromJson(
@@ -53,7 +52,6 @@ Map<String, dynamic> _$$FactoryImplToJson(_$FactoryImpl instance) =>
       'balance': instance.balance,
       'pricePerDemo': instance.pricePerDemo,
       'demonstrations': instance.demonstrations,
-      'totalEarned': instance.totalEarned,
       'uploadLimit': instance.uploadLimit,
       'apps': instance.apps,
       'searchText': instance.searchText,

@@ -290,18 +290,13 @@ class GenerateFactoryNotifier extends _$GenerateFactoryNotifier
     // Poll transaction status every 2 seconds for up to 10 minutes
     const maxAttempts = 300; // 10 minutes at 2 second intervals
     var attempts = 0;
-    debugPrint('monitorTransactionStatus');
     while (attempts < maxAttempts) {
       await Future.delayed(const Duration(seconds: 2));
       attempts++;
-      debugPrint('monitorTransactionStatus attempt $attempts');
       final transactionState = ref.read(transactionManagerProvider);
 
       // Transaction completed successfully
       if (transactionState.lastSuccessfulTx != null) {
-        debugPrint(
-          'generate factory transaction completed successfully: ${transactionState.lastSuccessfulTx}',
-        );
         state = state.copyWith(
           transactionStatus:
               'Transaction confirmed! Finalizing factory registration...',

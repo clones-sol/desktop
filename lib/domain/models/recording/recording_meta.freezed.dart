@@ -34,6 +34,8 @@ mixin _$RecordingMeta {
   String get locale => throw _privateConstructorUsedError;
   @JsonKey(name: 'quest')
   Demonstration get demonstration => throw _privateConstructorUsedError;
+  @JsonKey(name: 'factory_id')
+  String get factoryId => throw _privateConstructorUsedError;
 
   /// Serializes this RecordingMeta to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -63,7 +65,8 @@ abstract class $RecordingMetaCopyWith<$Res> {
       String arch,
       String version,
       String locale,
-      @JsonKey(name: 'quest') Demonstration demonstration});
+      @JsonKey(name: 'quest') Demonstration demonstration,
+      @JsonKey(name: 'factory_id') String factoryId});
 
   $DemonstrationCopyWith<$Res> get demonstration;
 }
@@ -95,6 +98,7 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
     Object? version = null,
     Object? locale = null,
     Object? demonstration = null,
+    Object? factoryId = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -145,6 +149,10 @@ class _$RecordingMetaCopyWithImpl<$Res, $Val extends RecordingMeta>
           ? _value.demonstration
           : demonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration,
+      factoryId: null == factoryId
+          ? _value.factoryId
+          : factoryId // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 
@@ -179,7 +187,8 @@ abstract class _$$RecordingMetaImplCopyWith<$Res>
       String arch,
       String version,
       String locale,
-      @JsonKey(name: 'quest') Demonstration demonstration});
+      @JsonKey(name: 'quest') Demonstration demonstration,
+      @JsonKey(name: 'factory_id') String factoryId});
 
   @override
   $DemonstrationCopyWith<$Res> get demonstration;
@@ -210,6 +219,7 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
     Object? version = null,
     Object? locale = null,
     Object? demonstration = null,
+    Object? factoryId = null,
   }) {
     return _then(_$RecordingMetaImpl(
       id: null == id
@@ -260,6 +270,10 @@ class __$$RecordingMetaImplCopyWithImpl<$Res>
           ? _value.demonstration
           : demonstration // ignore: cast_nullable_to_non_nullable
               as Demonstration,
+      factoryId: null == factoryId
+          ? _value.factoryId
+          : factoryId // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -279,7 +293,8 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       required this.arch,
       required this.version,
       required this.locale,
-      @JsonKey(name: 'quest') required this.demonstration});
+      @JsonKey(name: 'quest') required this.demonstration,
+      @JsonKey(name: 'factory_id') required this.factoryId});
 
   factory _$RecordingMetaImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecordingMetaImplFromJson(json);
@@ -310,10 +325,13 @@ class _$RecordingMetaImpl implements _RecordingMeta {
   @override
   @JsonKey(name: 'quest')
   final Demonstration demonstration;
+  @override
+  @JsonKey(name: 'factory_id')
+  final String factoryId;
 
   @override
   String toString() {
-    return 'RecordingMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, demonstration: $demonstration)';
+    return 'RecordingMeta(id: $id, timestamp: $timestamp, durationSeconds: $durationSeconds, status: $status, reason: $reason, title: $title, description: $description, platform: $platform, arch: $arch, version: $version, locale: $locale, demonstration: $demonstration, factoryId: $factoryId)';
   }
 
   @override
@@ -337,7 +355,9 @@ class _$RecordingMetaImpl implements _RecordingMeta {
             (identical(other.version, version) || other.version == version) &&
             (identical(other.locale, locale) || other.locale == locale) &&
             (identical(other.demonstration, demonstration) ||
-                other.demonstration == demonstration));
+                other.demonstration == demonstration) &&
+            (identical(other.factoryId, factoryId) ||
+                other.factoryId == factoryId));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -355,7 +375,8 @@ class _$RecordingMetaImpl implements _RecordingMeta {
       arch,
       version,
       locale,
-      demonstration);
+      demonstration,
+      factoryId);
 
   /// Create a copy of RecordingMeta
   /// with the given fields replaced by the non-null parameter values.
@@ -386,7 +407,8 @@ abstract class _RecordingMeta implements RecordingMeta {
           required final String arch,
           required final String version,
           required final String locale,
-          @JsonKey(name: 'quest') required final Demonstration demonstration}) =
+          @JsonKey(name: 'quest') required final Demonstration demonstration,
+          @JsonKey(name: 'factory_id') required final String factoryId}) =
       _$RecordingMetaImpl;
 
   factory _RecordingMeta.fromJson(Map<String, dynamic> json) =
@@ -418,6 +440,9 @@ abstract class _RecordingMeta implements RecordingMeta {
   @override
   @JsonKey(name: 'quest')
   Demonstration get demonstration;
+  @override
+  @JsonKey(name: 'factory_id')
+  String get factoryId;
 
   /// Create a copy of RecordingMeta
   /// with the given fields replaced by the non-null parameter values.

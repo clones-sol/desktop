@@ -2226,5 +2226,170 @@ class _SearchFactoriesByTokenProviderElement
   String get tokenSymbol =>
       (origin as SearchFactoriesByTokenProvider).tokenSymbol;
 }
+
+String _$updateFactoryAppsHash() => r'829be3690c1a4df17079fd95b0d1660ab5315502';
+
+/// See also [updateFactoryApps].
+@ProviderFor(updateFactoryApps)
+const updateFactoryAppsProvider = UpdateFactoryAppsFamily();
+
+/// See also [updateFactoryApps].
+class UpdateFactoryAppsFamily extends Family<AsyncValue<Factory>> {
+  /// See also [updateFactoryApps].
+  const UpdateFactoryAppsFamily();
+
+  /// See also [updateFactoryApps].
+  UpdateFactoryAppsProvider call({
+    required String factoryId,
+    required List<FactoryApp> apps,
+    required String walletAddress,
+  }) {
+    return UpdateFactoryAppsProvider(
+      factoryId: factoryId,
+      apps: apps,
+      walletAddress: walletAddress,
+    );
+  }
+
+  @override
+  UpdateFactoryAppsProvider getProviderOverride(
+    covariant UpdateFactoryAppsProvider provider,
+  ) {
+    return call(
+      factoryId: provider.factoryId,
+      apps: provider.apps,
+      walletAddress: provider.walletAddress,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'updateFactoryAppsProvider';
+}
+
+/// See also [updateFactoryApps].
+class UpdateFactoryAppsProvider extends AutoDisposeFutureProvider<Factory> {
+  /// See also [updateFactoryApps].
+  UpdateFactoryAppsProvider({
+    required String factoryId,
+    required List<FactoryApp> apps,
+    required String walletAddress,
+  }) : this._internal(
+          (ref) => updateFactoryApps(
+            ref as UpdateFactoryAppsRef,
+            factoryId: factoryId,
+            apps: apps,
+            walletAddress: walletAddress,
+          ),
+          from: updateFactoryAppsProvider,
+          name: r'updateFactoryAppsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$updateFactoryAppsHash,
+          dependencies: UpdateFactoryAppsFamily._dependencies,
+          allTransitiveDependencies:
+              UpdateFactoryAppsFamily._allTransitiveDependencies,
+          factoryId: factoryId,
+          apps: apps,
+          walletAddress: walletAddress,
+        );
+
+  UpdateFactoryAppsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.factoryId,
+    required this.apps,
+    required this.walletAddress,
+  }) : super.internal();
+
+  final String factoryId;
+  final List<FactoryApp> apps;
+  final String walletAddress;
+
+  @override
+  Override overrideWith(
+    FutureOr<Factory> Function(UpdateFactoryAppsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: UpdateFactoryAppsProvider._internal(
+        (ref) => create(ref as UpdateFactoryAppsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        factoryId: factoryId,
+        apps: apps,
+        walletAddress: walletAddress,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Factory> createElement() {
+    return _UpdateFactoryAppsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UpdateFactoryAppsProvider &&
+        other.factoryId == factoryId &&
+        other.apps == apps &&
+        other.walletAddress == walletAddress;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, factoryId.hashCode);
+    hash = _SystemHash.combine(hash, apps.hashCode);
+    hash = _SystemHash.combine(hash, walletAddress.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin UpdateFactoryAppsRef on AutoDisposeFutureProviderRef<Factory> {
+  /// The parameter `factoryId` of this provider.
+  String get factoryId;
+
+  /// The parameter `apps` of this provider.
+  List<FactoryApp> get apps;
+
+  /// The parameter `walletAddress` of this provider.
+  String get walletAddress;
+}
+
+class _UpdateFactoryAppsProviderElement
+    extends AutoDisposeFutureProviderElement<Factory>
+    with UpdateFactoryAppsRef {
+  _UpdateFactoryAppsProviderElement(super.provider);
+
+  @override
+  String get factoryId => (origin as UpdateFactoryAppsProvider).factoryId;
+  @override
+  List<FactoryApp> get apps => (origin as UpdateFactoryAppsProvider).apps;
+  @override
+  String get walletAddress =>
+      (origin as UpdateFactoryAppsProvider).walletAddress;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
