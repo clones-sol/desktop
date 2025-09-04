@@ -4,6 +4,8 @@ import 'package:clones_desktop/application/session/provider.dart';
 import 'package:clones_desktop/application/tauri_api.dart';
 import 'package:clones_desktop/application/transaction/state.dart';
 import 'package:clones_desktop/domain/models/factory/factory_app.dart';
+import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
+import 'package:clones_desktop/ui/components/design_widget/dialog/popup_template.dart';
 import 'package:clones_desktop/utils/api_client.dart';
 import 'package:clones_desktop/utils/env.dart';
 import 'package:flutter/material.dart';
@@ -200,6 +202,67 @@ class TransactionManager extends _$TransactionManager {
     }
   }
 
+  /// Withdraw from pool transaction workflow
+  Future<void> withdrawPool({
+    required String token,
+    required String amount,
+    required String poolAddress,
+    required String creator,
+  }) async {
+    try {
+      state = state.copyWith(isLoading: true);
+      final apiClient = ref.read(apiClientProvider);
+
+      // Get wallet connection token from session
+      final session = ref.read(sessionNotifierProvider);
+      final connectionToken = session.connectionToken;
+
+      if (connectionToken == null) {
+        throw Exception(
+          'No wallet connection found. Please connect your wallet first.',
+        );
+      }
+
+      // Prepare transaction via backend API and get session ID
+      final response = await apiClient.post<Map<String, dynamic>>(
+        '/transaction/prepare-tx',
+        data: {
+          'type': 'withdrawPool',
+          'sessionToken': connectionToken,
+          'creator': creator,
+          'token': token,
+          'amount': amount,
+          'poolAddress': poolAddress,
+        },
+      );
+
+      final sessionId = response['sessionId'] as String;
+      final tauriApi = ref.read(tauriApiClientProvider);
+
+      // Generate website URL with session ID for transaction execution
+      final url =
+          '${Env.apiWebsiteUrl}/wallet/transaction?sessionId=$sessionId';
+
+      // Open URL via Tauri
+      await tauriApi.openExternalUrl(url);
+
+      // Start polling for transaction status
+      _startTransactionPolling(sessionId);
+
+      state = state.copyWith(
+        isLoading: false,
+        awaitingCallback: true,
+        currentTransactionType: 'withdrawPool',
+        currentSessionId: sessionId,
+      );
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        error: 'Failed to withdraw from pool: $e',
+      );
+    }
+  }
+
   /// Claim rewards transaction workflow
   Future<void> claimRewards({
     required String poolAddress,
@@ -294,6 +357,7 @@ class TransactionManager extends _$TransactionManager {
             case 'cancelled':
               state = state.copyWith(
                 awaitingCallback: false,
+                wasCancelled: true,
               );
               break;
             default:
@@ -331,29 +395,24 @@ class TransactionManager extends _$TransactionManager {
   }
 
   /// Show transaction status dialog
-  void showTransactionStatus(BuildContext context) {
+  Future<void> showTransactionStatus(BuildContext context) async {
     if (state.lastSuccessfulTx != null) {
-      _showSuccessDialog(context, state.lastSuccessfulTx!);
+      await _showSuccessDialog(context, state.lastSuccessfulTx!);
     } else if (state.error != null) {
-      _showErrorDialog(context, state.error!);
+      await _showErrorDialog(context, state.error!);
+    } else if (state.wasCancelled) {
+      await _showCancelledDialog(context);
     }
   }
 
-  void _showSuccessDialog(BuildContext context, String txHash) {
+  Future<void> _showSuccessDialog(BuildContext context, String txHash) async {
     final tauriApi = ref.read(tauriApiClientProvider);
-    showDialog(
+    await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A1A),
-        title: const Text(
-          'Transaction Successful',
-          style: TextStyle(
-            color: Colors.green,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        content: Column(
+      useRootNavigator: false,
+      builder: (context) => PopupTemplate(
+        popupTitle: 'Transaction Successful',
+        popupContent: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -386,7 +445,7 @@ class TransactionManager extends _$TransactionManager {
             const SizedBox(height: 16),
             TextButton.icon(
               onPressed: () async {
-                final url = 'https://basescan.org/tx/$txHash';
+                final url = '${Env.baseScanBaseUrl}/tx/$txHash';
                 try {
                   await tauriApi.openExternalUrl(url);
                 } catch (e) {
@@ -403,36 +462,32 @@ class TransactionManager extends _$TransactionManager {
                 style: TextStyle(color: Color(0xFF8B5CF6)),
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BtnPrimary(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    clearTransaction();
+                  },
+                  buttonText: 'Close',
+                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                ),
+              ],
+            ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              clearTransaction();
-            },
-            child:
-                const Text('Close', style: TextStyle(color: Color(0xFF8B5CF6))),
-          ),
-        ],
       ),
     );
   }
 
-  void _showErrorDialog(BuildContext context, String error) {
-    showDialog(
+  Future<void> _showErrorDialog(BuildContext context, String error) async {
+    await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: const Color(0xFF1A1A1A),
-        title: const Text(
-          'Transaction Failed',
-          style: TextStyle(
-            color: Colors.red,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        content: Column(
+      useRootNavigator: false,
+      builder: (context) => PopupTemplate(
+        popupTitle: 'Transaction Failed',
+        popupContent: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -440,17 +495,54 @@ class TransactionManager extends _$TransactionManager {
               error,
               style: const TextStyle(color: Colors.white70),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BtnPrimary(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    clearTransaction();
+                  },
+                  buttonText: 'Close',
+                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                ),
+              ],
+            ),
           ],
         ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              clearTransaction();
-            },
-            child: const Text('Close', style: TextStyle(color: Colors.red)),
-          ),
-        ],
+      ),
+    );
+  }
+
+  Future<void> _showCancelledDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      useRootNavigator: false,
+      builder: (context) => PopupTemplate(
+        popupTitle: 'Transaction Cancelled',
+        popupContent: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'The transaction was cancelled in the browser. No changes were made to the blockchain.',
+              style: TextStyle(color: Colors.white70),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                BtnPrimary(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    clearTransaction();
+                  },
+                  buttonText: 'Close',
+                  btnPrimaryType: BtnPrimaryType.outlinePrimary,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

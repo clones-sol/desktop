@@ -26,6 +26,7 @@ mixin _$TransactionState {
   String? get lastSuccessfulTx => throw _privateConstructorUsedError;
   String? get currentTransactionType => throw _privateConstructorUsedError;
   String? get currentSessionId => throw _privateConstructorUsedError;
+  bool get wasCancelled => throw _privateConstructorUsedError;
 
   /// Serializes this TransactionState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +50,8 @@ abstract class $TransactionStateCopyWith<$Res> {
       String? error,
       String? lastSuccessfulTx,
       String? currentTransactionType,
-      String? currentSessionId});
+      String? currentSessionId,
+      bool wasCancelled});
 }
 
 /// @nodoc
@@ -73,6 +75,7 @@ class _$TransactionStateCopyWithImpl<$Res, $Val extends TransactionState>
     Object? lastSuccessfulTx = freezed,
     Object? currentTransactionType = freezed,
     Object? currentSessionId = freezed,
+    Object? wasCancelled = null,
   }) {
     return _then(_value.copyWith(
       isLoading: null == isLoading
@@ -99,6 +102,10 @@ class _$TransactionStateCopyWithImpl<$Res, $Val extends TransactionState>
           ? _value.currentSessionId
           : currentSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      wasCancelled: null == wasCancelled
+          ? _value.wasCancelled
+          : wasCancelled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -117,7 +124,8 @@ abstract class _$$TransactionStateImplCopyWith<$Res>
       String? error,
       String? lastSuccessfulTx,
       String? currentTransactionType,
-      String? currentSessionId});
+      String? currentSessionId,
+      bool wasCancelled});
 }
 
 /// @nodoc
@@ -139,6 +147,7 @@ class __$$TransactionStateImplCopyWithImpl<$Res>
     Object? lastSuccessfulTx = freezed,
     Object? currentTransactionType = freezed,
     Object? currentSessionId = freezed,
+    Object? wasCancelled = null,
   }) {
     return _then(_$TransactionStateImpl(
       isLoading: null == isLoading
@@ -165,6 +174,10 @@ class __$$TransactionStateImplCopyWithImpl<$Res>
           ? _value.currentSessionId
           : currentSessionId // ignore: cast_nullable_to_non_nullable
               as String?,
+      wasCancelled: null == wasCancelled
+          ? _value.wasCancelled
+          : wasCancelled // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -178,7 +191,8 @@ class _$TransactionStateImpl implements _TransactionState {
       this.error,
       this.lastSuccessfulTx,
       this.currentTransactionType,
-      this.currentSessionId});
+      this.currentSessionId,
+      this.wasCancelled = false});
 
   factory _$TransactionStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransactionStateImplFromJson(json);
@@ -197,10 +211,13 @@ class _$TransactionStateImpl implements _TransactionState {
   final String? currentTransactionType;
   @override
   final String? currentSessionId;
+  @override
+  @JsonKey()
+  final bool wasCancelled;
 
   @override
   String toString() {
-    return 'TransactionState(isLoading: $isLoading, awaitingCallback: $awaitingCallback, error: $error, lastSuccessfulTx: $lastSuccessfulTx, currentTransactionType: $currentTransactionType, currentSessionId: $currentSessionId)';
+    return 'TransactionState(isLoading: $isLoading, awaitingCallback: $awaitingCallback, error: $error, lastSuccessfulTx: $lastSuccessfulTx, currentTransactionType: $currentTransactionType, currentSessionId: $currentSessionId, wasCancelled: $wasCancelled)';
   }
 
   @override
@@ -218,13 +235,22 @@ class _$TransactionStateImpl implements _TransactionState {
             (identical(other.currentTransactionType, currentTransactionType) ||
                 other.currentTransactionType == currentTransactionType) &&
             (identical(other.currentSessionId, currentSessionId) ||
-                other.currentSessionId == currentSessionId));
+                other.currentSessionId == currentSessionId) &&
+            (identical(other.wasCancelled, wasCancelled) ||
+                other.wasCancelled == wasCancelled));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading, awaitingCallback,
-      error, lastSuccessfulTx, currentTransactionType, currentSessionId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      awaitingCallback,
+      error,
+      lastSuccessfulTx,
+      currentTransactionType,
+      currentSessionId,
+      wasCancelled);
 
   /// Create a copy of TransactionState
   /// with the given fields replaced by the non-null parameter values.
@@ -250,7 +276,8 @@ abstract class _TransactionState implements TransactionState {
       final String? error,
       final String? lastSuccessfulTx,
       final String? currentTransactionType,
-      final String? currentSessionId}) = _$TransactionStateImpl;
+      final String? currentSessionId,
+      final bool wasCancelled}) = _$TransactionStateImpl;
 
   factory _TransactionState.fromJson(Map<String, dynamic> json) =
       _$TransactionStateImpl.fromJson;
@@ -267,6 +294,8 @@ abstract class _TransactionState implements TransactionState {
   String? get currentTransactionType;
   @override
   String? get currentSessionId;
+  @override
+  bool get wasCancelled;
 
   /// Create a copy of TransactionState
   /// with the given fields replaced by the non-null parameter values.

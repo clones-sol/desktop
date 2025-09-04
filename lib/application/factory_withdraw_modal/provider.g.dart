@@ -6,22 +6,23 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$transactionManagerHash() =>
-    r'b05aad9957a8e1e96fc72dd9144e4f4f06ae6b99';
+String _$factoryWithdrawModalNotifierHash() =>
+    r'630b2c8d871f54d76e87ffdb8d6bde80ce934dcc';
 
-/// See also [TransactionManager].
-@ProviderFor(TransactionManager)
-final transactionManagerProvider =
-    AutoDisposeNotifierProvider<TransactionManager, TransactionState>.internal(
-  TransactionManager.new,
-  name: r'transactionManagerProvider',
+/// See also [FactoryWithdrawModalNotifier].
+@ProviderFor(FactoryWithdrawModalNotifier)
+final factoryWithdrawModalNotifierProvider = AutoDisposeNotifierProvider<
+    FactoryWithdrawModalNotifier, FactoryWithdrawModalState>.internal(
+  FactoryWithdrawModalNotifier.new,
+  name: r'factoryWithdrawModalNotifierProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$transactionManagerHash,
+      : _$factoryWithdrawModalNotifierHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TransactionManager = AutoDisposeNotifier<TransactionState>;
+typedef _$FactoryWithdrawModalNotifier
+    = AutoDisposeNotifier<FactoryWithdrawModalState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

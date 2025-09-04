@@ -222,19 +222,23 @@ class FactoriesRepositoryImpl implements FactoriesRepository {
     String? token,
     String? amount,
     String? creator,
+    String? poolAddress,
   }) async {
     try {
       final body = <String, dynamic>{'type': type};
       if (token != null) body['token'] = token;
       if (amount != null) body['amount'] = amount;
       if (creator != null) body['creator'] = creator;
+      if (poolAddress != null) body['poolAddress'] = poolAddress;
 
-      return await _apiClient.post<Map<String, dynamic>>(
+      final response = await _apiClient.post<Map<String, dynamic>>(
         '/transaction/estimate-gas',
         data: body,
         options: const RequestOptions(requiresAuth: true),
         fromJson: (json) => json as Map<String, dynamic>,
       );
+
+      return response;
     } catch (e) {
       throw Exception('Failed to estimate gas: $e');
     }
@@ -353,6 +357,26 @@ class FactoriesRepositoryImpl implements FactoriesRepository {
     }
   }
 
+  /// Withdraw funds from a pool
+  Future<Map<String, dynamic>> withdrawPool({
+    required String poolAddress,
+    required double amount,
+  }) async {
+    try {
+      return await _apiClient.post<Map<String, dynamic>>(
+        '/forge/factories/pools/withdraw',
+        data: {
+          'poolAddress': poolAddress,
+          'amount': amount,
+        },
+        options: const RequestOptions(requiresAuth: true),
+        fromJson: (json) => json as Map<String, dynamic>,
+      );
+    } catch (e) {
+      throw Exception('Failed to withdraw from pool: $e');
+    }
+  }
+
   /// Update factory apps - allows adding/modifying tasks
   @override
   Future<Factory> updateFactoryApps({
@@ -381,10 +405,12 @@ class FactoriesRepositoryImpl implements FactoriesRepository {
                 cleanTask.remove('id');
               }
               // Handle limits: remove if null or 0 (API expects either undefined or > 0)
-              if (cleanTask['uploadLimit'] == null || cleanTask['uploadLimit'] == 0) {
+              if (cleanTask['uploadLimit'] == null ||
+                  cleanTask['uploadLimit'] == 0) {
                 cleanTask.remove('uploadLimit');
               }
-              if (cleanTask['rewardLimit'] == null || cleanTask['rewardLimit'] == 0) {
+              if (cleanTask['rewardLimit'] == null ||
+                  cleanTask['rewardLimit'] == 0) {
                 cleanTask.remove('rewardLimit');
               }
               return cleanTask;

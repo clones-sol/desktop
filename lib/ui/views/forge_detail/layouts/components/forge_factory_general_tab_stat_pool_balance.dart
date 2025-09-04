@@ -1,4 +1,5 @@
 import 'package:clones_desktop/application/factory_funds_modal/provider.dart';
+import 'package:clones_desktop/application/factory_withdraw_modal/provider.dart';
 import 'package:clones_desktop/assets.dart';
 import 'package:clones_desktop/ui/components/card.dart';
 import 'package:clones_desktop/ui/components/design_widget/buttons/btn_primary.dart';
@@ -44,7 +45,9 @@ class ForgeFactoryGeneralTabStatPoolBalance extends ConsumerWidget {
                         buttonText: 'Withdraw',
                         btnPrimaryType: BtnPrimaryType.outlinePrimary,
                         onTap: () {
-                          // TODO(reddwarf03): implement
+                          ref
+                              .read(factoryWithdrawModalNotifierProvider.notifier)
+                              .show(factory);
                         },
                       ),
                     ),
