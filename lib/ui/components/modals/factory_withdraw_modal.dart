@@ -209,7 +209,6 @@ class FactoryWithdrawModal extends ConsumerWidget {
                             buttonText: 'Withdraw',
                             isLoading: modalState.isWithdrawing,
                             isLocked: transactionState.awaitingCallback ||
-                                modalState.error != null ||
                                 modalState.withdrawAmount.isEmpty ||
                                 modalState.error != null ||
                                 modalState.gasExceedsAmount,
