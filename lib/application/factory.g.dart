@@ -348,7 +348,7 @@ class _PredictPoolAddressProviderElement
 }
 
 String _$estimateFactoryGasHash() =>
-    r'90b117f33e6844feb735cf056a2bde459671f25c';
+    r'6725b188ead9dff574e4c7b0b645e2e1c9c18b14';
 
 /// See also [estimateFactoryGas].
 @ProviderFor(estimateFactoryGas)
@@ -366,12 +366,14 @@ class EstimateFactoryGasFamily
     String? token,
     String? amount,
     String? creator,
+    String? poolAddress,
   }) {
     return EstimateFactoryGasProvider(
       type: type,
       token: token,
       amount: amount,
       creator: creator,
+      poolAddress: poolAddress,
     );
   }
 
@@ -384,6 +386,7 @@ class EstimateFactoryGasFamily
       token: provider.token,
       amount: provider.amount,
       creator: provider.creator,
+      poolAddress: provider.poolAddress,
     );
   }
 
@@ -411,6 +414,7 @@ class EstimateFactoryGasProvider
     String? token,
     String? amount,
     String? creator,
+    String? poolAddress,
   }) : this._internal(
           (ref) => estimateFactoryGas(
             ref as EstimateFactoryGasRef,
@@ -418,6 +422,7 @@ class EstimateFactoryGasProvider
             token: token,
             amount: amount,
             creator: creator,
+            poolAddress: poolAddress,
           ),
           from: estimateFactoryGasProvider,
           name: r'estimateFactoryGasProvider',
@@ -432,6 +437,7 @@ class EstimateFactoryGasProvider
           token: token,
           amount: amount,
           creator: creator,
+          poolAddress: poolAddress,
         );
 
   EstimateFactoryGasProvider._internal(
@@ -445,12 +451,14 @@ class EstimateFactoryGasProvider
     required this.token,
     required this.amount,
     required this.creator,
+    required this.poolAddress,
   }) : super.internal();
 
   final String type;
   final String? token;
   final String? amount;
   final String? creator;
+  final String? poolAddress;
 
   @override
   Override overrideWith(
@@ -470,6 +478,7 @@ class EstimateFactoryGasProvider
         token: token,
         amount: amount,
         creator: creator,
+        poolAddress: poolAddress,
       ),
     );
   }
@@ -485,7 +494,8 @@ class EstimateFactoryGasProvider
         other.type == type &&
         other.token == token &&
         other.amount == amount &&
-        other.creator == creator;
+        other.creator == creator &&
+        other.poolAddress == poolAddress;
   }
 
   @override
@@ -495,6 +505,7 @@ class EstimateFactoryGasProvider
     hash = _SystemHash.combine(hash, token.hashCode);
     hash = _SystemHash.combine(hash, amount.hashCode);
     hash = _SystemHash.combine(hash, creator.hashCode);
+    hash = _SystemHash.combine(hash, poolAddress.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -515,6 +526,9 @@ mixin EstimateFactoryGasRef
 
   /// The parameter `creator` of this provider.
   String? get creator;
+
+  /// The parameter `poolAddress` of this provider.
+  String? get poolAddress;
 }
 
 class _EstimateFactoryGasProviderElement
@@ -530,6 +544,8 @@ class _EstimateFactoryGasProviderElement
   String? get amount => (origin as EstimateFactoryGasProvider).amount;
   @override
   String? get creator => (origin as EstimateFactoryGasProvider).creator;
+  @override
+  String? get poolAddress => (origin as EstimateFactoryGasProvider).poolAddress;
 }
 
 String _$getPoolInfoHash() => r'40fad27594d7f89d2b8b57df20c3a29f4918a596';
@@ -826,6 +842,155 @@ class _FundPoolProviderElement
   String get poolAddress => (origin as FundPoolProvider).poolAddress;
   @override
   double get amount => (origin as FundPoolProvider).amount;
+}
+
+String _$withdrawPoolHash() => r'59f8b1bd9d479836daff0dd978687b1ebd5c68b5';
+
+/// See also [withdrawPool].
+@ProviderFor(withdrawPool)
+const withdrawPoolProvider = WithdrawPoolFamily();
+
+/// See also [withdrawPool].
+class WithdrawPoolFamily extends Family<AsyncValue<Map<String, dynamic>>> {
+  /// See also [withdrawPool].
+  const WithdrawPoolFamily();
+
+  /// See also [withdrawPool].
+  WithdrawPoolProvider call({
+    required String poolAddress,
+    required double amount,
+  }) {
+    return WithdrawPoolProvider(
+      poolAddress: poolAddress,
+      amount: amount,
+    );
+  }
+
+  @override
+  WithdrawPoolProvider getProviderOverride(
+    covariant WithdrawPoolProvider provider,
+  ) {
+    return call(
+      poolAddress: provider.poolAddress,
+      amount: provider.amount,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'withdrawPoolProvider';
+}
+
+/// See also [withdrawPool].
+class WithdrawPoolProvider
+    extends AutoDisposeFutureProvider<Map<String, dynamic>> {
+  /// See also [withdrawPool].
+  WithdrawPoolProvider({
+    required String poolAddress,
+    required double amount,
+  }) : this._internal(
+          (ref) => withdrawPool(
+            ref as WithdrawPoolRef,
+            poolAddress: poolAddress,
+            amount: amount,
+          ),
+          from: withdrawPoolProvider,
+          name: r'withdrawPoolProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$withdrawPoolHash,
+          dependencies: WithdrawPoolFamily._dependencies,
+          allTransitiveDependencies:
+              WithdrawPoolFamily._allTransitiveDependencies,
+          poolAddress: poolAddress,
+          amount: amount,
+        );
+
+  WithdrawPoolProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.poolAddress,
+    required this.amount,
+  }) : super.internal();
+
+  final String poolAddress;
+  final double amount;
+
+  @override
+  Override overrideWith(
+    FutureOr<Map<String, dynamic>> Function(WithdrawPoolRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: WithdrawPoolProvider._internal(
+        (ref) => create(ref as WithdrawPoolRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        poolAddress: poolAddress,
+        amount: amount,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Map<String, dynamic>> createElement() {
+    return _WithdrawPoolProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WithdrawPoolProvider &&
+        other.poolAddress == poolAddress &&
+        other.amount == amount;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, poolAddress.hashCode);
+    hash = _SystemHash.combine(hash, amount.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin WithdrawPoolRef on AutoDisposeFutureProviderRef<Map<String, dynamic>> {
+  /// The parameter `poolAddress` of this provider.
+  String get poolAddress;
+
+  /// The parameter `amount` of this provider.
+  double get amount;
+}
+
+class _WithdrawPoolProviderElement
+    extends AutoDisposeFutureProviderElement<Map<String, dynamic>>
+    with WithdrawPoolRef {
+  _WithdrawPoolProviderElement(super.provider);
+
+  @override
+  String get poolAddress => (origin as WithdrawPoolProvider).poolAddress;
+  @override
+  double get amount => (origin as WithdrawPoolProvider).amount;
 }
 
 String _$generateClaimSignatureHash() =>

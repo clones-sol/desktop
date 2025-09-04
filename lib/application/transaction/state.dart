@@ -12,6 +12,7 @@ class TransactionState with _$TransactionState {
     String? lastSuccessfulTx,
     String? currentTransactionType,
     String? currentSessionId,
+    @Default(false) bool wasCancelled,
   }) = _TransactionState;
 
   factory TransactionState.fromJson(Map<String, dynamic> json) =>

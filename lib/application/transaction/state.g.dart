@@ -15,6 +15,7 @@ _$TransactionStateImpl _$$TransactionStateImplFromJson(
       lastSuccessfulTx: json['lastSuccessfulTx'] as String?,
       currentTransactionType: json['currentTransactionType'] as String?,
       currentSessionId: json['currentSessionId'] as String?,
+      wasCancelled: json['wasCancelled'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$TransactionStateImplToJson(
@@ -26,4 +27,5 @@ Map<String, dynamic> _$$TransactionStateImplToJson(
       'lastSuccessfulTx': instance.lastSuccessfulTx,
       'currentTransactionType': instance.currentTransactionType,
       'currentSessionId': instance.currentSessionId,
+      'wasCancelled': instance.wasCancelled,
     };

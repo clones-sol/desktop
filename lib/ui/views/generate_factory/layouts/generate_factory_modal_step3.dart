@@ -189,7 +189,8 @@ class GenerateFactoryModalStep3 extends ConsumerWidget {
           const SizedBox(width: 10),
           BtnPrimary(
             buttonText: 'Transaction Status',
-            onTap: () => transactionManager.showTransactionStatus(context),
+            onTap: () async =>
+                transactionManager.showTransactionStatus(context),
             btnPrimaryType: BtnPrimaryType.outlinePrimary,
           ),
         ],

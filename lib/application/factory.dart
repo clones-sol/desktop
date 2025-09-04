@@ -45,6 +45,7 @@ Future<Map<String, dynamic>> estimateFactoryGas(
   String? token,
   String? amount,
   String? creator,
+  String? poolAddress,
 }) {
   final repository = ref.read(factoryRepositoryProvider);
   return repository.estimateGas(
@@ -52,6 +53,7 @@ Future<Map<String, dynamic>> estimateFactoryGas(
     token: token,
     amount: amount,
     creator: creator,
+    poolAddress: poolAddress,
   );
 }
 
@@ -74,6 +76,16 @@ Future<Map<String, dynamic>> fundPool(
 }) {
   final repository = ref.read(factoryRepositoryProvider);
   return repository.fundPool(poolAddress: poolAddress, amount: amount);
+}
+
+@riverpod
+Future<Map<String, dynamic>> withdrawPool(
+  Ref ref, {
+  required String poolAddress,
+  required double amount,
+}) {
+  final repository = ref.read(factoryRepositoryProvider);
+  return repository.withdrawPool(poolAddress: poolAddress, amount: amount);
 }
 
 @riverpod
